@@ -13,7 +13,7 @@ import CategoriasProduto from "./components/CategoriaProdutos";
 import {createStackNavigator} from "@react-navigation/stack";
 import {IconButton} from "react-native-paper";
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 const Categoria =()=>{
     return (
         <Stack.Navigator
