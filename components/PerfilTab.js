@@ -1,10 +1,26 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView,Alert } from 'react-native';
 import {Appbar} from "react-native-paper";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import { faCreditCard, faUser, faStar, faHeart,faBox,faLocationDot} from "@fortawesome/free-solid-svg-icons";
 export default function PerfilTab({navigation}) {
-
+    const ButtonAlert = () =>
+    Alert.alert(
+      "Teste Alert",
+      "My Alert Msg",
+      [
+        {
+          text: "Ask me later",
+          onPress: () => console.log("Ask me later pressed")
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
     return (
         <View style={{height: '100%'}}>
             <Appbar.Header style={{backgroundColor: '#1534C8', zIndex: 2}}>
@@ -14,7 +30,7 @@ export default function PerfilTab({navigation}) {
                 <Appbar.Content titleStyle={{textAlign: 'center', fontSize: 20}}/>
             </Appbar.Header>
             <View style={styles.card}>
-                <TouchableOpacity style={{marginTop: 30}}>
+                <TouchableOpacity style={{marginTop: 30}} onPress={ButtonAlert}>
                     <View style={{width: 80, height: 80, backgroundColor: '#FFDB00', borderRadius: 10, margin: 10}}>
                         <FontAwesomeIcon icon={faUser} color={'#1534C8'} size={30} style={{margin: 25}}/>
                     </View>
