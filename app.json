@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "ReactEletro",
+    "slug": "ReactEletro",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "splash": {
+      "image": "./assets/tela1.png",
+      "backgroundColor": "#1534C8"
+    },
+    "android": {
+      "package": "com.gabrielsaimo.ReactEletro"
+    }
+  }
+}
