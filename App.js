@@ -5,6 +5,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Banner from "./components/Banner"
 import FavoritosTab from "./components/FavoritosTab";
 import PerfilTab from "./components/PerfilTab";
+import Login from './components/Screens/Login'
 import Produto from "./components/Produto"
 import CarrinhoTab from "./components/CarrinhoTab";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
@@ -14,6 +15,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 import {IconButton} from "react-native-paper";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+console.disableYellowBox = true;
 const Categoria =()=>{
     return (
         <Stack.Navigator
@@ -38,6 +40,9 @@ const Categoria =()=>{
                           component={Produto}
                           Options={{headerTitleAlign: "center" }}
             />
+            <Stack.Screen name='CarrinhoTab'
+                          component={CarrinhoTab}
+            />
         </Stack.Navigator>
     )
 }
@@ -48,9 +53,8 @@ const Perfies =()=>{
             <Stack.Screen name='Perfil'
                           component={PerfilTab}
             />
-            <Stack.Screen name='home'
-                          component={HomeTab}
-                          Options={{ headerShown: false , headerTitleAlign: "center"}}
+            <Stack.Screen name='Login'
+                          component={Login}
             />
             <Stack.Screen name='Banner'
                           component={Banner}
@@ -80,6 +84,7 @@ const Produtos =()=>{
         </Stack.Navigator>
     )
 }
+
 export default function App() {
 
   return (

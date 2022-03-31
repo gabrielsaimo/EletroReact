@@ -1,9 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView,Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView,Alert,Modal } from 'react-native';
 import {Appbar} from "react-native-paper";
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons/faAngleLeft'
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import { faCreditCard, faUser, faStar, faHeart,faBox,faLocationDot} from "@fortawesome/free-solid-svg-icons";
+import Login from './Screens/Login';
 export default function PerfilTab({navigation}) {
+
+const [isVisibleLogin,setVisibleLogin] = useState(false);
+const [isVisibleLogon,setVisibleLogon] = useState(false);
     const ButtonAlert = () =>
     Alert.alert(
       "Teste Alert",
@@ -23,6 +28,79 @@ export default function PerfilTab({navigation}) {
     );
     return (
         <View style={{height: '100%'}}>
+            <Modal animationType={'slide'} transparent={false} visible={isVisibleLogin}
+            onRequestClose={
+                ()=>{
+                setVisibleLogin(false);
+                }
+            }>
+                <Appbar.Header style={{backgroundColor: '#FFDB00', marginTop: -45, zIndex: 1}}></Appbar.Header>
+
+                <View style={{marginTop:30}}>
+                    <View style={{alignSelf:'flex-start',marginLeft:10}}>
+                       <TouchableOpacity onPress={() => setVisibleLogin(false)}>
+                            <FontAwesomeIcon icon={faAngleLeft} style={ {color: '#1534C8'} } size={30}/>
+                        </TouchableOpacity>
+                       </View>
+                <View style={{alignSelf:'center',marginTop:-38}}>
+                
+                    <View style={styles.card2}>
+                       
+                       
+                            <Text style={styles.texteletro}>
+                                eletrosom
+                            </Text>
+                            <Text style={styles.textponto}>
+                                .
+                            </Text>
+                            <TouchableOpacity onPress={() =>(setVisibleLogin(true))}>
+                                <Text style={styles.textcom}>
+                                    com
+                                </Text>
+                            </TouchableOpacity>
+                        
+                    </View>
+                </View>
+                </View>
+                
+                <Login/>
+            </Modal>
+            <Modal animationType={'slide'} transparent={false} visible={isVisibleLogon}
+            onRequestClose={
+                ()=>{
+                setVisibleLogon(false);
+                }
+            }>
+                <Appbar.Header style={{backgroundColor: '#FFDB00', marginTop: -45, zIndex: 1}}></Appbar.Header>
+
+                <View style={{marginTop:30}}>
+                    <View style={{alignSelf:'flex-start',marginLeft:10}}>
+                       <TouchableOpacity onPress={() => setVisibleLogon(false)}>
+                            <FontAwesomeIcon icon={faAngleLeft} style={ {color: '#1534C8'} } size={30}/>
+                        </TouchableOpacity>
+                       </View>
+                <View style={{alignSelf:'center',marginTop:-38}}>
+                
+                    <View style={styles.card2}>
+                       
+                        <Text style={styles.texteletro}>
+                            eletrosom
+                        </Text>
+                        <Text style={styles.textponto}>
+                            .
+                        </Text>
+                        <TouchableOpacity onPress={() =>(setVisibleLogon(true))}>
+                            <Text style={styles.textcom}>
+                                com
+                            </Text>
+                        </TouchableOpacity>
+                        
+                    </View>
+                </View>
+                </View>
+                
+                <Login/>
+            </Modal>
             <Appbar.Header style={{backgroundColor: '#1534C8', zIndex: 2}}>
                 <Appbar.Content titleStyle={{textAlign: 'center', fontSize: 20}} title={'Seu perfil'}/>
             </Appbar.Header>
@@ -43,7 +121,7 @@ export default function PerfilTab({navigation}) {
                         <Text style={{marginLeft: 3, fontSize: 15, color: '#6A7075'}}>
                             Fáça seu
                         </Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() =>(setVisibleLogin(true))}>
                             <Text style={styles.textPart2}>
                                 login
                             </Text>
@@ -53,7 +131,7 @@ export default function PerfilTab({navigation}) {
                         <Text style={{fontSize: 15, color: '#6A7075'}}>
                             ou
                         </Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() =>(setVisibleLogon(true))}>
                             <Text style={styles.textPart2}>
                                 cadastre-se
                             </Text>
@@ -61,12 +139,9 @@ export default function PerfilTab({navigation}) {
                     </View>
                 </View>
             </View>
-            <View
-                style={{width: '110%', marginLeft: '-5%', height: 3, backgroundColor: '#CED4DA', marginTop: 20}}></View>
+            <View style={{width: '110%', marginLeft: '-5%', height: 3, backgroundColor: '#CED4DA', marginTop: 20}}></View>
             <ScrollView>
                 <View style={styles.conteiner}>
-
-
                     <View>
                         <TouchableOpacity>
                             <View style={{flexDirection: 'row', paddingVertical: 20}}>
@@ -153,6 +228,7 @@ export default function PerfilTab({navigation}) {
     )
 
 }
+
 const styles = StyleSheet.create({
     conteiner:{
         margin:10
@@ -161,10 +237,30 @@ const styles = StyleSheet.create({
         width:'100%',
         flexDirection:'row',
         //justifyContent:'space-around'
+    },card2:{
+        width:'100%',
+        flexDirection:'row', 
+        alignItems:'center',
+        alignContent:'center'
+        //justifyContent:'space-around'
     },textPart2: {
         fontSize: 15,
         color: '#1534C8',
         fontWeight:'bold',
         marginLeft:3
-    },
+    },texteletro: {
+        fontSize: 30,
+        color: '#1534C8',
+        fontWeight:'bold',
+        marginLeft:3
+    },textponto: {
+        fontSize: 30,
+        color: '#FFDB00',
+        fontWeight:'bold',
+        marginLeft:3
+    },textcom: {
+        fontSize: 30,
+        color: '#1534C8',
+        marginLeft:3
+    }
 });

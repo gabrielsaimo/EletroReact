@@ -25,7 +25,7 @@ export default class HomeTab extends Component {
         fetch(imagens)
             .then((res) => res.json())
             .then((resJson) => {
-                console.log(resJson);
+               
                 this.setState({
                     image: resJson,
                     isLoading:false
@@ -60,7 +60,7 @@ export default class HomeTab extends Component {
         }
 
         return (
-<View style={{marginBottom:115}}>
+<View style={{marginBottom:115,height:'100%'}}>
     <MyComponent/>
     <Local style={{width: 10,high:20}}/>
 

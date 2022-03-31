@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "ReactEletro",
+    "name": "Eletrosom",
     "slug": "ReactEletro",
     "version": "1.0.0",
+    "orientation":"portrait",
     "assetBundlePatterns": [
       "**/*"
     ],

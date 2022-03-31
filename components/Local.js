@@ -1,8 +1,7 @@
 import React from "react";
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons/faLocationDot'
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight'
+import { faLocationDot,faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 export default function Local(){
     const local = null;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import {TouchableOpacity, FlatList, Text, View, Image, ActivityIndicator, TextInput, Dimensions} from 'react-native';
 import axios from 'axios';
-import SearchBar from "./Search/SearchBarCatalogo";
 import {Appbar} from "react-native-paper";
 import Produto from "./Produto";
 import StarRating from "react-native-star-rating";
@@ -34,7 +33,7 @@ export default function CategoriasProduto({route,navigation})  {
         setLoading(false);
 
     }
-    const SearchBar = () => {
+    function SearchBar () {
 
         const _handleSearch = () => <TextInput placeholder='test de imput' value={searchText}></TextInput>;
         return (
@@ -43,7 +42,7 @@ export default function CategoriasProduto({route,navigation})  {
                 <Appbar.Action  />
                 <Appbar.Content  title={title} style={{alignItems:'center'}}/>
                 <Appbar.Action icon="magnify" onPress={_handleSearch} />
-                <Appbar.Action icon="cart-outline" onPress={() => setColumns(columns  + 1)}/>
+                <Appbar.Action icon="cart-outline" onPress={() => navigation.navigate('CarrinhoTab')}/>
             </Appbar.Header>
         );
     };
