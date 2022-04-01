@@ -28,9 +28,9 @@ export default App = ({sku}) => {
       return (
     
         <View style={{ flex: 0}}>
-          {isLoading ? <View style={{marginTop:10,width,height:150}}></View> : 
+          {isLoading ? <View style={{marginTop:10,width,height:200}}></View> : 
           ( 
-              <View style={{marginTop:1,width,height:150}}>
+              <View style={{marginTop:1,width,height:200}}>
     
            <FlatList
                 horizontal
