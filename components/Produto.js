@@ -5,19 +5,21 @@ import {
     Text,
     View,
     Image,
-    Pressable, ScrollView
+    Dimensions, ScrollView
 } from 'react-native';
 import axios from 'axios';
 import SearchBar from "./Search/SearchBarCatalogo";
 import {Appbar} from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from './Local';
+import Lixo from './lixo';
 
 export default function  Produto({route,navigation})  {
-
+const sku = route.params.sku;
     const baseURL ='https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku='+route.params.sku+'&version=15';
     const [searchText,setSearchtext] = useState('');
-console.log(baseURL);
+    const{width} = Dimensions.get("window");
+    const height = width * 100 / 30;
 
     const [data, setData] = useState([]);
     const [loading,setLoading] = useState(false);
@@ -50,87 +52,39 @@ console.log(baseURL);
 
 
     return (
-
-        <View >
+       
+        <View style={{backgroundColor:'#fff'}}>
             <SearchBar />
             <Local/>
+            
             <FlatList data={data}
                       keyExtractor={ item => String(item.codigo)}
                       renderItem={({item})=>
-                          <View style={{flex:1,alignItems:'center'}}>
-                              <ListItem data={item} style={{width: '100%', height:'90%'}}/>
-                          </View> }
-            />
-        </View>
-    )
-
-}
-
-function ListItem({data,navigation}){
-
-    return(
-        <View style={{alignItems:"center",flex:1,width:'100%'}}>
-
-            <View
-                style={styles.buttonContainerStyle}
-                 >
-
-
-                <View>
-
-                    <Text style={{fontWeight:"bold",fontSize:13,maxWidth:380,width:'100%'}}>{data.nome}</Text>
-                    <Text style={{fontSize:10,marginTop: 5}}>CÓD - {data.codigo}</Text>
-                    <View style={{width:80}}>
+                          <View style={{flex:1,alignItems:'baseline',margin:10,height,paddingBottom:100}}>
+                              <View style={{width:80}}>
                         <StarRating
                             disabled={true}
                             maxStars={5}
-                            rating={!data.avaliacao ? (5) : (data.avaliacao)}
+                            rating={!item.avaliacao ? (5) : (item.avaliacao)}
                             starSize={15}
                             fullStarColor={'#FEA535'}
                             emptyStarColor={'#6A7075'}
                         />
                     </View>
+                              <Text numberOfLines={2} style={{fontWeight:"bold",fontSize:13,width:'100%'}}>{item.nome}</Text>
+                              <Text style={{fontSize:10,marginTop: 5}}>CÓD - {item.codigo}</Text>
+                    <Lixo sku={sku}></Lixo>
+                    <Text style={{fontSize:20,width:'100%',textDecorationLine:'line-through'}}>R$ {item.precoDe}</Text>
+                    <Text style={{fontWeight:"bold",fontSize:35,width:'100%',color: '#1534C8'}}>R$ {item.precoPor}</Text>
 
-                    <View>
-                        <Image
-                        source={{uri:'https://www.eletrosom.com/pub/media/catalog/product/cache/d03e32ae0c95d94986efe40357aba607/l/a/lavadora-de-roupas-electrolux-essencial-care-11kg-les11_detalhep_1_1.jpg'}}
-                        style={{
-                            width:'100%',
-                            height:250,
-                            resizeMode:'contain',
-                            marginRight:10
-                        }}
-                    />
-                    </View>
-                    <Text style={{fontSize:20,width:'100%',textDecorationLine:'line-through'}}>R$ {data.precoDe}</Text>
-                    <Text style={{fontWeight:"bold",fontSize:35,width:'100%',color: '#1534C8'}}>R$ {data.precoPor}</Text>
-                    {!data.formaPagamento?(
+                              {!data.formaPagamento?(
                         <Text style={{fontWeight:"bold",fontSize:14.5,width:'100%',color: '#1534C8'}}>{data.formaPagamento}</Text>
+
                     ):(<Text></Text>)}
-
-                    <TouchableOpacity style={{marginBottom:20,marginTop: 20}}>
-                        <Pressable style={styles.buttong} >
-                            <Text style={styles.text}>Comprar Agora</Text>
-                        </Pressable>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Pressable style={styles.buttonw} >
-                            <Text style={{fontWeight:'bold',color:'#9BCB3D',fontSize: 16}}>Adicionar ao carrinho</Text>
-                        </Pressable>
-
-                    </TouchableOpacity>
-
-                    <Text style={{fontWeight:"bold",fontSize:5,width:'100%'}}>{data.tipoProduto}</Text>
-                    <Text style={{fontWeight:"bold",fontSize:5,width:'100%'}}>{data.dimensoes.altura}</Text>
-                    <Text style={{fontWeight:"bold",fontSize:5,width:'100%'}}>{data.dimensoes.largura}</Text>
-                    <Text style={{fontWeight:"bold",fontSize:5,width:'100%'}}>{data.dimensoes.profundidade}</Text>
-                    <Text style={{fontWeight:"bold",fontSize:5,width:'100%'}}>{data.dimensoes.peso}</Text>
-
-                    <View>
+                    
                         <Text>
                             Avaliações
                         </Text>
-
 
                         <View style={{width:180}}>
                             <Text>{!data.avaliacao ? (5) : (data.avaliacao)}</Text>
@@ -143,15 +97,16 @@ function ListItem({data,navigation}){
                                 emptyStarColor={'#6A7075'}
                             />
                         </View>
-                    </View>
-                </View>
-
-
-            </View>
-
+                    
+                          </View> }
+                          
+            />
+            
         </View>
     )
+
 }
+
 
 const styles = {
 

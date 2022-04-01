@@ -8,6 +8,7 @@ import PerfilTab from "./components/PerfilTab";
 import Login from './components/Screens/Login'
 import Produto from "./components/Produto"
 import CarrinhoTab from "./components/CarrinhoTab";
+import Lixo from './components/lixo';
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import CategoriasTab from "./components/CategoriasTab";
 import CategoriasProduto from "./components/CategoriaProdutos";
@@ -56,9 +57,10 @@ const Perfies =()=>{
             <Stack.Screen name='Login'
                           component={Login}
             />
-            <Stack.Screen name='Banner'
-                          component={Banner}
+            <Stack.Screen name='Lixo'
+                          component={Lixo}
             />
+            
         </Stack.Navigator>
     )
 }
@@ -86,11 +88,26 @@ const Produtos =()=>{
 }
 
 export default function App() {
-
+const ButtonAlert = () =>
+    Alert.alert(
+      "Teste Alert",
+      "My Alert Msg",
+      [
+        {
+          text: "Ask me later",
+          onPress: () => console.log("Ask me later pressed")
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
   return (
 
       <NavigationContainer >
-
 
           <Tab.Navigator
               initialRouteName="Home"
@@ -137,7 +154,15 @@ export default function App() {
                       tabBarIcon: ({ color, size }) => (
                           <MaterialCommunityIcons name="heart-outline" color={color} size={24} />
                       ),
-                  }}/>
+                      
+                  }
+                  }listeners={{
+                    tabPress: e => {
+
+                      e.preventDefault();
+                      alert('Logue para acessar');
+
+                    },}}/>
               <Tab.Screen
                   name='Perfils'
                   component={Perfies}

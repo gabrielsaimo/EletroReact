@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import { Snackbar } from 'react-native-paper';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView,Alert,Modal } from 'react-native';
 import {Appbar} from "react-native-paper";
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons/faAngleLeft'
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import { faCreditCard, faUser, faStar, faHeart,faBox,faLocationDot} from "@fortawesome/free-solid-svg-icons";
 import Login from './Screens/Login';
+import Lixo from './lixo';
 export default function PerfilTab({navigation}) {
+    const [visible, setVisible] = React.useState(false);
 
+    const onToggleSnackBar = () => setVisible(!visible);
+  
+    const onDismissSnackBar = () => setVisible(false);
 const [isVisibleLogin,setVisibleLogin] = useState(false);
 const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
     const ButtonAlert = () =>
@@ -99,7 +105,7 @@ const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
                 </View>
                 </View>
                 
-                <Login/>
+               <Lixo/>
             </Modal>
             <Appbar.Header style={{backgroundColor: '#1534C8', zIndex: 2}}>
                 <Appbar.Content titleStyle={{textAlign: 'center', fontSize: 20}} title={'Seu perfil'}/>
@@ -143,7 +149,7 @@ const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
             <ScrollView>
                 <View style={styles.conteiner}>
                     <View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={onToggleSnackBar}>
                             <View style={{flexDirection: 'row', paddingVertical: 20}}>
                                 <FontAwesomeIcon icon={faBox} style={{color: '#6A7075'}} size={30}/>
                                 <Text style={{
@@ -156,7 +162,7 @@ const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
                             </View>
                         </TouchableOpacity>
                         <View style={{width: '100%', height: 1, backgroundColor: '#CED4DA'}}></View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={onToggleSnackBar}>
                             <View style={{flexDirection: 'row', paddingVertical: 20}}>
                                 <FontAwesomeIcon icon={faLocationDot} style={{color: '#6A7075'}} size={30}/>
                                 <Text style={{
@@ -169,7 +175,7 @@ const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
                             </View>
                         </TouchableOpacity>
                         <View style={{width: '100%', height: 1, backgroundColor: '#CED4DA'}}></View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={onToggleSnackBar}>
                             <View style={{flexDirection: 'row', paddingVertical: 20}}>
                                 <FontAwesomeIcon icon={faCreditCard} style={{color: '#6A7075'}} size={30}/>
                                 <Text style={{
@@ -182,7 +188,7 @@ const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
                             </View>
                         </TouchableOpacity>
                         <View style={{width: '100%', height: 1, backgroundColor: '#CED4DA'}}></View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={onToggleSnackBar}>
                             <View style={{flexDirection: 'row', paddingVertical: 20}}>
                                 <FontAwesomeIcon icon={faUser} style={{color: '#6A7075'}} size={30}/>
                                 <Text style={{
@@ -195,7 +201,7 @@ const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
                             </View>
                         </TouchableOpacity>
                         <View style={{width: '100%', height: 1, backgroundColor: '#CED4DA'}}></View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={onToggleSnackBar}>
                             <View style={{flexDirection: 'row', paddingVertical: 20}}>
                                 <FontAwesomeIcon icon={faStar} style={{color: '#6A7075'}} size={30}/>
                                 <Text style={{
@@ -208,7 +214,7 @@ const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
                             </View>
                         </TouchableOpacity>
                         <View style={{width: '100%', height: 1, backgroundColor: '#CED4DA'}}></View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={onToggleSnackBar}>
                             <View style={{flexDirection: 'row', paddingVertical: 20}}>
                                 <FontAwesomeIcon icon={faHeart} style={{color: '#6A7075'}} size={30}/>
                                 <Text style={{
@@ -223,7 +229,20 @@ const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
                     </View>
 
                 </View>
+                
+                
             </ScrollView>
+            <View style={{marginEnd:0}}>
+                <Snackbar
+                    visible={visible}
+                    onDismiss={onDismissSnackBar}
+                    action={{
+                    label: 'Ok!',
+                    onPress: () => {},
+                    }}>
+                    Logue para ter acesso
+                </Snackbar>
+                </View>
         </View>
     )
 
