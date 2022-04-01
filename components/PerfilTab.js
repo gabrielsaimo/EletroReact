@@ -8,7 +8,7 @@ import Login from './Screens/Login';
 export default function PerfilTab({navigation}) {
 
 const [isVisibleLogin,setVisibleLogin] = useState(false);
-const [isVisibleLogon,setVisibleLogon] = useState(false);
+const [isVisibleLoginUp,setVisibleLoginUp] = useState(false);
     const ButtonAlert = () =>
     Alert.alert(
       "Teste Alert",
@@ -65,17 +65,17 @@ const [isVisibleLogon,setVisibleLogon] = useState(false);
                 
                 <Login/>
             </Modal>
-            <Modal animationType={'slide'} transparent={false} visible={isVisibleLogon}
+            <Modal animationType={'slide'} transparent={false} visible={isVisibleLoginUp}
             onRequestClose={
                 ()=>{
-                setVisibleLogon(false);
+                setVisibleLoginUp(false);
                 }
             }>
                 <Appbar.Header style={{backgroundColor: '#FFDB00', marginTop: -45, zIndex: 1}}></Appbar.Header>
 
                 <View style={{marginTop:30}}>
                     <View style={{alignSelf:'flex-start',marginLeft:10}}>
-                       <TouchableOpacity onPress={() => setVisibleLogon(false)}>
+                       <TouchableOpacity onPress={() => setVisibleLoginUp(false)}>
                             <FontAwesomeIcon icon={faAngleLeft} style={ {color: '#1534C8'} } size={30}/>
                         </TouchableOpacity>
                        </View>
@@ -89,7 +89,7 @@ const [isVisibleLogon,setVisibleLogon] = useState(false);
                         <Text style={styles.textponto}>
                             .
                         </Text>
-                        <TouchableOpacity onPress={() =>(setVisibleLogon(true))}>
+                        <TouchableOpacity onPress={() =>(setVisibleLoginUp(true))}>
                             <Text style={styles.textcom}>
                                 com
                             </Text>
@@ -131,7 +131,7 @@ const [isVisibleLogon,setVisibleLogon] = useState(false);
                         <Text style={{fontSize: 15, color: '#6A7075'}}>
                             ou
                         </Text>
-                        <TouchableOpacity onPress={() =>(setVisibleLogon(true))}>
+                        <TouchableOpacity onPress={() =>(setVisibleLoginUp(true))}>
                             <Text style={styles.textPart2}>
                                 cadastre-se
                             </Text>

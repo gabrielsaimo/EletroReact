@@ -140,8 +140,8 @@ function ListItem2({data,navigation}){
                     <TouchableOpacity
                         style={styles.buttonContainerStyle1}
                         onPress={() => navigation.navigate('Produto',{ sku: data.codigo,title:data.nome})}>
-
-                        <View >
+                        <View>
+                        <View style={{alignContent:'center',alignItems:'center',alignSelf:'center'}}>
 
                                 <Image
                                     source={{uri:data.imagem}}
@@ -151,9 +151,11 @@ function ListItem2({data,navigation}){
                                         marginLeft:20
                                     }}
                                 />
-
-                            <View style={{maxWidth:'48%',minWidth:'48%'}}>
-                                <Text style={{fontWeight:"bold",fontSize:13,width:'220%'}}>{data.nome.slice(0, 25)} </Text>
+                        </View>
+                        
+                        <View style={{alignContent:'flex-start'}}>
+                            <View style={{maxWidth:'46.6%',minWidth:'46%'}}>
+                                <Text numberOfLines={2} style={{fontWeight:"bold",fontSize:13,width:'220%'}}>{data.nome.slice(0, 50)} </Text>
                             </View>
 
                             <View style={{width:80}}>
@@ -169,6 +171,7 @@ function ListItem2({data,navigation}){
                             <Text style={{fontSize:10,width:'100%',textDecorationLine:'line-through'}}>{data.precoDe}</Text>
                             <Text style={{fontWeight:"bold",fontSize:25,width:'100%',color:'#1534C8'}}>{data.precoPor}</Text>
                             <Text style={{color:'blue',fontSize:10}}>{data.formaPagamento}</Text>
+                        </View>
                         </View>
                     </TouchableOpacity>
                 </View>
