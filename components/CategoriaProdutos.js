@@ -133,32 +133,36 @@ function ListItem({data,navigation}){
 function ListItem2({data,navigation}){
 
     return(
-
+       
         <View style={{alignItems:"center"}}>
             {!data.emEstoque? (null):(
-                <View style={{width:'99%'}}>
-                    <TouchableOpacity
+                <View style={{width:'100%'}}>
+                    <View>
+                        <TouchableOpacity
                         style={styles.buttonContainerStyle1}
                         onPress={() => navigation.navigate('Produto',{ sku: data.codigo,title:data.nome})}>
+                        <View style={{Width:'100%'}}>
+
                         <View>
-                        <View style={{alignContent:'center',alignItems:'center',alignSelf:'center'}}>
+                            <View style={{alignContent:'center',alignItems:'center',alignSelf:'center',Width:'200%'}}>
 
                                 <Image
                                     source={{uri:data.imagem}}
                                     style={{
                                         width:120,
                                         height:120,
-                                        marginLeft:20
+                                        marginLeft:30
                                     }}
                                 />
+                            </View>
                         </View>
                         
-                        <View style={{alignContent:'flex-start'}}>
-                            <View style={{maxWidth:'46.6%',minWidth:'46%'}}>
-                                <Text numberOfLines={2} style={{fontWeight:"bold",fontSize:13,width:'220%'}}>{data.nome.slice(0, 50)} </Text>
+                        <View style={{maxWidth:'50%'}}>
+                            <View >
+                                <Text numberOfLines={2} style={{fontWeight:"bold",fontSize:13,width:'200%',marginLeft:15}}>{data.nome.slice(0, 50)} </Text>
                             </View>
 
-                            <View style={{width:80}}>
+                            <View style={{width:'100%',marginLeft:15}}>
                                 <StarRating
                                     disabled={true}
                                     maxStars={5}
@@ -168,12 +172,15 @@ function ListItem2({data,navigation}){
                                     emptyStarColor={'#6A7075'}
                                 />
                             </View>
-                            <Text style={{fontSize:10,width:'100%',textDecorationLine:'line-through'}}>{data.precoDe}</Text>
-                            <Text style={{fontWeight:"bold",fontSize:25,width:'100%',color:'#1534C8'}}>{data.precoPor}</Text>
-                            <Text style={{color:'blue',fontSize:10}}>{data.formaPagamento}</Text>
+                            <Text style={{fontSize:10,width:'200%',textDecorationLine:'line-through',marginLeft:15}}>{data.precoDe}</Text>
+                            <Text style={{fontWeight:"bold",fontSize:25,width:'200%',color:'#1534C8',marginLeft:15}}>{data.precoPor}</Text>
+                            <Text style={{color:'blue',fontSize:10,width:'200%',marginLeft:15}}>{data.formaPagamento}</Text>
                         </View>
                         </View>
                     </TouchableOpacity>
+                    </View>
+
+                    
                 </View>
             )}
 
@@ -207,11 +214,9 @@ const styles = {
     },
     buttonContainerStyle1: {
         height: 270,
-        margin: 1,
-        width: '100%',
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingTop: 10,
+        margin: 0.5,
+        width: '99.5%',
+        
         flexDirection: 'row',
         backgroundColor: '#fff',
         borderWidth: Platform.OS === 'ios' ? .5 : 0,
@@ -221,7 +226,7 @@ const styles = {
         // shadow
         shadowColor: "#000",
         shadowOffset: {
-            width: 0,
+            width: 1,
             height: 1,
         },
         shadowOpacity: 0.15,
