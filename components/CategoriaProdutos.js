@@ -97,7 +97,7 @@ function ListItem({data,navigation}){
         <View style={{alignItems:"center",flex:1}}>
             {!data.emEstoque? (null):(<TouchableOpacity
                     style={styles.buttonContainerStyle}
-                    onPress={() => navigation.navigate('Produto',{ sku: data.codigo,title:data.nome})}>
+                    onPress={() => navigation.navigate('Produto',{ sku: data.codigo,title:data.nome,precode:data.precoDe})}>
                     <Image
                         source={{uri:data.imagem}}
                         style={{
@@ -140,7 +140,7 @@ function ListItem2({data,navigation}){
                     <View>
                         <TouchableOpacity
                         style={styles.buttonContainerStyle1}
-                        onPress={() => navigation.navigate('Produto',{ sku: data.codigo,title:data.nome})}>
+                        onPress={() => navigation.navigate('Produto',{ sku: data.codigo,title:data.nome,precode:data.precoDe})}>
                         <View style={{Width:'100%'}}>
 
                         <View>

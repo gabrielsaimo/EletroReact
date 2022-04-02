@@ -15,12 +15,13 @@ export default App = ({sku}) => {
     }
       const [isLoading, setLoading] = useState(true);
       const [data, setData] = useState([]);
+      console.log(data.imagem);
     
       useEffect(() => {
         fetch('https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku='+sku+'&version=15')
           .then((response) => response.json())
           .then((json) => setData(json))
-          .catch((error) => <Text>deu ruim</Text>)
+          .catch((error) => console.error(error))
           .finally(() => setLoading(false));
       }, []);
     

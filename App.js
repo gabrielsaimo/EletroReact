@@ -9,6 +9,8 @@ import Login from './components/Screens/Login'
 import Produto from "./components/Produto"
 import CarrinhoTab from "./components/CarrinhoTab";
 import Lixo from './components/lixo';
+import ModalFilhos from './components/ModalFilhos'
+import ProdutoFilhos from './components/ProdutoFilhos'
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import CategoriasTab from "./components/CategoriasTab";
 import CategoriasProduto from "./components/CategoriaProdutos";
@@ -43,6 +45,12 @@ const Categoria =()=>{
             />
             <Stack.Screen name='CarrinhoTab'
                           component={CarrinhoTab}
+            />
+            <Stack.Screen name='ModalFilhos'
+                          component={ModalFilhos}
+            />
+            <Stack.Screen name='ProdutoFilhos'
+                          component={ProdutoFilhos}
             />
         </Stack.Navigator>
     )
