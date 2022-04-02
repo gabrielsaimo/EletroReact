@@ -1,39 +1,37 @@
-import React, { useEffect, useState} from 'react';
-import {View} from 'react-native';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
+import axios from "axios";
 
-import {SliderBox} from "react-native-image-slider-box";
+import { SliderBox } from "react-native-image-slider-box";
 
+export default function Banner({ route, navigation }) {
+  const baseURL =
+    "https://eletrosom.com/shell/ws/integrador/banners/?version=15";
 
-export default function  Banner({route,navigation})  {
+  const [data, setData] = useState([]);
 
-    const baseURL ='https://eletrosom.com/shell/ws/integrador/banners/?version=15';
+  useEffect(() => {
+    loadApi();
+  }, []);
 
-    const [data, setData] = useState([]);
+  async function loadApi() {
+    const response = await axios.get(`${baseURL}`);
 
-    useEffect(()=>{
-        loadApi();
-    },[]);
+    setData([...data, ...response.data.banners]);
+  }
 
-    async function loadApi() {
-        const response = await axios.get(`${baseURL}`);
-
-        setData([...data, ...response.data.banners]);
-
-    }
-
-    return (
-
-        <View >
-            <SliderBox
-                images={data}
-                sliderBoxHeight={200}
-                onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
-                dotColor="#FFEE58"
-                inactiveDotColor="#90A4AE"
-                onPress={() => console.log('aqui')}
-            />
-        </View>
-    )
-
+  return (
+    <View>
+      <SliderBox
+        images={data}
+        sliderBoxHeight={200}
+        onCurrentImagePressed={(index) =>
+          console.warn(`image ${index} pressed`)
+        }
+        dotColor="#FFEE58"
+        inactiveDotColor="#90A4AE"
+        onPress={() => console.log("aqui")}
+      />
+    </View>
+  );
 }
