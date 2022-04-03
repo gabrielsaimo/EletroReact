@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 export default App = ({ sku }) => {
   const { width } = Dimensions.get("window");
@@ -41,9 +41,9 @@ export default App = ({ sku }) => {
     <View style={{ flex: 0 }}>
       {isLoading ? (
         <View style={{ marginTop: 10, width, height: 200 }}>
-        <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+          <View style={[styles.container, styles.horizontal]}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
         </View>
       ) : (
         <View style={{ marginTop: 10, width, height: 200 }}>
@@ -78,12 +78,13 @@ export default App = ({ sku }) => {
               alignSelf: "center",
             }}
           >
-            {data.imagem.map((i, k) => (
+            {data.imagem.map? (data.imagem.map((i, k) => (
               <Text key={k} style={k == active ? styles.setbol : styles.bol}>
                 ⬤
               </Text>
-            ))}
-          </View>
+            ))):(<></>)}
+          </View >
+          
         </View>
       )}
     </View>
@@ -97,13 +98,14 @@ const styles = StyleSheet.create({
   setbol: {
     color: "#000",
     margin: 3,
-  },container: {
+  },
+  container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   horizontal: {
     flexDirection: "row",
     justifyContent: "space-around",
-    padding: 10
-  }
+    padding: 10,
+  },
 });

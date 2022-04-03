@@ -1,5 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
-import { SliderBox } from "react-native-image-slider-box";
+import React, { Component } from "react";
 import {
   ActivityIndicator,
   TouchableOpacity,
@@ -7,14 +6,17 @@ import {
   Text,
   View,
   Image,
-  Button,
   ScrollView,
+  Dimensions,
 } from "react-native";
 
 import SearchBarHome from "../SearchBarHome";
 import Local from "../Local";
 import Banner from "../Banner";
-
+import SkeletonLoading from "../SkeletonLoading";
+const { height, width } = Dimensions.get("window");
+const width2 = width - 180;
+console.log("🚀 ~ file: HomeTab.js ~ line 20 ~ width2", width2);
 export default class HomeTab extends Component {
   constructor(props) {
     super(props);
@@ -25,23 +27,10 @@ export default class HomeTab extends Component {
     };
   }
 
-  componentDidMount = () => {
-    var imagens =
-      "https://eletrosom.com/shell/ws/integrador/banners/?version=15";
-    fetch(imagens)
-      .then((res) => res.json())
-      .then((resJson) => {
-        this.setState({
-          image: resJson,
-          isLoading: false,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  async componentDidMount() {
     var categoria_prod =
       "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=923&version=15";
-    fetch(categoria_prod)
+    await fetch(categoria_prod)
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
@@ -52,84 +41,103 @@ export default class HomeTab extends Component {
       .catch((error) => {
         console.error(error);
       });
-  };
+  }
 
   render() {
     const { navigate } = this.props.navigation;
-    if (this.state.isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
-    }
 
     return (
-      <View style={{ marginBottom: 115, height: "100%" }}>
+      <View style={{ height: "100%", width }}>
         <SearchBarHome />
         <Local style={{ width: 10, high: 20 }} />
 
-        <View>
-          <Image source={{ uri: this.state.image.img }} />
-        </View>
-        <FlatList
-          data={this.state.data}
-          keyExtractor={(item) => String(item.codigo)}
-          renderItem={({ item }) => (
-            <View>
-              {!item.emEstoque ? null : (
-                <View style={{ alignItems: "center", flex: 1 }}>
-                  <TouchableOpacity
-                    style={styles.buttonContainerStyle}
-                    onPress={() => navigate("Produto", { sku: item.codigo ,precode:item.precoDe })}
-                  >
-                    <Image
-                      source={{ uri: item.imagem }}
-                      style={{
-                        width: 100,
-                        height: 110,
-                        resizeMode: "contain",
-                        marginRight: 10,
-                      }}
-                    />
-                    <View>
-                      <Text
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: 10,
-                          maxWidth: 210,
-                          width: "100%",
-                        }}
+        <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
+          <Banner />
+          <SkeletonLoading visible={this.state.isLoading}>
+            <FlatList
+              data={this.state.data}
+              keyExtractor={(item) => String(item.codigo)}
+              renderItem={({ item }) => (
+                <View>
+                  {!item.emEstoque ? null : (
+                    <View style={{ alignItems: "center", flex: 1 }}>
+                      <TouchableOpacity
+                        style={styles.buttonContainerStyle}
+                        onPress={() =>
+                          navigate("Produto", {
+                            sku: item.codigo,
+                            precode: item.precoDe,
+                          })
+                        }
                       >
-                        {item.nome}
-                      </Text>
-                      <Text
-                        style={{
-                          textDecorationLine: "line-through",
-                          fontSize: 12,
-                        }}
-                      >
-                        {item.precoDe}
-                      </Text>
-                      <Text
-                        style={{
-                          fontWeight: "bold",
-                          color: "blue",
-                          fontSize: 20,
-                        }}
-                      >
-                        {item.precoPor}
-                      </Text>
-                      <Text style={{ color: "blue", fontSize: 15 }}>
-                        {item.formaPagamento}
-                      </Text>
+                        <Image
+                          source={{ uri: item.imagem }}
+                          style={{
+                            width: 120,
+                            height: 120,
+                            resizeMode: "contain",
+                            margin: 10,
+                          }}
+                        />
+
+                        {item.percentual > 0 ? (
+                          <View
+                            style={{
+                              width: 80,
+                              height: 20,
+                              position: "absolute",
+                              margin: 5,
+                              backgroundColor: "#FEA535",
+                              alignItems: "center",
+                              borderRadius: 20,
+                            }}
+                          >
+                            <Text>{item.percentual}% off</Text>
+                          </View>
+                        ) : (
+                          <></>
+                        )}
+                        <View style={{ width2 }}>
+                          <Text
+                            numberOfLines={2}
+                            style={{
+                              fontWeight: "bold",
+                              fontSize: 13,
+                              maxWidth: width2,
+                            }}
+                          >
+                            {item.nome}
+                          </Text>
+                          {item.percentual > 0 ?(<Text
+                            style={{
+                              textDecorationLine: "line-through",
+                              fontSize: 12,
+                            }}
+                          >
+                            R$ {item.precoDe}
+                          </Text>):(<View style={{height:20}}></View>)}
+                          
+                          <Text
+                            style={{
+                              fontWeight: "bold",
+                              color: "blue",
+                              fontSize: 20,
+                            }}
+                          >
+                            R$ {item.precoPor}
+                          </Text>
+                          <Text style={{ color: "blue", fontSize: 15 }}>
+                            {item.formaPagamento}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
-                  </TouchableOpacity>
+                  )}
                 </View>
               )}
-            </View>
-          )}
-        />
+            />
+          </SkeletonLoading>
+        </ScrollView>
       </View>
     );
   }
@@ -137,11 +145,9 @@ export default class HomeTab extends Component {
 
 const styles = {
   buttonContainerStyle: {
-    height: 130,
+    height: 140,
     marginTop: 3,
     width: "100%",
-    paddingLeft: 20,
-    paddingRight: 20,
     paddingTop: 10,
     paddingBottom: 5,
     flexDirection: "row",

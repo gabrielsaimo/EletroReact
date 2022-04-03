@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -15,10 +15,10 @@ import ModalFilhos from "./Src/Components/ModalFilhos";
 import ProdutoFilhos from "./Src/Components/ProdutoFilhos";
 import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
 import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
-
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
+
 const Categoria = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

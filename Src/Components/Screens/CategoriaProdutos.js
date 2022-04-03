@@ -21,6 +21,7 @@ export default function CategoriasProduto({ route, navigation }) {
     "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=" +
     route.params.item +
     "&version=15";
+    console.log("🚀 ~ file: CategoriaProdutos.js ~ line 23 ~ CategoriasProduto ~ route.params.item", route.params.item)
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
 
   const [data, setData] = useState([]);
@@ -81,46 +82,48 @@ export default function CategoriasProduto({ route, navigation }) {
             onPress={() => setColumns(2)}
           />
           <Appbar.Action icon="power-on" />
-          <Appbar.Action icon={require("../../../Src/Components/assets/filtro.png")} />
+          <Appbar.Action
+            icon={require("../../../Src/Components/assets/filtro.png")}
+          />
         </Appbar.Header>
       </View>
     );
   };
   return (
     <SafeAreaView>
-    <View style={{ width: "100%", height: "100%" }}>
-      <SearchBar />
-      <Local style={{ zIndex: 100 }} />
-      <Options />
-      <SkeletonLoading visible={loading}>
-        <FlatList
-          data={data}
-          // onEndReachedThreshold={0.3}
-          keyExtractor={(item) => String(item.codigo)}
-          numColumns={columns}
-          key={columns}
-          renderItem={({ item }) => (
-            <View>
-              {columns === 1 ? (
-                <ListItem
-                  data={item}
-                  navigation={navigation}
-                  navigate={navigator}
-                />
-              ) : (
-                <ListItem2
-                  data={item}
-                  navigation={navigation}
-                  navigate={navigator}
-                />
-              )}
-            </View>
-          )}
-          // onEndReached={loadApi}
-          // ListFooterComponent={<FooterList Load={loading}/>}
-        />
-      </SkeletonLoading>
-    </View>
+      <View style={{ width: "100%", height: "100%" }}>
+        <SearchBar />
+        <Local style={{ zIndex: 100 }} />
+        <Options />
+        <SkeletonLoading visible={loading}>
+          <FlatList
+            data={data}
+            // onEndReachedThreshold={0.3}
+            keyExtractor={(item) => String(item.codigo)}
+            numColumns={columns}
+            key={columns}
+            renderItem={({ item }) => (
+              <View>
+                {columns === 1 ? (
+                  <ListItem
+                    data={item}
+                    navigation={navigation}
+                    navigate={navigator}
+                  />
+                ) : (
+                  <ListItem2
+                    data={item}
+                    navigation={navigation}
+                    navigate={navigator}
+                  />
+                )}
+              </View>
+            )}
+            // onEndReached={loadApi}
+            // ListFooterComponent={<FooterList Load={loading}/>}
+          />
+        </SkeletonLoading>
+      </View>
     </SafeAreaView>
   );
 }
@@ -148,8 +151,27 @@ function ListItem({ data, navigation }) {
               margin: 10,
             }}
           />
+          {!data.percentual > 0 ? (
+            <></>
+          ) : (
+            <View
+              style={{
+                width: 80,
+                height: 20,
+                position: "absolute",
+                margin: 5,
+                backgroundColor: "#FEA535",
+                alignItems: "center",
+                borderRadius: 20,
+              }}
+            >
+              <Text>{data.percentual}% off</Text>
+            </View>
+          )}
+
           <View>
             <Text
+            numberOfLines={2}
               style={{
                 fontWeight: "bold",
                 fontSize: 13,
@@ -157,7 +179,7 @@ function ListItem({ data, navigation }) {
                 width: "90%",
               }}
             >
-              {data.nome.slice(0, 36)}{" "}
+              {data.nome}
             </Text>
             <View style={{ width: 80 }}>
               <StarRating
@@ -169,15 +191,15 @@ function ListItem({ data, navigation }) {
                 emptyStarColor={"#6A7075"}
               />
             </View>
-            <Text
+            {!data.percentual > 0 ? (<View style={{height:15}}></View>):(<Text
               style={{
                 fontSize: 10,
                 width: "100%",
                 textDecorationLine: "line-through",
               }}
             >
-              {data.precoDe}
-            </Text>
+              R$ {data.precoDe}
+            </Text>)}
             <Text
               style={{
                 fontWeight: "bold",
@@ -186,7 +208,7 @@ function ListItem({ data, navigation }) {
                 color: "#1534C8",
               }}
             >
-              {data.precoPor}
+              R$ {data.precoPor}
             </Text>
           </View>
         </TouchableOpacity>
@@ -212,7 +234,26 @@ function ListItem2({ data, navigation }) {
               }
             >
               <View style={{ Width: "100%" }}>
-                <View>
+                {!data.percentual > 0 ? (
+                  <></>
+                ) : (
+                  <View
+                    style={{
+                      width: 80,
+                      height: 20,
+                      position: "absolute",
+                      backgroundColor: "#FEA535",
+                      alignItems: "center",
+                      borderRadius: 20,
+                      margin: 10,
+                      zIndex: 99,
+                    }}
+                  >
+                    <Text>{data.percentual}% off</Text>
+                  </View>
+                )}
+
+                <View style={{ marginTop: 20 }}>
                   <View
                     style={{
                       alignContent: "center",
@@ -243,7 +284,7 @@ function ListItem2({ data, navigation }) {
                         marginLeft: 15,
                       }}
                     >
-                      {data.nome.slice(0, 50)}{" "}
+                      {data.nome}
                     </Text>
                   </View>
 
@@ -257,7 +298,7 @@ function ListItem2({ data, navigation }) {
                       emptyStarColor={"#6A7075"}
                     />
                   </View>
-                  <Text
+                  {!data.percentual > 0 ? (<View style={{height:15.7}}></View>):(<Text
                     style={{
                       fontSize: 10,
                       width: "200%",
@@ -265,8 +306,9 @@ function ListItem2({ data, navigation }) {
                       marginLeft: 15,
                     }}
                   >
-                    {data.precoDe}
-                  </Text>
+                    R$ {data.precoDe}
+                  </Text>)}
+                  
                   <Text
                     style={{
                       fontWeight: "bold",
@@ -276,7 +318,7 @@ function ListItem2({ data, navigation }) {
                       marginLeft: 15,
                     }}
                   >
-                    {data.precoPor}
+                    R$ {data.precoPor}
                   </Text>
                   <Text
                     style={{
