@@ -6,8 +6,8 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  ActivityIndicator
 } from "react-native";
-
 export default App = ({ sku }) => {
   const { width } = Dimensions.get("window");
   const height = width * 0.6;
@@ -24,7 +24,6 @@ export default App = ({ sku }) => {
   };
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  console.log(data.imagem);
 
   useEffect(() => {
     fetch(
@@ -41,16 +40,20 @@ export default App = ({ sku }) => {
   return (
     <View style={{ flex: 0 }}>
       {isLoading ? (
-        <View style={{ marginTop: 10, width, height: 200 }}></View>
+        <View style={{ marginTop: 10, width, height: 200 }}>
+        <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+        </View>
       ) : (
-        <View style={{ marginTop: 1, width, height: 200 }}>
+        <View style={{ marginTop: 10, width, height: 200 }}>
           <FlatList
             horizontal
             pagingEnabled
             onScroll={change}
             showsHorizontalScrollIndicator={false}
             data={data.imagem}
-            keyExtractor={(item, index) => "key" + index}
+            keyExtractor={(item) => item.img}
             renderItem={({ item }) => (
               <View>
                 <Image
@@ -76,32 +79,17 @@ export default App = ({ sku }) => {
             }}
           >
             {data.imagem.map((i, k) => (
-              <Text key={k} style={k == active ? style.setbol : style.bol}>
+              <Text key={k} style={k == active ? styles.setbol : styles.bol}>
                 ⬤
               </Text>
             ))}
-          </View>
-          <View>
-            <FlatList
-              horizontal
-              pagingEnabled
-              onScroll={change}
-              showsHorizontalScrollIndicator={false}
-              data={data}
-              keyExtractor={(item, index) => "key" + index}
-              renderItem={({ item }) => (
-                <View>
-                  <Text>{item.nome}</Text>
-                </View>
-              )}
-            />
           </View>
         </View>
       )}
     </View>
   );
 };
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   bol: {
     color: "#D4D4D4",
     margin: 3,
@@ -109,5 +97,13 @@ const style = StyleSheet.create({
   setbol: {
     color: "#000",
     margin: 3,
+  },container: {
+    flex: 1,
+    justifyContent: "center"
   },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
+  }
 });
