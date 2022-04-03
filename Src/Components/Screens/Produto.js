@@ -169,8 +169,7 @@ export default function Produto({ route, navigation }) {
               <View
                 style={{
                   width: 70,
-                  alignItems: "center",
-                  backgroundColor: "#F0F2F4",
+                  alignItems: "center"
                 }}
               >
                 <Text style={{ fontSize: 50 }}>

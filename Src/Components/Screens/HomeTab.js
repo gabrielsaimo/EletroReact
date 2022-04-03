@@ -81,7 +81,7 @@ export default class HomeTab extends Component {
                 <View style={{ alignItems: "center", flex: 1 }}>
                   <TouchableOpacity
                     style={styles.buttonContainerStyle}
-                    onPress={() => navigate("Produto", { sku: item.codigo })}
+                    onPress={() => navigate("Produto", { sku: item.codigo ,precode:item.precoDe })}
                   >
                     <Image
                       source={{ uri: item.imagem }}

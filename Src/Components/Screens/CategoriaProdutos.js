@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   TextInput,
   Dimensions,
+  SafeAreaView,
 } from "react-native";
 import axios from "axios";
 import { Appbar } from "react-native-paper";
@@ -86,6 +87,7 @@ export default function CategoriasProduto({ route, navigation }) {
     );
   };
   return (
+    <SafeAreaView>
     <View style={{ width: "100%", height: "100%" }}>
       <SearchBar />
       <Local style={{ zIndex: 100 }} />
@@ -119,6 +121,7 @@ export default function CategoriasProduto({ route, navigation }) {
         />
       </SkeletonLoading>
     </View>
+    </SafeAreaView>
   );
 }
 
