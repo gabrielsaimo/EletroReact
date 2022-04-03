@@ -9,7 +9,7 @@ import {
   Image,
   Button,
 } from "react-native";
-import Local from "./Local";
+import Local from "../Local";
 
 export default class CategoriasTab extends Component {
   constructor(props) {

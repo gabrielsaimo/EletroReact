@@ -20,8 +20,7 @@ import {
   faBox,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import Login from "./Screens/Login";
-import Lixo from "./lixo";
+import Login from "./Login";
 export default function PerfilTab({ navigation }) {
   const [visible, setVisible] = React.useState(false);
 
@@ -113,7 +112,6 @@ export default function PerfilTab({ navigation }) {
           </View>
         </View>
 
-        <Lixo />
       </Modal>
       <Appbar.Header style={{ backgroundColor: "#1534C8", zIndex: 2 }}>
         <Appbar.Content

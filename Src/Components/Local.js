@@ -24,7 +24,7 @@ export default function Local() {
               Utilize a sua localização para ver disponibilidade
             </Text>
           ) : (
-            <Text style={styles.text}>Enviar para: Alfenas - 37130-001 </Text>
+            <Text style={styles.text}>Enviar para: Alhena - 37130-001 </Text>
           )}
           <FontAwesomeIcon icon={faAngleRight} style={{ color: "white" }} />
         </View>

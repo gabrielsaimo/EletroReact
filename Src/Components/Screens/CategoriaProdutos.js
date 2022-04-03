@@ -13,8 +13,8 @@ import axios from "axios";
 import { Appbar } from "react-native-paper";
 import Produto from "./Produto";
 import StarRating from "react-native-star-rating";
-import Local from "./Local";
-import SkeletonLoading from "../loadingPage/SkeletonLoading";
+import Local from "../Local";
+import SkeletonLoading from "../SkeletonLoading";
 export default function CategoriasProduto({ route, navigation }) {
   const baseURL =
     "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=" +
@@ -72,15 +72,15 @@ export default function CategoriasProduto({ route, navigation }) {
             onPress={() => navigation.goBack()}
           />
           <Appbar.Action
-            icon={require("../assets/grade1.png")}
+            icon={require("../../../Src/Components/assets/grade1.png")}
             onPress={() => setColumns(1)}
           />
           <Appbar.Action
-            icon={require("../assets/grade.png")}
+            icon={require("../../../Src/Components/assets/grade.png")}
             onPress={() => setColumns(2)}
           />
           <Appbar.Action icon="power-on" />
-          <Appbar.Action icon={require("../assets/filtro.png")} />
+          <Appbar.Action icon={require("../../../Src/Components/assets/filtro.png")} />
         </Appbar.Header>
       </View>
     );

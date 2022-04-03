@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Searchbar, Appbar } from "react-native-paper";
-import Local from "../Local";
 const MyComponent = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);

@@ -1,21 +1,21 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import HomeTab from "./components/HomeTab";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Banner from "./components/Banner";
-import FavoritosTab from "./components/FavoritosTab";
-import PerfilTab from "./components/PerfilTab";
-import Login from "./components/Screens/Login";
-import Produto from "./components/Produto";
-import CarrinhoTab from "./components/CarrinhoTab";
-import Lixo from "./components/lixo";
-import ModalFilhos from "./components/ModalFilhos";
-import ProdutoFilhos from "./components/ProdutoFilhos";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CategoriasTab from "./components/CategoriasTab";
-import CategoriasProduto from "./components/CategoriaProdutos";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { IconButton } from "react-native-paper";
+import HomeTab from "./Src/Components/Screens/HomeTab";
+import Banner from "./Src/Components/Banner";
+import FavoritosTab from "./Src/Components/Screens/FavoritosTab";
+import PerfilTab from "./Src/Components/Screens/PerfilTab";
+import Login from "./Src/Components/Screens/Login";
+import Produto from "./Src/Components/Screens/Produto";
+import CarrinhoTab from "./Src/Components/Screens/CarrinhoTab";
+import ModalFilhos from "./Src/Components/ModalFilhos";
+import ProdutoFilhos from "./Src/Components/ProdutoFilhos";
+import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
+import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
@@ -55,7 +55,6 @@ const Perfies = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Perfil" component={PerfilTab} />
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Lixo" component={Lixo} />
     </Stack.Navigator>
   );
 };

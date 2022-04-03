@@ -8,7 +8,7 @@
       "**/*"
     ],
     "splash": {
-      "image": "./assets/tela1.png",
+      "image": "./Src/Components/assets/tela1.png",
       "backgroundColor": "#1534C8"
     },
     "android": {

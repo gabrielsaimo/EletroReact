@@ -8,11 +8,11 @@ import {
   Dimensions,
 } from "react-native";
 import axios from "axios";
-import ModalFilhos from "./ModalFilhos";
+import ModalFilhos from "../ModalFilhos";
 import { Appbar } from "react-native-paper";
 import StarRating from "react-native-star-rating";
-import Local from "./Local";
-import Produtoimagem from "./ProdutoImagens";
+import Local from "../Local";
+import Produtoimagem from "../ProdutoImagens";
 
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;

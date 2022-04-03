@@ -11,10 +11,9 @@ import {
   ScrollView,
 } from "react-native";
 
-import MyComponent from "./Search/SearchBarHome";
-import Local from "./Local";
-import Banner from "./Banner";
-import SkeletonLoading from "../loadingPage/SkeletonLoading";
+import SearchBarHome from "../SearchBarHome";
+import Local from "../Local";
+import Banner from "../Banner";
 
 export default class HomeTab extends Component {
   constructor(props) {
@@ -67,7 +66,7 @@ export default class HomeTab extends Component {
 
     return (
       <View style={{ marginBottom: 115, height: "100%" }}>
-        <MyComponent />
+        <SearchBarHome />
         <Local style={{ width: 10, high: 20 }} />
 
         <View>
