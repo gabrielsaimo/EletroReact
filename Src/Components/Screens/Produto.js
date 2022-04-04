@@ -5,20 +5,26 @@ import {
   Text,
   View,
   Dimensions,
+  TextInput,
 } from "react-native";
 import axios from "axios";
 import ModalFilhos from "../ModalFilhos";
-import { Appbar } from "react-native-paper";
+import { Appbar,IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "../Local";
 import Produtoimagem from "../ProdutoImagens";
+import CalculaFrete from "../CalculaFrete";
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
   const filhos = route.params.filhos;
   const sku2 = route.params.sku2;
   const [precoDe, setprecoDe] = useState(route.params.precode);
+  const [TextInput_cep, setTextCep] = useState("");
+  const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
   const { width } = Dimensions.get("window");
+  const width2 = width / 2;
+  const width4 = width / 4;
   const height = (width * 100) / 30;
 
   const [data, setData] = useState([]);
@@ -159,6 +165,58 @@ export default function Produto({ route, navigation }) {
             ) : (
               <></>
             )}
+            <View style={{marginTop:10}}>
+              {cepvisible ? (
+                <></>
+              ) : (
+                <View style={{ flexDirection: "row" }}>
+                  <TextInput
+                    placeholder="Digite o Cep"
+                    onChangeText={(data) => setTextCep(data)}
+                    keyboardType={"numeric"}
+                    maxLength={8}
+                    height={40}
+                    width={width2}
+                    backgroundColor={"#D4D4D4"}
+                    paddingHorizontal={5}
+                    borderRadius={5}
+                    underlineColorAndroid="transparent"
+                  ></TextInput>
+                  <IconButton
+                  icon={require("../assets/pin_gps.png")}
+                    onPress={() =>
+                      !cepvisible ? setVisiblecep(true) : setVisiblecep(false)
+                    }
+                    activeOpacity={0.7}
+                    style={{
+                      width4,
+                      height: 40,
+                     marginTop:0,
+                      backgroundColor: "#FFDB00",
+                      borderRadius: 5,
+                      
+                    }}
+                  >
+                  
+                  </IconButton>
+                </View>
+              )}
+
+              {cepvisible ? (
+                <Text
+                style={{color:'blue'}}
+                  onPress={() =>
+                    !cepvisible ? setVisiblecep(true) : setVisiblecep(false)
+                  }
+                >
+                Alterar endereço de entrega  {">"}
+                </Text>
+              ) : (
+                <></>
+              )}
+
+              {cepvisible ? <CalculaFrete cep={TextInput_cep} sku={sku} /> : <></>}
+            </View>
 
             <Text>Avaliações</Text>
             <View style={{ flexDirection: "row", alignItems: "center" }}>

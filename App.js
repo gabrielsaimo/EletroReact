@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { IconButton } from "react-native-paper";
+import AuthProvider from "./Src/Contexts/Auth";
 import HomeTab from "./Src/Components/Screens/HomeTab";
 import Banner from "./Src/Components/Banner";
 import FavoritosTab from "./Src/Components/Screens/FavoritosTab";
@@ -15,6 +16,7 @@ import ModalFilhos from "./Src/Components/ModalFilhos";
 import ProdutoFilhos from "./Src/Components/ProdutoFilhos";
 import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
 import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
@@ -100,83 +102,89 @@ export default function App() {
     ]);
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Home"
-        activeColor="#000"
-        inactiveColor="#fff"
-        screenOptions={{ headerShown: false }}
-        barStyle={{ backgroundColor: "#694fad" }}
-        tabBarOptions={{
-          keyboardHidesTabBar: true,
-          tabBarStyle: [{ display: "flex" }, null],
-        }}
-      >
-        <Tab.Screen
-          name="Home"
-          component={Produtos}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home" color={color} size={24} />
-            ),
+      <AuthProvider>
+        <Tab.Navigator
+          initialRouteName="Home"
+          activeColor="#000"
+          inactiveColor="#fff"
+          screenOptions={{ headerShown: false }}
+          barStyle={{ backgroundColor: "#694fad" }}
+          tabBarOptions={{
+            keyboardHidesTabBar: true,
+            tabBarStyle: [{ display: "flex" }, null],
           }}
-        />
+        >
+          <Tab.Screen
+            name="Home"
+            component={Produtos}
+            options={{
+              tabBarLabel: "Home",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="home" color={color} size={24} />
+              ),
+            }}
+          />
 
-        <Tab.Screen
-          name="Categoria"
-          component={Categoria}
-          options={{
-            tabBarLabel: "Categoria",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="menu" color={color} size={24} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Carrinho"
-          component={CarrinhoTab}
-          options={{
-            tabBarLabel: "Carrinho",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="cart-outline"
-                color={color}
-                size={24}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Favoritos"
-          component={FavoritosTab}
-          options={{
-            tabBarLabel: "Favoritos",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="heart-outline"
-                color={color}
-                size={24}
-              />
-            ),
-          }}
-          listeners={{
-            tabPress: (e) => {
-              e.preventDefault();
-              alert("Logue para acessar");
-            },
-          }}
-        />
-        <Tab.Screen
-          name="Perfils"
-          component={Perfies}
-          options={{
-            tabBarLabel: "Perfils",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="account" color={color} size={24} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+          <Tab.Screen
+            name="Categoria"
+            component={Categoria}
+            options={{
+              tabBarLabel: "Categoria",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="menu" color={color} size={24} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Carrinho"
+            component={CarrinhoTab}
+            options={{
+              tabBarLabel: "Carrinho",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="cart-outline"
+                  color={color}
+                  size={24}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Favoritos"
+            component={FavoritosTab}
+            options={{
+              tabBarLabel: "Favoritos",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="heart-outline"
+                  color={color}
+                  size={24}
+                />
+              ),
+            }}
+            listeners={{
+              tabPress: (e) => {
+                e.preventDefault();
+                alert("Logue para acessar");
+              },
+            }}
+          />
+          <Tab.Screen
+            name="Perfils"
+            component={Perfies}
+            options={{
+              tabBarLabel: "Perfils",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  color={color}
+                  size={24}
+                />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </AuthProvider>
     </NavigationContainer>
   );
 }

@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-paper";
+import { AuthContext } from "../../Contexts/Auth";
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { signIn } = useContext(AuthContext);
+  const [visible, setVisible] = useState(false);
+
+  function ClickLogin() {
+    signIn(email, password, visible);
+  }
   return (
     <View style={{ alignItems: "center" }}>
       <View style={{ alignItems: "center", marginVertical: 30 }}>
@@ -13,12 +22,18 @@ export default function Login() {
         <View>
           <TextInput
             style={styles.input}
+            underlineColorAndroid="transparent"
             left={<TextInput.Icon name="account" />}
+            keyboardType={"email-address"}
+            onChangeText={(text) => setEmail(text)}
             placeholder="Seu email"
           ></TextInput>
           <TextInput
             style={styles.input}
+            underlineColorAndroid="transparent"
             left={<TextInput.Icon name="lock" />}
+            onChangeText={(text) => setPassword(text)}
+            keyboardType={"default"}
             placeholder="Sua senha"
             secureTextEntry={true}
           ></TextInput>
@@ -30,10 +45,7 @@ export default function Login() {
           Esqueci a senha
         </Text>
       </View>
-      <TouchableOpacity
-        style={{ width: "85%" }}
-        onPress={() => setVisibleLogin(false)}
-      >
+      <TouchableOpacity style={{ width: "85%" }} onPress={ClickLogin}>
         <View
           style={{
             height: 50,

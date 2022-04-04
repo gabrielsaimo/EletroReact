@@ -8,7 +8,6 @@ import {
   Dimensions,
 } from "react-native";
 import ProdutoFilhos from "./ProdutoFilhos";
-import CepCorreios from "./CepCorreios";
 const { height } = Dimensions.get("window");
 
 const Modal = ({ show, close, sku, navigation, navigator, ceps }) => {
@@ -37,8 +36,16 @@ const Modal = ({ show, close, sku, navigation, navigator, ceps }) => {
         duration: 250,
         useNativeDriver: false,
       }),
-      Animated.timing(state.opacity, { toValue: 0, duration: 300 ,useNativeDriver: false} ),
-      Animated.timing(state.container, { toValue: height, duration: 100 ,useNativeDriver: false}),
+      Animated.timing(state.opacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(state.container, {
+        toValue: height,
+        duration: 100,
+        useNativeDriver: false,
+      }),
     ]).start();
   };
 

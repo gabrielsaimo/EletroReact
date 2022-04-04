@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Snackbar } from "react-native-paper";
 import {
   View,
@@ -20,14 +20,18 @@ import {
   faBox,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
+import { AuthContext } from "../../Contexts/Auth";
 import Login from "./Login";
-export default function PerfilTab({ navigation }) {
+import { useNavigation } from "@react-navigation/native";
+export default function PerfilTab() {
+  const { user } = useContext(AuthContext);
+  console.log(user.email);
   const [visible, setVisible] = React.useState(false);
-
   const onToggleSnackBar = () => setVisible(!visible);
-
   const onDismissSnackBar = () => setVisible(false);
+  const navigation = useNavigation();
   const [isVisibleLogin, setVisibleLogin] = useState(false);
+  console.log(isVisibleLogin);
   const [isVisibleLoginUp, setVisibleLoginUp] = useState(false);
   const ButtonAlert = () =>
     Alert.alert("Teste Alert", "My Alert Msg", [
@@ -111,7 +115,6 @@ export default function PerfilTab({ navigation }) {
             </View>
           </View>
         </View>
-
       </Modal>
       <Appbar.Header style={{ backgroundColor: "#1534C8", zIndex: 2 }}>
         <Appbar.Content
@@ -143,23 +146,42 @@ export default function PerfilTab({ navigation }) {
             />
           </View>
         </TouchableOpacity>
-        <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-          <View style={styles.card}>
-            <Text style={{ fontSize: 15, color: "#6A7075" }}>Olá,</Text>
-            <Text style={{ marginLeft: 3, fontSize: 15, color: "#6A7075" }}>
-              Fáça seu
+
+        {user.email !== undefined ? (
+          <View style={{ flex: 1, marginTop: 40 }}>
+            <Text
+              style={{ fontSize: 15, color: "#6A7075", flexDirection: "row" }}
+            >
+              Olá, {user.email}
             </Text>
-            <TouchableOpacity onPress={() => setVisibleLogin(true)}>
-              <Text style={styles.textPart2}>login</Text>
-            </TouchableOpacity>
+            <Text>{user.email}</Text>
           </View>
-          <View style={{ marginTop: -30, flexDirection: "row" }}>
-            <Text style={{ fontSize: 15, color: "#6A7075" }}>ou</Text>
-            <TouchableOpacity onPress={() => setVisibleLoginUp(true)}>
-              <Text style={styles.textPart2}>cadastre-se</Text>
-            </TouchableOpacity>
+        ) : (
+          <View style={{ flex: 1, justifyContent: "space-evenly" }}>
+            <View style={styles.card}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: "#6A7075",
+                }}
+              >
+                Olá,
+              </Text>
+              <Text style={{ marginLeft: 3, fontSize: 15, color: "#6A7075" }}>
+                Fáça seu
+              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text style={styles.textPart2}>login</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginTop: -30, flexDirection: "row" }}>
+              <Text style={{ fontSize: 15, color: "#6A7075" }}>ou</Text>
+              <TouchableOpacity onPress={() => setVisibleLoginUp(true)}>
+                <Text style={styles.textPart2}>cadastre-se</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        )}
       </View>
       <View
         style={{
