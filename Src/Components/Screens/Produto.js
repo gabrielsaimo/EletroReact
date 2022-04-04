@@ -26,7 +26,6 @@ export default function Produto({ route, navigation }) {
   {
     sku2 === undefined ? (route.params.sku = sku) : (route.params.sku = sku2);
   }
-  console.log(sku2);
   const baseURL =
     "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
     route.params.sku +
@@ -42,7 +41,6 @@ export default function Produto({ route, navigation }) {
     setLoading(true);
 
     const response = await axios.get(`${baseURL}`);
-    console.log(baseURL);
     setData([...data, ...response.data]);
   }
   const SearchBar = () => {

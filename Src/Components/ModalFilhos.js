@@ -25,7 +25,7 @@ const Modal = ({ show, close, sku, navigation, navigator, ceps }) => {
       Animated.spring(state.modal, {
         toValue: 0,
         bounciness: 5,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start();
   };
@@ -35,10 +35,10 @@ const Modal = ({ show, close, sku, navigation, navigator, ceps }) => {
       Animated.timing(state.modal, {
         toValue: height,
         duration: 250,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
-      Animated.timing(state.opacity, { toValue: 0, duration: 300 ,useNativeDriver: true} ),
-      Animated.timing(state.container, { toValue: height, duration: 100 ,useNativeDriver: true}),
+      Animated.timing(state.opacity, { toValue: 0, duration: 300 ,useNativeDriver: false} ),
+      Animated.timing(state.container, { toValue: height, duration: 100 ,useNativeDriver: false}),
     ]).start();
   };
 
