@@ -9,10 +9,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import ShareButton from "./ShereButtom";
-import { IconButton} from 'react-native-paper';
-export default App = ({ sku,urls}) => {
-console.log("🚀 ~ file: ProdutoImagens.js ~ line 13 ~ urls", urls)
-  
+import { IconButton } from "react-native-paper";
+export default App = ({ sku, urls }) => {
   const { width } = Dimensions.get("window");
   const height = width * 0.6;
 
@@ -82,13 +80,16 @@ console.log("🚀 ~ file: ProdutoImagens.js ~ line 13 ~ urls", urls)
               alignSelf: "center",
             }}
           >
-            {data.imagem.map? (data.imagem.map((i, k) => (
-              <Text key={k} style={k == active ? styles.setbol : styles.bol}>
-                ⬤
-              </Text>
-            ))):(<></>)}
-            
-          </View >
+            {data.imagem.map ? (
+              data.imagem.map((i, k) => (
+                <Text key={k} style={k == active ? styles.setbol : styles.bol}>
+                  ⬤
+                </Text>
+              ))
+            ) : (
+              <></>
+            )}
+          </View>
           <View
             style={{
               flexDirection: "row",
@@ -98,8 +99,8 @@ console.log("🚀 ~ file: ProdutoImagens.js ~ line 13 ~ urls", urls)
               alignSelf: "center",
             }}
           >
-           <ShareButton url={urls} />
-          </View >
+            <ShareButton url={urls} />
+          </View>
           <View
             style={{
               flexDirection: "row",
@@ -110,12 +111,12 @@ console.log("🚀 ~ file: ProdutoImagens.js ~ line 13 ~ urls", urls)
             }}
           >
             <IconButton
-            icon={require('../Components/assets/heart.png')}
-            color='#6A7075'
-            size={30}
-            onPress={()=>({})}
+              icon={require("../Components/assets/heart.png")}
+              color="#6A7075"
+              size={30}
+              onPress={() => ({})}
             />
-          </View >
+          </View>
         </View>
       )}
     </View>

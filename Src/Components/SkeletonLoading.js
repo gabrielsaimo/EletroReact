@@ -12,24 +12,24 @@ export default function SkeletonLoading({ visible, children }) {
   const fadeIn = () => {
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 500,
+      duration: 300,
       useNativeDriver: false,
     }).start(() => {
       setTimeout(() => {
         fadeOut();
-      }, 500);
+      }, 300);
     });
   };
 
   const fadeOut = () => {
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 500,
+      duration: 300,
       useNativeDriver: false,
     }).start(() => {
       setTimeout(() => {
         fadeIn();
-      }, 500);
+      }, 300);
     });
   };
 

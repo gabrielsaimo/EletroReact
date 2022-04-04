@@ -37,8 +37,8 @@ const Modal = ({ show, close, sku, navigation, navigator, ceps }) => {
         duration: 250,
         useNativeDriver: true,
       }),
-      Animated.timing(state.opacity, { toValue: 0, duration: 300 }),
-      Animated.timing(state.container, { toValue: height, duration: 100 }),
+      Animated.timing(state.opacity, { toValue: 0, duration: 300 ,useNativeDriver: true} ),
+      Animated.timing(state.container, { toValue: height, duration: 100 ,useNativeDriver: true}),
     ]).start();
   };
 

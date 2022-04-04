@@ -21,7 +21,6 @@ export default function CategoriasProduto({ route, navigation }) {
     "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=" +
     route.params.item +
     "&version=15";
-    console.log("🚀 ~ file: CategoriaProdutos.js ~ line 23 ~ CategoriasProduto ~ route.params.item", route.params.item)
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
 
   const [data, setData] = useState([]);

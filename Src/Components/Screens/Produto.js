@@ -4,9 +4,7 @@ import {
   FlatList,
   Text,
   View,
-  Button,
   Dimensions,
-  Share
 } from "react-native";
 import axios from "axios";
 import ModalFilhos from "../ModalFilhos";
@@ -33,7 +31,7 @@ export default function Produto({ route, navigation }) {
     "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
     route.params.sku +
     "&version=15";
-  console.log(baseURL);
+
   useEffect(() => {
     loadApi();
   }, [sku2]);
@@ -71,9 +69,7 @@ export default function Produto({ route, navigation }) {
         data={data}
         keyExtractor={(item) => String(item.codigo)}
         renderItem={({ item }) => (
-          
           <View
-          
             style={{
               flex: 1,
               alignItems: "baseline",
