@@ -4,8 +4,9 @@ import {
   FlatList,
   Text,
   View,
-  Image,
+  Button,
   Dimensions,
+  Share
 } from "react-native";
 import axios from "axios";
 import ModalFilhos from "../ModalFilhos";
@@ -13,7 +14,6 @@ import { Appbar } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "../Local";
 import Produtoimagem from "../ProdutoImagens";
-
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
   const filhos = route.params.filhos;
@@ -71,7 +71,9 @@ export default function Produto({ route, navigation }) {
         data={data}
         keyExtractor={(item) => String(item.codigo)}
         renderItem={({ item }) => (
+          
           <View
+          
             style={{
               flex: 1,
               alignItems: "baseline",
@@ -99,7 +101,7 @@ export default function Produto({ route, navigation }) {
             <Text style={{ fontSize: 10, marginTop: 5 }}>
               CÓD - {item.codigo}
             </Text>
-            <Produtoimagem sku={sku}></Produtoimagem>
+            <Produtoimagem sku={sku} urls={item.urlsocial}></Produtoimagem>
             {item.filhos ? (
               <TouchableOpacity onPress={() => setModal(true)}>
                 <View
@@ -169,7 +171,7 @@ export default function Produto({ route, navigation }) {
               <View
                 style={{
                   width: 70,
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <Text style={{ fontSize: 50 }}>

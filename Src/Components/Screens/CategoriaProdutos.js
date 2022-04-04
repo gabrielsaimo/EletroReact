@@ -313,7 +313,7 @@ function ListItem2({ data, navigation }) {
                     style={{
                       fontWeight: "bold",
                       fontSize: 25,
-                      width: "200%",
+                      width: "400%",
                       color: "#1534C8",
                       marginLeft: 15,
                     }}

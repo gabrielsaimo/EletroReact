@@ -8,7 +8,11 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-export default App = ({ sku }) => {
+import ShareButton from "./ShereButtom";
+import { IconButton} from 'react-native-paper';
+export default App = ({ sku,urls}) => {
+console.log("🚀 ~ file: ProdutoImagens.js ~ line 13 ~ urls", urls)
+  
   const { width } = Dimensions.get("window");
   const height = width * 0.6;
 
@@ -83,8 +87,35 @@ export default App = ({ sku }) => {
                 ⬤
               </Text>
             ))):(<></>)}
+            
           </View >
-          
+          <View
+            style={{
+              flexDirection: "row",
+              position: "absolute",
+              bottom: 0,
+              right: 30,
+              alignSelf: "center",
+            }}
+          >
+           <ShareButton url={urls} />
+          </View >
+          <View
+            style={{
+              flexDirection: "row",
+              position: "absolute",
+              top: 0,
+              right: 30,
+              alignSelf: "center",
+            }}
+          >
+            <IconButton
+            icon={require('../Components/assets/heart.png')}
+            color='#6A7075'
+            size={30}
+            onPress={()=>({})}
+            />
+          </View >
         </View>
       )}
     </View>
