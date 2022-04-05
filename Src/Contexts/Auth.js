@@ -6,6 +6,17 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState({});
   const navigation = useNavigation();
 
+  function consultaCep(cep, sku) {
+    if (cep !== "") {
+      setUser({
+        cep: cep,
+        sku: sku,
+      });
+
+      //navigation.goBack();
+    }
+  }
+
   function signIn(email, password) {
     if (email !== "" && password !== "") {
       setUser({
@@ -16,9 +27,10 @@ function AuthProvider({ children }) {
       navigation.goBack();
     }
   }
+  
   console.log(user);
   return (
-    <AuthContext.Provider value={{ signIn, user }}>
+    <AuthContext.Provider value={{ signIn, user ,consultaCep}}>
       {children}
     </AuthContext.Provider>
   );

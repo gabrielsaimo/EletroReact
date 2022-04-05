@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useContext} from "react";
 import { Text, View, StyleSheet } from "react-native";
+import { IconButton } from "react-native-paper";
 import CepCorreios from "./CepCorreios";
-export default function CalculaFrete({ cep, sku, navigation }) {
+export default function CalculaFrete({ cep, sku}) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
 
@@ -23,13 +24,39 @@ export default function CalculaFrete({ cep, sku, navigation }) {
 
   return (
     <View style={{ flex: 0 }}>
-      {!data ? (
-        <Text>cep invalido</Text>
+      {isLoading ? (
+        <View style={{ height: 150 }}></View>
       ) : (
         <View>
-          <Text>{data.valor}</Text>
-          <CepCorreios sku={sku} cep={cep} />
-          <Text>{data.prazo}</Text>
+          {!data ? (
+            <Text>Cep Invalido</Text>
+          ) : (
+            <View>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <IconButton
+                  style={{ marginLeft: 0 }}
+                  icon={require("../Components/assets/iconfrete.png")}
+                  color="blue"
+                  size={35}
+                />
+                {data.valor === "R$ 0,00" ? (
+                  <Text style={{ color: "blue", fontSize: 20 }}>
+                    Frete grátis
+                  </Text>
+                ) : (
+                  <Text style={{ color: "blue", fontSize: 20 }}>
+                    Frete por {data.valor}
+                  </Text>
+                )}
+              </View>
+              <View style={{ marginLeft: 15, marginRight: 15 }}>
+                <CepCorreios sku={sku} cep={cep} />
+                <Text style={{ marginVertical: 10 }}>
+                  Prazo de entrega {data.prazo}
+                </Text>
+              </View>
+            </View>
+          )}
         </View>
       )}
     </View>

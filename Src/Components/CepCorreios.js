@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, { useEffect, useState} from "react";
+import { Text, View } from "react-native";
 
-export default function CepCorreios({ cep, sku, navigation }) {
+export default function CepCorreios({ cep, sku }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
 
@@ -16,28 +16,16 @@ export default function CepCorreios({ cep, sku, navigation }) {
   }, []);
 
   return (
-    <View style={{ flex: 0 }}>
+    <View style={{marginTop:-15}} >
       {!data ? (
         <Text>cep invalido</Text>
       ) : (
         <View>
-          <Text>{data.cep}</Text>
-          <Text>{data.bairro}</Text>
-          <Text>{data.localidade}</Text>
-          <Text>{data.logradouro}</Text>
-          <Text>{data.uf}</Text>
+          <Text>Envio para {data.logradouro} - {data.bairro}</Text>
+          <Text>{data.localidade}  {data.cep}</Text>
         </View>
       )}
     </View>
   );
 }
-const style = StyleSheet.create({
-  bol: {
-    color: "#D4D4D4",
-    margin: 3,
-  },
-  setbol: {
-    color: "#000",
-    margin: 3,
-  },
-});
+

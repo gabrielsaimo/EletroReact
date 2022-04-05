@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   TouchableOpacity,
   FlatList,
@@ -6,29 +6,50 @@ import {
   View,
   Dimensions,
   TextInput,
+  Modal,
 } from "react-native";
 import axios from "axios";
 import ModalFilhos from "../ModalFilhos";
-import { Appbar,IconButton } from "react-native-paper";
+import { AuthContext } from "../../Contexts/Auth";
+import { Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "../Local";
 import Produtoimagem from "../ProdutoImagens";
 import CalculaFrete from "../CalculaFrete";
+import { WebView } from "react-native-webview";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
   const filhos = route.params.filhos;
   const sku2 = route.params.sku2;
   const [precoDe, setprecoDe] = useState(route.params.precode);
-  const [TextInput_cep, setTextCep] = useState("");
+
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
+  const [isVisibleDescr, setDescri] = useState(false);
+  const [isVisibleEspec, setEspec] = useState(false);
+  const [isVisiblefpagamento, setFpagamento] = useState(false);
+
+  const { consultaCep } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const [usercep, setUsercep] = useState(user.cep);
   const { width } = Dimensions.get("window");
   const width2 = width / 2;
   const width4 = width / 4;
   const height = (width * 100) / 30;
-
+  const [TextInput_cep, setTextCep] = useState(usercep);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  console.log(usercep);
+
+  console.log(cepvisible);
+  function Clickcep() {
+    consultaCep(TextInput_cep, sku);
+
+    !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
+  }
   {
     sku2 === undefined ? (route.params.sku = sku) : (route.params.sku = sku2);
   }
@@ -102,6 +123,116 @@ export default function Produto({ route, navigation }) {
               CÓD - {item.codigo}
             </Text>
             <Produtoimagem sku={sku} urls={item.urlsocial}></Produtoimagem>
+            <Modal
+              animationType={"slide"}
+              transparent={false}
+              visible={isVisibleDescr}
+              onRequestClose={() => {
+                setDescri(false);
+              }}
+            >
+              <Appbar.Header
+                style={{
+                  backgroundColor: "#FFDB00",
+                  marginTop: -45,
+                  zIndex: 1,
+                }}
+              ></Appbar.Header>
+
+              <View style={{ marginTop: 30 }}>
+                <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
+                  <TouchableOpacity onPress={() => setDescri(false)}>
+                    <FontAwesomeIcon
+                      icon={faAngleLeft}
+                      style={{ color: "#1534C8" }}
+                      size={30}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: "100%", height: "100%", marginTop: 50 }}>
+                  <WebView
+                    source={{
+                      uri:
+                        "https://www.eletrosom.com/shell/ws/integrador/caracteristicasProduto?codigoProduto=" +
+                        sku,
+                    }}
+                  />
+                </View>
+              </View>
+            </Modal>
+            <Modal
+              animationType={"slide"}
+              transparent={false}
+              visible={isVisibleEspec}
+              onRequestClose={() => {
+                setEspec(false);
+              }}
+            >
+              <Appbar.Header
+                style={{
+                  backgroundColor: "#FFDB00",
+                  marginTop: -45,
+                  zIndex: 1,
+                }}
+              ></Appbar.Header>
+
+              <View style={{ marginTop: 30 }}>
+                <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
+                  <TouchableOpacity onPress={() => setEspec(false)}>
+                    <FontAwesomeIcon
+                      icon={faAngleLeft}
+                      style={{ color: "#1534C8" }}
+                      size={30}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{ width: "100%", height: "100%", marginTop: 50 }}
+                ></View>
+              </View>
+            </Modal>
+            <Modal
+              animationType={"slide"}
+              transparent={false}
+              visible={isVisiblefpagamento}
+              onRequestClose={() => {
+                setFpagamento(false);
+              }}
+            >
+              <Appbar.Header
+                style={{
+                  backgroundColor: "#FFDB00",
+                  marginTop: -45,
+                  zIndex: 1,
+                }}
+              ></Appbar.Header>
+
+              <View style={{ marginTop: 30 }}>
+                <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
+                  <TouchableOpacity onPress={() => setFpagamento(false)}>
+                    <FontAwesomeIcon
+                      icon={faAngleLeft}
+                      style={{ color: "#1534C8" }}
+                      size={30}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: "100%", height: "100%", marginTop: 50 }}>
+                  <Text>{item.parcelamento.par1}</Text>
+                  <Text>{item.parcelamento.par2}</Text>
+                  <Text>{item.parcelamento.par3}</Text>
+                  <Text>{item.parcelamento.par4}</Text>
+                  <Text>{item.parcelamento.par5}</Text>
+                  <Text>{item.parcelamento.par6}</Text>
+                  <Text>{item.parcelamento.par7}</Text>
+                  <Text>{item.parcelamento.par8}</Text>
+                  <Text>{item.parcelamento.par9}</Text>
+                  <Text>{item.parcelamento.par10}</Text>
+                  <Text>{item.parcelamento.par11}</Text>
+                  <Text>{item.parcelamento.par12}</Text>
+                </View>
+              </View>
+            </Modal>
             {item.filhos ? (
               <TouchableOpacity onPress={() => setModal(true)}>
                 <View
@@ -165,60 +296,168 @@ export default function Produto({ route, navigation }) {
             ) : (
               <></>
             )}
-            <View style={{marginTop:10}}>
+            <View style={{ flexDirection: "row" }}>
+              <Text
+                style={{ color: "#6A7075", marginVertical: 5 }}
+                onPress={() => setFpagamento(true)}
+              >
+                Todas as formas de pagamento
+              </Text>
+              <Text style={{ fontSize: 20, marginLeft: 10 }}>{">"}</Text>
+            </View>
+            <View
+              style={{
+                height: 1.5,
+                backgroundColor: "#CED4DA",
+                width: "99%",
+                borderRadius: 20,
+                marginVertical: 10,
+              }}
+            ></View>
+            <View>
               {cepvisible ? (
                 <></>
               ) : (
-                <View style={{ flexDirection: "row" }}>
-                  <TextInput
-                    placeholder="Digite o Cep"
-                    onChangeText={(data) => setTextCep(data)}
-                    keyboardType={"numeric"}
-                    maxLength={8}
-                    height={40}
-                    width={width2}
-                    backgroundColor={"#D4D4D4"}
-                    paddingHorizontal={5}
-                    borderRadius={5}
-                    underlineColorAndroid="transparent"
-                  ></TextInput>
-                  <IconButton
-                  icon={require("../assets/pin_gps.png")}
-                    onPress={() =>
-                      !cepvisible ? setVisiblecep(true) : setVisiblecep(false)
-                    }
-                    activeOpacity={0.7}
-                    style={{
-                      width4,
-                      height: 40,
-                     marginTop:0,
-                      backgroundColor: "#FFDB00",
-                      borderRadius: 5,
-                      
-                    }}
-                  >
-                  
-                  </IconButton>
+                <View>
+                  <View>
+                    <Text style={{ marginBottom: 5, color: "#6A7075" }}>
+                      Calcule seu frete
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row" }}>
+                    <TextInput
+                      placeholder="Digite seu Cep"
+                      onChangeText={(data) => setTextCep(data)}
+                      keyboardType={"numeric"}
+                      maxLength={8}
+                      height={50}
+                      borderWidth={1}
+                      borderColor={"#A0A5AA"}
+                      width={"75%"}
+                      marginLeft={10}
+                      backgroundColor={"#fff"}
+                      paddingHorizontal={10}
+                      borderRadius={5}
+                      underlineColorAndroid="transparent"
+                    >
+                      {usercep !== undefined ? usercep : ""}
+                    </TextInput>
+                    <IconButton
+                      icon={require("../assets/pin_gps.png")}
+                      onPress={() => Clickcep()}
+                      activeOpacity={0.7}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        marginTop: 0,
+                        marginLeft: "4%",
+                        paddingRight: 3,
+                        backgroundColor: "#FFDB00",
+                        borderRadius: 5,
+                      }}
+                    ></IconButton>
+                  </View>
                 </View>
               )}
 
               {cepvisible ? (
+                <View style={{ marginTop: -15 }}>
+                  <CalculaFrete cep={TextInput_cep} sku={sku} />
+                </View>
+              ) : (
+                <></>
+              )}
+              {cepvisible ? (
                 <Text
-                style={{color:'blue'}}
+                  style={{ color: "blue", marginLeft: 15 }}
                   onPress={() =>
                     !cepvisible ? setVisiblecep(true) : setVisiblecep(false)
                   }
                 >
-                Alterar endereço de entrega  {">"}
+                  Alterar endereço de entrega {">"}
                 </Text>
               ) : (
                 <></>
               )}
-
-              {cepvisible ? <CalculaFrete cep={TextInput_cep} sku={sku} /> : <></>}
             </View>
-
-            <Text>Avaliações</Text>
+            <View
+              style={{
+                height: 1.5,
+                backgroundColor: "#CED4DA",
+                width: "99%",
+                borderRadius: 20,
+                marginTop: 15,
+              }}
+            ></View>
+            <TouchableOpacity onPress={() => setDescri(true)}>
+              <View style={{ height: 70, width: "100%", paddingVertical: 20 }}>
+                <View
+                  style={{
+                    width: "100%",
+                    height: 50,
+                    padding: 5,
+                  }}
+                >
+                  <Text style={{ fontSize: 15, width }}>
+                    Descrição do produto
+                  </Text>
+                  <Text
+                    style={{
+                      marginLeft: "95%",
+                      paddingTop: 1,
+                      position: "absolute",
+                      fontSize: 20,
+                    }}
+                  >
+                    {">"}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <View
+              style={{
+                height: 1.5,
+                backgroundColor: "#CED4DA",
+                width: "99%",
+                borderRadius: 20,
+                marginVertical: 0,
+              }}
+            ></View>
+            <TouchableOpacity onPress={() => setEspec(true)}>
+              <View style={{ height: 70, width: "100%", paddingVertical: 20 }}>
+                <View
+                  style={{
+                    width: "100%",
+                    height: 50,
+                    padding: 5,
+                  }}
+                >
+                  <Text style={{ fontSize: 15, width }}>
+                    Especificações Técnicas
+                  </Text>
+                  <Text
+                    style={{
+                      marginLeft: "95%",
+                      paddingTop: 1,
+                      position: "absolute",
+                      fontSize: 20,
+                    }}
+                  >
+                    {">"}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <View
+              style={{
+                height: 1.5,
+                backgroundColor: "#CED4DA",
+                width: "99%",
+                borderRadius: 20,
+                marginVertical: 0,
+              }}
+            ></View>
+            <Text style={{ fontSize: 20, marginLeft: 5 }}>Avaliações</Text>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View
                 style={{

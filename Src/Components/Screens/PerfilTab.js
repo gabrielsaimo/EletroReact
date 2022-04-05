@@ -51,41 +51,6 @@ export default function PerfilTab() {
       <Modal
         animationType={"slide"}
         transparent={false}
-        visible={isVisibleLogin}
-        onRequestClose={() => {
-          setVisibleLogin(false);
-        }}
-      >
-        <Appbar.Header
-          style={{ backgroundColor: "#FFDB00", marginTop: -45, zIndex: 1 }}
-        ></Appbar.Header>
-
-        <View style={{ marginTop: 30 }}>
-          <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
-            <TouchableOpacity onPress={() => setVisibleLogin(false)}>
-              <FontAwesomeIcon
-                icon={faAngleLeft}
-                style={{ color: "#1534C8" }}
-                size={30}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={{ alignSelf: "center", marginTop: -38 }}>
-            <View style={styles.card2}>
-              <Text style={styles.texteletro}>eletrosom</Text>
-              <Text style={styles.textponto}>.</Text>
-              <TouchableOpacity onPress={() => setVisibleLogin(true)}>
-                <Text style={styles.textcom}>com</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <Login />
-      </Modal>
-      <Modal
-        animationType={"slide"}
-        transparent={false}
         visible={isVisibleLoginUp}
         onRequestClose={() => {
           setVisibleLoginUp(false);
