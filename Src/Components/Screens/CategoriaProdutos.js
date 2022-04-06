@@ -5,14 +5,12 @@ import {
   Text,
   View,
   Image,
-  ActivityIndicator,
   TextInput,
   Dimensions,
   SafeAreaView,
 } from "react-native";
 import axios from "axios";
 import { Appbar } from "react-native-paper";
-import Produto from "./Produto";
 import StarRating from "react-native-star-rating";
 import Local from "../Local";
 import SkeletonLoading from "../SkeletonLoading";
@@ -184,7 +182,7 @@ function ListItem({ data, navigation }) {
               <StarRating
                 disabled={true}
                 maxStars={5}
-                rating={!data.avaliacao ? 5 : data.avaliacao}
+                rating={data.avaliacao}
                 starSize={15}
                 fullStarColor={"#FEA535"}
                 emptyStarColor={"#6A7075"}
@@ -291,7 +289,7 @@ function ListItem2({ data, navigation }) {
                     <StarRating
                       disabled={true}
                       maxStars={5}
-                      rating={!data.avaliacao ? 5 : data.avaliacao}
+                      rating={data.avaliacao}
                       starSize={15}
                       fullStarColor={"#FEA535"}
                       emptyStarColor={"#6A7075"}

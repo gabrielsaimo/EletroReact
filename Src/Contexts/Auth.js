@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
@@ -17,20 +18,38 @@ function AuthProvider({ children }) {
     }
   }
 
-  function signIn(email, password) {
+  function signIn(
+    email,
+    password,
+    idCliente,
+    Nome,
+    DataNasc,
+    sexo,
+    tipo_pessoa,
+    cpf,
+    rg,
+    foto_cliente,
+    endereco
+  ) {
     if (email !== "" && password !== "") {
-      setUser({
-        email: email,
-        password: password,
-      });
+      AsyncStorage.setItem("email", email);
+      AsyncStorage.setItem("password", password);
+      AsyncStorage.setItem("idCliente", idCliente);
+      AsyncStorage.setItem("Nome", Nome);
+      AsyncStorage.setItem("DataNasc", DataNasc);
+      AsyncStorage.setItem("sexo", sexo);
+      AsyncStorage.setItem("tipo_pessoa", tipo_pessoa);
+      AsyncStorage.setItem("cpf", cpf);
+      AsyncStorage.setItem("rg", rg);
+      AsyncStorage.setItem("foto_cliente", foto_cliente);
+      AsyncStorage.setItem("endereco", endereco);
 
       navigation.goBack();
     }
   }
-  
-  console.log(user);
+
   return (
-    <AuthContext.Provider value={{ signIn, user ,consultaCep}}>
+    <AuthContext.Provider value={{ signIn, user, consultaCep }}>
       {children}
     </AuthContext.Provider>
   );

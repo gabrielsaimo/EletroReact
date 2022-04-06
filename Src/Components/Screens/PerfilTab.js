@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Image,
   Modal,
 } from "react-native";
 import { Appbar } from "react-native-paper";
@@ -21,18 +22,36 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../../Contexts/Auth";
-import Login from "./Login";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function PerfilTab() {
   const { user } = useContext(AuthContext);
-  console.log(user.email);
+  console.log(user.Nome);
   const [visible, setVisible] = React.useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
   const navigation = useNavigation();
   const [isVisibleLogin, setVisibleLogin] = useState(false);
-  console.log(isVisibleLogin);
+
   const [isVisibleLoginUp, setVisibleLoginUp] = useState(false);
+  const [id, setId] = useState("");
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [foto, setFoto] = useState("");
+  console.log(foto);
+  AsyncStorage.getItem("idCliente").then((idCliente) => {
+    setId(idCliente);
+  });
+  AsyncStorage.getItem("Nome").then((Nome) => {
+    setNome(Nome);
+  });
+  AsyncStorage.getItem("email").then((Email) => {
+    setEmail(Email);
+  });
+  AsyncStorage.getItem("foto_cliente").then((foto) => {
+    setFoto(foto);
+  });
   const ButtonAlert = () =>
     Alert.alert("Teste Alert", "My Alert Msg", [
       {
@@ -46,6 +65,14 @@ export default function PerfilTab() {
       },
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
+
+  const logout = () => {
+    AsyncStorage.clear();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Home" }],
+    });
+  };
   return (
     <View style={{ height: "100%" }}>
       <Modal
@@ -103,23 +130,30 @@ export default function PerfilTab() {
               margin: 10,
             }}
           >
-            <FontAwesomeIcon
-              icon={faUser}
-              color={"#1534C8"}
-              size={30}
-              style={{ margin: 25 }}
-            />
+            {id !== null ? (
+              <Image
+                style={{ width: "100%", height: "100%", borderRadius: 10 }}
+                source={{ uri: foto }}
+              ></Image>
+            ) : (
+              <FontAwesomeIcon
+                icon={faUser}
+                color={"#1534C8"}
+                size={30}
+                style={{ margin: 25 }}
+              />
+            )}
           </View>
         </TouchableOpacity>
 
-        {user.email !== undefined ? (
+        {id !== null ? (
           <View style={{ flex: 1, marginTop: 40 }}>
             <Text
               style={{ fontSize: 15, color: "#6A7075", flexDirection: "row" }}
             >
-              Olá, {user.email}
+              Olá, {nome}
             </Text>
-            <Text>{user.email}</Text>
+            <Text style={{ color: "#6A7075" }}>{email}</Text>
           </View>
         ) : (
           <View style={{ flex: 1, justifyContent: "space-evenly" }}>
@@ -160,7 +194,9 @@ export default function PerfilTab() {
       <ScrollView>
         <View style={styles.conteiner}>
           <View>
-            <TouchableOpacity onPress={onToggleSnackBar}>
+            <TouchableOpacity
+              onPress={id != null ? () => ({}) : onToggleSnackBar}
+            >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon
                   icon={faBox}
@@ -183,7 +219,9 @@ export default function PerfilTab() {
             <View
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
-            <TouchableOpacity onPress={onToggleSnackBar}>
+            <TouchableOpacity
+              onPress={id != null ? () => ({}) : onToggleSnackBar}
+            >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon
                   icon={faLocationDot}
@@ -206,7 +244,9 @@ export default function PerfilTab() {
             <View
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
-            <TouchableOpacity onPress={onToggleSnackBar}>
+            <TouchableOpacity
+              onPress={id != null ? () => ({}) : onToggleSnackBar}
+            >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon
                   icon={faCreditCard}
@@ -229,7 +269,9 @@ export default function PerfilTab() {
             <View
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
-            <TouchableOpacity onPress={onToggleSnackBar}>
+            <TouchableOpacity
+              onPress={id != null ? () => ({}) : onToggleSnackBar}
+            >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon
                   icon={faUser}
@@ -252,7 +294,9 @@ export default function PerfilTab() {
             <View
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
-            <TouchableOpacity onPress={onToggleSnackBar}>
+            <TouchableOpacity
+              onPress={id != null ? () => ({}) : onToggleSnackBar}
+            >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon
                   icon={faStar}
@@ -275,26 +319,15 @@ export default function PerfilTab() {
             <View
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
-            <TouchableOpacity onPress={onToggleSnackBar}>
-              <View style={{ flexDirection: "row", paddingVertical: 20 }}>
-                <FontAwesomeIcon
-                  icon={faHeart}
-                  style={{ color: "#6A7075" }}
-                  size={30}
-                />
-                <Text
-                  style={{
-                    marginLeft: 20,
-                    paddingVertical: 2,
-                    fontSize: 15,
-                    fontWeight: "bold",
-                    color: "#6A7075",
-                  }}
-                >
-                  Meus Favoritos
-                </Text>
-              </View>
-            </TouchableOpacity>
+            {id !== null ? (
+              <TouchableOpacity onPress={() => logout()}>
+                <View style={{ flexDirection: "row", paddingVertical: 20 }}>
+                  <Text style={{ color: "red", fontSize: 20 }}> X Sair </Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <></>
+            )}
           </View>
         </View>
       </ScrollView>

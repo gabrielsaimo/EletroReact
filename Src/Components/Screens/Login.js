@@ -6,15 +6,67 @@ import { AuthContext } from "../../Contexts/Auth";
 import { Appbar } from "react-native-paper";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-
-export default function Login({ navigation }) {
+import { useNavigation } from "@react-navigation/native";
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn } = useContext(AuthContext);
-  const [visible, setVisible] = useState(false);
+  const navigation = useNavigation();
+
+  const Logar = async () => {
+    if (email != "" && password != "") {
+      await fetch("https://www.eletrosom.com/shell/ws/integrador/login", {
+        method: "POST",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cliente: { login: email, senha: password },
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          console.log(resData.dados_cliente.IdCliente);
+
+          if (resData.codigoMensagem == 200) {
+            const idCliente = resData.dados_cliente.IdCliente;
+            const Nome = resData.dados_cliente.nome;
+            const DataNasc = resData.dados_cliente.data_nasc;
+            const Sexo = resData.dados_cliente.sexo;
+            const TipoPessoa = resData.dados_cliente.tipo_pessoa;
+            const Cpf = resData.dados_cliente.cpf;
+            const Rg = resData.dados_cliente.rg;
+            const FotoCliente = resData.dados_cliente.foto_cliente;
+            const Endereco = resData.dados_cliente.endereco;
+            signIn(
+              email,
+              password,
+              idCliente,
+              Nome,
+              DataNasc,
+              Sexo,
+              TipoPessoa,
+              Cpf,
+              Rg,
+              FotoCliente,
+              Endereco
+            );
+          } else if (resData.codigoMensagem == 317) {
+            alert("Login ou Senha Inválidos");
+          } else {
+            alert("Erro ao logar");
+          }
+        });
+    }
+  };
 
   function ClickLogin() {
-    signIn(email, password, visible);
+    Logar();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Home" }],
+    });
   }
   return (
     <SafeAreaView>

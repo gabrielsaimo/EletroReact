@@ -108,7 +108,7 @@ export default function Produto({ route, navigation }) {
               <StarRating
                 disabled={true}
                 maxStars={5}
-                rating={!item.avaliacao ? 5 : item.avaliacao}
+                rating={item.avaliacao}
                 starSize={15}
                 fullStarColor={"#FEA535"}
                 emptyStarColor={"#6A7075"}
@@ -120,8 +120,8 @@ export default function Produto({ route, navigation }) {
             >
               {item.nome}
             </Text>
-            <Text style={{ fontSize: 10, marginTop: 5 }}>
-              CÓD - {item.codigo}
+            <Text style={{ fontSize: 10, marginTop: 5,color: '#6A7075' }}>
+              CÓD - {sku}
             </Text>
             <Produtoimagem sku={sku} urls={item.urlsocial}></Produtoimagem>
 
@@ -130,11 +130,11 @@ export default function Produto({ route, navigation }) {
                 <View
                   style={{
                     width: '100%',
-                    height: 40,
+                    height: 50,
                     backgroundColor: "#F0F2F4",
                     borderRadius: 10,
                     flexDirection: "row",
-                    padding: 10,
+                    padding: 15,
                     marginTop: 24,
                     marginBottom: 24,
                   }}
@@ -143,7 +143,7 @@ export default function Produto({ route, navigation }) {
                   <Text
                     style={{
                       paddingLeft: 370,
-                      paddingTop: 10,
+                      paddingTop: 15,
                       position: "absolute",
                     }}
                   >
@@ -156,9 +156,10 @@ export default function Produto({ route, navigation }) {
             )}
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 15,
                 width: "100%",
                 textDecorationLine: "line-through",
+                color: '#6A7075'
               }}
             >
               R$ {precoDe}
@@ -380,19 +381,19 @@ export default function Produto({ route, navigation }) {
                 }}
               >
                 <Text style={{ fontSize: 50 }}>
-                  {!data.avaliacao ? 5 : data.avaliacao}
+                  {!data.avaliacao ? 0 :data.avaliacao}
                 </Text>
               </View>
               <View style={{ width: 180, marginHorizontal: 10 }}>
                 <StarRating
                   disabled={true}
                   maxStars={5}
-                  rating={!data.avaliacao ? 5 : data.avaliacao}
+                  rating={data.avaliacao}
                   starSize={25}
                   fullStarColor={"#FEA535"}
                   emptyStarColor={"#6A7075"}
                 />
-                <Text>1 Avaliações</Text>
+                <Text>{!data.avaliacao ? 0 :data.avaliacao} Avaliações</Text>
               </View>
               <Modal
                 animationType={"slide"}

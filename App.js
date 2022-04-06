@@ -120,7 +120,11 @@ export default function App() {
             options={{
               tabBarLabel: "Home",
               tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="home" color={color} size={24} />
+                <MaterialCommunityIcons
+                  name="home-outline"
+                  color={color}
+                  size={24}
+                />
               ),
             }}
           />
@@ -141,11 +145,7 @@ export default function App() {
             options={{
               tabBarLabel: "Carrinho",
               tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="cart-outline"
-                  color={color}
-                  size={24}
-                />
+                <MaterialCommunityIcons name="cart" color={color} size={24} />
               ),
             }}
           />
