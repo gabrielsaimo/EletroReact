@@ -99,6 +99,7 @@ export default function Produto({ route, navigation }) {
               flex: 1,
               alignItems: "baseline",
               margin: 10,
+              marginTop:20,
               height,
               paddingBottom: 100,
             }}
@@ -123,121 +124,12 @@ export default function Produto({ route, navigation }) {
               CÓD - {item.codigo}
             </Text>
             <Produtoimagem sku={sku} urls={item.urlsocial}></Produtoimagem>
-            <Modal
-              animationType={"slide"}
-              transparent={false}
-              visible={isVisibleDescr}
-              onRequestClose={() => {
-                setDescri(false);
-              }}
-            >
-              <Appbar.Header
-                style={{
-                  backgroundColor: "#FFDB00",
-                  marginTop: -45,
-                  zIndex: 1,
-                }}
-              ></Appbar.Header>
 
-              <View style={{ marginTop: 30 }}>
-                <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
-                  <TouchableOpacity onPress={() => setDescri(false)}>
-                    <FontAwesomeIcon
-                      icon={faAngleLeft}
-                      style={{ color: "#1534C8" }}
-                      size={30}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={{ width: "100%", height: "100%", marginTop: 50 }}>
-                  <WebView
-                    source={{
-                      uri:
-                        "https://www.eletrosom.com/shell/ws/integrador/caracteristicasProduto?codigoProduto=" +
-                        sku,
-                    }}
-                  />
-                </View>
-              </View>
-            </Modal>
-            <Modal
-              animationType={"slide"}
-              transparent={false}
-              visible={isVisibleEspec}
-              onRequestClose={() => {
-                setEspec(false);
-              }}
-            >
-              <Appbar.Header
-                style={{
-                  backgroundColor: "#FFDB00",
-                  marginTop: -45,
-                  zIndex: 1,
-                }}
-              ></Appbar.Header>
-
-              <View style={{ marginTop: 30 }}>
-                <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
-                  <TouchableOpacity onPress={() => setEspec(false)}>
-                    <FontAwesomeIcon
-                      icon={faAngleLeft}
-                      style={{ color: "#1534C8" }}
-                      size={30}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{ width: "100%", height: "100%", marginTop: 50 }}
-                ></View>
-              </View>
-            </Modal>
-            <Modal
-              animationType={"slide"}
-              transparent={false}
-              visible={isVisiblefpagamento}
-              onRequestClose={() => {
-                setFpagamento(false);
-              }}
-            >
-              <Appbar.Header
-                style={{
-                  backgroundColor: "#FFDB00",
-                  marginTop: -45,
-                  zIndex: 1,
-                }}
-              ></Appbar.Header>
-
-              <View style={{ marginTop: 30 }}>
-                <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
-                  <TouchableOpacity onPress={() => setFpagamento(false)}>
-                    <FontAwesomeIcon
-                      icon={faAngleLeft}
-                      style={{ color: "#1534C8" }}
-                      size={30}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={{ width: "100%", height: "100%", marginTop: 50 }}>
-                  <Text>{item.parcelamento.par1}</Text>
-                  <Text>{item.parcelamento.par2}</Text>
-                  <Text>{item.parcelamento.par3}</Text>
-                  <Text>{item.parcelamento.par4}</Text>
-                  <Text>{item.parcelamento.par5}</Text>
-                  <Text>{item.parcelamento.par6}</Text>
-                  <Text>{item.parcelamento.par7}</Text>
-                  <Text>{item.parcelamento.par8}</Text>
-                  <Text>{item.parcelamento.par9}</Text>
-                  <Text>{item.parcelamento.par10}</Text>
-                  <Text>{item.parcelamento.par11}</Text>
-                  <Text>{item.parcelamento.par12}</Text>
-                </View>
-              </View>
-            </Modal>
             {item.filhos ? (
-              <TouchableOpacity onPress={() => setModal(true)}>
+              <TouchableOpacity style={{width: '100%'}} onPress={() => setModal(true)}>
                 <View
                   style={{
-                    width: 200,
+                    width: '100%',
                     height: 40,
                     backgroundColor: "#F0F2F4",
                     borderRadius: 10,
@@ -250,7 +142,7 @@ export default function Produto({ route, navigation }) {
                   <Text>Voltagem: {filhos}</Text>
                   <Text
                     style={{
-                      paddingLeft: 180,
+                      paddingLeft: 370,
                       paddingTop: 10,
                       position: "absolute",
                     }}
@@ -298,12 +190,21 @@ export default function Produto({ route, navigation }) {
             )}
             <View style={{ flexDirection: "row" }}>
               <Text
-                style={{ color: "#6A7075", marginVertical: 5 }}
+                style={{ color: "#6A7075", paddingVertical: 10 }}
                 onPress={() => setFpagamento(true)}
               >
                 Todas as formas de pagamento
               </Text>
-              <Text style={{ fontSize: 20, marginLeft: 10 }}>{">"}</Text>
+              <Text
+                style={{
+                  color: "#6A7075",
+                  fontSize: 20,
+                  marginLeft: 10,
+                  paddingVertical: 5,
+                }}
+              >
+                {">"}
+              </Text>
             </View>
             <View
               style={{
@@ -380,6 +281,17 @@ export default function Produto({ route, navigation }) {
                 <></>
               )}
             </View>
+            <TouchableOpacity style={{width: '100%',marginTop:20}}>
+              <View
+                style={{ width: '100%', height: 60, backgroundColor: "#9BCB3D",borderRadius:10,alignItems:'center'}}
+              ><Text style={{paddingVertical:15,fontSize:20,color:'white',fontWeight:'bold'}}>Comprar agora</Text></View>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{width: '100%',marginTop:15}}>
+              <View
+                style={{ width: '100%', height: 60, backgroundColor: "white",borderRadius:10,alignItems:'center',borderWidth:1,borderColor:'#9BCB3D'}}
+              ><Text style={{paddingVertical:13,fontSize:20,color:'#9BCB3D',fontWeight:'bold'}}>Adicionar ao carrinho</Text></View>
+            </TouchableOpacity>
             <View
               style={{
                 height: 1.5,
@@ -398,7 +310,7 @@ export default function Produto({ route, navigation }) {
                     padding: 5,
                   }}
                 >
-                  <Text style={{ fontSize: 15, width }}>
+                  <Text style={{ color: "#6A7075", fontSize: 15, width }}>
                     Descrição do produto
                   </Text>
                   <Text
@@ -407,6 +319,7 @@ export default function Produto({ route, navigation }) {
                       paddingTop: 1,
                       position: "absolute",
                       fontSize: 20,
+                      color: "#6A7075",
                     }}
                   >
                     {">"}
@@ -432,7 +345,7 @@ export default function Produto({ route, navigation }) {
                     padding: 5,
                   }}
                 >
-                  <Text style={{ fontSize: 15, width }}>
+                  <Text style={{ fontSize: 15, width, color: "#6A7075" }}>
                     Especificações Técnicas
                   </Text>
                   <Text
@@ -441,6 +354,7 @@ export default function Produto({ route, navigation }) {
                       paddingTop: 1,
                       position: "absolute",
                       fontSize: 20,
+                      color: "#6A7075",
                     }}
                   >
                     {">"}
@@ -480,6 +394,193 @@ export default function Produto({ route, navigation }) {
                 />
                 <Text>1 Avaliações</Text>
               </View>
+              <Modal
+                animationType={"slide"}
+                transparent={false}
+                visible={isVisibleDescr}
+                onRequestClose={() => {
+                  setDescri(false);
+                }}
+              >
+                <Appbar.Header
+                  style={{
+                    backgroundColor: "#FFDB00",
+                    marginTop: -45,
+                    zIndex: 1,
+                  }}
+                ></Appbar.Header>
+
+                <View style={{ marginTop: 30 }}>
+                  <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
+                    <TouchableOpacity onPress={() => setDescri(false)}>
+                      <FontAwesomeIcon
+                        icon={faAngleLeft}
+                        style={{ color: "#1534C8" }}
+                        size={30}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{ width: "100%", height: "100%", marginTop: 50 }}
+                  >
+                    <WebView
+                      source={{
+                        uri:
+                          "https://www.eletrosom.com/shell/ws/integrador/caracteristicasProduto?codigoProduto=" +
+                          sku,
+                      }}
+                    />
+                  </View>
+                </View>
+              </Modal>
+              <Modal
+                animationType={"slide"}
+                transparent={false}
+                visible={isVisibleEspec}
+                onRequestClose={() => {
+                  setEspec(false);
+                }}
+              >
+                <Appbar.Header
+                  style={{
+                    backgroundColor: "#FFDB00",
+                    marginTop: -45,
+                    zIndex: 1,
+                  }}
+                ></Appbar.Header>
+
+                <View style={{ marginTop: 30 }}>
+                  <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
+                    <TouchableOpacity onPress={() => setEspec(false)}>
+                      <FontAwesomeIcon
+                        icon={faAngleLeft}
+                        style={{ color: "#1534C8" }}
+                        size={30}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{ width: "100%", height: "100%", marginTop: 50 }}
+                  ></View>
+                </View>
+              </Modal>
+              <Modal
+                animationType={"slide"}
+                transparent={false}
+                visible={isVisiblefpagamento}
+                onRequestClose={() => {
+                  setFpagamento(false);
+                }}
+              >
+                <Appbar.Header
+                  style={{
+                    backgroundColor: "#FFDB00",
+                    marginTop: -45,
+                    zIndex: 1,
+                  }}
+                ></Appbar.Header>
+
+                <View style={{ marginTop: 30 }}>
+                  <View
+                    style={{
+                      alignSelf: "flex-start",
+                      paddingLeft: 10,
+                      width: "100%",
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{ flexDirection: "row" }}
+                      onPress={() => setFpagamento(false)}
+                    >
+                      <FontAwesomeIcon
+                        icon={faAngleLeft}
+                        style={{ color: "#1534C8" }}
+                        size={30}
+                      />
+                    </TouchableOpacity>
+                    <View style={{ alignItems: "center" }}>
+                      <Text style={{ fontSize: 25, marginTop: -32 }}>
+                        Parcelamentos
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      marginTop: 30,
+                      alignItems: "center",
+                    }}
+                  >
+                    <View
+                      style={{
+                        padding: 10,
+                        borderBottomWidth: 1,
+                        borderTopWidth: 1,
+                      }}
+                    >
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par1}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par2}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par3}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par4}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par5}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par6}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par7}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par8}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par9}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par10}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par11}
+                      </Text>
+                    </View>
+                    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.parcelamento.par12}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
             </View>
           </View>
         )}
