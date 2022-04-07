@@ -10,7 +10,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import axios from "axios";
-import { Appbar } from "react-native-paper";
+import { Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "../Local";
 import SkeletonLoading from "../SkeletonLoading";
@@ -36,7 +36,6 @@ export default function CategoriasProduto({ route, navigation }) {
     const response = await axios.get(`${baseURL}`);
 
     setData([...data, ...response.data]);
-    console.log(itemWidth);
     setPage(page + 1);
     setLoading(false);
   }
@@ -148,6 +147,36 @@ function ListItem({ data, navigation }) {
               margin: 10,
             }}
           />
+          <View
+                          style={
+                            data.favorito
+                              ? {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: -10,
+                                  right: -10,
+                                  alignSelf: "center",
+                                }
+                              : {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: -5,
+                                  right: -5,
+                                  alignSelf: "center",
+                                }
+                          }
+                        >
+                          <IconButton
+                            icon={
+                              data.favorito
+                                ? require("../assets/favorito.png")
+                                : require("../assets/heart.png")
+                            }
+                            color={data.favorito ? "#FFDB00" : "#6A7075"}
+                            size={data.favorito ? 37 : 30}
+                            onPress={() => ({})}
+                          />
+                        </View>
           {!data.percentual > 0 ? (
             <></>
           ) : (
@@ -227,6 +256,7 @@ function ListItem2({ data, navigation }) {
                   sku: data.codigo,
                   title: data.nome,
                   precode: data.precoDe,
+                  favorito: data.favorito
                 })
               }
             >
@@ -248,8 +278,38 @@ function ListItem2({ data, navigation }) {
                   >
                     <Text>{data.percentual}% off</Text>
                   </View>
+                  
                 )}
-
+<View
+                          style={
+                            data.favorito
+                              ? {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: -10,
+                                  right: -10,
+                                  alignSelf: "center",
+                                }
+                              : {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: -5,
+                                  right: -50,
+                                  alignSelf: "center",
+                                }
+                          }
+                        >
+                          <IconButton
+                            icon={
+                              data.favorito
+                                ? require("../assets/favorito.png")
+                                : require("../assets/heart.png")
+                            }
+                            color={data.favorito ? "#FFDB00" : "#6A7075"}
+                            size={data.favorito ? 37 : 30}
+                            onPress={() => ({})}
+                          />
+                        </View>
                 <View style={{ marginTop: 20 }}>
                   <View
                     style={{
@@ -264,9 +324,10 @@ function ListItem2({ data, navigation }) {
                       style={{
                         width: 120,
                         height: 120,
-                        marginLeft: 30,
+                        marginLeft: 35,
                       }}
                     />
+                    
                   </View>
                 </View>
 

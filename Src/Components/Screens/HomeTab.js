@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
-  ActivityIndicator,
   TouchableOpacity,
   FlatList,
   Text,
@@ -14,9 +13,13 @@ import SearchBarHome from "../SearchBarHome";
 import Local from "../Local";
 import Banner from "../Banner";
 import SkeletonLoading from "../SkeletonLoading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { IconButton } from "react-native-paper";
 const { height, width } = Dimensions.get("window");
 const width2 = width - 180;
+
 console.log("🚀 ~ file: HomeTab.js ~ line 20 ~ width2", width2);
+
 export default class HomeTab extends Component {
   constructor(props) {
     super(props);
@@ -27,20 +30,25 @@ export default class HomeTab extends Component {
     };
   }
 
-  async componentDidMount() {
-    var categoria_prod =
-      "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=923&version=15";
-    await fetch(categoria_prod)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          data: responseJson,
-          isLoading: false,
+  componentDidMount() {
+    AsyncStorage.getItem("idCliente").then((idCliente) => {
+      var id = "idCliente=" + idCliente;
+      var categoria_prod =
+        "https://eletrosom.com/shell/ws/integrador/listaProdutos?" + id;
+      console.log(categoria_prod);
+      fetch(categoria_prod)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          this.setState({
+            data: responseJson,
+            isLoading: false,
+          });
+          console.log(responseJson);
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    });
   }
 
   render() {
@@ -67,19 +75,49 @@ export default class HomeTab extends Component {
                           navigate("Produto", {
                             sku: item.codigo,
                             precode: item.precoDe,
+                            id:id
                           })
                         }
                       >
                         <Image
                           source={{ uri: item.imagem }}
                           style={{
-                            width: 120,
-                            height: 120,
+                            width: 115,
+                            height: 115,
                             resizeMode: "contain",
                             margin: 10,
                           }}
                         />
-
+                        <View
+                          style={
+                            item.favorito
+                              ? {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: -10,
+                                  right: -10,
+                                  alignSelf: "center",
+                                }
+                              : {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: -5,
+                                  right: -5,
+                                  alignSelf: "center",
+                                }
+                          }
+                        >
+                          <IconButton
+                            icon={
+                              item.favorito
+                                ? require("../assets/favorito.png")
+                                : require("../assets/heart.png")
+                            }
+                            color={item.favorito ? "#FFDB00" : "#6A7075"}
+                            size={item.favorito ? 37 : 30}
+                            onPress={() => ({})}
+                          />
+                        </View>
                         {item.percentual > 0 ? (
                           <View
                             style={{
@@ -108,15 +146,19 @@ export default class HomeTab extends Component {
                           >
                             {item.nome}
                           </Text>
-                          {item.percentual > 0 ?(<Text
-                            style={{
-                              textDecorationLine: "line-through",
-                              fontSize: 12,
-                            }}
-                          >
-                            R$ {item.precoDe}
-                          </Text>):(<View style={{height:20}}></View>)}
-                          
+                          {item.percentual > 0 ? (
+                            <Text
+                              style={{
+                                textDecorationLine: "line-through",
+                                fontSize: 12,
+                              }}
+                            >
+                              R$ {item.precoDe}
+                            </Text>
+                          ) : (
+                            <View style={{ height: 20 }}></View>
+                          )}
+
                           <Text
                             style={{
                               fontWeight: "bold",

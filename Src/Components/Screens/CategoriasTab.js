@@ -23,8 +23,6 @@ export default class CategoriasTab extends Component {
   componentDidMount = () => {
     var categoria_prod =
       "https://eletrosom.com/shell/ws/integrador/listaDepartamentos/?version=15";
-    var categoria_homo =
-      "https://carrinhohomologacao.eletrosom.com/shell/ws/integrador/services_magento/service_get_category.php";
     fetch(categoria_prod)
       .then((response) => response.json())
       .then((responseJson) => {

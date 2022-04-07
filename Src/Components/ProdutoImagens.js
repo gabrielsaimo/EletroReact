@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import ShareButton from "./ShereButtom";
 import { IconButton } from "react-native-paper";
-export default App = ({ sku, urls }) => {
+export default App = ({ sku, urls ,favorito}) => {
+
   const { width } = Dimensions.get("window");
   const height = width * 0.6;
 
@@ -101,22 +102,37 @@ export default App = ({ sku, urls }) => {
           >
             <ShareButton url={urls} />
           </View>
+
           <View
-            style={{
-              flexDirection: "row",
-              position: "absolute",
-              top: 0,
-              right: 30,
-              alignSelf: "center",
-            }}
-          >
-            <IconButton
-              icon={require("../Components/assets/heart.png")}
-              color="#6A7075"
-              size={30}
-              onPress={() => ({})}
-            />
-          </View>
+                          style={
+                            favorito
+                              ? {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: -10,
+                                  right: 20,
+                                  alignSelf: "center",
+                                }
+                              : {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: 0,
+                                  right: 30,
+                                  alignSelf: "center",
+                                }
+                          }
+                        >
+                          <IconButton
+                            icon={
+                              favorito
+                                ? require("../Components/assets/favorito.png")
+                                : require("../Components/assets/heart.png")
+                            }
+                            color={favorito ? "#FFDB00" : "#6A7075"}
+                            size={favorito ? 37 : 30}
+                            onPress={() => ({})}
+                          />
+                        </View>
         </View>
       )}
     </View>

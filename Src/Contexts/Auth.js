@@ -1,13 +1,21 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState,useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState({});
+  const [user1, setUser1] = useState({});
   const navigation = useNavigation();
+  useEffect(() => {
+    AsyncStorage.getItem("idCliente").then((idCliente) => {
+      setUser1({idCliente:idCliente});
+    });
+  }, []);
 
+ 
   function consultaCep(cep, sku) {
+    
     if (cep !== "") {
       setUser({
         cep: cep,
@@ -17,7 +25,7 @@ function AuthProvider({ children }) {
       //navigation.goBack();
     }
   }
-
+ 
   function signIn(
     email,
     password,
@@ -31,6 +39,8 @@ function AuthProvider({ children }) {
     foto_cliente,
     endereco
   ) {
+    
+    
     if (email !== "" && password !== "") {
       AsyncStorage.setItem("email", email);
       AsyncStorage.setItem("password", password);
@@ -43,13 +53,13 @@ function AuthProvider({ children }) {
       AsyncStorage.setItem("rg", rg);
       AsyncStorage.setItem("foto_cliente", foto_cliente);
       AsyncStorage.setItem("endereco", endereco);
-
+      
       navigation.goBack();
     }
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, user, consultaCep }}>
+    <AuthContext.Provider value={{ signIn, user,user1, consultaCep }}>
       {children}
     </AuthContext.Provider>
   );

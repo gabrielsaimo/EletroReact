@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Snackbar } from "react-native-paper";
 import {
   View,
@@ -17,17 +17,14 @@ import {
   faCreditCard,
   faUser,
   faStar,
-  faHeart,
   faBox,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import { AuthContext } from "../../Contexts/Auth";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PerfilTab() {
-  const { user } = useContext(AuthContext);
-  console.log(user.Nome);
+
   const [visible, setVisible] = React.useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
@@ -195,7 +192,7 @@ export default function PerfilTab() {
         <View style={styles.conteiner}>
           <View>
             <TouchableOpacity
-              onPress={id != null ? () => ({}) : onToggleSnackBar}
+              onPress={id != null ? () => navigation.navigate("Pedidos",{idCliente:id}) : onToggleSnackBar}
             >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon

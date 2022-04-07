@@ -19,6 +19,7 @@ import CalculaFrete from "../CalculaFrete";
 import { WebView } from "react-native-webview";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
@@ -34,7 +35,9 @@ export default function Produto({ route, navigation }) {
 
   const { consultaCep } = useContext(AuthContext);
   const { user } = useContext(AuthContext);
+  const { user1 } = useContext(AuthContext);
   const [usercep, setUsercep] = useState(user.cep);
+  const [id,setId] = useState(user1.idCliente)
   const { width } = Dimensions.get("window");
   const width2 = width / 2;
   const width4 = width / 4;
@@ -42,34 +45,31 @@ export default function Produto({ route, navigation }) {
   const [TextInput_cep, setTextCep] = useState(usercep);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log(usercep);
 
-  console.log(cepvisible);
   function Clickcep() {
     consultaCep(TextInput_cep, sku);
 
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
   }
-  {
-    sku2 === undefined ? (route.params.sku = sku) : (route.params.sku = sku2);
-  }
+  
   const baseURL =
     "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
     route.params.sku +
-    "&version=15";
+    "&version=15&idCliente="+id;
+
+
+    async function loadApi() {
+      if (loading) return;
+      setLoading(true);
+  
+      const response = await axios.get(`${baseURL}`);
+      setData([...data, ...response.data]);
+    }
 
   useEffect(() => {
     loadApi();
-  }, [sku2]);
+  }, []);
 
-  async function loadApi() {
-    if (loading) return;
-
-    setLoading(true);
-
-    const response = await axios.get(`${baseURL}`);
-    setData([...data, ...response.data]);
-  }
   const SearchBar = () => {
     return (
       <Appbar.Header
@@ -123,7 +123,7 @@ export default function Produto({ route, navigation }) {
             <Text style={{ fontSize: 10, marginTop: 5,color: '#6A7075' }}>
               CÓD - {sku}
             </Text>
-            <Produtoimagem sku={sku} urls={item.urlsocial}></Produtoimagem>
+            <Produtoimagem sku={sku} urls={item.urlsocial} favorito={item.favoritos}></Produtoimagem>
 
             {item.filhos ? (
               <TouchableOpacity style={{width: '100%'}} onPress={() => setModal(true)}>

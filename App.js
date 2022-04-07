@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -16,6 +16,8 @@ import ModalFilhos from "./Src/Components/ModalFilhos";
 import ProdutoFilhos from "./Src/Components/ProdutoFilhos";
 import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
 import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
+import Pedidos from "./Src/Components/Screens/Pedidos";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -57,6 +59,7 @@ const Perfies = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Perfil" component={PerfilTab} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Pedidos" component={Pedidos} />
     </Stack.Navigator>
   );
 };
@@ -161,12 +164,6 @@ export default function App() {
                   size={24}
                 />
               ),
-            }}
-            listeners={{
-              tabPress: (e) => {
-                e.preventDefault();
-                alert("Logue para acessar");
-              },
             }}
           />
           <Tab.Screen
