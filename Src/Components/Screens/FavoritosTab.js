@@ -170,7 +170,7 @@ function ListItem({ data, navigation }) {
               icon={require("../assets/favorito.png")}
               color={"#FFDB00"}
               size={37}
-              onPress={() => ({})}
+              onPress={() => navigation.navigate('ExcluirFavorito',{sku:data.codigo,page:'Favorito'})}
             />
           </View>
           {!data.avaliacao > 0 ? (

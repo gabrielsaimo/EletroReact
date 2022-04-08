@@ -33,52 +33,57 @@ export default class HomeTab extends Component {
   componentDidMount() {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       var id = "idCliente=" + idCliente;
-      console.log("🚀 ~ file: HomeTab.js ~ line 36 ~ HomeTab ~ AsyncStorage.getItem ~ id", id)
+      console.log(
+        "🚀 ~ file: HomeTab.js ~ line 36 ~ HomeTab ~ AsyncStorage.getItem ~ id",
+        id
+      );
 
-      
-      if(idCliente === null){
-      
-      var categoria_prod =
-      "https://eletrosom.com/shell/ws/integrador/listaProdutos?";
-    console.log('aqui 1');
-    fetch(categoria_prod)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          data: responseJson,
-          isLoading: false,
-        });
-        console.log(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-        componentDidMount();
-      });
-      }else{
+      if (idCliente === null) {
         var categoria_prod =
-        "https://eletrosom.com/shell/ws/integrador/listaProdutos?" + id;
-        console.log('aqui 2');
-      fetch(categoria_prod)
-        .then((response) => response.json())
-        .then((responseJson) => {
-          this.setState({
-            data: responseJson,
-            isLoading: false,
+          "https://eletrosom.com/shell/ws/integrador/listaProdutos?";
+        console.log("aqui 1");
+        fetch(categoria_prod)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            this.setState({
+              data: responseJson,
+              isLoading: false,
+            });
+            console.log(responseJson);
+          })
+          .catch((error) => {
+            console.error(error);
+            componentDidMount();
           });
-          console.log(responseJson);
-        })
-        .catch((error) => {
-          console.error(error);
-          componentDidMount();
-        });
+      } else {
+        var categoria_prod =
+          "https://eletrosom.com/shell/ws/integrador/listaProdutos?" + id;
+        console.log("aqui 2");
+        fetch(categoria_prod)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            this.setState({
+              data: responseJson,
+              isLoading: false,
+            });
+            console.log(responseJson);
+          })
+          .catch((error) => {
+            console.error(error);
+            componentDidMount();
+          });
       }
-     
     });
   }
 
   render() {
     const { navigate } = this.props.navigation;
-
+    function add(sku) {
+      navigate("AddFavorito", { sku: sku, page: "Home" });
+    }
+    function excluir(sku) {
+      navigate("ExcluirFavorito", { sku: sku, page: "Home" });
+    }
     return (
       <View style={{ height: "100%", width }}>
         <SearchBarHome />
@@ -100,7 +105,6 @@ export default class HomeTab extends Component {
                           navigate("Produto", {
                             sku: item.codigo,
                             precode: item.precoDe,
-                            
                           })
                         }
                       >
@@ -140,7 +144,11 @@ export default class HomeTab extends Component {
                             }
                             color={item.favorito ? "#FFDB00" : "#6A7075"}
                             size={item.favorito ? 37 : 30}
-                            onPress={() => ({})}
+                            onPress={() => {
+                              item.favorito
+                                ? excluir(item.codigo)
+                                : add(item.codigo);
+                            }}
                           />
                         </View>
                         {item.percentual > 0 ? (

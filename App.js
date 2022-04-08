@@ -17,6 +17,8 @@ import ProdutoFilhos from "./Src/Components/ProdutoFilhos";
 import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
 import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
 import Pedidos from "./Src/Components/Screens/Pedidos";
+import AddFavorito from "./Src/Components/AddFavorito";
+import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
 
 
 const Tab = createBottomTabNavigator();
@@ -85,9 +87,30 @@ const Produtos = () => {
         Options={{ headerShown: false, headerTitleAlign: "center" }}
       />
       <Stack.Screen name="Banner" component={Banner} />
+      <Stack.Screen name="AddFavorito" component={AddFavorito} />
+      <Stack.Screen name="ExcluirFavorito" component={ExcluirFavorito} />
+      <Stack.Screen
+    name="Favoritos"
+    component={FavoritosTab}
+    Options={{ headerShown: false, headerTitleAlign: "center" }}
+  />
     </Stack.Navigator>
   );
 };
+const Favorioto = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen
+    name="Favoritos"
+    component={FavoritosTab}
+    Options={{ headerShown: false, headerTitleAlign: "center" }}
+  />
+  <Stack.Screen
+    name="ExcluirFavorito"
+    component={ExcluirFavorito}
+  />
+  </Stack.Navigator>
+  )}
 
 export default function App() {
   const ButtonAlert = () =>
@@ -153,10 +176,10 @@ export default function App() {
             }}
           />
           <Tab.Screen
-            name="Favoritos"
-            component={FavoritosTab}
+            name="Favorito"
+            component={Favorioto}
             options={{
-              tabBarLabel: "Favoritos",
+              tabBarLabel: "Favorito",
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons
                   name="heart-outline"
