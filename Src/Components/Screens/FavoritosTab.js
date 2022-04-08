@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
+  BackHandler,
   FlatList,
   Image,
   SafeAreaView,
@@ -22,7 +23,7 @@ export default function FavoritosTab() {
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setId(idCliente);
   });
-  console.log(id);
+
   const Favoriotos = async () => {
     try {
       await fetch(
@@ -44,35 +45,22 @@ export default function FavoritosTab() {
           setData(resData);
         });
     } catch (e) {
-      console.error(e);
-      setError(e);
+      if (e && id == null) {
+        setError(e);
+        console.log("aqui" + error);
+      }
     }
   };
-  console.log(data);
   useEffect(() => {
-      Favoriotos();
-    
-  }, []);
-  if (error == null) {
     Favoriotos();
-  }
+  }, [id]);
 
   function SearchBar() {
-    const _handleSearch = () => (
-      <TextInput placeholder="test de imput" value={searchText}></TextInput>
-    );
     return (
       <Appbar.Header
         style={{ backgroundColor: "#1534C8", alignItems: "center", zIndex: 99 }}
       >
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Action />
         <Appbar.Content title={"Favoritos"} style={{ alignItems: "center" }} />
-        <Appbar.Action icon="magnify" onPress={_handleSearch} />
-        <Appbar.Action
-          icon="cart-outline"
-          onPress={() => navigation.navigate("CarrinhoTab")}
-        />
       </Appbar.Header>
     );
   }
@@ -124,6 +112,7 @@ export default function FavoritosTab() {
                 navigate={navigator}
               />
             ) : (
+              !item.emEstoque ? null:
               <ListItem2
                 data={item}
                 navigation={navigation}
@@ -139,227 +128,231 @@ export default function FavoritosTab() {
 function ListItem({ data, navigation }) {
   return (
     <View style={{ alignItems: "center", flex: 1 }}>
-      <TouchableOpacity
-        style={styles.buttonContainerStyle}
-        onPress={() =>
-          navigation.navigate("Produto", {
-            sku: data.codigo,
-            precode: data.precoDe,
-          })
-        }
-      >
-        <Image
-          source={{ uri: data.imagem }}
-          style={{
-            width: 120,
-            height: 120,
-            resizeMode: "contain",
-            margin: 10,
-          }}
-        />
-        <View
-          style={
-            data.favorito
-              ? {
-                  flexDirection: "row",
-                  position: "absolute",
-                  top: -10,
-                  right: -10,
-                  alignSelf: "center",
-                }
-              : {
-                  flexDirection: "row",
-                  position: "absolute",
-                  top: -5,
-                  right: -5,
-                  alignSelf: "center",
-                }
+      {!data.emEstoque ? null : (
+        <TouchableOpacity
+          style={styles.buttonContainerStyle}
+          onPress={() =>
+            navigation.navigate("Produto", {
+              sku: data.codigo,
+              precode: data.precoDe,
+            })
           }
         >
-          <IconButton
-            icon={require("../assets/favorito.png")}
-            color={"#FFDB00"}
-            size={37}
-            onPress={() => ({})}
+          <Image
+            source={{ uri: data.imagem }}
+            style={{
+              width: 120,
+              height: 120,
+              resizeMode: "contain",
+              margin: 10,
+            }}
           />
-        </View>
-        {!data.avaliacao > 0 ? (
-          <></>
-        ) : (
           <View
-            style={{
-              width: 80,
-              height: 20,
-              position: "absolute",
-              margin: 5,
-              backgroundColor: "#FEA535",
-              alignItems: "center",
-              borderRadius: 20,
-            }}
+            style={
+              data.favorito
+                ? {
+                    flexDirection: "row",
+                    position: "absolute",
+                    top: -10,
+                    right: -10,
+                    alignSelf: "center",
+                  }
+                : {
+                    flexDirection: "row",
+                    position: "absolute",
+                    top: -5,
+                    right: -5,
+                    alignSelf: "center",
+                  }
+            }
           >
-            <Text>{data.avaliacao}% off</Text>
+            <IconButton
+              icon={require("../assets/favorito.png")}
+              color={"#FFDB00"}
+              size={37}
+              onPress={() => ({})}
+            />
           </View>
-        )}
+          {!data.avaliacao > 0 ? (
+            <></>
+          ) : (
+            <View
+              style={{
+                width: 80,
+                height: 20,
+                position: "absolute",
+                margin: 5,
+                backgroundColor: "#FEA535",
+                alignItems: "center",
+                borderRadius: 20,
+              }}
+            >
+              <Text>{data.avaliacao}% off</Text>
+            </View>
+          )}
 
-        <View>
-          <Text
-            numberOfLines={2}
-            style={{
-              fontWeight: "bold",
-              fontSize: 13,
-              maxWidth: 260,
-              width: "90%",
-            }}
-          >
-            {data.nome}
-          </Text>
-          <Text
-            style={{
-              fontSize: 10,
-              width: "100%",
-              textDecorationLine: "line-through",
-            }}
-          >
-            R$ {data.precoDe}
-          </Text>
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 25,
-              width: "100%",
-              color: "#1534C8",
-            }}
-          >
-            R$ {data.precoPor}
-          </Text>
-          <Text
-            style={{
-              color: "blue",
-              fontSize: 10,
-              width: "200%",
-            }}
-          >
-            {data.formaPagamento}
-          </Text>
-        </View>
-      </TouchableOpacity>
+          <View>
+            <Text
+              numberOfLines={2}
+              style={{
+                fontWeight: "bold",
+                fontSize: 13,
+                maxWidth: 260,
+                width: "90%",
+              }}
+            >
+              {data.nome}
+            </Text>
+            <Text
+              style={{
+                fontSize: 10,
+                width: "100%",
+                textDecorationLine: "line-through",
+              }}
+            >
+              R$ {data.precoDe}
+            </Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 25,
+                width: "100%",
+                color: "#1534C8",
+              }}
+            >
+              R$ {data.precoPor}
+            </Text>
+            <Text
+              style={{
+                color: "blue",
+                fontSize: 10,
+                width: "200%",
+              }}
+            >
+              {data.formaPagamento}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
 function ListItem2({ data, navigation }) {
   return (
     <View style={{ alignItems: "center" }}>
-      <View style={{ width: "100%" }}>
-        <View>
-          <TouchableOpacity
-            style={styles.buttonContainerStyle1}
-            onPress={() =>
-              navigation.navigate("Produto", {
-                sku: data.codigo,
-                title: data.nome,
-                precode: data.precoDe,
-              })
-            }
-          >
-            <View style={{ Width: "100%" }}>
-              <View style={{ marginTop: 20 }}>
-                <View
-                  style={{
-                    alignContent: "center",
-                    alignItems: "center",
-                    alignSelf: "center",
-                    Width: "200%",
-                  }}
-                >
-                  <Image
-                    source={{ uri: data.imagem }}
-                    style={{
-                      width: 120,
-                      height: 120,
-                      marginLeft: 35,
-                    }}
-                  />
+      {!data.emEstoque ? <></> : (
+        <View style={{ width: "100%" }}>
+          <View>
+            <TouchableOpacity
+              style={styles.buttonContainerStyle1}
+              onPress={() =>
+                navigation.navigate("Produto", {
+                  sku: data.codigo,
+                  title: data.nome,
+                  precode: data.precoDe,
+                })
+              }
+            >
+              <View style={{ Width: "100%" }}>
+                <View style={{ marginTop: 20 }}>
                   <View
                     style={{
-                      flexDirection: "row",
-                      position: "absolute",
-                      top: -25,
-                      right: -50,
+                      alignContent: "center",
+                      alignItems: "center",
                       alignSelf: "center",
+                      Width: "200%",
                     }}
                   >
-                    <IconButton
-                      icon={require("../assets/favorito.png")}
-                      color={"#FFDB00"}
-                      size={37}
-                      onPress={() => ({})}
+                    <Image
+                      source={{ uri: data.imagem }}
+                      style={{
+                        width: 120,
+                        height: 120,
+                        marginLeft: 35,
+                      }}
                     />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        position: "absolute",
+                        top: -25,
+                        right: -50,
+                        alignSelf: "center",
+                      }}
+                    >
+                      <IconButton
+                        icon={require("../assets/favorito.png")}
+                        color={"#FFDB00"}
+                        size={37}
+                        onPress={() => ({})}
+                      />
+                    </View>
                   </View>
                 </View>
-              </View>
 
-              <View style={{ maxWidth: "50%" }}>
-                <View>
+                <View style={{ maxWidth: "50%" }}>
+                  <View>
+                    <Text
+                      numberOfLines={2}
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 13,
+                        width: "200%",
+                        marginLeft: 15,
+                      }}
+                    >
+                      {data.nome}
+                    </Text>
+                  </View>
+
+                  <View style={{ width: "100%", marginLeft: 15 }}>
+                    <StarRating
+                      disabled={true}
+                      maxStars={5}
+                      rating={data.avaliacao}
+                      starSize={15}
+                      fullStarColor={"#FEA535"}
+                      emptyStarColor={"#6A7075"}
+                    />
+                  </View>
                   <Text
-                    numberOfLines={2}
+                    style={{
+                      fontSize: 10,
+                      width: "200%",
+                      textDecorationLine: "line-through",
+                      marginLeft: 15,
+                    }}
+                  >
+                    R$ {data.precoDe}
+                  </Text>
+
+                  <Text
                     style={{
                       fontWeight: "bold",
-                      fontSize: 13,
+                      fontSize: 25,
+                      width: "400%",
+                      color: "#1534C8",
+                      marginLeft: 15,
+                    }}
+                  >
+                    R$ {data.precoPor}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "blue",
+                      fontSize: 10,
                       width: "200%",
                       marginLeft: 15,
                     }}
                   >
-                    {data.nome}
+                    {data.formaPagamento}
                   </Text>
                 </View>
-
-                <View style={{ width: "100%", marginLeft: 15 }}>
-                  <StarRating
-                    disabled={true}
-                    maxStars={5}
-                    rating={data.avaliacao}
-                    starSize={15}
-                    fullStarColor={"#FEA535"}
-                    emptyStarColor={"#6A7075"}
-                  />
-                </View>
-                <Text
-                  style={{
-                    fontSize: 10,
-                    width: "200%",
-                    textDecorationLine: "line-through",
-                    marginLeft: 15,
-                  }}
-                >
-                  R$ {data.precoDe}
-                </Text>
-
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: 25,
-                    width: "400%",
-                    color: "#1534C8",
-                    marginLeft: 15,
-                  }}
-                >
-                  R$ {data.precoPor}
-                </Text>
-                <Text
-                  style={{
-                    color: "blue",
-                    fontSize: 10,
-                    width: "200%",
-                    marginLeft: 15,
-                  }}
-                >
-                  {data.formaPagamento}
-                </Text>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 }

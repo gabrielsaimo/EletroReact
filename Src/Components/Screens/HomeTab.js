@@ -52,6 +52,7 @@ export default class HomeTab extends Component {
       })
       .catch((error) => {
         console.error(error);
+        componentDidMount();
       });
       }else{
         var categoria_prod =
@@ -68,6 +69,7 @@ export default class HomeTab extends Component {
         })
         .catch((error) => {
           console.error(error);
+          componentDidMount();
         });
       }
      

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { AuthContext } from "../../Contexts/Auth";
+import { Appbar } from "react-native-paper";
 export default function Pedidos({ route, navigation }) {
   const id = route.params.idCliente;
 
@@ -36,8 +37,22 @@ export default function Pedidos({ route, navigation }) {
     console.log(`${baseURL}`);
   }
 
+  function SearchBar() {
+
+    return (
+      <Appbar.Header
+        style={{ backgroundColor: "#1534C8", alignItems: "center", zIndex: 99 }}
+      >
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+        <Appbar.Content title={"Pedidos"} style={{ alignItems: "center" }} />
+        <Appbar.Action />
+      </Appbar.Header>
+    );
+  }
+
   return (
     <View>
+      <SearchBar/>
       <FlatList
         data={data}
         keyExtractor={(item) => item.incrementId}

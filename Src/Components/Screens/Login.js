@@ -28,7 +28,6 @@ export default function Login() {
       })
         .then((res) => res.json())
         .then((resData) => {
-          console.log(resData.dados_cliente.IdCliente);
 
           if (resData.codigoMensagem == 200) {
             const idCliente = resData.dados_cliente.IdCliente;
@@ -53,6 +52,15 @@ export default function Login() {
               FotoCliente,
               Endereco
             );
+            setTimeout(
+              () => { navigation.reset({
+                routes: [{ name: "Perfils" }],
+                key:null,
+                initial: false,
+              })
+              navigation.goBack(); },
+              500
+            )
           } else if (resData.codigoMensagem == 317) {
             alert("Login ou Senha Inválidos");
           } else {
@@ -64,16 +72,6 @@ export default function Login() {
 
   function ClickLogin() {
     Logar();
-    setTimeout(
-      () => { navigation.reset({
-        routes: [{ name: "Perfils" }],
-        key:null,
-        initial: false,
-      })
-      navigation.goBack(); },
-      500
-    )
-    
   }
   return (
     <SafeAreaView>

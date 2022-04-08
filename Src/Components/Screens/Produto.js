@@ -26,13 +26,11 @@ export default function Produto({ route, navigation }) {
   const filhos = route.params.filhos;
   const sku2 = route.params.sku2;
   const [precoDe, setprecoDe] = useState(route.params.precode);
-
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
-
   const { consultaCep } = useContext(AuthContext);
   const { user } = useContext(AuthContext);
   const { user1 } = useContext(AuthContext);
@@ -121,7 +119,7 @@ export default function Produto({ route, navigation }) {
               {item.nome}
             </Text>
             <Text style={{ fontSize: 10, marginTop: 5,color: '#6A7075' }}>
-              CÓD - {sku}
+              CÓD - {item.codigo}
             </Text>
             <Produtoimagem sku={sku} urls={item.urlsocial} favorito={item.favoritos}></Produtoimagem>
 

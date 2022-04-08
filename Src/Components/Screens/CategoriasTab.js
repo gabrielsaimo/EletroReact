@@ -34,7 +34,10 @@ export default class CategoriasTab extends Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        if (error){
+          console.error(error);
+          componentDidMount();
+        }
       });
   };
 
