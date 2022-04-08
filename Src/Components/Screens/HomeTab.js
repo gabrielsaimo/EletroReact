@@ -33,9 +33,30 @@ export default class HomeTab extends Component {
   componentDidMount() {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       var id = "idCliente=" + idCliente;
+      console.log("🚀 ~ file: HomeTab.js ~ line 36 ~ HomeTab ~ AsyncStorage.getItem ~ id", id)
+
+      
+      if(idCliente === null){
+      
       var categoria_prod =
+      "https://eletrosom.com/shell/ws/integrador/listaProdutos?";
+    console.log('aqui 1');
+    fetch(categoria_prod)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          data: responseJson,
+          isLoading: false,
+        });
+        console.log(responseJson);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      }else{
+        var categoria_prod =
         "https://eletrosom.com/shell/ws/integrador/listaProdutos?" + id;
-      console.log(categoria_prod);
+        console.log('aqui 2');
       fetch(categoria_prod)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -48,6 +69,8 @@ export default class HomeTab extends Component {
         .catch((error) => {
           console.error(error);
         });
+      }
+     
     });
   }
 
@@ -75,7 +98,7 @@ export default class HomeTab extends Component {
                           navigate("Produto", {
                             sku: item.codigo,
                             precode: item.precoDe,
-                            id:id
+                            
                           })
                         }
                       >

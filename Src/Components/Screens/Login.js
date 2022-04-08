@@ -7,6 +7,7 @@ import { Appbar } from "react-native-paper";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,10 +64,16 @@ export default function Login() {
 
   function ClickLogin() {
     Logar();
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Home" }],
-    });
+    setTimeout(
+      () => { navigation.reset({
+        routes: [{ name: "Perfils" }],
+        key:null,
+        initial: false,
+      })
+      navigation.goBack(); },
+      500
+    )
+    
   }
   return (
     <SafeAreaView>

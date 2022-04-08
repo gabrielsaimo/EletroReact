@@ -50,7 +50,8 @@ export default function FavoritosTab() {
   };
   console.log(data);
   useEffect(() => {
-    Favoriotos();
+      Favoriotos();
+    
   }, []);
   if (error == null) {
     Favoriotos();
@@ -143,7 +144,6 @@ function ListItem({ data, navigation }) {
         onPress={() =>
           navigation.navigate("Produto", {
             sku: data.codigo,
-            title: data.nome,
             precode: data.precoDe,
           })
         }

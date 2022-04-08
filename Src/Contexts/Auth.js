@@ -6,10 +6,12 @@ export const AuthContext = createContext({});
 function AuthProvider({ children }) {
   const [user, setUser] = useState({});
   const [user1, setUser1] = useState({});
+  
   const navigation = useNavigation();
   useEffect(() => {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       setUser1({idCliente:idCliente});
+      console.log("🚀 ~ file: Auth.js ~ line 9 ~ AuthProvider ~ user1", user1)
     });
   }, []);
 
@@ -53,8 +55,10 @@ function AuthProvider({ children }) {
       AsyncStorage.setItem("rg", rg);
       AsyncStorage.setItem("foto_cliente", foto_cliente);
       AsyncStorage.setItem("endereco", endereco);
+
+      setUser1({idCliente:idCliente});
+
       
-      navigation.goBack();
     }
   }
 

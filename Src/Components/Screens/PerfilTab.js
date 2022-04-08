@@ -66,8 +66,7 @@ export default function PerfilTab() {
   const logout = () => {
     AsyncStorage.clear();
     navigation.reset({
-      index: 0,
-      routes: [{ name: "Home" }],
+      routes: [{ name: "Perfils" }],
     });
   };
   return (
