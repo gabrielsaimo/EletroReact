@@ -11,7 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn } = useContext(AuthContext);
+  const { signIn, endereco } = useContext(AuthContext);
+
   const navigation = useNavigation();
 
   const Logar = async () => {
@@ -28,7 +29,6 @@ export default function Login() {
       })
         .then((res) => res.json())
         .then((resData) => {
-
           if (resData.codigoMensagem == 200) {
             const idCliente = resData.dados_cliente.IdCliente;
             const Nome = resData.dados_cliente.nome;
@@ -38,29 +38,43 @@ export default function Login() {
             const Cpf = resData.dados_cliente.cpf;
             const Rg = resData.dados_cliente.rg;
             const FotoCliente = resData.dados_cliente.foto_cliente;
-            const Endereco = resData.dados_cliente.endereco;
-            signIn(
-              email,
-              password,
-              idCliente,
-              Nome,
-              DataNasc,
-              Sexo,
-              TipoPessoa,
-              Cpf,
-              Rg,
-              FotoCliente,
-              Endereco
-            );
-            setTimeout(
-              () => { navigation.reset({
-                routes: [{ name: "Perfils" }],
-                key:null,
-                initial: false,
-              })
-              navigation.goBack(); },
-              500
+
+            fetch(
+              "https://www.eletrosom.com/shell/ws/integrador/listaMeusEnderecos?idCliente=" +
+                idCliente
             )
+              .then((ress) => ress.json())
+              .then((resDatas) => {
+                const Endereco = resDatas.endereco;
+                const numero = resDatas.numero;
+                const cep = resDatas.cep;
+                const cidade = resDatas.cidade;
+                signIn(
+                  email,
+                  password,
+                  idCliente,
+                  Nome,
+                  DataNasc,
+                  Sexo,
+                  TipoPessoa,
+                  Cpf,
+                  Rg,
+                  FotoCliente,
+                  Endereco,
+                  cep,
+                  numero,
+                  cidade
+                );
+              });
+
+            setTimeout(() => {
+              navigation.reset({
+                routes: [{ name: "Perfils" }],
+                key: null,
+                initial: false,
+              });
+              navigation.goBack();
+            }, 1000);
           } else if (resData.codigoMensagem == 317) {
             alert("Login ou Senha Inválidos");
           } else {

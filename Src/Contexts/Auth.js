@@ -17,7 +17,6 @@ function AuthProvider({ children }) {
 
  
   function consultaCep(cep, sku) {
-    
     if (cep !== "") {
       setUser({
         cep: cep,
@@ -39,7 +38,9 @@ function AuthProvider({ children }) {
     cpf,
     rg,
     foto_cliente,
-    endereco
+    endereco,
+    cep,
+    numero,cidade
   ) {
     
     
@@ -55,15 +56,17 @@ function AuthProvider({ children }) {
       AsyncStorage.setItem("rg", rg);
       AsyncStorage.setItem("foto_cliente", foto_cliente);
       AsyncStorage.setItem("endereco", endereco);
+      AsyncStorage.setItem("cep", cep);
+      AsyncStorage.setItem("numero", numero);
+      AsyncStorage.setItem("cidade", cidade);
 
       setUser1({idCliente:idCliente});
-
       
     }
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, user,user1, consultaCep }}>
+    <AuthContext.Provider value={{ signIn, user,user1, consultaCep}}>
       {children}
     </AuthContext.Provider>
   );

@@ -35,7 +35,7 @@ export default function Produto({ route, navigation }) {
   const { user } = useContext(AuthContext);
   const { user1 } = useContext(AuthContext);
   const [usercep, setUsercep] = useState(user.cep);
-  const [id,setId] = useState(user1.idCliente)
+  const [id, setId] = useState(user1.idCliente);
   const { width } = Dimensions.get("window");
   const width2 = width / 2;
   const width4 = width / 4;
@@ -49,20 +49,20 @@ export default function Produto({ route, navigation }) {
 
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
   }
-  
+
   const baseURL =
     "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
     route.params.sku +
-    "&version=15&idCliente="+id;
+    "&version=15&idCliente=" +
+    id;
 
+  async function loadApi() {
+    if (loading) return;
+    setLoading(true);
 
-    async function loadApi() {
-      if (loading) return;
-      setLoading(true);
-  
-      const response = await axios.get(`${baseURL}`);
-      setData([...data, ...response.data]);
-    }
+    const response = await axios.get(`${baseURL}`);
+    setData([...data, ...response.data]);
+  }
 
   useEffect(() => {
     loadApi();
@@ -94,12 +94,12 @@ export default function Produto({ route, navigation }) {
         renderItem={({ item }) => (
           <View
             style={{
-              flex: 1,
+              flex: 0,
               alignItems: "baseline",
               margin: 10,
-              marginTop:20,
-              height,
-              paddingBottom: 100,
+              marginTop: 20,
+              marginBottom: 115,
+              height: "100%",
             }}
           >
             <View style={{ width: 80 }}>
@@ -118,16 +118,23 @@ export default function Produto({ route, navigation }) {
             >
               {item.nome}
             </Text>
-            <Text style={{ fontSize: 10, marginTop: 5,color: '#6A7075' }}>
+            <Text style={{ fontSize: 10, marginTop: 5, color: "#6A7075" }}>
               CÓD - {item.codigo}
             </Text>
-            <Produtoimagem sku={sku} urls={item.urlsocial} favorito={item.favoritos}></Produtoimagem>
+            <Produtoimagem
+              sku={sku}
+              urls={item.urlsocial}
+              favorito={item.favoritos}
+            ></Produtoimagem>
 
             {item.filhos ? (
-              <TouchableOpacity style={{width: '100%'}} onPress={() => setModal(true)}>
+              <TouchableOpacity
+                style={{ width: "100%" }}
+                onPress={() => setModal(true)}
+              >
                 <View
                   style={{
-                    width: '100%',
+                    width: "100%",
                     height: 50,
                     backgroundColor: "#F0F2F4",
                     borderRadius: 10,
@@ -157,10 +164,10 @@ export default function Produto({ route, navigation }) {
                 fontSize: 15,
                 width: "100%",
                 textDecorationLine: "line-through",
-                color: '#6A7075'
+                color: "#6A7075",
               }}
             >
-              R$ {precoDe}
+              R$ {precoDe}100
             </Text>
             <Text
               style={{
@@ -280,16 +287,52 @@ export default function Produto({ route, navigation }) {
                 <></>
               )}
             </View>
-            <TouchableOpacity style={{width: '100%',marginTop:20}}>
+            <TouchableOpacity style={{ width: "100%", marginTop: 20 }}>
               <View
-                style={{ width: '100%', height: 60, backgroundColor: "#9BCB3D",borderRadius:10,alignItems:'center'}}
-              ><Text style={{paddingVertical:15,fontSize:20,color:'white',fontWeight:'bold'}}>Comprar agora</Text></View>
+                style={{
+                  width: "100%",
+                  height: 60,
+                  backgroundColor: "#9BCB3D",
+                  borderRadius: 10,
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    paddingVertical: 15,
+                    fontSize: 20,
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Comprar agora
+                </Text>
+              </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{width: '100%',marginTop:15}}>
+            <TouchableOpacity style={{ width: "100%", marginTop: 15 }}>
               <View
-                style={{ width: '100%', height: 60, backgroundColor: "white",borderRadius:10,alignItems:'center',borderWidth:1,borderColor:'#9BCB3D'}}
-              ><Text style={{paddingVertical:13,fontSize:20,color:'#9BCB3D',fontWeight:'bold'}}>Adicionar ao carrinho</Text></View>
+                style={{
+                  width: "100%",
+                  height: 60,
+                  backgroundColor: "white",
+                  borderRadius: 10,
+                  alignItems: "center",
+                  borderWidth: 1,
+                  borderColor: "#9BCB3D",
+                }}
+              >
+                <Text
+                  style={{
+                    paddingVertical: 13,
+                    fontSize: 20,
+                    color: "#9BCB3D",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Adicionar ao carrinho
+                </Text>
+              </View>
             </TouchableOpacity>
             <View
               style={{
@@ -379,7 +422,7 @@ export default function Produto({ route, navigation }) {
                 }}
               >
                 <Text style={{ fontSize: 50 }}>
-                  {!data.avaliacao ? 0 :data.avaliacao}
+                  {!data.avaliacao ? 0 : data.avaliacao}
                 </Text>
               </View>
               <View style={{ width: 180, marginHorizontal: 10 }}>
@@ -391,7 +434,7 @@ export default function Produto({ route, navigation }) {
                   fullStarColor={"#FEA535"}
                   emptyStarColor={"#6A7075"}
                 />
-                <Text>{!data.avaliacao ? 0 :data.avaliacao} Avaliações</Text>
+                <Text>{!data.avaliacao ? 0 : data.avaliacao} Avaliações</Text>
               </View>
               <Modal
                 animationType={"slide"}
@@ -580,6 +623,52 @@ export default function Produto({ route, navigation }) {
                   </View>
                 </View>
               </Modal>
+            </View>
+            <View>
+              <View
+                style={{
+                  height: 2,
+                  backgroundColor: "#CED4DA",
+                  width,
+                  marginLeft: -10,
+                  borderRadius: 20,
+                  marginVertical: 0,
+                }}
+              ></View>
+              {item.resenhas.map ? (
+                <View>
+                  {item.resenhas.map((i, k) => (
+                    <View style={{ marginVertical: 20 }}>
+                      <View style={{ width: 80 }}>
+                        <StarRating
+                          disabled={true}
+                          maxStars={5}
+                          rating={i.vote}
+                          starSize={10}
+                          fullStarColor={"#FEA535"}
+                          emptyStarColor={"#6A7075"}
+                        />
+                      </View>
+
+                      <Text>{i.nickname}</Text>
+                      <Text>{i.titulo}</Text>
+                      <Text>{i.descricao}</Text>
+                      <View
+                        style={{
+                          height: 1.5,
+                          backgroundColor: "#CED4DA",
+                          width,
+                          marginLeft: -10,
+                          borderRadius: 20,
+                          marginTop: 20,
+                        }}
+                      ></View>
+                    </View>
+                  ))}
+                </View>
+              ) : (
+                <></>
+              )}
             </View>
           </View>
         )}

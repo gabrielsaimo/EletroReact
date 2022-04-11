@@ -36,7 +36,7 @@ export default function PerfilTab() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [foto, setFoto] = useState("");
-  console.log(foto);
+
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setId(idCliente);
   });
@@ -126,7 +126,7 @@ export default function PerfilTab() {
               margin: 10,
             }}
           >
-            {id !== null ? (
+            {foto !== null ? (
               <Image
                 style={{ width: "100%", height: "100%", borderRadius: 10 }}
                 source={{ uri: foto }}

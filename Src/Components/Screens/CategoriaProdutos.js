@@ -85,6 +85,13 @@ export default function CategoriasProduto({ route, navigation }) {
       </View>
     );
   };
+
+  function add(sku) {
+    navigate("AddFavorito", { sku: sku, page: "Produto" });
+  }
+  function excluir(sku) {
+    navigate("ExcluirFavorito", { sku: sku, page: "Home" });
+  }
   return (
     <SafeAreaView>
       <View style={{ width: "100%", height: "100%" }}>
@@ -148,35 +155,35 @@ function ListItem({ data, navigation }) {
             }}
           />
           <View
-                          style={
-                            data.favorito
-                              ? {
-                                  flexDirection: "row",
-                                  position: "absolute",
-                                  top: -10,
-                                  right: -10,
-                                  alignSelf: "center",
-                                }
-                              : {
-                                  flexDirection: "row",
-                                  position: "absolute",
-                                  top: -5,
-                                  right: -5,
-                                  alignSelf: "center",
-                                }
-                          }
-                        >
-                          <IconButton
-                            icon={
-                              data.favorito
-                                ? require("../assets/favorito.png")
-                                : require("../assets/heart.png")
-                            }
-                            color={data.favorito ? "#FFDB00" : "#6A7075"}
-                            size={data.favorito ? 37 : 30}
-                            onPress={() => ({})}
-                          />
-                        </View>
+            style={
+              data.favorito
+                ? {
+                    flexDirection: "row",
+                    position: "absolute",
+                    top: -10,
+                    right: -10,
+                    alignSelf: "center",
+                  }
+                : {
+                    flexDirection: "row",
+                    position: "absolute",
+                    top: -5,
+                    right: -5,
+                    alignSelf: "center",
+                  }
+            }
+          >
+            <IconButton
+              icon={
+                data.favorito
+                  ? require("../assets/favorito.png")
+                  : require("../assets/heart.png")
+              }
+              color={data.favorito ? "#FFDB00" : "#6A7075"}
+              size={data.favorito ? 37 : 30}
+              onPress={() => ({})}
+            />
+          </View>
           {!data.percentual > 0 ? (
             <></>
           ) : (
@@ -197,7 +204,7 @@ function ListItem({ data, navigation }) {
 
           <View>
             <Text
-            numberOfLines={2}
+              numberOfLines={2}
               style={{
                 fontWeight: "bold",
                 fontSize: 13,
@@ -217,15 +224,19 @@ function ListItem({ data, navigation }) {
                 emptyStarColor={"#6A7075"}
               />
             </View>
-            {!data.percentual > 0 ? (<View style={{height:15}}></View>):(<Text
-              style={{
-                fontSize: 10,
-                width: "100%",
-                textDecorationLine: "line-through",
-              }}
-            >
-              R$ {data.precoDe}
-            </Text>)}
+            {!data.percentual > 0 ? (
+              <View style={{ height: 15 }}></View>
+            ) : (
+              <Text
+                style={{
+                  fontSize: 10,
+                  width: "100%",
+                  textDecorationLine: "line-through",
+                }}
+              >
+                R$ {data.precoDe}
+              </Text>
+            )}
             <Text
               style={{
                 fontWeight: "bold",
@@ -256,7 +267,7 @@ function ListItem2({ data, navigation }) {
                   sku: data.codigo,
                   title: data.nome,
                   precode: data.precoDe,
-                  favorito: data.favorito
+                  favorito: data.favorito,
                 })
               }
             >
@@ -278,38 +289,37 @@ function ListItem2({ data, navigation }) {
                   >
                     <Text>{data.percentual}% off</Text>
                   </View>
-                  
                 )}
-<View
-                          style={
-                            data.favorito
-                              ? {
-                                  flexDirection: "row",
-                                  position: "absolute",
-                                  top: -10,
-                                  right: -10,
-                                  alignSelf: "center",
-                                }
-                              : {
-                                  flexDirection: "row",
-                                  position: "absolute",
-                                  top: -5,
-                                  right: -50,
-                                  alignSelf: "center",
-                                }
-                          }
-                        >
-                          <IconButton
-                            icon={
-                              data.favorito
-                                ? require("../assets/favorito.png")
-                                : require("../assets/heart.png")
-                            }
-                            color={data.favorito ? "#FFDB00" : "#6A7075"}
-                            size={data.favorito ? 37 : 30}
-                            onPress={() => ({})}
-                          />
-                        </View>
+                <View
+                  style={
+                    data.favorito
+                      ? {
+                          flexDirection: "row",
+                          position: "absolute",
+                          top: -10,
+                          right: -10,
+                          alignSelf: "center",
+                        }
+                      : {
+                          flexDirection: "row",
+                          position: "absolute",
+                          top: -5,
+                          right: -50,
+                          alignSelf: "center",
+                        }
+                  }
+                >
+                  <IconButton
+                    icon={
+                      data.favorito
+                        ? require("../assets/favorito.png")
+                        : require("../assets/heart.png")
+                    }
+                    color={data.favorito ? "#FFDB00" : "#6A7075"}
+                    size={data.favorito ? 37 : 30}
+                    onPress={() => ({})}
+                  />
+                </View>
                 <View style={{ marginTop: 20 }}>
                   <View
                     style={{
@@ -327,7 +337,6 @@ function ListItem2({ data, navigation }) {
                         marginLeft: 35,
                       }}
                     />
-                    
                   </View>
                 </View>
 
@@ -356,17 +365,21 @@ function ListItem2({ data, navigation }) {
                       emptyStarColor={"#6A7075"}
                     />
                   </View>
-                  {!data.percentual > 0 ? (<View style={{height:15.7}}></View>):(<Text
-                    style={{
-                      fontSize: 10,
-                      width: "200%",
-                      textDecorationLine: "line-through",
-                      marginLeft: 15,
-                    }}
-                  >
-                    R$ {data.precoDe}
-                  </Text>)}
-                  
+                  {!data.percentual > 0 ? (
+                    <View style={{ height: 15.7 }}></View>
+                  ) : (
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        width: "200%",
+                        textDecorationLine: "line-through",
+                        marginLeft: 15,
+                      }}
+                    >
+                      R$ {data.precoDe}
+                    </Text>
+                  )}
+
                   <Text
                     style={{
                       fontWeight: "bold",
