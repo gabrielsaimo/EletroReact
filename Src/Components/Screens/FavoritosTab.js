@@ -5,46 +5,55 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
+  RefreshControl,
 } from "react-native";
 import Local from "../Local";
 import { Appbar, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import StarRating from "react-native-star-rating";
-
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 export default function FavoritosTab() {
+  const [refreshing, setRefreshing] = React.useState(false);
   const [id, setId] = useState("");
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const [columns, setColumns] = useState(1);
   const [error, setError] = useState(null);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setId(idCliente);
   });
 
-  const Favoriotos = async () => {
+  const Favoriotos = () => {
     try {
-      await fetch(
-        "https://www.eletrosom.com/shell/ws/integrador/listaFavoritos",
-        {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: id,
-            version: 15,
-          }),
-        }
-      )
+      fetch("https://www.eletrosom.com/shell/ws/integrador/listaFavoritos", {
+        method: "POST",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cliente: id,
+          version: 15,
+        }),
+      })
         .then((res) => res.json())
         .then((resData) => {
           setData(resData);
-        });
-    } catch (e) {
+          setRefreshing(false);
+        }).catch((error) =>setRefreshing(true) );
+    } catch (error) {
+      console.log("erro porem sem id" + error);
       if (e && id == null) {
         setError(e);
         console.log("aqui" + error);
@@ -53,7 +62,8 @@ export default function FavoritosTab() {
   };
   useEffect(() => {
     Favoriotos();
-  }, [id]);
+    console.log("ai sim");
+  }, [refreshing]);
 
   function SearchBar() {
     return (
@@ -98,30 +108,37 @@ export default function FavoritosTab() {
       <SearchBar />
       <Local style={{ zIndex: 100 }} />
       <Options />
-      <FlatList
-        data={data}
-        numColumns={columns}
-        key={columns}
-        keyExtractor={(item) => item.codigo}
-        renderItem={({ item }) => (
-          <View>
-            {columns === 1 ? (
-              <ListItem
-                data={item}
-                navigation={navigation}
-                navigate={navigator}
-              />
-            ) : (
-              !item.emEstoque ? null:
-              <ListItem2
-                data={item}
-                navigation={navigation}
-                navigate={navigator}
-              />
-            )}
-          </View>
-        )}
-      ></FlatList>
+      <ScrollView
+        nestedScrollEnabled
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <FlatList
+          data={data}
+          numColumns={columns}
+          key={columns}
+          keyExtractor={(item) => item.codigo}
+          renderItem={({ item }) => (
+            <View>
+              {columns === 1 ? (
+                <ListItem
+                  data={item}
+                  navigation={navigation}
+                  navigate={navigator}
+                />
+              ) : !item.emEstoque ? null : (
+                <ListItem2
+                  data={item}
+                  navigation={navigation}
+                  navigate={navigator}
+                />
+              )}
+            </View>
+          )}
+        ></FlatList>
+      </ScrollView>
     </View>
   );
 }
@@ -170,7 +187,12 @@ function ListItem({ data, navigation }) {
               icon={require("../assets/favorito.png")}
               color={"#FFDB00"}
               size={37}
-              onPress={() => navigation.navigate('ExcluirFavorito',{sku:data.codigo,page:'Favorito'})}
+              onPress={() =>
+                navigation.navigate("ExcluirFavorito", {
+                  sku: data.codigo,
+                  page: "Favorito",
+                })
+              }
             />
           </View>
           {!data.avaliacao > 0 ? (
@@ -240,7 +262,9 @@ function ListItem({ data, navigation }) {
 function ListItem2({ data, navigation }) {
   return (
     <View style={{ alignItems: "center" }}>
-      {!data.emEstoque ? <></> : (
+      {!data.emEstoque ? (
+        <></>
+      ) : (
         <View style={{ width: "100%" }}>
           <View>
             <TouchableOpacity

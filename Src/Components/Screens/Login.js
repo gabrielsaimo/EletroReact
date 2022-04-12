@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, endereco } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
@@ -49,6 +49,8 @@ export default function Login() {
                 const numero = resDatas.numero;
                 const cep = resDatas.cep;
                 const cidade = resDatas.cidade;
+                console.log(cidade);
+                console.log(resDatas);
                 signIn(
                   email,
                   password,
@@ -74,7 +76,7 @@ export default function Login() {
                 initial: false,
               });
               navigation.goBack();
-            }, 1000);
+            }, 1500);
           } else if (resData.codigoMensagem == 317) {
             alert("Login ou Senha Inválidos");
           } else {

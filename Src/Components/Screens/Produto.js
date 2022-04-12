@@ -7,6 +7,7 @@ import {
   Dimensions,
   TextInput,
   Modal,
+  ScrollView,
 } from "react-native";
 import axios from "axios";
 import ModalFilhos from "../ModalFilhos";
@@ -19,7 +20,6 @@ import CalculaFrete from "../CalculaFrete";
 import { WebView } from "react-native-webview";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
@@ -31,9 +31,7 @@ export default function Produto({ route, navigation }) {
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
-  const { consultaCep } = useContext(AuthContext);
-  const { user } = useContext(AuthContext);
-  const { user1 } = useContext(AuthContext);
+  const { consultaCep, user, user1 } = useContext(AuthContext);
   const [usercep, setUsercep] = useState(user.cep);
   const [id, setId] = useState(user1.idCliente);
   const { width } = Dimensions.get("window");
@@ -90,8 +88,8 @@ export default function Produto({ route, navigation }) {
 
       <FlatList
         data={data}
-        keyExtractor={(item) => String(item.codigo)}
-        renderItem={({ item }) => (
+        keyExtractor={(item, index) => index}
+        renderItem={({ item, index }) => (
           <View
             style={{
               flex: 0,
@@ -500,10 +498,111 @@ export default function Produto({ route, navigation }) {
                         size={30}
                       />
                     </TouchableOpacity>
+                    <View style={{ alignItems: "center" }}>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          marginTop: -32,
+                          marginLeft: "20%",
+                        }}
+                      >
+                        Especificações Técnicas
+                      </Text>
+                    </View>
                   </View>
-                  <View
-                    style={{ width: "100%", height: "100%", marginTop: 50 }}
-                  ></View>
+                  <View style={{ width: "100%", height: "100%", marginTop: 0 }}>
+                    <View>
+                      <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        style={{ height: "91%", width: "97%", margin: 5 }}
+                      >
+                        {item.especificacoes.map((i, k) => (
+                          <>
+                            {i.descricao.length > 60 ? (
+                              <View
+                                style={{
+                                  flexDirection: "column",
+                                  marginVertical: 10,
+                                  paddingVertical: 20,
+                                  borderRadius: 5,
+                                  paddingHorizontal:10,
+                                  backgroundColor: "#EDF2FF",
+                                }}
+                              >
+                                <>
+                                  {i.descricao !== "" ? (
+                                    <View>
+                                      {i.campo !== "" ? (
+                                        <>
+                                          <Text>{i.campo}</Text>
+                                        </>
+                                      ) : (
+                                        <></>
+                                      )}
+
+                                      <Text>{i.descricao}</Text>
+                                    </View>
+                                  ) : (
+                                    <View>
+                                      <Text
+                                        style={{
+                                          fontWeight: "bold",
+                                          marginVertical: 5,
+                                        }}
+                                      >
+                                        {i.campo}
+                                      </Text>
+                                    </View>
+                                  )}
+                                </>
+                              </View>
+                            ) : (
+                              <View>
+                                <>
+                                  {i.descricao ? (
+                                    <View
+                                      style={{
+                                        flexDirection: "row",
+                                        paddingVertical: 15,
+                                        borderRadius: 5,
+                                        marginVertical: 2,
+                                        backgroundColor:
+                                          k % 2 == 0 ? "#EDF2FF" : "#FFFFFF",
+                                      }}
+                                    >
+                                      <Text
+                                        style={{
+                                          position: "absolute",
+                                          marginLeft: 10,
+                                          marginTop: 15,
+                                        }}
+                                      >
+                                        {i.campo}{" "}
+                                      </Text>
+                                      <Text style={{ marginLeft: 250 }}>
+                                        {i.descricao}
+                                      </Text>
+                                    </View>
+                                  ) : (
+                                    <View>
+                                      <Text
+                                        style={{
+                                          fontWeight: "bold",
+                                          marginVertical: 20,
+                                        }}
+                                      >
+                                        {i.campo}
+                                      </Text>
+                                    </View>
+                                  )}
+                                </>
+                              </View>
+                            )}
+                          </>
+                        ))}
+                      </ScrollView>
+                    </View>
+                  </View>
                 </View>
               </Modal>
               <Modal

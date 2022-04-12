@@ -87,8 +87,6 @@ const Produtos = () => {
         Options={{ headerShown: false, headerTitleAlign: "center" }}
       />
       <Stack.Screen name="Banner" component={Banner} />
-      <Stack.Screen name="AddFavorito" component={AddFavorito} />
-      <Stack.Screen name="ExcluirFavorito" component={ExcluirFavorito} />
       <Stack.Screen
     name="Favoritos"
     component={FavoritosTab}

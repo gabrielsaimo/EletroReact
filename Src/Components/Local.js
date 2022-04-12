@@ -20,8 +20,10 @@ export default function Local() {
   AsyncStorage.getItem("numero").then((numero) => {
     setNumero(numero);
   });
+  AsyncStorage.getItem("cidade").then((cidade) => {
+    setCidade(cidade);
+  });
 
-  console.log(cidade);
   const meucep = async () => {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       setId(idCliente);
@@ -37,7 +39,6 @@ export default function Local() {
         setCep(resData.cep);
         setEndereco(resData.endereco);
         setNumero(resData.numero);
-        setCidade(resData.cidade);
       });
   };
   if (cep === undefined && cidade === undefined) {
@@ -59,12 +60,14 @@ export default function Local() {
           }}
         >
           <FontAwesomeIcon icon={faLocationDot} style={{ color: "white" }} />
-          {cidade ? (
+          {!cidade ? (
             <Text style={styles.text}>
               Utilize a sua localização para ver disponibilidade
             </Text>
           ) : (
-            <Text style={styles.text}>Enviar para: {cep}</Text>
+            <Text style={styles.text}>
+              Enviar para: {cidade} - {cep}
+            </Text>
           )}
           <FontAwesomeIcon icon={faAngleRight} style={{ color: "white" }} />
         </View>

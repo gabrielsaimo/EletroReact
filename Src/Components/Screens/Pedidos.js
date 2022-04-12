@@ -38,7 +38,6 @@ export default function Pedidos({ route, navigation }) {
   }
 
   function SearchBar() {
-
     return (
       <Appbar.Header
         style={{ backgroundColor: "#1534C8", alignItems: "center", zIndex: 99 }}
@@ -52,18 +51,34 @@ export default function Pedidos({ route, navigation }) {
 
   return (
     <View>
-      <SearchBar/>
+      <SearchBar />
       <FlatList
         data={data}
         keyExtractor={(item) => item.incrementId}
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.incrementId}</Text>
-            <Text>{item.dataPedido}</Text>
-            <Text>{item.totalPedido}</Text>
-            <Text>{item.formaPagamento}</Text>
-            <Text>{item.statusPagameto}</Text>
-          </View>
+          <>
+            <TouchableOpacity style={{ margin: 10 }}>
+              <View>
+              <View style={{ position: "absolute" }}>
+                  <Text>{item.dataPedido}</Text>
+                </View>
+                <Text>{item.incrementId}</Text>
+                
+                <Text>{item.totalPedido}</Text>
+              </View>
+              <View>
+                <Text>{item.formaPagamento}</Text>
+                <Text>{item.statusPagamento}</Text>
+              </View>
+            </TouchableOpacity>
+            <View
+              style={{
+                height: 3,
+                backgroundColor: "#CED4DA",
+                width: "100%",
+              }}
+            ></View>
+          </>
         )}
       />
     </View>

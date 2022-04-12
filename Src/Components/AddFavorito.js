@@ -25,17 +25,7 @@ export default function AddFavorito({ route }) {
       }),
     })
       .then((res) => res.json())
-      .then((resData) => {
-        setTimeout(
-            () => { navigation.reset({
-              routes: [{ name: page }],
-              key:null,
-              initial: false,
-            })
-             },
-            0
-          )
-      });
+      .then((resData) => {});
   };
 
   Add();
