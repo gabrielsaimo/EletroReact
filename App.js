@@ -18,7 +18,9 @@ import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
 import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
 import Pedidos from "./Src/Components/Screens/Pedidos";
 import AddFavorito from "./Src/Components/AddFavorito";
+import MeusEnderecos from "./Src/Components/Screens/MeusEnderecos";
 import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
+
 
 
 const Tab = createBottomTabNavigator();
@@ -62,6 +64,7 @@ const Perfies = () => {
       <Stack.Screen name="Perfil" component={PerfilTab} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Pedidos" component={Pedidos} />
+      <Stack.Screen name="MeusEnderecos" component={MeusEnderecos} />
     </Stack.Navigator>
   );
 };
@@ -92,6 +95,7 @@ const Produtos = () => {
     component={FavoritosTab}
     Options={{ headerShown: false, headerTitleAlign: "center" }}
   />
+  <Stack.Screen name="Buscars" component={Buscars} />
     </Stack.Navigator>
   );
 };

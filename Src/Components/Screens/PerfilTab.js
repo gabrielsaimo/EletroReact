@@ -216,7 +216,7 @@ export default function PerfilTab() {
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
             <TouchableOpacity
-              onPress={id != null ? () => ({}) : onToggleSnackBar}
+              onPress={id != null ? () => navigation.navigate("MeusEnderecos",{idCliente:id}) : onToggleSnackBar}
             >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon
