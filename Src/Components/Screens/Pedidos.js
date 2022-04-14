@@ -45,7 +45,7 @@ export default function Pedidos({ route, navigation }) {
   }
 
   return (
-    <View style={{marginBottom:85}}>
+    <View style={{ marginBottom: 85 }}>
       <SearchBar />
       <FlatList
         data={data}
@@ -61,7 +61,7 @@ export default function Pedidos({ route, navigation }) {
               </View>
               <View>
                 <Text>{item.statusPagamento}</Text>
-                <Text style={{marginBottom:20}}>{item.formaPagamento}</Text>
+                <Text style={{ marginBottom: 20 }}>{item.formaPagamento}</Text>
               </View>
               <View
                 style={{
@@ -71,9 +71,8 @@ export default function Pedidos({ route, navigation }) {
                 }}
               >
                 <View>
-                <Text style={{ fontSize: 20 }}>{item.totalPedido}</Text>
+                  <Text style={{ fontSize: 20 }}>{item.totalPedido}</Text>
                 </View>
-                
               </View>
             </TouchableOpacity>
             <View

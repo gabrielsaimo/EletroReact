@@ -54,7 +54,7 @@ export default function HomeTab() {
           })
           .catch((error) => {
             console.error(error);
-            setRefreshing(true)
+            setRefreshing(true);
           });
       } else {
         var categoria_prod =
@@ -68,11 +68,10 @@ export default function HomeTab() {
           })
           .catch((error) => {
             console.error(error);
-            setRefreshing(true)
+            setRefreshing(true);
           });
       }
     });
-    
   };
 
   function excluir(sku) {

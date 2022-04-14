@@ -12,17 +12,18 @@ export default function App({ sku, navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
-  const onClick = (item,close) => {
-    item !== null? 
-    navigation.navigate("Produto", {
-      sku: item.sku,
-      filhos: item.voltagem.value,
-    }):
-    navigation.navigate("Produto", {
-      close:close})
-     // Or whatever unique identifier you have in your items
-     console.log(close);
-};
+  const onClick = (item, close) => {
+    item !== null
+      ? navigation.navigate("Produto", {
+          sku: item.sku,
+          filhos: item.voltagem.value,
+        })
+      : navigation.navigate("Produto", {
+          close: close,
+        });
+    // Or whatever unique identifier you have in your items
+    console.log(close);
+  };
   useEffect(() => {
     fetch(
       "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
@@ -36,8 +37,8 @@ export default function App({ sku, navigation }) {
   }, []);
 
   return (
-    <View style={{ flex: 0 ,alignItems:'center',marginTop:10}}>
-      <Text style={{fontSize:20}}>Selecione a voltagem</Text>
+    <View style={{ flex: 0, alignItems: "center", marginTop: 10 }}>
+      <Text style={{ fontSize: 20 }}>Selecione a voltagem</Text>
       {isLoading ? (
         <View
           style={{
@@ -56,7 +57,6 @@ export default function App({ sku, navigation }) {
             alignSelf: "center",
           }}
         >
-          
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -65,12 +65,7 @@ export default function App({ sku, navigation }) {
             renderItem={({ item }) => (
               <View>
                 {item.stock > 0 ? (
-                  <TouchableOpacity
-                    onPress={() =>
-                      onClick(item)
-                    }
-                  >
-                    
+                  <TouchableOpacity onPress={() => onClick(item)}>
                     <View
                       style={{
                         width: 100,
@@ -79,8 +74,8 @@ export default function App({ sku, navigation }) {
                         alignSelf: "center",
                         borderRadius: 5,
                         marginHorizontal: 1,
-                        borderWidth:2,
-                        borderColor:'blue'
+                        borderWidth: 2,
+                        borderColor: "blue",
                       }}
                     >
                       <View
@@ -96,17 +91,18 @@ export default function App({ sku, navigation }) {
                       </View>
                     </View>
                   </TouchableOpacity>
-                  
                 ) : (
                   <></>
                 )}
-                
               </View>
             )}
           />
-          <TouchableOpacity style={style.btn}  onPress={() => onClick(null,false)}>
-          <Text style={{ color: "#fff" }}>Fechar</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={style.btn}
+            onPress={() => onClick(null, false)}
+          >
+            <Text style={{ color: "#fff" }}>Fechar</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>

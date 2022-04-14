@@ -78,7 +78,6 @@ const Modal = ({ show, close, sku, navigation, navigator, ceps }) => {
         <View style={styles.indicator} />
 
         <ProdutoFilhos sku={sku} navigation={navigation} navigate={navigator} />
-
       </Animated.View>
     </Animated.View>
   );

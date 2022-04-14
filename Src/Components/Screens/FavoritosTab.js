@@ -106,18 +106,21 @@ export default function FavoritosTab() {
   function ListItem({ data, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch("https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos", {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: idCliente,
-            sku: sku,
-            version: 15,
-          }),
-        })
+        fetch(
+          "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
+          {
+            method: "POST",
+            headers: {
+              Accept: "aplication/json",
+              "Content-type": "aplication/json",
+            },
+            body: JSON.stringify({
+              cliente: idCliente,
+              sku: sku,
+              version: 15,
+            }),
+          }
+        )
           .then((res) => res.json())
           .then((resData) => {
             setRefreshing(true);
@@ -167,7 +170,7 @@ export default function FavoritosTab() {
               icon={require("../assets/favorito.png")}
               color={"#FFDB00"}
               size={37}
-              onPress={() => ( excluir(data.codigo))}
+              onPress={() => excluir(data.codigo)}
             />
           </View>
           {!data.avaliacao > 0 ? (
@@ -187,7 +190,7 @@ export default function FavoritosTab() {
               <Text>{data.avaliacao}% off</Text>
             </View>
           )}
-  
+
           <View>
             <Text
               numberOfLines={2}
@@ -236,18 +239,21 @@ export default function FavoritosTab() {
   function ListItem2({ data, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch("https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos", {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: idCliente,
-            sku: sku,
-            version: 15,
-          }),
-        })
+        fetch(
+          "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
+          {
+            method: "POST",
+            headers: {
+              Accept: "aplication/json",
+              "Content-type": "aplication/json",
+            },
+            body: JSON.stringify({
+              cliente: idCliente,
+              sku: sku,
+              version: 15,
+            }),
+          }
+        )
           .then((res) => res.json())
           .then((resData) => {
             setRefreshing(true);
@@ -299,12 +305,12 @@ export default function FavoritosTab() {
                         icon={require("../assets/favorito.png")}
                         color={"#FFDB00"}
                         size={37}
-                        onPress={() => ( excluir(data.codigo))}
+                        onPress={() => excluir(data.codigo)}
                       />
                     </View>
                   </View>
                 </View>
-  
+
                 <View style={{ maxWidth: "50%" }}>
                   <View>
                     <Text
@@ -319,7 +325,7 @@ export default function FavoritosTab() {
                       {data.nome}
                     </Text>
                   </View>
-  
+
                   <View style={{ width: "100%", marginLeft: 15 }}>
                     <StarRating
                       disabled={true}
@@ -340,7 +346,7 @@ export default function FavoritosTab() {
                   >
                     R$ {data.precoDe}
                   </Text>
-  
+
                   <Text
                     style={{
                       fontWeight: "bold",
@@ -390,7 +396,6 @@ export default function FavoritosTab() {
           keyExtractor={(item) => item.codigo}
           renderItem={({ item }) => (
             <View>
-              
               {columns === 1 ? (
                 <ListItem
                   data={item}
@@ -411,7 +416,6 @@ export default function FavoritosTab() {
     </View>
   );
 }
-
 
 const styles = {
   buttonContainerStyle: {
