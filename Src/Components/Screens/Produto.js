@@ -24,10 +24,15 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
   const filhos = route.params.filhos;
-  const sku2 = route.params.sku2;
+  const [close,setClose] = useState(route.params.close);
   const [precoDe, setprecoDe] = useState(route.params.precode);
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
+
+  useEffect(()=>{
+      setModal(false);
+  },[filhos,close])
+  
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
@@ -165,7 +170,7 @@ export default function Produto({ route, navigation }) {
                 color: "#6A7075",
               }}
             >
-              R$ {precoDe}100
+              R$ {precoDe}
             </Text>
             <Text
               style={{
@@ -777,7 +782,7 @@ export default function Produto({ route, navigation }) {
         sku={sku}
         navigate={navigator}
         navigation={navigation}
-        close={() => setModal(false)}
+        close={() => setModal(true)}
       />
     </View>
   );
@@ -824,5 +829,5 @@ const styles = {
     marginTop: 10,
     width: 300,
     fontSize: 16,
-  },
+  }
 };

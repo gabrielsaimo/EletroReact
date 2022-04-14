@@ -20,7 +20,7 @@ import Pedidos from "./Src/Components/Screens/Pedidos";
 import AddFavorito from "./Src/Components/AddFavorito";
 import MeusEnderecos from "./Src/Components/Screens/MeusEnderecos";
 import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
-
+import Buscar from "./Src/Components/Buscar"
 
 
 const Tab = createBottomTabNavigator();
@@ -95,7 +95,7 @@ const Produtos = () => {
     component={FavoritosTab}
     Options={{ headerShown: false, headerTitleAlign: "center" }}
   />
-  <Stack.Screen name="Buscars" component={Buscars} />
+  <Stack.Screen name="Buscar" component={Buscar} />
     </Stack.Navigator>
   );
 };

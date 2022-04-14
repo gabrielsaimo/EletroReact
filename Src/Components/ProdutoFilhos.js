@@ -11,7 +11,18 @@ import {
 export default function App({ sku, navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
+  const [activeItem, setActiveItem] = useState(null);
+  const onClick = (item,close) => {
+    item !== null? 
+    navigation.navigate("Produto", {
+      sku: item.sku,
+      filhos: item.voltagem.value,
+    }):
+    navigation.navigate("Produto", {
+      close:close})
+     // Or whatever unique identifier you have in your items
+     console.log(close);
+};
   useEffect(() => {
     fetch(
       "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
@@ -25,7 +36,8 @@ export default function App({ sku, navigation }) {
   }, []);
 
   return (
-    <View style={{ flex: 0 }}>
+    <View style={{ flex: 0 ,alignItems:'center',marginTop:10}}>
+      <Text style={{fontSize:20}}>Selecione a voltagem</Text>
       {isLoading ? (
         <View
           style={{
@@ -40,41 +52,42 @@ export default function App({ sku, navigation }) {
           style={{
             marginTop: 30,
             width: 210,
-            height: 100,
+            height: 200,
             alignSelf: "center",
           }}
         >
+          
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
             data={data.filhos}
-            keyExtractor={(key, index) => "key" + index}
+            keyExtractor={(item, index) => index}
             renderItem={({ item }) => (
               <View>
                 {item.stock > 0 ? (
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate("Produto", {
-                        sku2: item.sku,
-                        filhos: item.voltagem.value,
-                      })
+                      onClick(item)
                     }
                   >
+                    
                     <View
                       style={{
                         width: 100,
                         height: 50,
-                        backgroundColor: "#D4D4D4",
+                        backgroundColor: "#FFF",
                         alignSelf: "center",
                         borderRadius: 5,
                         marginHorizontal: 1,
+                        borderWidth:2,
+                        borderColor:'blue'
                       }}
                     >
                       <View
                         style={{
                           alignItems: "center",
                           alignSelf: "center",
-                          padding: 15,
+                          padding: 13,
                         }}
                       >
                         <View style={{ width: "100%", height: 50 }}>
@@ -83,12 +96,17 @@ export default function App({ sku, navigation }) {
                       </View>
                     </View>
                   </TouchableOpacity>
+                  
                 ) : (
                   <></>
                 )}
+                
               </View>
             )}
           />
+          <TouchableOpacity style={style.btn}  onPress={() => onClick(null,false)}>
+          <Text style={{ color: "#fff" }}>Fechar</Text>
+        </TouchableOpacity>
         </View>
       )}
     </View>
@@ -102,5 +120,15 @@ const style = StyleSheet.create({
   setbol: {
     color: "#000",
     margin: 3,
+  },
+  btn: {
+    width: "100%",
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: "#9b59b6",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    borderColor: "rgba(0,0,0,0.5)",
   },
 });

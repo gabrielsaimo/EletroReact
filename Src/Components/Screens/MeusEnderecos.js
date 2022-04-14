@@ -75,7 +75,7 @@ export default function MeusEnderecos({ route }) {
                   onPress={() => console.log(item.idEndereco)}
                   style={{
                     position: "absolute",
-                    marginLeft: 300,
+                    marginLeft:'85%',
                     color: "#1534C8",
                     fontWeight: "bold",
                   }}

@@ -14,8 +14,6 @@ import { Appbar } from "react-native-paper";
 export default function Pedidos({ route, navigation }) {
   const id = route.params.idCliente;
 
-  console.log(id);
-
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -29,12 +27,9 @@ export default function Pedidos({ route, navigation }) {
 
   async function loadApi() {
     if (loading) return;
-
     setLoading(true);
-
     const response = await axios.get(`${baseURL}`);
     setData([...data, ...response.data]);
-    console.log(`${baseURL}`);
   }
 
   function SearchBar() {
@@ -71,11 +66,14 @@ export default function Pedidos({ route, navigation }) {
               <View
                 style={{
                   position: "absolute",
-                  marginLeft: "60%",
+                  marginLeft: "65%",
                   marginTop: 60,
                 }}
               >
+                <View>
                 <Text style={{ fontSize: 20 }}>{item.totalPedido}</Text>
+                </View>
+                
               </View>
             </TouchableOpacity>
             <View

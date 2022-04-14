@@ -18,6 +18,7 @@ import StarRating from "react-native-star-rating";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
+
 export default function FavoritosTab() {
   const [refreshing, setRefreshing] = React.useState(false);
   const [id, setId] = useState("");
@@ -51,7 +52,8 @@ export default function FavoritosTab() {
         .then((resData) => {
           setData(resData);
           setRefreshing(false);
-        }).catch((error) =>setRefreshing(true) );
+        })
+        .catch((error) => setRefreshing(true));
     } catch (error) {
       console.log("erro porem sem id" + error);
       if (e && id == null) {
@@ -62,7 +64,6 @@ export default function FavoritosTab() {
   };
   useEffect(() => {
     Favoriotos();
-    console.log("ai sim");
   }, [refreshing]);
 
   function SearchBar() {
@@ -102,50 +103,29 @@ export default function FavoritosTab() {
       </View>
     );
   };
-
-  return (
-    <View style={{ width: "100%", height: "100%" }}>
-      <SearchBar />
-      <Local style={{ zIndex: 100 }} />
-      <Options />
-      <ScrollView
-        nestedScrollEnabled
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <FlatList
-          data={data}
-          numColumns={columns}
-          key={columns}
-          keyExtractor={(item) => item.codigo}
-          renderItem={({ item }) => (
-            <View>
-              {columns === 1 ? (
-                <ListItem
-                  data={item}
-                  navigation={navigation}
-                  navigate={navigator}
-                />
-              ) : !item.emEstoque ? null : (
-                <ListItem2
-                  data={item}
-                  navigation={navigation}
-                  navigate={navigator}
-                />
-              )}
-            </View>
-          )}
-        ></FlatList>
-      </ScrollView>
-    </View>
-  );
-}
-function ListItem({ data, navigation }) {
-  return (
-    <View style={{ alignItems: "center", flex: 1 }}>
-      {!data.emEstoque ? null : (
+  function ListItem({ data, navigation }) {
+    function excluir(sku) {
+      AsyncStorage.getItem("idCliente").then((idCliente) => {
+        fetch("https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos", {
+          method: "POST",
+          headers: {
+            Accept: "aplication/json",
+            "Content-type": "aplication/json",
+          },
+          body: JSON.stringify({
+            cliente: idCliente,
+            sku: sku,
+            version: 15,
+          }),
+        })
+          .then((res) => res.json())
+          .then((resData) => {
+            setRefreshing(true);
+          });
+      });
+    }
+    return (
+      <View style={{ alignItems: "center", flex: 1 }}>
         <TouchableOpacity
           style={styles.buttonContainerStyle}
           onPress={() =>
@@ -187,12 +167,7 @@ function ListItem({ data, navigation }) {
               icon={require("../assets/favorito.png")}
               color={"#FFDB00"}
               size={37}
-              onPress={() =>
-                navigation.navigate("ExcluirFavorito", {
-                  sku: data.codigo,
-                  page: "Favorito",
-                })
-              }
+              onPress={() => ( excluir(data.codigo))}
             />
           </View>
           {!data.avaliacao > 0 ? (
@@ -212,7 +187,7 @@ function ListItem({ data, navigation }) {
               <Text>{data.avaliacao}% off</Text>
             </View>
           )}
-
+  
           <View>
             <Text
               numberOfLines={2}
@@ -255,16 +230,32 @@ function ListItem({ data, navigation }) {
             </Text>
           </View>
         </TouchableOpacity>
-      )}
-    </View>
-  );
-}
-function ListItem2({ data, navigation }) {
-  return (
-    <View style={{ alignItems: "center" }}>
-      {!data.emEstoque ? (
-        <></>
-      ) : (
+      </View>
+    );
+  }
+  function ListItem2({ data, navigation }) {
+    function excluir(sku) {
+      AsyncStorage.getItem("idCliente").then((idCliente) => {
+        fetch("https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos", {
+          method: "POST",
+          headers: {
+            Accept: "aplication/json",
+            "Content-type": "aplication/json",
+          },
+          body: JSON.stringify({
+            cliente: idCliente,
+            sku: sku,
+            version: 15,
+          }),
+        })
+          .then((res) => res.json())
+          .then((resData) => {
+            setRefreshing(true);
+          });
+      });
+    }
+    return (
+      <View style={{ alignItems: "center" }}>
         <View style={{ width: "100%" }}>
           <View>
             <TouchableOpacity
@@ -308,12 +299,12 @@ function ListItem2({ data, navigation }) {
                         icon={require("../assets/favorito.png")}
                         color={"#FFDB00"}
                         size={37}
-                        onPress={() => ({})}
+                        onPress={() => ( excluir(data.codigo))}
                       />
                     </View>
                   </View>
                 </View>
-
+  
                 <View style={{ maxWidth: "50%" }}>
                   <View>
                     <Text
@@ -328,7 +319,7 @@ function ListItem2({ data, navigation }) {
                       {data.nome}
                     </Text>
                   </View>
-
+  
                   <View style={{ width: "100%", marginLeft: 15 }}>
                     <StarRating
                       disabled={true}
@@ -349,7 +340,7 @@ function ListItem2({ data, navigation }) {
                   >
                     R$ {data.precoDe}
                   </Text>
-
+  
                   <Text
                     style={{
                       fontWeight: "bold",
@@ -376,10 +367,51 @@ function ListItem2({ data, navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-      )}
+      </View>
+    );
+  }
+
+  return (
+    <View style={{ width: "100%", height: "100%" }}>
+      <SearchBar />
+      <Local style={{ zIndex: 100 }} />
+      <Options />
+      <ScrollView
+        nestedScrollEnabled
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <FlatList
+          data={data}
+          numColumns={columns}
+          key={columns}
+          keyExtractor={(item) => item.codigo}
+          renderItem={({ item }) => (
+            <View>
+              
+              {columns === 1 ? (
+                <ListItem
+                  data={item}
+                  navigation={navigation}
+                  navigate={navigator}
+                />
+              ) : (
+                <ListItem2
+                  data={item}
+                  navigation={navigation}
+                  navigate={navigator}
+                />
+              )}
+            </View>
+          )}
+        ></FlatList>
+      </ScrollView>
     </View>
   );
 }
+
 
 const styles = {
   buttonContainerStyle: {

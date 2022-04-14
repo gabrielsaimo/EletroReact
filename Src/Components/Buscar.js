@@ -12,8 +12,8 @@ import {
 } from "react-native";
 import { Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
-import Local from "../Local";
-import SkeletonLoading from "../SkeletonLoading";
+import Local from "./Local";
+import SkeletonLoading from "./SkeletonLoading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -32,7 +32,7 @@ export default function Buscar({ route, navigation }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [title] = useState('Buscar');
+  const [title,setTitle] = useState('Buscar');
 
   const { height, width } = Dimensions.get("window");
   const itemWidth = (width - 15) / 2;
@@ -53,6 +53,7 @@ export default function Buscar({ route, navigation }) {
         .then((res) => res.json())
         .then((resData) => {
           setData(resData);
+          console.log(resData);
           setPage(page + 1);
           setLoading(false);
           setRefreshing(false);
@@ -121,7 +122,7 @@ export default function Buscar({ route, navigation }) {
     }
     return (
       <View style={{ alignItems: "center", flex: 1 }}>
-        {!data.emEstoque ? null : (
+        
           <TouchableOpacity
             style={styles.buttonContainerStyle}
             onPress={() =>
@@ -150,6 +151,7 @@ export default function Buscar({ route, navigation }) {
                       top: -10,
                       right: -10,
                       alignSelf: "center",
+                      zIndex:999
                     }
                   : {
                       flexDirection: "row",
@@ -157,14 +159,15 @@ export default function Buscar({ route, navigation }) {
                       top: -5,
                       right: -5,
                       alignSelf: "center",
+                      zIndex:999
                     }
               }
             >
               <IconButton
                 icon={
                   data.favorito
-                    ? require("../assets/favorito.png")
-                    : require("../assets/heart.png")
+                    ? require("./assets/favorito.png")
+                    : require("./assets/heart.png")
                 }
                 color={data.favorito ? "#FFDB00" : "#6A7075"}
                 size={data.favorito ? 37 : 30}
@@ -238,7 +241,7 @@ export default function Buscar({ route, navigation }) {
               </Text>
             </View>
           </TouchableOpacity>
-        )}
+       
       </View>
     );
   }
@@ -289,7 +292,7 @@ export default function Buscar({ route, navigation }) {
     }
     return (
       <View style={{ alignItems: "center" }}>
-        {!data.emEstoque ? null : (
+        
           <View style={{ width: "100%" }}>
             <View>
               <TouchableOpacity
@@ -331,6 +334,7 @@ export default function Buscar({ route, navigation }) {
                             top: -10,
                             right: -60,
                             alignSelf: "center",
+                            zIndex:999
                           }
                         : {
                             flexDirection: "row",
@@ -338,14 +342,15 @@ export default function Buscar({ route, navigation }) {
                             top: -5,
                             right: -50,
                             alignSelf: "center",
+                            zIndex:999
                           }
                     }
                   >
                     <IconButton
                       icon={
                         data.favorito
-                          ? require("../assets/favorito.png")
-                          : require("../assets/heart.png")
+                          ? require("./assets/favorito.png")
+                          : require("./assets/heart.png")
                       }
                       color={data.favorito ? "#FFDB00" : "#6A7075"}
                       size={data.favorito ? 37 : 30}
@@ -381,7 +386,7 @@ export default function Buscar({ route, navigation }) {
                         style={{
                           fontWeight: "bold",
                           fontSize: 13,
-                          width: "200%",
+                          width: "180%",
                           marginLeft: 15,
                         }}
                       >
@@ -440,24 +445,20 @@ export default function Buscar({ route, navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-        )}
+        
       </View>
     );
   }
 
   function SearchBar() {
-    const _handleSearch = () => (
-      <TextInput placeholder="test de imput" value={searchText}></TextInput>
-    );
 
     return (
       <Appbar.Header
         style={{ backgroundColor: "#1534C8", alignItems: "center", zIndex: 99 }}
       >
         <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Action />
+
         <Appbar.Content title={title} style={{ alignItems: "center" }} />
-        <Appbar.Action icon="magnify" onPress={_handleSearch} />
         <Appbar.Action
           icon="cart-outline"
           onPress={() => navigation.navigate("CarrinhoTab")}
@@ -478,16 +479,16 @@ export default function Buscar({ route, navigation }) {
             onPress={() => navigation.goBack()}
           />
           <Appbar.Action
-            icon={require("../../../Src/Components/assets/grade1.png")}
+            icon={require("./../../Src/Components/assets/grade1.png")}
             onPress={() => setColumns(1)}
           />
           <Appbar.Action
-            icon={require("../../../Src/Components/assets/grade.png")}
+            icon={require("./../../Src/Components/assets/grade.png")}
             onPress={() => setColumns(2)}
           />
           <Appbar.Action icon="power-on" />
           <Appbar.Action
-            icon={require("../../../Src/Components/assets/filtro.png")}
+            icon={require("./../../Src/Components/assets/filtro.png")}
           />
         </Appbar.Header>
       </View>
@@ -504,7 +505,7 @@ export default function Buscar({ route, navigation }) {
           <FlatList
             data={data}
             // onEndReachedThreshold={0.3}
-            keyExtractor={(item) => String(item.codigo)}
+            keyExtractor={(item,index) => index}
             numColumns={columns}
             key={columns}
             refreshControl={

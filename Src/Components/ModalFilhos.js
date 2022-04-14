@@ -79,9 +79,6 @@ const Modal = ({ show, close, sku, navigation, navigator, ceps }) => {
 
         <ProdutoFilhos sku={sku} navigation={navigation} navigate={navigator} />
 
-        <TouchableOpacity style={styles.btn} onPress={close}>
-          <Text style={{ color: "#fff" }}>Fechar</Text>
-        </TouchableOpacity>
       </Animated.View>
     </Animated.View>
   );
@@ -124,7 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#9b59b6",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
+    marginTop: -25,
     borderColor: "rgba(0,0,0,0.5)",
   },
 });
