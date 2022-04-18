@@ -20,8 +20,8 @@ import Pedidos from "./Src/Components/Screens/Pedidos";
 import AddFavorito from "./Src/Components/AddFavorito";
 import MeusEnderecos from "./Src/Components/Screens/MeusEnderecos";
 import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
-import Buscar from "./Src/Components/Buscar"
-
+import Buscar from "./Src/Components/Buscar";
+import passwordReset from "./Src/Components/Screens/passwordReset";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -65,6 +65,7 @@ const Perfies = () => {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Pedidos" component={Pedidos} />
       <Stack.Screen name="MeusEnderecos" component={MeusEnderecos} />
+      <Stack.Screen name="passwordReset" component={passwordReset} />
     </Stack.Navigator>
   );
 };
@@ -91,28 +92,26 @@ const Produtos = () => {
       />
       <Stack.Screen name="Banner" component={Banner} />
       <Stack.Screen
-    name="Favoritos"
-    component={FavoritosTab}
-    Options={{ headerShown: false, headerTitleAlign: "center" }}
-  />
-  <Stack.Screen name="Buscar" component={Buscar} />
+        name="Favoritos"
+        component={FavoritosTab}
+        Options={{ headerShown: false, headerTitleAlign: "center" }}
+      />
+      <Stack.Screen name="Buscar" component={Buscar} />
     </Stack.Navigator>
   );
 };
 const Favorioto = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen
-    name="Favoritos"
-    component={FavoritosTab}
-    Options={{ headerShown: false, headerTitleAlign: "center" }}
-  />
-  <Stack.Screen
-    name="ExcluirFavorito"
-    component={ExcluirFavorito}
-  />
-  </Stack.Navigator>
-  )}
+      <Stack.Screen
+        name="Favoritos"
+        component={FavoritosTab}
+        Options={{ headerShown: false, headerTitleAlign: "center" }}
+      />
+      <Stack.Screen name="ExcluirFavorito" component={ExcluirFavorito} />
+    </Stack.Navigator>
+  );
+};
 
 export default function App() {
   const ButtonAlert = () =>

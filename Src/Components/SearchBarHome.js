@@ -14,9 +14,8 @@ const MyComponent = () => {
           elevation: 0,
           borderRadius: 10,
           high: 20,
-          marginLeft: 0,
-          marginBottom: 10,
-          marginTop: 10,
+          marginTop:15,
+          margin:10
         }}
         containerStyle={{
           backgroundColor: "blue",

@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     margin: 3,
   },
   setbol: {
-    color: "#000",
+    color: "#0D71F0",
     margin: 3,
   },
   container: {

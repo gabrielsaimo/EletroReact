@@ -34,7 +34,7 @@ export default function FavoritosTab() {
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setId(idCliente);
   });
-
+  console.log(id);
   const Favoriotos = () => {
     try {
       fetch("https://www.eletrosom.com/shell/ws/integrador/listaFavoritos", {
@@ -62,8 +62,13 @@ export default function FavoritosTab() {
       }
     }
   };
+
   useEffect(() => {
-    Favoriotos();
+    if (id !== null) {
+      Favoriotos();
+    } else {
+      alert("logue para ver seus Favoritos");
+    }
   }, [refreshing]);
 
   function SearchBar() {
@@ -156,6 +161,7 @@ export default function FavoritosTab() {
                     top: -10,
                     right: -10,
                     alignSelf: "center",
+                    zIndex: 99,
                   }
                 : {
                     flexDirection: "row",
@@ -163,6 +169,7 @@ export default function FavoritosTab() {
                     top: -5,
                     right: -5,
                     alignSelf: "center",
+                    zIndex: 99,
                   }
             }
           >
@@ -389,29 +396,35 @@ export default function FavoritosTab() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <FlatList
-          data={data}
-          numColumns={columns}
-          key={columns}
-          keyExtractor={(item) => item.codigo}
-          renderItem={({ item }) => (
-            <View>
-              {columns === 1 ? (
-                <ListItem
-                  data={item}
-                  navigation={navigation}
-                  navigate={navigator}
-                />
-              ) : (
-                <ListItem2
-                  data={item}
-                  navigation={navigation}
-                  navigate={navigator}
-                />
-              )}
-            </View>
-          )}
-        ></FlatList>
+        {id != null ? (
+          <FlatList
+            data={data}
+            numColumns={columns}
+            key={columns}
+            keyExtractor={(item) => item.codigo}
+            renderItem={({ item }) => (
+              <View>
+                {columns === 1 ? (
+                  <ListItem
+                    data={item}
+                    navigation={navigation}
+                    navigate={navigator}
+                  />
+                ) : (
+                  <ListItem2
+                    data={item}
+                    navigation={navigation}
+                    navigate={navigator}
+                  />
+                )}
+              </View>
+            )}
+          ></FlatList>
+        ) : (
+          <View style={{ alignItems: "center", marginTop: 100 }}>
+            <Text> Vazio</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );

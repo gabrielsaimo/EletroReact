@@ -142,14 +142,13 @@ export default function Login() {
               underlineColorAndroid="transparent"
               left={<TextInput.Icon name="lock" />}
               onChangeText={(text) => setPassword(text)}
-              keyboardType={"default"}
               placeholder="Sua senha"
               secureTextEntry={true}
             ></TextInput>
           </View>
           <Text
             style={{ alignSelf: "flex-end", margin: 10 }}
-            onPress={() => console.log("aqui")}
+            onPress={() => navigation.navigate("passwordReset",{emaill:email})}
           >
             Esqueci a senha
           </Text>
