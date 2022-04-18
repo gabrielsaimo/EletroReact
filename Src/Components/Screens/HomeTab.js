@@ -131,8 +131,8 @@ export default function HomeTab() {
         <SkeletonLoading visible={isLoading}>
           <FlatList
             data={data}
-            keyExtractor={(item) => String(item.codigo)}
-            renderItem={({ item }) => (
+            keyExtractor={(item,index) => index}
+            renderItem={({ item ,index}) => (
               <View>
                 {!item.emEstoque ? null : (
                   <View style={{ alignItems: "center", flex: 1 }}>
@@ -155,6 +155,7 @@ export default function HomeTab() {
                         }}
                       />
                       <View
+                      sky={index}
                         style={
                           item.favorito
                             ? {
