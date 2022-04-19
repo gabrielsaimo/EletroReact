@@ -1,3 +1,5 @@
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { useEffect, useState } from "react";
 import {
   ScrollView,
@@ -6,12 +8,14 @@ import {
   RefreshControl,
   FlatList,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
+import { Appbar } from "react-native-paper";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
-export default function MeusEnderecos({ route }) {
+export default function MeusEnderecos({ route, navigation }) {
   const id = route.params.idCliente;
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -43,9 +47,24 @@ export default function MeusEnderecos({ route }) {
   useEffect(() => {
     enderecos();
   }, [refreshing]);
-
+  const SearchBar = () => {
+    return (
+      <Appbar.Header
+        style={{ backgroundColor: "#1534C8", alignItems: "center" }}
+      >
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+        <Appbar.Content
+          title={"Meus endereços"}
+          style={{ alignItems: "center" }}
+        />
+        <Appbar.Action />
+      </Appbar.Header>
+    );
+  };
   return (
-    <View style={{ marginTop: 50 }}>
+    <View style={{ marginBottom: 70 }}>
+      <SearchBar />
+      <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }}></View>
       <ScrollView
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}
@@ -75,7 +94,7 @@ export default function MeusEnderecos({ route }) {
                   onPress={() => console.log(item.idEndereco)}
                   style={{
                     position: "absolute",
-                    marginLeft:'85%',
+                    marginLeft: "85%",
                     color: "#1534C8",
                     fontWeight: "bold",
                   }}
@@ -98,7 +117,7 @@ export default function MeusEnderecos({ route }) {
           style={{
             alignItems: "center",
             borderWidth: 1,
-            borderColor:'#BAC8FF',
+            borderColor: "#BAC8FF",
             height: 50,
             paddingVertical: 12,
             borderRadius: 5,
@@ -125,3 +144,35 @@ export default function MeusEnderecos({ route }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  input: {
+    marginTop: 10,
+    width: 300,
+    fontSize: 16,
+  },
+  card2: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    alignContent: "center",
+    //justifyContent:'space-around'
+  },
+  texteletro: {
+    fontSize: 30,
+    color: "#1534C8",
+    fontWeight: "bold",
+    marginLeft: 3,
+  },
+  textponto: {
+    fontSize: 30,
+    color: "#FFDB00",
+    fontWeight: "bold",
+    marginLeft: 3,
+  },
+  textcom: {
+    fontSize: 30,
+    color: "#1534C8",
+    marginLeft: 3,
+  },
+});

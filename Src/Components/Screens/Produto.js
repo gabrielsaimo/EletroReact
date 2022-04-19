@@ -8,6 +8,7 @@ import {
   TextInput,
   Modal,
   ScrollView,
+  Image,
 } from "react-native";
 import axios from "axios";
 import ModalFilhos from "../ModalFilhos";
@@ -15,11 +16,11 @@ import { AuthContext } from "../../Contexts/Auth";
 import { Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "../Local";
-import Produtoimagem from "../ProdutoImagens";
 import CalculaFrete from "../CalculaFrete";
 import { WebView } from "react-native-webview";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+import ShareButton from "../ShereButtom";
 
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
@@ -62,7 +63,6 @@ export default function Produto({ route, navigation }) {
   async function loadApi() {
     if (loading) return;
     setLoading(true);
-
     const response = await axios.get(`${baseURL}`);
     setData([...data, ...response.data]);
   }
@@ -85,7 +85,15 @@ export default function Produto({ route, navigation }) {
       </Appbar.Header>
     );
   };
-
+  const [active, isActive] = useState(0);
+  const change = ({ nativeEvent }) => {
+    const slide = Math.ceil(
+      nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width
+    );
+    if (slide !== active) {
+      isActive(slide);
+    }
+  };
   return (
     <View style={{ backgroundColor: "#fff" }}>
       <SearchBar />
@@ -124,11 +132,94 @@ export default function Produto({ route, navigation }) {
             <Text style={{ fontSize: 10, marginTop: 5, color: "#6A7075" }}>
               CÓD - {item.codigo}
             </Text>
-            <Produtoimagem
-              sku={sku}
-              urls={item.urlsocial}
-              favorito={item.favoritos}
-            ></Produtoimagem>
+
+            <View style={{ marginTop: 10, width, height: 200 }}>
+              <FlatList
+                horizontal
+                pagingEnabled
+                onScroll={change}
+                showsHorizontalScrollIndicator={false}
+                data={item.imagem}
+                keyExtractor={(item) => item.img}
+                renderItem={({ item }) => (
+                  <View>
+                    <Image
+                      style={{
+                        width,
+                        height: 200,
+                        resizeMode: "contain",
+                        backgroundColor: "#fff",
+                      }}
+                      key={item}
+                      source={{ uri: item.img }}
+                    ></Image>
+                  </View>
+                )}
+              />
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  position: "absolute",
+                  bottom: 0,
+                  alignSelf: "center",
+                }}
+              >
+                {item.imagem.map ? (
+                  item.imagem.map((i, k) => (
+                    <Text
+                      key={k}
+                      style={k == active ? styles.setbol : styles.bol}
+                    >
+                      ⬤
+                    </Text>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                position: "absolute",
+                top: 220,
+                right: 10,
+              }}
+            >
+              <ShareButton url={item.urlsocial} />
+            </View>
+
+            <View
+              style={
+                item.favoritos
+                  ? {
+                      flexDirection: "row",
+                      position: "absolute",
+                      top: 60,
+                      right: 3,
+                      alignSelf: "center",
+                    }
+                  : {
+                      flexDirection: "row",
+                      position: "absolute",
+                      top: 60,
+                      right: 10,
+                      alignSelf: "center",
+                    }
+              }
+            >
+              <IconButton
+                icon={
+                  item.favoritos
+                    ? require("../../Components/assets/favorito.png")
+                    : require("../../Components/assets/heart.png")
+                }
+                color={item.favoritos ? "#FFDB00" : "#6A7075"}
+                size={item.favoritos ? 37 : 30}
+                onPress={() => ({})}
+              />
+            </View>
 
             {item.filhos ? (
               <TouchableOpacity
@@ -150,7 +241,7 @@ export default function Produto({ route, navigation }) {
                   <Text>Voltagem: {filhos}</Text>
                   <Text
                     style={{
-                      paddingLeft: 370,
+                      paddingLeft: 360,
                       paddingTop: 15,
                       position: "absolute",
                     }}
@@ -829,5 +920,13 @@ const styles = {
     marginTop: 10,
     width: 300,
     fontSize: 16,
+  },
+  bol: {
+    color: "#D4D4D4",
+    margin: 3,
+  },
+  setbol: {
+    color: "#000",
+    margin: 3,
   },
 };

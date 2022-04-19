@@ -24,6 +24,7 @@ export default function App({ sku, navigation }) {
     // Or whatever unique identifier you have in your items
     console.log(close);
   };
+
   useEffect(() => {
     fetch(
       "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +

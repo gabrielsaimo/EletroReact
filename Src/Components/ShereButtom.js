@@ -11,9 +11,7 @@ const ShareButton = (url) => {
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-
         } else {
-          
         }
       } else if (result.action === Share.dismissedAction) {
         // dismissed
