@@ -205,7 +205,7 @@ export default function FavoritosTab() {
                 fontWeight: "bold",
                 fontSize: 13,
                 maxWidth: 260,
-                width: "90%",
+                width: "80%",
               }}
             >
               {data.nome}

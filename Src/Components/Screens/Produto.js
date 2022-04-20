@@ -41,7 +41,7 @@ export default function Produto({ route, navigation }) {
   const [usercep, setUsercep] = useState(user.cep);
   const [id, setId] = useState(user1.idCliente);
   const { width } = Dimensions.get("window");
-  const width2 = width / 2;
+  const width2 = width / 1.1;
   const width4 = width / 4;
   const height = (width * 100) / 30;
   const [TextInput_cep, setTextCep] = useState(usercep);
@@ -133,7 +133,9 @@ export default function Produto({ route, navigation }) {
               CÓD - {item.codigo}
             </Text>
 
-            <View style={{ marginTop: 10, width, height: 200 }}>
+            <View
+              style={{ marginTop: 10, width, height: 300, marginLeft: -10.2 }}
+            >
               <FlatList
                 horizontal
                 pagingEnabled
@@ -146,9 +148,8 @@ export default function Produto({ route, navigation }) {
                     <Image
                       style={{
                         width,
-                        height: 200,
-                        resizeMode: "contain",
-                        backgroundColor: "#fff",
+                        height: "100%",
+                        resizeMode: "stretch",
                       }}
                       key={item}
                       source={{ uri: item.img }}
@@ -183,8 +184,8 @@ export default function Produto({ route, navigation }) {
               style={{
                 flexDirection: "row",
                 position: "absolute",
-                top: 220,
-                right: 10,
+                top: 320,
+                right: 3,
               }}
             >
               <ShareButton url={item.urlsocial} />
@@ -196,15 +197,15 @@ export default function Produto({ route, navigation }) {
                   ? {
                       flexDirection: "row",
                       position: "absolute",
-                      top: 60,
-                      right: 3,
+                      top: 90,
+                      right: -5,
                       alignSelf: "center",
                     }
                   : {
                       flexDirection: "row",
                       position: "absolute",
-                      top: 60,
-                      right: 10,
+                      top: 90,
+                      right: 3,
                       alignSelf: "center",
                     }
               }
@@ -241,7 +242,7 @@ export default function Produto({ route, navigation }) {
                   <Text>Voltagem: {filhos}</Text>
                   <Text
                     style={{
-                      paddingLeft: 360,
+                      marginLeft: "98%",
                       paddingTop: 15,
                       position: "absolute",
                     }}
