@@ -13,6 +13,7 @@ import {
 import { Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "../Local";
+import SearchBarCata from "../SearchBarCatalogo";
 import SkeletonLoading from "../SkeletonLoading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const wait = (timeout) => {
@@ -33,7 +34,7 @@ export default function CategoriasProduto({ route, navigation }) {
     route.params.item +
     "&version=15";
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
-
+  const [search,setSeach] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -451,9 +452,6 @@ export default function CategoriasProduto({ route, navigation }) {
   }
 
   function SearchBar() {
-    const _handleSearch = () => (
-      <TextInput placeholder="test de imput" value={searchText}></TextInput>
-    );
 
     return (
       <Appbar.Header
@@ -462,7 +460,7 @@ export default function CategoriasProduto({ route, navigation }) {
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Action />
         <Appbar.Content title={title} style={{ alignItems: "center" }} />
-        <Appbar.Action icon="magnify" onPress={_handleSearch} />
+        <Appbar.Action icon="magnify" onPress={() => setSeach(true)} />
         <Appbar.Action
           icon="cart-outline"
           onPress={() => navigation.navigate("CarrinhoTab")}
@@ -502,7 +500,7 @@ export default function CategoriasProduto({ route, navigation }) {
   return (
     <SafeAreaView>
       <View style={{ width: "100%", height: "100%" }}>
-        <SearchBar />
+        {search === true ? <SearchBarCata />:<SearchBar />}
         <Local style={{ zIndex: 100 }} />
         <Options />
         <SkeletonLoading visible={loading}>

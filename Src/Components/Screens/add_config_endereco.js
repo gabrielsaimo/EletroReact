@@ -1,6 +1,12 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-paper";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+} from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { AuthContext } from "../../Contexts/Auth";
 import { Appbar } from "react-native-paper";
@@ -26,7 +32,7 @@ export default function endereco() {
   const navigation = useNavigation();
 
   const Add = async () => {
-    if (email != "" && password != "") {
+    if (cep != "" && estado != "") {
       await fetch(
         "https://www.eletrosom.com/shell/ws/integrador/dadosEndereco",
         {
@@ -93,98 +99,92 @@ export default function endereco() {
           </View>
         </View>
       </View>
-
-      <View style={{ alignItems: "center" }}>
-        <View>
+      <ScrollView>
+        <View style={{ alignItems: "center", marginBottom: 150 }}>
           <View>
             <TextInput
               style={styles.input}
               underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="account" />}
-              keyboardType={"email-address"}
-              onChangeText={(text) => setEmail(text)}
+              keyboardType={"decimal-pad"}
+              onChangeText={(text) => setCep(text)}
               placeholder="cep"
             ></TextInput>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Rua"
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Numero"
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Sua senha"
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Bairro"
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Complemento"
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Estado"
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Cidade"
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Destinatario"
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="sobrou"
-            ></TextInput>
+            <View style={{ flexDirection: "row" }}>
+              <TextInput
+                style={styles.input}
+                underlineColorAndroid="transparent"
+                editable={false}
+                onChangeText={(text) => setEmdereco(text)}
+                placeholder="Rua"
+              ></TextInput>
+              <TextInput
+                style={{ marginTop: 10, marginLeft: 10, width: 100 }}
+                underlineColorAndroid="transparent"
+                keyboardType={"decimal-pad"}
+                onChangeText={(text) => setNumero(text)}
+                placeholder="Numero"
+              ></TextInput>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <TextInput
+                style={{ width: 150, marginTop: 10 }}
+                underlineColorAndroid="transparent"
+                editable={false}
+                onChangeText={(text) => setBairro(text)}
+                placeholder="Bairro"
+              ></TextInput>
+              <TextInput
+                style={{ width: 150, marginTop: 10, marginLeft: 10 }}
+                underlineColorAndroid="transparent"
+                onChangeText={(text) => setComplemento(text)}
+                placeholder="Complemento"
+              ></TextInput>
+            </View>
+            <View>
+              <TextInput
+                style={styles.input}
+                underlineColorAndroid="transparent"
+                onChangeText={(text) => setEstado(text)}
+                editable={false}
+                placeholder="Estado"
+              ></TextInput>
+              <TextInput
+                style={styles.input}
+                underlineColorAndroid="transparent"
+                onChangeText={(text) => setCidade(text)}
+                editable={false}
+                placeholder="Cidade"
+              ></TextInput>
+              <TextInput
+                style={styles.input}
+                underlineColorAndroid="transparent"
+                onChangeText={(text) => setIdCliente(text)}
+                placeholder="Destinatario"
+              ></TextInput>
+              <TextInput
+                style={styles.input}
+                underlineColorAndroid="transparent"
+                onChangeText={(text) => setIdCliente(text)}
+                placeholder="sobrou"
+              ></TextInput>
+            </View>
           </View>
+          <TouchableOpacity style={{ width: "85%" }} onPress={addEndereco}>
+            <View
+              style={{
+                height: 50,
+                backgroundColor: "#FFDB00",
+                borderRadius: 3,
+                alignItems: "center",
+                alignContent: "center",
+                paddingVertical: 15,
+              }}
+            >
+              <Text>Adicionar endereço</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{ width: "85%" }} onPress={addEndereco}>
-          <View
-            style={{
-              height: 50,
-              backgroundColor: "#FFDB00",
-              borderRadius: 3,
-              alignItems: "center",
-              alignContent: "center",
-              paddingVertical: 15,
-            }}
-          >
-            <Text>Adicionar endereço</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -192,7 +192,7 @@ export default function endereco() {
 const styles = StyleSheet.create({
   input: {
     marginTop: 10,
-    width: 300,
+    width: 200,
     fontSize: 16,
   },
   card2: {

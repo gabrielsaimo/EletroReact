@@ -114,6 +114,7 @@ export default function MeusEnderecos({ route, navigation }) {
           )}
         ></FlatList>
         <TouchableOpacity
+        onPress={()=>navigation.navigate("add_config_endereco")}
           style={{
             alignItems: "center",
             borderWidth: 1,

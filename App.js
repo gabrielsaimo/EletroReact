@@ -21,6 +21,7 @@ import AddFavorito from "./Src/Components/AddFavorito";
 import MeusEnderecos from "./Src/Components/Screens/MeusEnderecos";
 import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
 import Buscar from "./Src/Components/Buscar";
+import add_config_endereco from "./Src/Components/Screens/add_config_endereco";
 import passwordReset from "./Src/Components/Screens/passwordReset";
 
 const Tab = createBottomTabNavigator();
@@ -66,6 +67,8 @@ const Perfies = () => {
       <Stack.Screen name="Pedidos" component={Pedidos} />
       <Stack.Screen name="MeusEnderecos" component={MeusEnderecos} />
       <Stack.Screen name="passwordReset" component={passwordReset} />
+      <Stack.Screen name="add_config_endereco" component={add_config_endereco} />
+     
     </Stack.Navigator>
   );
 };
