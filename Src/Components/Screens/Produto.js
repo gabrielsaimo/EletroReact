@@ -134,7 +134,7 @@ export default function Produto({ route, navigation }) {
             </Text>
 
             <View
-              style={{ marginTop: 10, width, height: 300, marginLeft: -10.2 }}
+              style={{ marginTop: 10, width, height: 350, marginLeft: -10.2 }}
             >
               <FlatList
                 horizontal
@@ -149,7 +149,7 @@ export default function Produto({ route, navigation }) {
                       style={{
                         width,
                         height: "100%",
-                        resizeMode: "stretch",
+                        resizeMode: "contain",
                       }}
                       key={item}
                       source={{ uri: item.img }}

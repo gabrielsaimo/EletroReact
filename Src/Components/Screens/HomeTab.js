@@ -10,7 +10,6 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-
 import SearchBarHome from "../SearchBarHome";
 import Local from "../Local";
 import Banner from "../Banner";
@@ -54,6 +53,7 @@ export default function HomeTab() {
           })
           .catch((error) => {
             console.error(error);
+            setRefreshing(false);
             setRefreshing(true);
           });
       } else {

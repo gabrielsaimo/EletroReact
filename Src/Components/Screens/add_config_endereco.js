@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { AuthContext } from "../../Contexts/Auth";
+import { TextInputMask } from "react-native-masked-text";
 import { Appbar } from "react-native-paper";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -27,7 +27,6 @@ export default function endereco() {
   const [telefone, setTelefone] = useState("");
   const [celular, setCelular] = useState("");
   const [idEndereco, setiIdEndereco] = useState("");
-  const { signIn } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
@@ -69,7 +68,7 @@ export default function endereco() {
     Add();
   }
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <View>
         <Appbar.Header
           style={{ backgroundColor: "blue", marginTop: 0, zIndex: 1 }}
@@ -101,85 +100,128 @@ export default function endereco() {
       </View>
       <ScrollView>
         <View style={{ alignItems: "center", marginBottom: 150 }}>
-          <View>
-            <TextInput
+          <View style={{ width: "85%" }}>
+            <Text style={styles.uptext}>CEP</Text>
+            <TextInputMask
               style={styles.input}
               underlineColorAndroid="transparent"
-              keyboardType={"decimal-pad"}
+              type={"zip-code"}
+              maxLength={9}
+              borderWidth={1}
+              borderColor={"#A0A5AA"}
+              backgroundColor={"#fff"}
+              paddingHorizontal={10}
+              borderRadius={5}
               onChangeText={(text) => setCep(text)}
-              placeholder="cep"
-            ></TextInput>
+              placeholder="00000-000"
+            ></TextInputMask>
             <View style={{ flexDirection: "row" }}>
-              <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                editable={false}
-                onChangeText={(text) => setEmdereco(text)}
-                placeholder="Rua"
-              ></TextInput>
-              <TextInput
-                style={{ marginTop: 10, marginLeft: 10, width: 100 }}
-                underlineColorAndroid="transparent"
-                keyboardType={"decimal-pad"}
-                onChangeText={(text) => setNumero(text)}
-                placeholder="Numero"
-              ></TextInput>
+              <View style={{ width: "76%", marginRight: "4%" }}>
+                <Text style={styles.uptext}>Rua</Text>
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  editable={false}
+                  onChangeText={(text) => setEmdereco(text)}
+                  placeholder="Endereco"
+                ></TextInput>
+              </View>
+
+              <View style={{ width: "20%" }}>
+                <Text style={styles.uptext}>Numero</Text>
+                <TextInputMask
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  type={"only-numbers"}
+                  maxLength={6}
+                  borderWidth={1}
+                  borderColor={"#A0A5AA"}
+                  backgroundColor={"#fff"}
+                  paddingHorizontal={10}
+                  borderRadius={5}
+                  onChangeText={(text) => setNumero(text)}
+                  placeholder="000"
+                ></TextInputMask>
+              </View>
             </View>
-            <View style={{ flexDirection: "row" }}>
-              <TextInput
-                style={{ width: 150, marginTop: 10 }}
-                underlineColorAndroid="transparent"
-                editable={false}
-                onChangeText={(text) => setBairro(text)}
-                placeholder="Bairro"
-              ></TextInput>
-              <TextInput
-                style={{ width: 150, marginTop: 10, marginLeft: 10 }}
-                underlineColorAndroid="transparent"
-                onChangeText={(text) => setComplemento(text)}
-                placeholder="Complemento"
-              ></TextInput>
+            <View style={{ flexDirection: "row", width: "100%" }}>
+              <View style={{ width: "48%", marginRight: "4%" }}>
+                <Text style={styles.uptext}>Bairro</Text>
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  editable={false}
+                  onChangeText={(text) => setBairro(text)}
+                  placeholder=""
+                ></TextInput>
+              </View>
+
+              <View style={{ width: "48%" }}>
+                <Text style={styles.uptext}>Complento</Text>
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  onChangeText={(text) => setComplemento(text)}
+                  placeholder="Apto 1 bloc E"
+                ></TextInput>
+              </View>
             </View>
             <View>
+              <Text style={styles.uptext}>Estado</Text>
               <TextInput
                 style={styles.input}
                 underlineColorAndroid="transparent"
                 onChangeText={(text) => setEstado(text)}
                 editable={false}
-                placeholder="Estado"
+                placeholder="MG"
               ></TextInput>
+              <Text style={styles.uptext}>Cidade</Text>
               <TextInput
                 style={styles.input}
                 underlineColorAndroid="transparent"
                 onChangeText={(text) => setCidade(text)}
                 editable={false}
-                placeholder="Cidade"
+                placeholder=""
               ></TextInput>
+              <Text style={styles.uptext}>Destinatario</Text>
               <TextInput
                 style={styles.input}
                 underlineColorAndroid="transparent"
                 onChangeText={(text) => setIdCliente(text)}
-                placeholder="Destinatario"
+                placeholder=""
               ></TextInput>
-              <TextInput
+              <Text style={styles.uptext}>Telefone</Text>
+              <TextInputMask
                 style={styles.input}
+                type={"cel-phone"}
+                maxLength={14}
+                options={{
+                  maskType: 'BRL',
+                  withDDD: true,
+                  dddMask: '(99) '
+                }}
                 underlineColorAndroid="transparent"
                 onChangeText={(text) => setIdCliente(text)}
-                placeholder="sobrou"
-              ></TextInput>
+                placeholder="(DDD) 99999999"
+              ></TextInputMask>
+              <Text style={styles.uptext}>Celular</Text>
+              <TextInputMask
+                style={styles.input}
+                type={"cel-phone"}
+                maxLength={15}
+                options={{
+                  maskType: 'BRL',
+                  withDDD: true,
+                  dddMask: '(99) '
+                }}
+                underlineColorAndroid="transparent"
+                onChangeText={(text) => setIdCliente(text)}
+                placeholder="(DDD) 999999999"
+              ></TextInputMask>
             </View>
           </View>
           <TouchableOpacity style={{ width: "85%" }} onPress={addEndereco}>
-            <View
-              style={{
-                height: 50,
-                backgroundColor: "#FFDB00",
-                borderRadius: 3,
-                alignItems: "center",
-                alignContent: "center",
-                paddingVertical: 15,
-              }}
-            >
+            <View style={styles.btnadd}>
               <Text>Adicionar endereço</Text>
             </View>
           </TouchableOpacity>
@@ -192,8 +234,15 @@ export default function endereco() {
 const styles = StyleSheet.create({
   input: {
     marginTop: 10,
-    width: 200,
+    height: 50,
+    width: "100%",
     fontSize: 16,
+    borderColor: "#A0A5AA",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginRight: 10,
   },
   card2: {
     width: "100%",
@@ -218,5 +267,19 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#1534C8",
     marginLeft: 3,
+  },
+  uptext: {
+    marginBottom: -10,
+    marginTop: 10,
+    color: "#6A7075",
+  },
+  btnadd: {
+    height: 50,
+    backgroundColor: "#FFDB00",
+    borderRadius: 3,
+    alignItems: "center",
+    alignContent: "center",
+    paddingVertical: 15,
+    marginTop: 50,
   },
 });

@@ -13,5 +13,6 @@
         "Produto",
         "Produtoimagem",
         "Voltagem"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

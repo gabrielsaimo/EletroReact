@@ -2,11 +2,18 @@
   "expo": {
     "name": "Eletrosom",
     "slug": "ReactEletro",
+    "icon": "./Src/Components/assets/iconapp.png",
     "version": "1.0.0",
     "orientation":"portrait",
     "assetBundlePatterns": [
       "**/*"
     ],
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "ios": {
+      "supportsTablet": true
+    },
     "splash": {
       "image": "./Src/Components/assets/tela1.png",
       "backgroundColor": "#1534C8"
