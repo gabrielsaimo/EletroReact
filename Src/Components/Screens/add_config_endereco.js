@@ -31,12 +31,12 @@ export default function endereco({ route }) {
   const [idEndereco, setiIdEndereco] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const navigation = useNavigation();
-  if(cep.length == 8 && data !== ""){
+  if (cep.length == 8 && data !== "") {
     setData("");
     setBairro("");
-      setCidade("");
-      setEmdereco("");
-      setEstado("");
+    setCidade("");
+    setEmdereco("");
+    setEstado("");
   }
   if (route.params.cep === undefined) {
     console.log("entrou aqui 1");
