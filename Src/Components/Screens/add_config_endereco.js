@@ -255,9 +255,9 @@ export default function endereco({ route }) {
               </TextInput>
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.uptext}>Nome do endereço</Text>
-                <Text style={{ color: "red", marginBottom: -10, marginTop: 5 }}>
-                  *
-                </Text>
+                <Text
+                  style={{ color: "red", marginBottom: -10, marginTop: 5 }}
+                ></Text>
               </View>
               <TextInput
                 style={styles.input}
@@ -265,7 +265,13 @@ export default function endereco({ route }) {
                 onChangeText={(text) => setNomeEndereco(text)}
                 placeholder="Ex: Meu apartamento"
               ></TextInput>
-              <Text style={styles.uptext}>Telefone</Text>
+
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.uptext}>Telefone</Text>
+                <Text style={{ color: "red", marginBottom: -10, marginTop: 5 }}>
+                  *
+                </Text>
+              </View>
               <TextInputMask
                 style={styles.input}
                 type={"cel-phone"}
