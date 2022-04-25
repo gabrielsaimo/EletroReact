@@ -14,24 +14,65 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 
-export default function endereco() {
+export default function endereco({ route }) {
+  const [data, setData] = useState("");
   const [cep, setCep] = useState("");
   const [bairro, setBairro] = useState("");
   const [complemento, setComplemento] = useState("");
   const [endereco, setEmdereco] = useState("");
   const [numero, setNumero] = useState("");
-  const [idCliente, setIdCliente] = useState("");
+  const [idCliente, setIdCliente] = useState(route.params.idCliente);
   const [nomeEndereco, setNomeEndereco] = useState("");
   const [cidade, setCidade] = useState("");
   const [estado, setEstado] = useState("");
   const [telefone, setTelefone] = useState("");
   const [celular, setCelular] = useState("");
-  const [idEndereco, setiIdEndereco] = useState("");
-
+  const [data2, setDsata2] = useState("");
+  const [idEndereco, setiIdEndereco] = useState(null);
+  const [isLoading, setLoading] = useState(true);
   const navigation = useNavigation();
-
-  const Add = async () => {
-    if (cep != "" && estado != "") {
+  if(cep.length == 8 && data !== ""){
+    setData("");
+    setBairro("");
+      setCidade("");
+      setEmdereco("");
+      setEstado("");
+  }
+  if (route.params.cep === undefined) {
+    console.log("entrou aqui 1");
+    if (cep.length == 9 && data == "") {
+      console.log("entrou aqui 2");
+      fetch("https://viacep.com.br/ws/" + cep + "/json/")
+        .then((response) => response.json())
+        .then((json) => setData(json))
+        .catch((error) => console.error(error + " produtoFilhos.js"))
+        .finally(() => setLoading(false));
+    } else if (data !== "" && bairro == "") {
+      console.log("entrou aqui 3");
+      setBairro(data.bairro);
+      setCidade(data.localidade);
+      setEmdereco(data.logradouro);
+      setEstado(data.uf);
+    }
+  } else if (
+    route.params.idEndereco !== null &&
+    bairro == "" &&
+    route.params.endereco !== ""
+  ) {
+    console.log("entrou aqui 4");
+    setCep(route.params.cep);
+    setBairro(route.params.bairro);
+    setCelular(route.params.celular);
+    setCidade(route.params.cidade);
+    setComplemento(route.params.complemento);
+    setEmdereco(route.params.endereco);
+    setEstado(route.params.estado);
+    setNomeEndereco(route.params.nomeEndereco);
+    setNumero(route.params.numero);
+    setTelefone(route.params.telefone);
+  }
+  const Edite = async () => {
+    if (numero != "" && estado != "") {
       await fetch(
         "https://www.eletrosom.com/shell/ws/integrador/dadosEndereco",
         {
@@ -60,13 +101,18 @@ export default function endereco() {
         }
       )
         .then((res) => res.json())
-        .then((resData) => {});
+        .then((resData) => {
+          setDsata2(resData);
+        });
+    } else {
+      alert("Dados não preenchidos corretamente");
     }
   };
 
-  function addEndereco() {
-    Add();
+  function editeEndereco() {
+    Edite();
   }
+  console.log(data2);
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <View>
@@ -101,7 +147,12 @@ export default function endereco() {
       <ScrollView>
         <View style={{ alignItems: "center", marginBottom: 150 }}>
           <View style={{ width: "85%" }}>
-            <Text style={styles.uptext}>CEP</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.uptext}>CEP</Text>
+              <Text style={{ color: "red", marginBottom: -10, marginTop: 5 }}>
+                *
+              </Text>
+            </View>
             <TextInputMask
               style={styles.input}
               underlineColorAndroid="transparent"
@@ -114,6 +165,7 @@ export default function endereco() {
               borderRadius={5}
               onChangeText={(text) => setCep(text)}
               placeholder="00000-000"
+              value={cep}
             ></TextInputMask>
             <View style={{ flexDirection: "row" }}>
               <View style={{ width: "76%", marginRight: "4%" }}>
@@ -122,13 +174,22 @@ export default function endereco() {
                   style={styles.input}
                   underlineColorAndroid="transparent"
                   editable={false}
-                  onChangeText={(text) => setEmdereco(text)}
                   placeholder="Endereco"
-                ></TextInput>
+                >
+                  {endereco}
+                </TextInput>
               </View>
 
               <View style={{ width: "20%" }}>
-                <Text style={styles.uptext}>Numero</Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.uptext}>Numero</Text>
+                  <Text
+                    style={{ color: "red", marginBottom: -10, marginTop: 5 }}
+                  >
+                    *
+                  </Text>
+                </View>
+
                 <TextInputMask
                   style={styles.input}
                   underlineColorAndroid="transparent"
@@ -141,6 +202,7 @@ export default function endereco() {
                   borderRadius={5}
                   onChangeText={(text) => setNumero(text)}
                   placeholder="000"
+                  value={numero}
                 ></TextInputMask>
               </View>
             </View>
@@ -153,7 +215,9 @@ export default function endereco() {
                   editable={false}
                   onChangeText={(text) => setBairro(text)}
                   placeholder=""
-                ></TextInput>
+                >
+                  {bairro}
+                </TextInput>
               </View>
 
               <View style={{ width: "48%" }}>
@@ -163,7 +227,9 @@ export default function endereco() {
                   underlineColorAndroid="transparent"
                   onChangeText={(text) => setComplemento(text)}
                   placeholder="Apto 1 bloc E"
-                ></TextInput>
+                >
+                  {complemento}
+                </TextInput>
               </View>
             </View>
             <View>
@@ -174,7 +240,9 @@ export default function endereco() {
                 onChangeText={(text) => setEstado(text)}
                 editable={false}
                 placeholder="MG"
-              ></TextInput>
+              >
+                {estado}
+              </TextInput>
               <Text style={styles.uptext}>Cidade</Text>
               <TextInput
                 style={styles.input}
@@ -182,13 +250,20 @@ export default function endereco() {
                 onChangeText={(text) => setCidade(text)}
                 editable={false}
                 placeholder=""
-              ></TextInput>
-              <Text style={styles.uptext}>Destinatario</Text>
+              >
+                {cidade}
+              </TextInput>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.uptext}>Nome do endereço</Text>
+                <Text style={{ color: "red", marginBottom: -10, marginTop: 5 }}>
+                  *
+                </Text>
+              </View>
               <TextInput
                 style={styles.input}
                 underlineColorAndroid="transparent"
-                onChangeText={(text) => setIdCliente(text)}
-                placeholder=""
+                onChangeText={(text) => setNomeEndereco(text)}
+                placeholder="Ex: Meu apartamento"
               ></TextInput>
               <Text style={styles.uptext}>Telefone</Text>
               <TextInputMask
@@ -196,31 +271,40 @@ export default function endereco() {
                 type={"cel-phone"}
                 maxLength={14}
                 options={{
-                  maskType: 'BRL',
+                  maskType: "BRL",
                   withDDD: true,
-                  dddMask: '(99) '
+                  dddMask: "(99) ",
                 }}
                 underlineColorAndroid="transparent"
-                onChangeText={(text) => setIdCliente(text)}
+                onChangeText={(text) => setTelefone(text)}
                 placeholder="(DDD) 99999999"
-              ></TextInputMask>
-              <Text style={styles.uptext}>Celular</Text>
+              >
+                {telefone}
+              </TextInputMask>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.uptext}>Celular</Text>
+                <Text style={{ color: "red", marginBottom: -10, marginTop: 5 }}>
+                  *
+                </Text>
+              </View>
               <TextInputMask
                 style={styles.input}
                 type={"cel-phone"}
                 maxLength={15}
                 options={{
-                  maskType: 'BRL',
+                  maskType: "BRL",
                   withDDD: true,
-                  dddMask: '(99) '
+                  dddMask: "(99) ",
                 }}
                 underlineColorAndroid="transparent"
-                onChangeText={(text) => setIdCliente(text)}
+                onChangeText={(text) => setCelular(text)}
                 placeholder="(DDD) 999999999"
-              ></TextInputMask>
+              >
+                {celular}
+              </TextInputMask>
             </View>
           </View>
-          <TouchableOpacity style={{ width: "85%" }} onPress={addEndereco}>
+          <TouchableOpacity style={{ width: "85%" }} onPress={Edite}>
             <View style={styles.btnadd}>
               <Text>Adicionar endereço</Text>
             </View>
@@ -283,3 +367,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
 });
+
+/**
+ *
+ *
+ * */

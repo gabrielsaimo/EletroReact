@@ -41,6 +41,7 @@
     "react-native-onboarding-swiper": "^1.2.0",
     "react-native-onesignal": "^4.3.8",
     "react-native-paper": "^4.11.2",
+    "react-native-popup-menu": "^0.15.12",
     "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
