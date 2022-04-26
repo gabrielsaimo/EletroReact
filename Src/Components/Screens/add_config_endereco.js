@@ -187,7 +187,6 @@ export default function endereco({ route }) {
                 <Text style={styles.uptext}>Rua</Text>
                 <TextInput
                   style={styles.input}
-                  on
                   underlineColorAndroid="transparent"
                   onChangeText={(text) => setEmdereco(text)}
                   editable={edit}
