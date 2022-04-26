@@ -54,17 +54,25 @@ export default function Produto({ route, navigation }) {
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
   }
 
-  const baseURL =
-    "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
-    route.params.sku +
-    "&version=15&idCliente=" +
-    id;
-
   async function loadApi() {
     if (loading) return;
     setLoading(true);
-    const response = await axios.get(`${baseURL}`);
-    setData([...data, ...response.data]);
+    const baseURL =
+      "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
+      route.params.sku +
+      "&version=15&idCliente=" +
+      id;
+    const baseURL1 =
+      "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
+      route.params.sku +
+      "&version=15";
+    if (id) {
+      const response = await axios.get(`${baseURL}`);
+      setData([...data, ...response.data]);
+    } else {
+      const response = await axios.get(`${baseURL1}`);
+      setData([...data, ...response.data]);
+    }
   }
 
   useEffect(() => {
@@ -149,7 +157,7 @@ export default function Produto({ route, navigation }) {
                       style={{
                         width,
                         height: "100%",
-                        resizeMode: "contain",
+                        resizeMode: "contain"
                       }}
                       key={item}
                       source={{ uri: item.img }}

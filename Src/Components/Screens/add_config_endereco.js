@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { TextInputMask } from "react-native-masked-text";
-import { Appbar } from "react-native-paper";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+import { Appbar, IconButton } from "react-native-paper";
+import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 
@@ -30,6 +30,7 @@ export default function endereco({ route }) {
   const [data2, setDsata2] = useState("");
   const [idEndereco, setiIdEndereco] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const [edit,setEdit] =useState(false);
   const navigation = useNavigation();
   if (cep.length == 8 && data !== "") {
     setData("");
@@ -37,9 +38,13 @@ export default function endereco({ route }) {
     setCidade("");
     setEmdereco("");
     setEstado("");
+    setEdit(false);
   }
   if (route.params.cep === undefined) {
     console.log("entrou aqui 1");
+    if(bairro =="" && cidade !=="" && edit== false){
+      setEdit(true);
+    }
     if (cep.length == 9 && data == "") {
       console.log("entrou aqui 2");
       fetch("https://viacep.com.br/ws/" + cep + "/json/")
@@ -47,13 +52,21 @@ export default function endereco({ route }) {
         .then((json) => setData(json))
         .catch((error) => console.error(error + " produtoFilhos.js"))
         .finally(() => setLoading(false));
-    } else if (data !== "" && bairro == "") {
+        
+        
+    } else if (data !== "" && cidade == "") {
       console.log("entrou aqui 3");
-      setBairro(data.bairro);
+      
       setCidade(data.localidade);
-      setEmdereco(data.logradouro);
+      if(data.logradouro !== undefined){
+        setBairro(data.bairro);
+        setEmdereco(data.logradouro);
+      }
+      
       setEstado(data.uf);
+      
     }
+    
   } else if (
     route.params.idEndereco !== null &&
     bairro == "" &&
@@ -70,6 +83,8 @@ export default function endereco({ route }) {
     setNomeEndereco(route.params.nomeEndereco);
     setNumero(route.params.numero);
     setTelefone(route.params.telefone);
+    setiIdEndereco(route.params.idEndereco);
+    setEdit(true);
   }
   const Edite = async () => {
     if (numero != "" && estado != "") {
@@ -104,6 +119,7 @@ export default function endereco({ route }) {
         .then((resData) => {
           setDsata2(resData);
         });
+        alert('deu !');
     } else {
       alert("Dados não preenchidos corretamente");
     }
@@ -115,32 +131,31 @@ export default function endereco({ route }) {
   console.log(data2);
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
-      <View>
-        <Appbar.Header
-          style={{ backgroundColor: "blue", marginTop: 0, zIndex: 1 }}
-        ></Appbar.Header>
-        <View
-          style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 10 }}
-        ></View>
-      </View>
-
-      <View style={{ marginTop: 30 }}>
-        <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
+      <View style={{ marginTop: 80 }}>
+        <View style={{ alignSelf: "flex-start", marginLeft: "85%" }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <FontAwesomeIcon
-              icon={faAngleLeft}
-              style={{ color: "#1534C8" }}
-              size={30}
+              icon={faClose}
+              style={{ color: "red" }}
+              size={20}
             />
           </TouchableOpacity>
         </View>
-        <View style={{ alignSelf: "center", marginTop: -38 }}>
+        <View style={{ alignSelf: "center", marginTop: -43 }}>
           <View style={styles.card2}>
-            <Text style={styles.texteletro}>eletrosom</Text>
-            <Text style={styles.textponto}>.</Text>
-            <TouchableOpacity onPress={{}}>
-              <Text style={styles.textcom}>com</Text>
-            </TouchableOpacity>
+            <IconButton
+              style={{ marginLeft: 0 }}
+              icon={require("../../Components/assets/entrega.png")}
+              color="blue"
+              size={35}
+            />
+            <View style={{ marginLeft: -10 }}>
+              {idEndereco === null ? (
+                <Text style={{ fontWeight: "bold" }}>Adicionar Endereço</Text>
+              ) : (
+                <Text style={{ fontWeight: "bold" }}> Editar Endereço</Text>
+              )}
+            </View>
           </View>
         </View>
       </View>
@@ -172,11 +187,14 @@ export default function endereco({ route }) {
                 <Text style={styles.uptext}>Rua</Text>
                 <TextInput
                   style={styles.input}
+                  on
                   underlineColorAndroid="transparent"
-                  editable={false}
+                  onChangeText={(text) => setEmdereco(text)}
+                  editable={edit}
+                  value={endereco}
                   placeholder="Endereco"
                 >
-                  {endereco}
+                  
                 </TextInput>
               </View>
 
@@ -212,7 +230,7 @@ export default function endereco({ route }) {
                 <TextInput
                   style={styles.input}
                   underlineColorAndroid="transparent"
-                  editable={false}
+                  editable={edit}
                   onChangeText={(text) => setBairro(text)}
                   placeholder=""
                 >
@@ -221,7 +239,7 @@ export default function endereco({ route }) {
               </View>
 
               <View style={{ width: "48%" }}>
-                <Text style={styles.uptext}>Complento</Text>
+                <Text style={styles.uptext}>Complemento</Text>
                 <TextInput
                   style={styles.input}
                   underlineColorAndroid="transparent"
@@ -233,26 +251,32 @@ export default function endereco({ route }) {
               </View>
             </View>
             <View>
-              <Text style={styles.uptext}>Estado</Text>
-              <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                onChangeText={(text) => setEstado(text)}
-                editable={false}
-                placeholder="MG"
-              >
-                {estado}
-              </TextInput>
-              <Text style={styles.uptext}>Cidade</Text>
-              <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                onChangeText={(text) => setCidade(text)}
-                editable={false}
-                placeholder=""
-              >
-                {cidade}
-              </TextInput>
+              <View style={{ flexDirection: "row", width: "100%" }}>
+                <View style={{ width: "48%", marginRight: "4%" }}>
+                  <Text style={styles.uptext}>Estado</Text>
+                  <TextInput
+                    style={styles.input}
+                    underlineColorAndroid="transparent"
+                    onChangeText={(text) => setEstado(text)}
+                    editable={edit}
+                    placeholder="MG"
+                  >
+                    {estado}
+                  </TextInput>
+                </View>
+                <View style={{ width: "48%" }}>
+                  <Text style={styles.uptext}>Cidade</Text>
+                  <TextInput
+                    style={styles.input}
+                    underlineColorAndroid="transparent"
+                    onChangeText={(text) => setCidade(text)}
+                    editable={edit}
+                    placeholder=""
+                  >
+                    {cidade}
+                  </TextInput>
+                </View>
+              </View>
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.uptext}>Nome do endereço</Text>
                 <Text
@@ -285,7 +309,7 @@ export default function endereco({ route }) {
                 onChangeText={(text) => setTelefone(text)}
                 placeholder="(DDD) 99999999"
               >
-                {telefone}
+                {telefone !== ""?"":telefone}
               </TextInputMask>
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.uptext}>Celular</Text>
@@ -306,7 +330,7 @@ export default function endereco({ route }) {
                 onChangeText={(text) => setCelular(text)}
                 placeholder="(DDD) 999999999"
               >
-                {celular}
+                {celular!== ""?"":celular}
               </TextInputMask>
             </View>
           </View>
@@ -361,6 +385,7 @@ const styles = StyleSheet.create({
   uptext: {
     marginBottom: -10,
     marginTop: 10,
+    marginLeft: 1,
     color: "#6A7075",
   },
   btnadd: {
