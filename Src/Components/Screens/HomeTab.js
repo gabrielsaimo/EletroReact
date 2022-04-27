@@ -35,7 +35,6 @@ export default function HomeTab() {
   useEffect(() => {
     componentDidMount();
   }, [refreshing]);
-
   const componentDidMount = () => {
     console.log();
     AsyncStorage.getItem("idCliente").then((idCliente) => {

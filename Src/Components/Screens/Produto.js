@@ -45,7 +45,7 @@ export default function Produto({ route, navigation }) {
   const width4 = width / 4;
   const height = (width * 100) / 30;
   const [TextInput_cep, setTextCep] = useState(usercep);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
 
   function Clickcep() {
@@ -68,13 +68,12 @@ export default function Produto({ route, navigation }) {
       "&version=15";
     if (id) {
       const response = await axios.get(`${baseURL}`);
-      setData([...data, ...response.data]);
+      setData([response.data]);
     } else {
       const response = await axios.get(`${baseURL1}`);
-      setData([...data, ...response.data]);
+      setData([response.data]);
     }
   }
-
   useEffect(() => {
     loadApi();
   }, []);
@@ -157,7 +156,7 @@ export default function Produto({ route, navigation }) {
                       style={{
                         width,
                         height: "100%",
-                        resizeMode: "contain"
+                        resizeMode: "contain",
                       }}
                       key={item}
                       source={{ uri: item.img }}
