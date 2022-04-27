@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Appbar } from "react-native-paper";
+import { useIsFocused } from '@react-navigation/native';
 import {
   MenuContext,
   Menu,
@@ -22,6 +23,7 @@ const wait = (timeout) => {
 export default function MeusEnderecos({ route, navigation }) {
   const id = route.params.idCliente;
   const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -66,7 +68,7 @@ export default function MeusEnderecos({ route, navigation }) {
   };
   useEffect(() => {
     enderecos();
-  }, [refreshing]);
+  }, [refreshing,isFocused]);
   const SearchBar = () => {
     return (
       <Appbar.Header
@@ -105,7 +107,7 @@ export default function MeusEnderecos({ route, navigation }) {
                 backgroundColor: "#F8F9FA",
               }}
             >
-              <View style={{ marginVertical: 10 }}>
+              <View style={{ marginVertical: 10, marginTop: -25 }}>
                 <Text style={{ color: "#1534C8", fontWeight: "bold" }}>
                   {item.nomeEndereco}
                 </Text>
@@ -114,7 +116,16 @@ export default function MeusEnderecos({ route, navigation }) {
                 <View>
                   <Menu style={{ alignSelf: "flex-end" }}>
                     <MenuTrigger>
-                      <Text style={{ fontSize: 25,fontWeight: "bold" }}> ⁞ </Text>
+                      <Text
+                        style={{
+                          fontSize: 25,
+                          fontWeight: "bold",
+                          paddingBottom: 20,
+                        }}
+                      >
+                        {" "}
+                        ⁞{" "}
+                      </Text>
                     </MenuTrigger>
 
                     <MenuOptions
@@ -133,6 +144,7 @@ export default function MeusEnderecos({ route, navigation }) {
                             celular: item.celular,
                             nomeEndereco: item.nomeEndereco,
                             bairro: item.bairro,
+                            estado: item.estado,
                             endereco: item.endereco,
                             cidade: item.cidade,
                           })

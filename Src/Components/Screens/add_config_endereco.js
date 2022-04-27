@@ -30,7 +30,7 @@ export default function endereco({ route }) {
   const [data2, setDsata2] = useState("");
   const [idEndereco, setiIdEndereco] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  const [edit,setEdit] =useState(false);
+  const [edit, setEdit] = useState(false);
   const navigation = useNavigation();
   if (cep.length == 8 && data !== "") {
     setData("");
@@ -41,8 +41,7 @@ export default function endereco({ route }) {
     setEdit(false);
   }
   if (route.params.cep === undefined) {
-    console.log("entrou aqui 1");
-    if(bairro =="" && cidade !=="" && edit== false){
+    if (bairro == "" && cidade !== "" && edit == false) {
       setEdit(true);
     }
     if (cep.length == 9 && data == "") {
@@ -52,25 +51,22 @@ export default function endereco({ route }) {
         .then((json) => setData(json))
         .catch((error) => console.error(error + " produtoFilhos.js"))
         .finally(() => setLoading(false));
-        
-        
     } else if (data !== "" && cidade == "") {
       console.log("entrou aqui 3");
-      
+
       setCidade(data.localidade);
-      if(data.logradouro !== undefined){
+      if (data.logradouro !== undefined) {
         setBairro(data.bairro);
         setEmdereco(data.logradouro);
       }
-      
+
       setEstado(data.uf);
-      
     }
-    
   } else if (
     route.params.idEndereco !== null &&
     bairro == "" &&
-    route.params.endereco !== ""
+    route.params.endereco !== "" &&
+    edit == ""
   ) {
     console.log("entrou aqui 4");
     setCep(route.params.cep);
@@ -86,8 +82,9 @@ export default function endereco({ route }) {
     setiIdEndereco(route.params.idEndereco);
     setEdit(true);
   }
+
   const Edite = async () => {
-    if (numero != "" && estado != "") {
+    if (cep.length === 9) {
       await fetch(
         "https://www.eletrosom.com/shell/ws/integrador/dadosEndereco",
         {
@@ -119,16 +116,19 @@ export default function endereco({ route }) {
         .then((resData) => {
           setDsata2(resData);
         });
-        alert('deu !');
     } else {
-      alert("Dados não preenchidos corretamente");
+      alert("Cep incorreto");
     }
   };
-
-  function editeEndereco() {
-    Edite();
+  if (data2.codigoMensagem === 200) {
+    alert(data2.mensagem);
+    navigation.goBack();
+    setDsata2("");
+  } else if (data2.codigoMensagem !== 200 && data2 !== "") {
+    alert(data2.mensagem + "=> Erro: " + data2.codigoMensagem);
+    setDsata2("");
   }
-  console.log(data2);
+
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <View style={{ marginTop: 80 }}>
@@ -184,7 +184,22 @@ export default function endereco({ route }) {
             ></TextInputMask>
             <View style={{ flexDirection: "row" }}>
               <View style={{ width: "76%", marginRight: "4%" }}>
-                <Text style={styles.uptext}>Rua</Text>
+              <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.uptext}>Rua</Text>
+                    {idEndereco !== null || (data !== "" && bairro == "") ? (
+                      <Text
+                        style={{
+                          color: "red",
+                          marginBottom: -10,
+                          marginTop: 5,
+                        }}
+                      >
+                        *
+                      </Text>
+                    ) : (
+                      <></>
+                    )}
+                  </View>
                 <TextInput
                   style={styles.input}
                   underlineColorAndroid="transparent"
@@ -192,9 +207,7 @@ export default function endereco({ route }) {
                   editable={edit}
                   value={endereco}
                   placeholder="Endereco"
-                >
-                  
-                </TextInput>
+                ></TextInput>
               </View>
 
               <View style={{ width: "20%" }}>
@@ -225,7 +238,22 @@ export default function endereco({ route }) {
             </View>
             <View style={{ flexDirection: "row", width: "100%" }}>
               <View style={{ width: "48%", marginRight: "4%" }}>
-                <Text style={styles.uptext}>Bairro</Text>
+              <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.uptext}>Bairro</Text>
+                    {idEndereco !== null || (data !== "" && bairro == "") ? (
+                      <Text
+                        style={{
+                          color: "red",
+                          marginBottom: -10,
+                          marginTop: 5,
+                        }}
+                      >
+                        *
+                      </Text>
+                    ) : (
+                      <></>
+                    )}
+                  </View>
                 <TextInput
                   style={styles.input}
                   underlineColorAndroid="transparent"
@@ -252,19 +280,49 @@ export default function endereco({ route }) {
             <View>
               <View style={{ flexDirection: "row", width: "100%" }}>
                 <View style={{ width: "48%", marginRight: "4%" }}>
-                  <Text style={styles.uptext}>Estado</Text>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.uptext}>Estado</Text>
+                    {idEndereco !== null || (data !== "" && bairro == "") ? (
+                      <Text
+                        style={{
+                          color: "red",
+                          marginBottom: -10,
+                          marginTop: 5,
+                        }}
+                      >
+                        *
+                      </Text>
+                    ) : (
+                      <></>
+                    )}
+                  </View>
                   <TextInput
                     style={styles.input}
                     underlineColorAndroid="transparent"
+                    maxLength={2}
                     onChangeText={(text) => setEstado(text)}
                     editable={edit}
-                    placeholder="MG"
-                  >
-                    {estado}
-                  </TextInput>
+                    placeholder="Ex: MG"
+                    value={estado}
+                  ></TextInput>
                 </View>
                 <View style={{ width: "48%" }}>
-                  <Text style={styles.uptext}>Cidade</Text>
+                <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.uptext}>Cidade</Text>
+                    {idEndereco !== null || (data !== "" && bairro == "") ? (
+                      <Text
+                        style={{
+                          color: "red",
+                          marginBottom: -10,
+                          marginTop: 5,
+                        }}
+                      >
+                        *
+                      </Text>
+                    ) : (
+                      <></>
+                    )}
+                  </View>
                   <TextInput
                     style={styles.input}
                     underlineColorAndroid="transparent"
@@ -304,12 +362,11 @@ export default function endereco({ route }) {
                   withDDD: true,
                   dddMask: "(99) ",
                 }}
+                value={telefone}
                 underlineColorAndroid="transparent"
                 onChangeText={(text) => setTelefone(text)}
                 placeholder="(DDD) 99999999"
-              >
-                {telefone !== ""?"":telefone}
-              </TextInputMask>
+              ></TextInputMask>
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.uptext}>Celular</Text>
                 <Text style={{ color: "red", marginBottom: -10, marginTop: 5 }}>
@@ -328,12 +385,11 @@ export default function endereco({ route }) {
                 underlineColorAndroid="transparent"
                 onChangeText={(text) => setCelular(text)}
                 placeholder="(DDD) 999999999"
-              >
-                {celular!== ""?"":celular}
-              </TextInputMask>
+                value={celular}
+              ></TextInputMask>
             </View>
           </View>
-          <TouchableOpacity style={{ width: "85%" }} onPress={Edite}>
+          <TouchableOpacity style={{ width: "85%" }} onPress={() => Edite()}>
             <View style={styles.btnadd}>
               <Text>Adicionar endereço</Text>
             </View>
