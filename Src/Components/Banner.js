@@ -11,7 +11,7 @@ import {
 
 export default App = ({ sku }) => {
   const { width } = Dimensions.get("window");
-  const height = width * 50 / 95 ;
+  const height = (width * 50) / 95;
   const [active, isActive] = useState(0);
 
   const change = ({ nativeEvent }) => {
@@ -29,20 +29,23 @@ export default App = ({ sku }) => {
     fetch("https://eletrosom.com/shell/ws/integrador/banners/?version=15")
       .then((response) => response.json())
       .then((json) => setData(json))
-      .catch((error) => console.error(error))
+      .catch((error) => {
+        console.error(error);
+        setLoading(true);
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [isLoading]);
 
   return (
     <View style={{ flex: 0 }}>
       {isLoading ? (
-        <View style={{ width, height}}>
+        <View style={{ width, height }}>
           <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         </View>
       ) : (
-        <View style={{ width, height}}>
+        <View style={{ width, height }}>
           <FlatList
             horizontal
             pagingEnabled
@@ -74,11 +77,15 @@ export default App = ({ sku }) => {
               alignSelf: "center",
             }}
           >
-            {data.banners ? (data.banners.map((i, k) => (
-              <Text key={k} style={k == active ? styles.setbol : styles.bol}>
-                ⬤
-              </Text>
-            ))):(<></>)}
+            {data.banners ? (
+              data.banners.map((i, k) => (
+                <Text key={k} style={k == active ? styles.setbol : styles.bol}>
+                  ⬤
+                </Text>
+              ))
+            ) : (
+              <></>
+            )}
           </View>
         </View>
       )}
@@ -101,6 +108,5 @@ const styles = StyleSheet.create({
   horizontal: {
     flexDirection: "row",
     justifyContent: "space-around",
-
   },
 });

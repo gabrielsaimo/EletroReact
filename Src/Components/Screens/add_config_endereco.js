@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { TextInputMask } from "react-native-masked-text";
-import { Appbar, IconButton } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";

@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons/faTrashCan";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import { Appbar } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
 import {
@@ -150,15 +153,45 @@ export default function MeusEnderecos({ route, navigation }) {
                           })
                         }
                       >
-                        <Text style={{ color: "#1534C8", fontWeight: "bold" }}>
-                          Editar
-                        </Text>
+                        <View style={{ flexDirection: "row" }}>
+                          <FontAwesomeIcon
+                            marginTop={4}
+                            size={12}
+                            icon={faPenToSquare}
+                            style={{ color: "#1534C8" }}
+                          />
+                          <Text
+                            style={{
+                              color: "#1534C8",
+                              fontWeight: "bold",
+                              marginLeft: 5,
+                            }}
+                          >
+                            Editar
+                          </Text>
+                        </View>
                       </MenuOption>
 
                       <MenuOption
                         onSelect={() => deleteEndereco(item.idEndereco)}
                       >
-                        <Text style={{ color: "red" }}>Delete</Text>
+                        <View style={{ flexDirection: "row" }}>
+                          <FontAwesomeIcon
+                            marginTop={4}
+                            size={12}
+                            icon={faTrashCan}
+                            style={{ color: "red" }}
+                          />
+                          <Text
+                            style={{
+                              color: "red",
+                              fontWeight: "bold",
+                              marginLeft: 5,
+                            }}
+                          >
+                            Excluir
+                          </Text>
+                        </View>
                       </MenuOption>
                     </MenuOptions>
                   </Menu>

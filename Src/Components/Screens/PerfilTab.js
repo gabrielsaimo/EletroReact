@@ -24,7 +24,6 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PerfilTab() {
-
   const [visible, setVisible] = React.useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
@@ -171,7 +170,7 @@ export default function PerfilTab() {
             </View>
             <View style={{ marginTop: -30, flexDirection: "row" }}>
               <Text style={{ fontSize: 15, color: "#6A7075" }}>ou</Text>
-              <TouchableOpacity onPress={() => setVisibleLoginUp(true)}>
+              <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
                 <Text style={styles.textPart2}>cadastre-se</Text>
               </TouchableOpacity>
             </View>
@@ -191,7 +190,11 @@ export default function PerfilTab() {
         <View style={styles.conteiner}>
           <View>
             <TouchableOpacity
-              onPress={id != null ? () => navigation.navigate("Pedidos",{idCliente:id}) : onToggleSnackBar}
+              onPress={
+                id != null
+                  ? () => navigation.navigate("Pedidos", { idCliente: id })
+                  : onToggleSnackBar
+              }
             >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon
@@ -216,7 +219,12 @@ export default function PerfilTab() {
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
             <TouchableOpacity
-              onPress={id != null ? () => navigation.navigate("MeusEnderecos",{idCliente:id}) : onToggleSnackBar}
+              onPress={
+                id != null
+                  ? () =>
+                      navigation.navigate("MeusEnderecos", { idCliente: id })
+                  : onToggleSnackBar
+              }
             >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon

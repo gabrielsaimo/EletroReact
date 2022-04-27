@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-paper";
+import { View, StyleSheet, Text, TouchableOpacity,TextInput } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { AuthContext } from "../../Contexts/Auth";
 import { Appbar } from "react-native-paper";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
-
-export default function Login() {
+import PassMeter from "react-native-passmeter";
+const MAX_LEN = 15,
+  MIN_LEN = 6,
+  PASS_LABELS = ["Muito curto", "Fraco", "Normal", "Forte", "Muito Forte"];
+export default function Cadastro() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn } = useContext(AuthContext);
@@ -121,41 +123,46 @@ export default function Login() {
         </View>
       </View>
 
-      <View style={{ alignItems: "center" }}>
-        <View style={{ alignItems: "center", marginVertical: 30 }}>
-          <Text style={{ fontSize: 30 }}>Bem vindo</Text>
-          <Text>Entre ou crie sua conta Eletrosm</Text>
-        </View>
+      <View style={{ alignItems: "center" ,marginTop:'1%'}}>
 
-        <View>
-          <View>
+
+        <View style={{ width: "100%" }}>
+          <View style={{ width: "100%", marginLeft: "5%" }}>
+              <Text style={{marginTop:50}}>Email</Text>
             <TextInput
               style={styles.input}
               underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="account" />}
               keyboardType={"email-address"}
+              backgroundColor={'#FFF'}
+              height={50}
+              borderRadius={5}
               onChangeText={(text) => setEmail(text)}
               placeholder="Seu email"
             ></TextInput>
+            <Text style={{marginTop:50}}>Senha</Text>
             <TextInput
               style={styles.input}
               underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
+              maxLength={15}
+              backgroundColor={'#FFF'}
+              height={50}
+              borderRadius={5}
               onChangeText={(text) => setPassword(text)}
               placeholder="Sua senha"
               secureTextEntry={true}
             />
+            <View style={{marginLeft:'-10%',marginTop:10}}>
+              <PassMeter
+                showLabels
+                password={password}
+                maxLength={MAX_LEN}
+                minLength={MIN_LEN}
+                labels={PASS_LABELS}
+              />
+            </View>
           </View>
-          <Text
-            style={{ alignSelf: "flex-end", margin: 10 }}
-            onPress={() =>
-              navigation.navigate("passwordReset", { emaill: email })
-            }
-          >
-            Esqueci a senha
-          </Text>
         </View>
-        <TouchableOpacity style={{ width: "85%" }} onPress={ClickLogin}>
+        <TouchableOpacity style={{ width: "85%" ,position:'absolute',marginTop:'80%'}} onPress={ClickLogin}>
           <View
             style={{
               height: 50,
@@ -166,7 +173,7 @@ export default function Login() {
               paddingVertical: 15,
             }}
           >
-            <Text>Acessar</Text>
+            <Text>Continuar</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -177,8 +184,11 @@ export default function Login() {
 const styles = StyleSheet.create({
   input: {
     marginTop: 10,
-    width: 300,
+    width: "90%",
     fontSize: 16,
+    borderWidth:1,
+    borderColor:'#6A7075',
+    paddingLeft: 15
   },
   card2: {
     width: "100%",

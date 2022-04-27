@@ -17,6 +17,7 @@ import ProdutoFilhos from "./Src/Components/ProdutoFilhos";
 import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
 import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
 import Pedidos from "./Src/Components/Screens/Pedidos";
+import Cadastro from "./Src/Components/Screens/Cadastro";
 import AddFavorito from "./Src/Components/AddFavorito";
 import MeusEnderecos from "./Src/Components/Screens/MeusEnderecos";
 import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
@@ -67,8 +68,11 @@ const Perfies = () => {
       <Stack.Screen name="Pedidos" component={Pedidos} />
       <Stack.Screen name="MeusEnderecos" component={MeusEnderecos} />
       <Stack.Screen name="passwordReset" component={passwordReset} />
-      <Stack.Screen name="add_config_endereco" component={add_config_endereco} />
-     
+      <Stack.Screen
+        name="add_config_endereco"
+        component={add_config_endereco}
+      />
+      <Stack.Screen name="Cadastro" component={Cadastro} />
     </Stack.Navigator>
   );
 };
