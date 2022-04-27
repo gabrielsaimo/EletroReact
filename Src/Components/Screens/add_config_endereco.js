@@ -136,7 +136,7 @@ export default function endereco({ route }) {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <FontAwesomeIcon
               icon={faClose}
-              style={{ color: "red" }}
+              style={{ color: "blue" }}
               size={20}
             />
           </TouchableOpacity>
@@ -446,15 +446,10 @@ const styles = StyleSheet.create({
   btnadd: {
     height: 50,
     backgroundColor: "#FFDB00",
-    borderRadius: 3,
+    borderRadius: 5,
     alignItems: "center",
     alignContent: "center",
     paddingVertical: 15,
     marginTop: 50,
   },
 });
-
-/**
- *
- *
- * */

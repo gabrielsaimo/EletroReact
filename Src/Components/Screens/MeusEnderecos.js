@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Appbar } from "react-native-paper";
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from "@react-navigation/native";
 import {
   MenuContext,
   Menu,
@@ -68,7 +68,7 @@ export default function MeusEnderecos({ route, navigation }) {
   };
   useEffect(() => {
     enderecos();
-  }, [refreshing,isFocused]);
+  }, [refreshing, isFocused]);
   const SearchBar = () => {
     return (
       <Appbar.Header
@@ -102,9 +102,10 @@ export default function MeusEnderecos({ route, navigation }) {
             <View
               style={{
                 paddingHorizontal: 10,
-                paddingBottom: 20,
-                marginVertical: 20,
+                paddingBottom: 15,
+                marginVertical: 15,
                 backgroundColor: "#F8F9FA",
+                borderRadius: 25,
               }}
             >
               <View style={{ marginVertical: 10, marginTop: -25 }}>
@@ -120,11 +121,10 @@ export default function MeusEnderecos({ route, navigation }) {
                         style={{
                           fontSize: 25,
                           fontWeight: "bold",
-                          paddingBottom: 20,
+                          paddingBottom: 10,
                         }}
                       >
-                        {" "}
-                        ⁞{" "}
+                        {"       "}⁞{"   "}
                       </Text>
                     </MenuTrigger>
 
