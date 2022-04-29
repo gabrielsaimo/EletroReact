@@ -18,7 +18,7 @@ import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
 import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
 import Pedidos from "./Src/Components/Screens/Pedidos";
 import Cadastro from "./Src/Components/Screens/Cadastro";
-import AddFavorito from "./Src/Components/AddFavorito";
+import Cadastrop2 from "./Src/Components/Screens/Cadastrop2";
 import MeusEnderecos from "./Src/Components/Screens/MeusEnderecos";
 import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
 import Buscar from "./Src/Components/Buscar";
@@ -73,6 +73,7 @@ const Perfies = () => {
         component={add_config_endereco}
       />
       <Stack.Screen name="Cadastro" component={Cadastro} />
+      <Stack.Screen name="Cadastrop2" component={Cadastrop2} />
     </Stack.Navigator>
   );
 };

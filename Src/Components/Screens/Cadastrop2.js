@@ -1,20 +1,18 @@
 import React, { useContext, useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
 import { AuthContext } from "../../Contexts/Auth";
+import { TextInput } from "react-native-paper";
 import { Appbar } from "react-native-paper";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
-
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Cadastrop2({ route }) {
+    const email = route.params.email;
+    const password = route.params.senha;
+  const [CPF, setCpf] = useState("");
+  const [Nome, setNome] = useState("");
   const { signIn } = useContext(AuthContext);
-
   const navigation = useNavigation();
-
+console.log(email,password);
   const Logar = async () => {
     if (email != "" && password != "") {
       await fetch("https://www.eletrosom.com/shell/ws/integrador/login", {
@@ -92,72 +90,66 @@ export default function Login() {
   return (
     <SafeAreaView>
       <View>
-        <Appbar.Header
-          style={{ backgroundColor: "blue", marginTop: 0, zIndex: 1 }}
-        ></Appbar.Header>
+        <Appbar.Header style={{ backgroundColor: "#1534C8", zIndex: 2 }}>
+          <Appbar.BackAction
+            onPress={() => navigation.goBack()}
+          ></Appbar.BackAction>
+          <Appbar.Content
+            titleStyle={{ textAlign: "center", fontSize: 20 }}
+            title={"Seu perfil"}
+          />
+          <Appbar.Action></Appbar.Action>
+        </Appbar.Header>
         <View
-          style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 10 }}
+          style={{
+            backgroundColor: "#9BCB3D",
+            width: "50%",
+            height: 5,
+            marginTop: 0,
+            zIndex: 1,
+          }}
         ></View>
       </View>
 
-      <View style={{ marginTop: 30 }}>
-        <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <FontAwesomeIcon
-              icon={faAngleLeft}
-              style={{ color: "#1534C8" }}
-              size={30}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{ alignSelf: "center", marginTop: -38 }}>
-          <View style={styles.card2}>
-            <Text style={styles.texteletro}>eletrosom</Text>
-            <Text style={styles.textponto}>.</Text>
-            <TouchableOpacity onPress={{}}>
-              <Text style={styles.textcom}>com</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <View style={{ alignItems: "center", marginVertical: 30 }}>
-          <Text style={{ fontSize: 30 }}>Bem vindo</Text>
-          <Text>Entre ou crie sua conta Eletrosm</Text>
-        </View>
-
-        <View>
-          <View>
+      <View style={{ alignItems: "center", marginTop: "1%" }}>
+        <View style={{ width: "100%" }}>
+          <View style={{ width: "100%", marginLeft: "5%" }}>
+            <Text style={{ marginTop: 50 }}>E-mail</Text>
             <TextInput
               style={styles.input}
               underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="account" />}
-              keyboardType={"email-address"}
+              keyboardType={"decimal-pad"}
               mode="outlined"
-              onChangeText={(text) => setEmail(text)}
-              placeholder="Seu email"
+              onChangeText={(text) => setCpf(text)}
+              placeholder="Insira seu CPF"
             ></TextInput>
+            <Text style={{ marginTop: 50 }}>Senha</Text>
             <TextInput
-              mode="outlined"
               style={styles.input}
               underlineColorAndroid="transparent"
-              left={<TextInput.Icon name="lock" />}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Sua senha"
+              maxLength={15}
+              mode="outlined"
+              onChangeText={(text) => setNome(text)}
+              placeholder="Nome completo"
               secureTextEntry={true}
             />
+            <View style={{ marginLeft: "-10%", marginTop: 10 }}></View>
           </View>
-          <Text
-            style={{ alignSelf: "flex-end", margin: 10 }}
-            onPress={() =>
-              navigation.navigate("passwordReset", { emaill: email })
-            }
-          >
-            Esqueci a senha
-          </Text>
         </View>
-        <TouchableOpacity style={{ width: "85%" }} onPress={ClickLogin}>
+        <TouchableOpacity
+          style={{
+            width: "85%",
+            position: "absolute",
+            marginTop: "80%",
+            zIndex: 99999,
+          }}
+          onPress={() => [
+            navigation.push("Cadastrop2", {
+              emial: email,
+              password: password,
+            }),
+          ]}
+        >
           <View
             style={{
               height: 50,
@@ -168,7 +160,7 @@ export default function Login() {
               paddingVertical: 15,
             }}
           >
-            <Text>Acessar</Text>
+            <Text>Continuar</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -178,8 +170,7 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   input: {
-    marginTop: 10,
-    width: 300,
+    width: "90%",
     fontSize: 16,
   },
   card2: {

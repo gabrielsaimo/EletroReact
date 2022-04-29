@@ -89,7 +89,7 @@ export default function passwordReset({ route }) {
               keyboardType={"email-address"}
               onChangeText={(text) => setEmail(text)}
               placeholder="Seu email"
-              value={sendemail}
+              
             ></TextInput>
           </View>
         </View>
