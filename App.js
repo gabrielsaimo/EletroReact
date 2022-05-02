@@ -19,6 +19,7 @@ import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
 import Pedidos from "./Src/Components/Screens/Pedidos";
 import Cadastro from "./Src/Components/Screens/Cadastro";
 import Cadastrop2 from "./Src/Components/Screens/Cadastrop2";
+import Cadastrop3 from "./Src/Components/Screens/Cadastrop3";
 import MeusEnderecos from "./Src/Components/Screens/MeusEnderecos";
 import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
 import Buscar from "./Src/Components/Buscar";
@@ -74,6 +75,7 @@ const Perfies = () => {
       />
       <Stack.Screen name="Cadastro" component={Cadastro} />
       <Stack.Screen name="Cadastrop2" component={Cadastrop2} />
+      <Stack.Screen name="Cadastrop3" component={Cadastrop3} />
     </Stack.Navigator>
   );
 };

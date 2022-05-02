@@ -111,7 +111,7 @@ export default function MeusEnderecos({ route, navigation }) {
                 borderRadius: 25,
               }}
             >
-              <View style={{ marginVertical: 10, marginTop: -25 }}>
+              <View style={{ marginVertical: 10, marginBottom: -30 }}>
                 <Text style={{ color: "#1534C8", fontWeight: "bold" }}>
                   {item.nomeEndereco}
                 </Text>

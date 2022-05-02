@@ -6,21 +6,26 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { TextInputMask } from "react-native-masked-text";
-export default function Cadastrop2({ route }) {
+export default function Cadastrop3({ route }) {
   const email = route.params.email;
   const password = route.params.password;
   const pessoa = route.params.pessoa;
-  const [CPF, setCpf] = useState("");
-  const [Nome, setNome] = useState("");
+  const CPF = route.params.cpf;
+  const Nome = route.params.nome;
+  const [telefone, setTelefone] = useState("");
+  const [date, setDate] = useState("");
   const navigation = useNavigation();
+
   function Click() {
-    if (email !== "" && CPF !== "" && Nome !== "") {
-      navigation.push("Cadastrop3", {
+    if (telefone !== "" && date !== "") {
+      navigation.push("Cadastrofim", {
         emial: email,
         password: password,
         pessoa: pessoa,
         cpf: CPF,
         nome: Nome,
+        telefone: telefone,
+        date: date,
       });
     } else {
       alert("Preencha todos os campos");
@@ -64,7 +69,7 @@ export default function Cadastrop2({ route }) {
             }}
           >
             <Text style={{ fontSize: 15, color: "#FFF", fontWeight: "bold" }}>
-              2
+              3
             </Text>
             <Text
               style={{
@@ -91,7 +96,7 @@ export default function Cadastrop2({ route }) {
             style={{ flexDirection: "row", marginLeft: -25, marginTop: 55 }}
           >
             <Text style={{ fontSize: 15, color: "#FFF", fontWeight: "bold" }}>
-              2
+              3
             </Text>
             <Text
               style={{
@@ -118,7 +123,7 @@ export default function Cadastrop2({ route }) {
         <View
           style={{
             backgroundColor: "#9BCB3D",
-            width: "50%",
+            width: "75%",
             height: 5,
             marginTop: 0,
             zIndex: 1,
@@ -129,50 +134,46 @@ export default function Cadastrop2({ route }) {
       <View style={{ alignItems: "center", marginTop: "1%" }}>
         <View style={{ width: "100%" }}>
           <View style={{ width: "100%", marginLeft: "5%" }}>
-            {pessoa === "CPF" ? (
-              <>
-                <Text style={{ marginTop: 50 }}>CPF</Text>
-                <TextInputMask
-                  type={"cpf"}
-                  style={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    marginRight: "10%",
-                    height: 50,
-                    fontSize: 20,
-                    paddingLeft: 10,
-                  }}
-                  maxLength={14}
-                  onChangeText={(text) => setCpf(text)}
-                />
-              </>
-            ) : (
-              <>
-                <Text style={{ marginTop: 50 }}>CNPJ</Text>
-                <TextInputMask
-                  type={"cnpj"}
-                  style={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    marginRight: "10%",
-                    height: 50,
-                    fontSize: 30,
-                    paddingLeft: 10,
-                  }}
-                  maxLength={18}
-                  onChangeText={(text) => setCpf(text)}
-                />
-              </>
-            )}
+            <>
+              <Text style={{ marginTop: 50 }}>Data de Nascimento</Text>
+              <TextInputMask
+                type={"datetime"}
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  marginRight: "10%",
+                  height: 50,
+                  fontSize: 20,
+                  paddingLeft: 10,
+                }}
+                maxLength={10}
+                placeholder={"Ex: 01/01/1999"}
+                options={{
+                  format: "DD/MM/YYYY",
+                }}
+                onChangeText={(text) => setDate(text)}
+              />
+            </>
 
-            <Text style={{ marginTop: 50 }}>Nome completo</Text>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              maxLength={100}
-              mode="outlined"
-              onChangeText={(text) => setNome(text)}
-              placeholder="Ex: Gabriel Saimo"
+            <Text style={{ marginTop: 50 }}>Telefone</Text>
+            <TextInputMask
+              type={"cel-phone"}
+              maxLength={14}
+              options={{
+                maskType: "BRL",
+                withDDD: true,
+                dddMask: "(99) ",
+              }}
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                marginRight: "10%",
+                height: 50,
+                fontSize: 20,
+                paddingLeft: 10,
+              }}
+              placeholder={"Ex:(34) 9999-9999"}
+              onChangeText={(text) => setTelefone(text)}
             />
             <View style={{ marginLeft: "-10%", marginTop: 100 }}></View>
           </View>
