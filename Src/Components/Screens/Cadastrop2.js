@@ -6,21 +6,28 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { TextInputMask } from "react-native-masked-text";
+import { ScrollView } from "react-native-gesture-handler";
 export default function Cadastrop2({ route }) {
   const email = route.params.email;
   const password = route.params.password;
   const pessoa = route.params.pessoa;
   const [CPF, setCpf] = useState("");
   const [Nome, setNome] = useState("");
+  const [sobrenome, setSobreome] = useState("");
+  const [rg, setRg] = useState("");
   const navigation = useNavigation();
   function Click() {
-    if (email !== "" && CPF !== "" && Nome !== "") {
+    if (
+      (email !== "" && CPF !== "" && Nome !== "", rg !== "", sobrenome !== "")
+    ) {
       navigation.push("Cadastrop3", {
-        emial: email,
+        email: email,
         password: password,
         pessoa: pessoa,
         cpf: CPF,
         nome: Nome,
+        sobrenome: sobrenome,
+        rg: rg,
       });
     } else {
       alert("Preencha todos os campos");
@@ -125,81 +132,94 @@ export default function Cadastrop2({ route }) {
           }}
         ></View>
       </View>
-
-      <View style={{ alignItems: "center", marginTop: "1%" }}>
-        <View style={{ width: "100%" }}>
-          <View style={{ width: "100%", marginLeft: "5%" }}>
-            {pessoa === "CPF" ? (
-              <>
-                <Text style={{ marginTop: 50 }}>CPF</Text>
-                <TextInputMask
-                  type={"cpf"}
-                  style={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    marginRight: "10%",
-                    height: 50,
-                    fontSize: 20,
-                    paddingLeft: 10,
-                  }}
-                  maxLength={14}
-                  onChangeText={(text) => setCpf(text)}
-                />
-              </>
-            ) : (
-              <>
-                <Text style={{ marginTop: 50 }}>CNPJ</Text>
-                <TextInputMask
-                  type={"cnpj"}
-                  style={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    marginRight: "10%",
-                    height: 50,
-                    fontSize: 30,
-                    paddingLeft: 10,
-                  }}
-                  maxLength={18}
-                  onChangeText={(text) => setCpf(text)}
-                />
-              </>
-            )}
-
-            <Text style={{ marginTop: 50 }}>Nome completo</Text>
-            <TextInput
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              maxLength={100}
-              mode="outlined"
-              onChangeText={(text) => setNome(text)}
-              placeholder="Ex: Gabriel Saimo"
-            />
-            <View style={{ marginLeft: "-10%", marginTop: 100 }}></View>
-          </View>
-        </View>
-        <TouchableOpacity
-          style={{
-            width: "85%",
-            zIndex: 99,
-          }}
-          onPress={() => {
-            Click();
-          }}
+      <ScrollView>
+        <View
+          style={{ alignItems: "center", marginTop: "1%", marginBottom: 130 }}
         >
-          <View
+          <View style={{ width: "100%" }}>
+            <View style={{ width: "100%", marginLeft: "5%" }}>
+              <Text style={{ marginTop: 20 }}>
+                {pessoa === "F" ? "CPF" : "CNPJ"}
+              </Text>
+              <TextInputMask
+                type={pessoa === "F" ? "cpf" : "cnpj"}
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  marginRight: "10%",
+                  height: 50,
+                  fontSize: 20,
+                  paddingLeft: 15,
+                }}
+                maxLength={pessoa === "F" ? 14 : 18}
+                onChangeText={(text) => setCpf(text)}
+              />
+              <>
+                <Text style={{ marginTop: 20 }}>
+                  {pessoa === "F" ? "RG" : "Inscrição estadual"}
+                </Text>
+              </>
+
+              <TextInput
+                keyboardType="decimal-pad"
+                style={{
+                  borderRadius: 5,
+                  marginRight: "10%",
+                  fontSize: 15,
+                }}
+                mode={"outlined"}
+                onChangeText={(text) => setRg(text)}
+              />
+
+              <Text style={{ marginTop: 20 }}>
+                {pessoa === "F" ? "Nome" : "Razão social"}
+              </Text>
+              <TextInput
+                style={styles.input}
+                underlineColorAndroid="transparent"
+                maxLength={100}
+                mode="outlined"
+                onChangeText={(text) => setNome(text)}
+                placeholder="Ex: Eletrosom"
+              />
+              <Text style={{ marginTop: 20 }}>
+                {pessoa === "F" ? "Sobrenome" : "Responsável"}
+              </Text>
+              <TextInput
+                style={styles.input}
+                underlineColorAndroid="transparent"
+                maxLength={100}
+                mode="outlined"
+                onChangeText={(text) => setSobreome(text)}
+                placeholder="Ex: Gabriel"
+              />
+              <View style={{ marginLeft: "-10%", marginTop: 50 }}></View>
+            </View>
+          </View>
+          <TouchableOpacity
             style={{
-              height: 50,
-              backgroundColor: "#FFDB00",
-              borderRadius: 3,
-              alignItems: "center",
-              alignContent: "center",
-              paddingVertical: 15,
+              width: "85%",
+              zIndex: 99,
+            }}
+            onPress={() => {
+              Click();
             }}
           >
-            <Text>Continuar</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+            <View
+              style={{
+                height: 50,
+                backgroundColor: "#FFDB00",
+                borderRadius: 3,
+                alignItems: "center",
+                alignContent: "center",
+                paddingVertical: 15,
+              }}
+            >
+              <Text>Continuar</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

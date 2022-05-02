@@ -171,6 +171,19 @@ export default function Login() {
             <Text>Acessar</Text>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
+          <Text
+            style={{
+              fontSize: 20,
+              color: "#1534C8",
+              marginLeft: 3,
+              marginTop: 10,
+              fontWeight: "bold",
+            }}
+          >
+            Criar conta eletrosom
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
