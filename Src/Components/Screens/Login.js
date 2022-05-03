@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
 import { AuthContext } from "../../Contexts/Auth";
@@ -12,11 +18,13 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn } = useContext(AuthContext);
+  const [load, setLoad] = useState(false);
 
   const navigation = useNavigation();
 
   const Logar = async () => {
     if (email != "" && password != "") {
+      setLoad(true);
       await fetch("https://www.eletrosom.com/shell/ws/integrador/login", {
         method: "POST",
         headers: {
@@ -67,7 +75,8 @@ export default function Login() {
                   numero,
                   cidade
                 );
-              });
+              })
+              .catch((error) => console.log(error));
 
             setTimeout(() => {
               navigation.reset({
@@ -76,16 +85,18 @@ export default function Login() {
                 initial: false,
               });
               navigation.goBack();
-            }, 1500);
+            }, 1000);
           } else if (resData.codigoMensagem == 317) {
             alert("Login ou Senha Inválidos");
+            setLoad(false);
           } else {
             alert("Erro ao logar");
+            setLoad(false);
           }
         });
     }
   };
-
+  
   function ClickLogin() {
     Logar();
   }
@@ -158,18 +169,33 @@ export default function Login() {
           </Text>
         </View>
         <TouchableOpacity style={{ width: "85%" }} onPress={ClickLogin}>
-          <View
-            style={{
-              height: 50,
-              backgroundColor: "#FFDB00",
-              borderRadius: 3,
-              alignItems: "center",
-              alignContent: "center",
-              paddingVertical: 15,
-            }}
-          >
-            <Text>Acessar</Text>
-          </View>
+          {load === false ? (
+            <View
+              style={{
+                height: 50,
+                backgroundColor: "#FFDB00",
+                borderRadius: 3,
+                alignItems: "center",
+                alignContent: "center",
+                paddingVertical: 15,
+              }}
+            >
+              <Text>Acessar</Text>
+            </View>
+          ) : (
+            <View
+              style={{
+                height: 50,
+                backgroundColor: "#FFDB00",
+                borderRadius: 3,
+                alignItems: "center",
+                alignContent: "center",
+                paddingVertical: 15,
+              }}
+            >
+              <ActivityIndicator size="small" color="#0000ff" />
+            </View>
+          )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
           <Text

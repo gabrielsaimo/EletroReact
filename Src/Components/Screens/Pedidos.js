@@ -1,15 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
-import {
-  TouchableOpacity,
-  FlatList,
-  Text,
-  View,
-  Dimensions,
-  TextInput,
-  Modal,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { TouchableOpacity, FlatList, Text, View } from "react-native";
 import axios from "axios";
-import { AuthContext } from "../../Contexts/Auth";
 import { Appbar } from "react-native-paper";
 export default function Pedidos({ route, navigation }) {
   const id = route.params.idCliente;
@@ -43,48 +34,53 @@ export default function Pedidos({ route, navigation }) {
       </Appbar.Header>
     );
   }
-
   return (
     <View style={{ marginBottom: 85 }}>
       <SearchBar />
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.incrementId}
-        renderItem={({ item }) => (
-          <>
-            <TouchableOpacity style={{ margin: 10 }}>
-              <View>
-                <View style={{ position: "absolute", marginLeft: "75%" }}>
-                  <Text>{item.dataPedido}</Text>
+      {data.length > 0 ? (
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.incrementId}
+          renderItem={({ item }) => (
+            <>
+              <TouchableOpacity style={{ margin: 10 }}>
+                <View>
+                  <View style={{ position: "absolute", marginLeft: "75%" }}>
+                    <Text>{item.dataPedido}</Text>
+                  </View>
+                  <Text>Pedido: {item.incrementId}</Text>
                 </View>
-                <Text>Pedido: {item.incrementId}</Text>
-              </View>
-              <View>
-                <Text>{item.statusPagamento}</Text>
-                <Text style={{ marginBottom: 20 }}>{item.formaPagamento}</Text>
-              </View>
+                <View>
+                  <Text>{item.statusPagamento}</Text>
+                  <Text style={{ marginBottom: 20 }}>
+                    {item.formaPagamento}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    position: "absolute",
+                    marginLeft: "65%",
+                    marginTop: 60,
+                  }}
+                >
+                  <View>
+                    <Text style={{ fontSize: 20 }}>{item.totalPedido}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
               <View
                 style={{
-                  position: "absolute",
-                  marginLeft: "65%",
-                  marginTop: 60,
+                  height: 3,
+                  backgroundColor: "#CED4DA",
+                  width: "100%",
                 }}
-              >
-                <View>
-                  <Text style={{ fontSize: 20 }}>{item.totalPedido}</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-            <View
-              style={{
-                height: 3,
-                backgroundColor: "#CED4DA",
-                width: "100%",
-              }}
-            ></View>
-          </>
-        )}
-      />
+              ></View>
+            </>
+          )}
+        />
+      ) : (
+        <View></View>
+      )}
     </View>
   );
 }

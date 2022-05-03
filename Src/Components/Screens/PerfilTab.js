@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Snackbar } from "react-native-paper";
 import {
   View,
@@ -9,7 +9,10 @@ import {
   Alert,
   Image,
   Modal,
+  Platform,
+  Button,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import { Appbar } from "react-native-paper";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -25,16 +28,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PerfilTab() {
   const [visible, setVisible] = React.useState(false);
+  const [data, setData] = useState("");
+  const [result, setRsult] = useState("");
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
   const navigation = useNavigation();
   const [isVisibleLogin, setVisibleLogin] = useState(false);
-
   const [isVisibleLoginUp, setVisibleLoginUp] = useState(false);
   const [id, setId] = useState("");
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [foto, setFoto] = useState("");
+  const [data_nasc, setNasc] = useState("");
+  const [sexo, setSexo] = useState("");
 
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setId(idCliente);
@@ -42,32 +48,78 @@ export default function PerfilTab() {
   AsyncStorage.getItem("Nome").then((Nome) => {
     setNome(Nome);
   });
+  AsyncStorage.getItem("DataNasc").then((DataNasc) => {
+    setNasc(DataNasc);
+  });
+  AsyncStorage.getItem("sexo").then((sexo) => {
+    setSexo(sexo);
+  });
   AsyncStorage.getItem("email").then((Email) => {
     setEmail(Email);
   });
-  AsyncStorage.getItem("foto_cliente").then((foto) => {
-    setFoto(foto);
-  });
-  const ButtonAlert = () =>
-    Alert.alert("Teste Alert", "My Alert Msg", [
-      {
-        text: "Ask me later",
-        onPress: () => console.log("Ask me later pressed"),
-      },
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]);
+  if (foto === "") {
+    AsyncStorage.getItem("foto_cliente").then((foto) => {
+      setFoto(foto);
+    });
+  }
 
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert(
+            "Sorry, Camera roll permissions are required to make this work!"
+          );
+        }
+      }
+    })();
+  }, []);
+
+  const chooseImg = async () => {
+    if (id !== "" && id !== undefined && id !== null) {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        aspect: [4, 3],
+        quality: 0,
+        base64: true,
+        allowsEditing: true,
+        captura: true,
+      });
+      alteraCadastro(result.base64);
+      if (!result.cancelled) {
+        setFoto(result.uri);
+      }
+    }
+  };
   const logout = () => {
     AsyncStorage.clear();
     navigation.reset({
       routes: [{ name: "Perfils" }],
     });
   };
+  function alteraCadastro(a) {
+    fetch("https://www.eletrosom.com/shell/ws/integrador/alteraCadastro", {
+      method: "POST",
+      headers: {
+        Accept: "aplication/json",
+        "Content-type": "aplication/json",
+      },
+      body: JSON.stringify({
+        cadastro: {
+          idCliente: id,
+          sexo: sexo,
+          foto_cliente: "data:image/png;base64," + a,
+          data_nascimento: data_nasc,
+        },
+        version: 16,
+      }),
+    })
+      .then((res) => res.json())
+      .then((resData) => setData(resData))
+      .catch((error) => console.log(error));
+  }
   return (
     <View style={{ height: "100%" }}>
       <Modal
@@ -115,7 +167,7 @@ export default function PerfilTab() {
         <Appbar.Content titleStyle={{ textAlign: "center", fontSize: 20 }} />
       </Appbar.Header>
       <View style={styles.card}>
-        <TouchableOpacity style={{ marginTop: 30 }} onPress={ButtonAlert}>
+        <TouchableOpacity style={{ marginTop: 30 }} onPress={chooseImg}>
           <View
             style={{
               width: 80,
@@ -140,7 +192,6 @@ export default function PerfilTab() {
             )}
           </View>
         </TouchableOpacity>
-
         {id !== null ? (
           <View style={{ flex: 1, marginTop: 40 }}>
             <Text
@@ -148,7 +199,7 @@ export default function PerfilTab() {
             >
               Olá, {nome}
             </Text>
-            <Text style={{ color: "#6A7075" }}>{email}</Text>
+            <Text style={{ color: "#6A7075", marginTop: 10 }}>{email}</Text>
           </View>
         ) : (
           <View style={{ flex: 1, justifyContent: "space-evenly" }}>

@@ -25,6 +25,7 @@ import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
 import Buscar from "./Src/Components/Buscar";
 import add_config_endereco from "./Src/Components/Screens/add_config_endereco";
 import passwordReset from "./Src/Components/Screens/passwordReset";
+import Cadastrofim from "./Src/Components/Cadastrofim";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -76,6 +77,7 @@ const Perfies = () => {
       <Stack.Screen name="Cadastro" component={Cadastro} />
       <Stack.Screen name="Cadastrop2" component={Cadastrop2} />
       <Stack.Screen name="Cadastrop3" component={Cadastrop3} />
+      <Stack.Screen name="Cadastrofim" component={Cadastrofim} />
     </Stack.Navigator>
   );
 };

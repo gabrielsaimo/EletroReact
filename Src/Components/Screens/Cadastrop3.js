@@ -53,15 +53,21 @@ export default function Cadastrop3({ route }) {
           }),
         })
           .then((res) => res.json())
-          .then(
-            (resData) => setData(resData),
-            setTimeout(() => {
-              console.log(data + "aqui");
-              ifs();
-            }, 1500)
-          );
+          .then((resData) => [setData(resData), console.log(resData)])
+          .catch((error) => [console.log(error), ifs()]);
       }
     }
+  }
+  if (data.codigoMensagem === 200) {
+    navigation.push("Cadastrofim", {
+      email: email,
+      password: password,
+      pessoa: pessoa,
+      cpf: CPF,
+      nome: Nome,
+      telefone: telefone,
+      date: date,
+    });
   }
 
   function ifs() {
@@ -99,7 +105,7 @@ export default function Cadastrop3({ route }) {
       });
     } else if (data.codigoMensagem === 325) {
       alert(data.mensagem);
-      navigation.navigate("Cadastro", {
+      navigation.navigate("Cadastrop1", {
         email: email,
         password: password,
         pessoa: pessoa,
@@ -109,7 +115,10 @@ export default function Cadastrop3({ route }) {
         date: date,
       });
     } else {
-        ifs();
+      if (data.codigoMensagem !== 200) {
+        alert(data.codigoMensagem);
+        //  ifs();
+      }
     }
   }
   return (

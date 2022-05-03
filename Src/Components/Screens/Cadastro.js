@@ -8,7 +8,7 @@ import PassMeter from "react-native-passmeter";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ScrollView } from "react-native-gesture-handler";
 const MAX_LEN = 15,
-  MIN_LEN = 6,
+  MIN_LEN = 8,
   PASS_LABELS = ["Muito curto", "Fraco", "Normal", "Forte", "Muito Forte"];
 export default function Cadastro() {
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ export default function Cadastro() {
   const navigation = useNavigation();
   function Click() {
     if (email.length > 10) {
-      if (password.length > 6) {
+      if (password.length > 8) {
         if (pessoa !== "") {
           navigation.push("Cadastrop2", {
             email: email,

@@ -18,7 +18,11 @@ export default function Cadastrop2({ route }) {
   const navigation = useNavigation();
   function Click() {
     if (
-      (email !== "" && CPF !== "" && Nome !== "", rg !== "", sobrenome !== "")
+      CPF !== "" &&
+      Nome !== "" &&
+      rg !== "" &&
+      sobrenome !== "" &&
+      Nome !== ""
     ) {
       navigation.push("Cadastrop3", {
         email: email,
