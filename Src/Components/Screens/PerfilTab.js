@@ -82,7 +82,7 @@ export default function PerfilTab() {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [4, 3],
-        quality: 0,
+        quality: 1,
         base64: true,
         allowsEditing: true,
         captura: true,

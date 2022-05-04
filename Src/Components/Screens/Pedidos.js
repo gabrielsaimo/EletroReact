@@ -37,7 +37,7 @@ export default function Pedidos({ route, navigation }) {
   return (
     <View style={{ marginBottom: 85 }}>
       <SearchBar />
-      {data.length > 0 ? (
+      {data.length > 0 && data[0] !== null ? (
         <FlatList
           data={data}
           keyExtractor={(item) => item.incrementId}

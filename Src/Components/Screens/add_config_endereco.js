@@ -31,6 +31,7 @@ export default function endereco({ route }) {
   const [idEndereco, setiIdEndereco] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [edit, setEdit] = useState(false);
+  const [edite, setEdite] = useState(false);
   const navigation = useNavigation();
   if (cep.length == 8 && data !== "") {
     setData("");
@@ -39,10 +40,12 @@ export default function endereco({ route }) {
     setEmdereco("");
     setEstado("");
     setEdit(false);
+    setEdite(false);
   }
   if (route.params.cep === undefined) {
     if (bairro == "" && cidade !== "" && edit == false) {
       setEdit(true);
+      setEdite(false);
     }
     if (cep.length == 9 && data == "") {
       console.log("entrou aqui 2");
@@ -81,6 +84,7 @@ export default function endereco({ route }) {
     setTelefone(route.params.telefone);
     setiIdEndereco(route.params.idEndereco);
     setEdit(true);
+    setEdite(true);
   }
 
   const Edite = async () => {
@@ -184,22 +188,22 @@ export default function endereco({ route }) {
             ></TextInputMask>
             <View style={{ flexDirection: "row" }}>
               <View style={{ width: "76%", marginRight: "4%" }}>
-              <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.uptext}>Rua</Text>
-                    {idEndereco !== null || (data !== "" && bairro == "") ? (
-                      <Text
-                        style={{
-                          color: "red",
-                          marginBottom: -10,
-                          marginTop: 5,
-                        }}
-                      >
-                        *
-                      </Text>
-                    ) : (
-                      <></>
-                    )}
-                  </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.uptext}>Rua</Text>
+                  {idEndereco !== null || (data !== "" && bairro == "") ? (
+                    <Text
+                      style={{
+                        color: "red",
+                        marginBottom: -10,
+                        marginTop: 5,
+                      }}
+                    >
+                      *
+                    </Text>
+                  ) : (
+                    <></>
+                  )}
+                </View>
                 <TextInput
                   style={styles.input}
                   underlineColorAndroid="transparent"
@@ -238,22 +242,22 @@ export default function endereco({ route }) {
             </View>
             <View style={{ flexDirection: "row", width: "100%" }}>
               <View style={{ width: "48%", marginRight: "4%" }}>
-              <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.uptext}>Bairro</Text>
-                    {idEndereco !== null || (data !== "" && bairro == "") ? (
-                      <Text
-                        style={{
-                          color: "red",
-                          marginBottom: -10,
-                          marginTop: 5,
-                        }}
-                      >
-                        *
-                      </Text>
-                    ) : (
-                      <></>
-                    )}
-                  </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.uptext}>Bairro</Text>
+                  {idEndereco !== null || (data !== "" && bairro == "") ? (
+                    <Text
+                      style={{
+                        color: "red",
+                        marginBottom: -10,
+                        marginTop: 5,
+                      }}
+                    >
+                      *
+                    </Text>
+                  ) : (
+                    <></>
+                  )}
+                </View>
                 <TextInput
                   style={styles.input}
                   underlineColorAndroid="transparent"
@@ -301,13 +305,13 @@ export default function endereco({ route }) {
                     underlineColorAndroid="transparent"
                     maxLength={2}
                     onChangeText={(text) => setEstado(text)}
-                    editable={edit}
+                    editable={edite}
                     placeholder="Ex: MG"
                     value={estado}
                   ></TextInput>
                 </View>
                 <View style={{ width: "48%" }}>
-                <View style={{ flexDirection: "row" }}>
+                  <View style={{ flexDirection: "row" }}>
                     <Text style={styles.uptext}>Cidade</Text>
                     {idEndereco !== null || (data !== "" && bairro == "") ? (
                       <Text
@@ -327,11 +331,10 @@ export default function endereco({ route }) {
                     style={styles.input}
                     underlineColorAndroid="transparent"
                     onChangeText={(text) => setCidade(text)}
-                    editable={edit}
+                    editable={edite}
                     placeholder=""
-                  >
-                    {cidade}
-                  </TextInput>
+                    value={cidade}
+                  ></TextInput>
                 </View>
               </View>
               <View style={{ flexDirection: "row" }}>

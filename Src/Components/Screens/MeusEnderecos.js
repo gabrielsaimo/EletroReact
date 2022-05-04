@@ -132,7 +132,7 @@ export default function MeusEnderecos({ route, navigation }) {
                     </MenuTrigger>
 
                     <MenuOptions
-                      optionsContainerStyle={{ width: 80 }}
+                      optionsContainerStyle={{ width: 100 }}
                       style={{ margin: 5 }}
                     >
                       <MenuOption
@@ -156,7 +156,7 @@ export default function MeusEnderecos({ route, navigation }) {
                         <View style={{ flexDirection: "row" }}>
                           <FontAwesomeIcon
                             marginTop={4}
-                            size={12}
+                            size={18}
                             icon={faPenToSquare}
                             style={{ color: "#1534C8" }}
                           />
@@ -165,6 +165,7 @@ export default function MeusEnderecos({ route, navigation }) {
                               color: "#1534C8",
                               fontWeight: "bold",
                               marginLeft: 5,
+                              fontSize: 18,
                             }}
                           >
                             Editar
@@ -178,7 +179,7 @@ export default function MeusEnderecos({ route, navigation }) {
                         <View style={{ flexDirection: "row" }}>
                           <FontAwesomeIcon
                             marginTop={4}
-                            size={12}
+                            size={18}
                             icon={faTrashCan}
                             style={{ color: "red" }}
                           />
@@ -187,6 +188,7 @@ export default function MeusEnderecos({ route, navigation }) {
                               color: "red",
                               fontWeight: "bold",
                               marginLeft: 5,
+                              fontSize: 18,
                             }}
                           >
                             Excluir
@@ -204,8 +206,8 @@ export default function MeusEnderecos({ route, navigation }) {
                 <Text>
                   {item.cidade}/{item.estado} - {item.cep}
                 </Text>
+                <Text>Destinatário: {item.nome}</Text>
               </MenuContext>
-              <Text>Destinatário: {item.nome}</Text>
             </View>
           )}
         ></FlatList>

@@ -68,6 +68,11 @@ export default function Cadastrop3({ route }) {
       telefone: telefone,
       date: date,
     });
+  }else{
+    if(data !== ''){
+      ifs();
+    }
+    
   }
 
   function ifs() {
@@ -114,9 +119,21 @@ export default function Cadastrop3({ route }) {
         telefone: telefone,
         date: date,
       });
+    }else if(data.codigoMensagem === 322){
+      alert(data.mensagem);
+      navigation.navigate("Cadastrop2", {
+        email: email,
+        password: password,
+        pessoa: pessoa,
+        cpf: CPF,
+        nome: Nome,
+        telefone: telefone,
+        date: date,
+      });
     } else {
       if (data.codigoMensagem !== 200) {
-        alert(data.codigoMensagem);
+        alert('Data incorreta');
+
         //  ifs();
       }
     }
