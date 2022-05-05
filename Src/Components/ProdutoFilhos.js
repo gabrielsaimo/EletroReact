@@ -8,11 +8,12 @@ import {
   Dimensions,
 } from "react-native";
 
-export default function App({ sku, navigation }) {
+export default function App({ volt, sku, navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
   const onClick = (item, close) => {
+    var RandomNumber = Math.floor(Math.random() * 100) + 1;
     item !== null
       ? navigation.navigate("Produto", {
           sku: item.sku,
@@ -20,9 +21,9 @@ export default function App({ sku, navigation }) {
         })
       : navigation.navigate("Produto", {
           close: close,
+          key: RandomNumber,
         });
     // Or whatever unique identifier you have in your items
-    console.log(close);
   };
 
   useEffect(() => {
@@ -63,21 +64,25 @@ export default function App({ sku, navigation }) {
             showsHorizontalScrollIndicator={false}
             data={data.filhos}
             keyExtractor={(item, index) => index}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <View>
                 {item.stock > 0 ? (
                   <TouchableOpacity onPress={() => onClick(item)}>
                     <View
-                      style={{
-                        width: 100,
-                        height: 50,
-                        backgroundColor: "#FFF",
-                        alignSelf: "center",
-                        borderRadius: 5,
-                        marginHorizontal: 1,
-                        borderWidth: 2,
-                        borderColor: "blue",
-                      }}
+                      style={[
+                        item.voltagem.value === volt
+                          ? { borderColor: "blue" }
+                          : { borderColor: "gray" },
+                        {
+                          width: 100,
+                          height: 50,
+                          backgroundColor: "#FF",
+                          alignSelf: "center",
+                          borderRadius: 5,
+                          marginHorizontal: 1,
+                          borderWidth: 2,
+                        },
+                      ]}
                     >
                       <View
                         style={{
@@ -98,12 +103,6 @@ export default function App({ sku, navigation }) {
               </View>
             )}
           />
-          <TouchableOpacity
-            style={style.btn}
-            onPress={() => onClick(null, false)}
-          >
-            <Text style={{ color: "#fff" }}>Fechar</Text>
-          </TouchableOpacity>
         </View>
       )}
     </View>

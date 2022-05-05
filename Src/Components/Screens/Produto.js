@@ -7,10 +7,12 @@ import {
   View,
   Dimensions,
   TextInput,
-  Modal,
   ScrollView,
   Image,
 } from "react-native";
+import Modal from "react-native-modal";
+import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import axios from "axios";
 import ModalFilhos from "../ModalFilhos";
 import { AuthContext } from "../../Contexts/Auth";
@@ -19,7 +21,6 @@ import StarRating from "react-native-star-rating";
 import Local from "../Local";
 import CalculaFrete from "../CalculaFrete";
 import { WebView } from "react-native-webview";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import ShareButton from "../ShereButtom";
 
@@ -27,14 +28,15 @@ export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
   const filhos = route.params.filhos;
   const [close, setClose] = useState(route.params.close);
+  const [img, setImg] = useState("");
+  const [imgtotal, setImgtotal] = useState("");
+  console.log(img, imgtotal);
   const [precoDe, setprecoDe] = useState(route.params.precode);
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
-
   useEffect(() => {
     setModal(false);
   }, [filhos, close]);
-
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
@@ -42,17 +44,37 @@ export default function Produto({ route, navigation }) {
   const [usercep, setUsercep] = useState(user.cep);
   const [id, setId] = useState(user1.idCliente);
   const { width, height } = Dimensions.get("window");
-  const [test, setTest] = useState("");
-  const width4 = width / 4;
+  const bottom = height - 87;
+  const [alert, setAlert] = useState(false);
+  const [volt, setVolt] = useState(false);
   const [TextInput_cep, setTextCep] = useState(usercep);
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
   const [imgclik, setImgclik] = useState(false);
-  console.log(test);
   function Clickcep() {
     consultaCep(TextInput_cep, sku);
 
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
+  }
+  function clickComprar() {
+    if (!volt && filhos === undefined) {
+      setAlert(true);
+      setTimeout(() => {
+        setAlert(false);
+      }, 4000);
+    } else {
+      setAlert(false);
+    }
+  }
+  function clickCarrinho() {
+    if (!volt && filhos === undefined) {
+      setAlert(true);
+      setTimeout(() => {
+        setAlert(false);
+      }, 4000);
+    } else {
+      setAlert(false);
+    }
   }
 
   async function loadApi() {
@@ -70,11 +92,9 @@ export default function Produto({ route, navigation }) {
     if (id) {
       const response = await axios.get(`${baseURL}`);
       setData([response.data]);
-      setTest([response.data.imagem]);
     } else {
       const response = await axios.get(`${baseURL1}`);
       setData([response.data]);
-      setTest([response.data.imagem]);
     }
   }
   useEffect(() => {
@@ -110,6 +130,33 @@ export default function Produto({ route, navigation }) {
         <SearchBar />
         <Local />
 
+        {alert && filhos === undefined ? (
+          <View
+            style={{
+              width: "100%",
+              height: 70,
+              marginTop: bottom,
+              backgroundColor: "#FE8F02",
+              position: "absolute",
+              zIndex: 99,
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontSize: 18,
+                paddingVertical: 23,
+                fontWeight: "bold",
+              }}
+            >
+              Selecione a voltagem antes de continuar
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
+
         <FlatList
           data={data}
           keyExtractor={(item, index) => index}
@@ -143,6 +190,7 @@ export default function Produto({ route, navigation }) {
               <Text style={{ fontSize: 10, marginTop: 5, color: "#6A7075" }}>
                 CÓD - {item.codigo}
               </Text>
+
               <Modal visible={imgclik} transparent={true}>
                 <View
                   style={{
@@ -151,6 +199,7 @@ export default function Produto({ route, navigation }) {
                     height,
                     backgroundColor: "black",
                     opacity: 0.9,
+                    marginLeft: "-5.6%",
                   }}
                 >
                   <FlatList
@@ -159,19 +208,30 @@ export default function Produto({ route, navigation }) {
                     onScroll={change}
                     showsHorizontalScrollIndicator={false}
                     data={item.imagem}
-                    keyExtractor={(item) => item.img}
-                    renderItem={({ item }) => (
+                    keyExtractor={(item, index) => index}
+                    renderItem={({ item, index }) => (
                       <>
-                        <View style={{ Color: "#FFF" ,width,height:100}}>
+                        <View>
                           <Image
                             style={{
                               width,
                               height,
                               resizeMode: "contain",
+                              zIndex: 2,
                             }}
-                            key={item}
+                            key={index}
                             source={{ uri: item.img }}
                           />
+                          <View
+                            style={{
+                              backgroundColor: "#FFF",
+                              width,
+                              height: "60%",
+                              position: "absolute",
+                              marginTop: "42%",
+                              zIndex: 1,
+                            }}
+                          ></View>
                         </View>
                       </>
                     )}
@@ -181,17 +241,18 @@ export default function Produto({ route, navigation }) {
                     style={{
                       flexDirection: "row",
                       position: "absolute",
-                      bottom: "85%",
-                      right: "10%",
+                      bottom: "93%",
+                      right: "2%",
                       alignSelf: "center",
                     }}
                   >
-                    <Text
-                      style={{ zIndex: 999, color: "white", fontSize: 30 }}
-                      onPress={() => setImgclik(false)}
-                    >
-                      X
-                    </Text>
+                    <TouchableOpacity onPress={() => setImgclik(false)}>
+                      <FontAwesomeIcon
+                        icon={faClose}
+                        style={{ color: "white" }}
+                        size={30}
+                      />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </Modal>
@@ -209,8 +270,8 @@ export default function Produto({ route, navigation }) {
                   onScroll={change}
                   showsHorizontalScrollIndicator={false}
                   data={item.imagem}
-                  keyExtractor={(item) => item.img}
-                  renderItem={({ item }) => (
+                  keyExtractor={(item, index) => index}
+                  renderItem={({ item, index }) => (
                     <>
                       <TouchableOpacity onPress={() => setImgclik(true)}>
                         <View>
@@ -220,7 +281,7 @@ export default function Produto({ route, navigation }) {
                               height: "100%",
                               resizeMode: "contain",
                             }}
-                            key={item}
+                            key={index}
                             source={{ uri: item.img }}
                           ></Image>
                         </View>
@@ -240,11 +301,11 @@ export default function Produto({ route, navigation }) {
                   {item.imagem.map ? (
                     item.imagem.map((i, k) => (
                       <Text
-                        key={k}
-                        style={k == active ? styles.setbol : styles.bol}
-                      >
-                        ⬤
-                      </Text>
+                        key={[k, setImgtotal(k)]}
+                        style={
+                          k == active ? [styles.setbol, setImg(k)] : styles.bol
+                        }
+                      ></Text>
                     ))
                   ) : (
                     <></>
@@ -261,7 +322,20 @@ export default function Produto({ route, navigation }) {
               >
                 <ShareButton url={item.urlsocial} />
               </View>
-
+              <View
+                style={{
+                  flexDirection: "row",
+                  position: "absolute",
+                  top: 110,
+                  left: 5,
+                }}
+              >
+                <View style={{backgroundColor:'gray',opacity:0.5,borderRadius:5}}>
+                  <Text>
+                    {' '}{img + 1} {"/"} {imgtotal + 1}{' '}
+                  </Text>
+                </View>
+              </View>
               <View
                 style={
                   item.favoritos
@@ -323,7 +397,7 @@ export default function Produto({ route, navigation }) {
                   </View>
                 </TouchableOpacity>
               ) : (
-                <></>
+                <>{setVolt(true)}</>
               )}
               <Text
                 style={{
@@ -453,7 +527,10 @@ export default function Produto({ route, navigation }) {
                   <></>
                 )}
               </View>
-              <TouchableOpacity style={{ width: "100%", marginTop: 20 }}>
+              <TouchableOpacity
+                style={{ width: "100%", marginTop: 20 }}
+                onPress={() => clickComprar()}
+              >
                 <View
                   style={{
                     width: "100%",
@@ -476,7 +553,10 @@ export default function Produto({ route, navigation }) {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={{ width: "100%", marginTop: 15 }}>
+              <TouchableOpacity
+                style={{ width: "100%", marginTop: 15 }}
+                onPress={() => clickCarrinho()}
+              >
                 <View
                   style={{
                     width: "100%",
@@ -949,6 +1029,7 @@ export default function Produto({ route, navigation }) {
         <ModalFilhos
           show={modal}
           sku={sku}
+          volt={filhos}
           navigate={navigator}
           navigation={navigation}
           close={() => setModal(true)}

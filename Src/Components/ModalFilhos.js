@@ -10,7 +10,7 @@ import {
 import ProdutoFilhos from "./ProdutoFilhos";
 const { height } = Dimensions.get("window");
 
-const Modal = ({ show, close, sku, navigation, navigator, ceps }) => {
+const Modal = ({volt, show, close, sku, navigation, navigator, ceps }) => {
   const [state, setState] = useState({
     opacity: new Animated.Value(0),
     container: new Animated.Value(height),
@@ -77,7 +77,7 @@ const Modal = ({ show, close, sku, navigation, navigator, ceps }) => {
       >
         <View style={styles.indicator} />
 
-        <ProdutoFilhos sku={sku} navigation={navigation} navigate={navigator} />
+        <ProdutoFilhos sku={sku} navigation={navigation} navigate={navigator} volt={volt} />
       </Animated.View>
     </Animated.View>
   );
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   modal: {
     bottom: 0,
     position: "absolute",
-    height: "50%",
+    height: "35%",
     backgroundColor: "#fff",
     width: "100%",
     borderTopLeftRadius: 20,

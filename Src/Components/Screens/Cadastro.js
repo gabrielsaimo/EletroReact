@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import PassMeter from "react-native-passmeter";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ScrollView } from "react-native-gesture-handler";
-const MAX_LEN = 15,
+const MAX_LEN = 16,
   MIN_LEN = 8,
   PASS_LABELS = ["Muito curto", "Fraco", "Normal", "Forte", "Muito Forte"];
 export default function Cadastro() {
@@ -16,8 +16,9 @@ export default function Cadastro() {
   const [pessoa, setPessoa] = useState("");
   const navigation = useNavigation();
   function Click() {
-    if (email.length > 10) {
-      if (password.length > 8) {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (email.length > 10 && reg.test(email) === true) {
+      if (password.length > 7) {
         if (pessoa !== "") {
           navigation.push("Cadastrop2", {
             email: email,
@@ -28,7 +29,7 @@ export default function Cadastro() {
           alert("Selecione se é pessoa Fisica/Juridica");
         }
       } else {
-        alert("Senha invalida");
+        alert("Senha muito curta");
       }
     } else {
       alert("Email invalido");
@@ -147,7 +148,7 @@ export default function Cadastro() {
               <TextInput
                 style={styles.input}
                 underlineColorAndroid="transparent"
-                maxLength={15}
+                maxLength={16}
                 mode="outlined"
                 onChangeText={(text) => setPassword(text)}
                 placeholder="Insira sua senha"

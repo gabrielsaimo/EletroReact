@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Snackbar } from "react-native-paper";
 import {
   View,
@@ -12,6 +12,7 @@ import {
   Platform,
   Button,
 } from "react-native";
+import { AuthContext } from "../../Contexts/Auth";
 import * as ImagePicker from "expo-image-picker";
 import { Appbar } from "react-native-paper";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
@@ -27,6 +28,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PerfilTab() {
+  const { signIn } = useContext(AuthContext);
   const [visible, setVisible] = React.useState(false);
   const [data, setData] = useState("");
   const [result, setRsult] = useState("");
@@ -90,6 +92,7 @@ export default function PerfilTab() {
       alteraCadastro(result.base64);
       if (!result.cancelled) {
         setFoto(result.uri);
+        signIn('','','','','','','','','',result.uri);
       }
     }
   };
@@ -350,7 +353,7 @@ export default function PerfilTab() {
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
             <TouchableOpacity
-              onPress={id != null ? () => ({}) : onToggleSnackBar}
+              onPress={id != null ? () => (navigation.navigate('Cadastrofim')) : onToggleSnackBar}
             >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon

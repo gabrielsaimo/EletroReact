@@ -54,8 +54,11 @@ function AuthProvider({ children }) {
       AsyncStorage.setItem("numero", numero);
       AsyncStorage.setItem("cidade", cidade);
       setUser1({ idCliente: idCliente });
+    }else if (email === "" && foto_cliente !==""){
+      AsyncStorage.setItem("foto_cliente", foto_cliente);
     }
   }
+
 
   return (
     <AuthContext.Provider value={{ signIn, user, user1, consultaCep }}>
