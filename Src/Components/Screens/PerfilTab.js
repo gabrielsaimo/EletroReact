@@ -11,6 +11,7 @@ import {
   Modal,
   Platform,
   Button,
+  StatusBar,
 } from "react-native";
 import { AuthContext } from "../../Contexts/Auth";
 import * as ImagePicker from "expo-image-picker";
@@ -92,7 +93,7 @@ export default function PerfilTab() {
       alteraCadastro(result.base64);
       if (!result.cancelled) {
         setFoto(result.uri);
-        signIn('','','','','','','','','',result.uri);
+        signIn("", "", "", "", "", "", "", "", "", result.uri);
       }
     }
   };
@@ -353,7 +354,11 @@ export default function PerfilTab() {
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
             <TouchableOpacity
-              onPress={id != null ? () => (navigation.navigate('Cadastrofim')) : onToggleSnackBar}
+              onPress={
+                id != null
+                  ? () => navigation.navigate("Cadastrofim")
+                  : onToggleSnackBar
+              }
             >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon

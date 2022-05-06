@@ -96,7 +96,7 @@ export default function Login() {
         });
     }
   };
-  
+
   function ClickLogin() {
     Logar();
   }
@@ -104,7 +104,7 @@ export default function Login() {
     <SafeAreaView>
       <View>
         <Appbar.Header
-          style={{ backgroundColor: "blue", marginTop: 0, zIndex: 1 }}
+          style={{ backgroundColor: "#1534C8", marginTop: 0, zIndex: 1 }}
         ></Appbar.Header>
         <View
           style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 10 }}
@@ -113,7 +113,7 @@ export default function Login() {
 
       <View style={{ marginTop: 30 }}>
         <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.navigate("Perfil")}>
             <FontAwesomeIcon
               icon={faAngleLeft}
               style={{ color: "#1534C8" }}
