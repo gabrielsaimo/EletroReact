@@ -15,19 +15,11 @@ import Local from "../Local";
 import SearchBarCata from "../SearchBarCatalogo";
 import SkeletonLoading from "../SkeletonLoading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setStatusBarStyle } from "expo-status-bar";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function CategoriasProduto({ route, navigation }) {
-  const [idCliente, setIdcliente] = useState("");
-  AsyncStorage.getItem("idCliente").then((idCliente) => {
-    setIdcliente(
-      "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=" +
-        route.params.item +
-        "&version=15&idCliente=" +
-        idCliente
-    );
-  });
   const baseURL =
     "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=" +
     route.params.item +
@@ -44,66 +36,79 @@ export default function CategoriasProduto({ route, navigation }) {
   const itemWidth = (width - 15) / 2;
   const [columns, setColumns] = useState(1);
   const [refreshing, setRefreshing] = React.useState(false);
-
+  const [idCliente, setIdcliente] = useState("");
+  const [idurl, setUrl] = useState("");
+  AsyncStorage.getItem("idCliente").then((idCliente) => {
+    setUrl(
+      "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=" +
+        route.params.item +
+        "&version=15&idCliente=" +
+        idCliente
+    );
+    setIdcliente(idCliente);
+  });
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
   useEffect(() => {
     loadApi();
   }, [refreshing]);
 
   async function loadApi() {
-    if (idCliente !== "" && idCliente !== undefined) {
-      fetch(idCliente)
-        .then((res) => res.json())
-        .then((resData) => {
-          setData(resData);
-          setPage(page + 1);
-          setLoading(false);
-          if (nun > 0 && nun < 2) {
-            alert("Demora de rotono no servidor");
-          } else if (nun > 2) {
-            alert("Erro de requisição");
-            navigation.goBack();
-          }
-          setRefreshing(false);
-        })
-        .catch((error) => {
-          console.log(nun);
-          setNun(nun + 1);
-          if (nun === 1 || nun === 2) {
-            alert("Demora de rotono no servidor");
-          } else if (nun > 2) {
-            alert("Erro de requisição");
-            navigation.goBack();
-          }
-          console.error(error);
-          setRefreshing(false);
-          setRefreshing(true);
-        });
-    } else {
-      fetch(baseURL)
-        .then((res) => res.json())
-        .then((resData) => {
-          if (resData === null) {
-            alert("Categoria Vazia :(");
-            navigation.goBack();
-          } else {
+    setTimeout(() => {
+      if (idCliente !== null && idCliente !== 0) {
+        console.log(idCliente);
+        fetch(idurl)
+          .then((res) => res.json())
+          .then((resData) => {
             setData(resData);
-          }
+            setPage(page + 1);
+            setLoading(false);
+            if (nun === 1 || nun === 2) {
+            } else if (nun > 2) {
+              alert("Erro de requisição");
+              navigation.goBack();
+            }
+            setRefreshing(false);
+          })
+          .catch((error) => {
+            console.error(error);
+            console.log(nun);
+            setNun(nun + 1);
+            if (nun === 1 || nun === 2) {
+            } else if (nun > 2) {
+              alert("Erro de requisição");
+              navigation.goBack();
+            }
+            console.error(error + "error 1");
+            setRefreshing(false);
+            setRefreshing(true);
+          });
+      } else {
+        fetch(baseURL)
+          .then((res) => res.json())
+          .then((resData) => {
+            if (resData === null) {
+              alert("Categoria Vazia :(");
+              navigation.goBack();
+            } else {
+              setData(resData);
+            }
 
-          setPage(page + 1);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch((error) => {
-          console.log(nun);
-          setNun(nun + 1);
-          console.error(error);
-          setRefreshing(true);
-        });
-    }
+            setPage(page + 1);
+            setLoading(false);
+            setRefreshing(false);
+          })
+          .catch((error) => {
+            console.log(nun);
+            setNun(nun + 1);
+            console.error(error + "error 2");
+            setRefreshing(true);
+          });
+      }
+    }, 1000);
   }
   function ListItem({ data, navigation }) {
     function excluir(sku) {
