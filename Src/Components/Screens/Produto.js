@@ -26,17 +26,17 @@ import ShareButton from "../ShereButtom";
 
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
+  const skuvolt = route.params.sku2;
   const filhos = route.params.filhos;
-  const [close, setClose] = useState(route.params.close);
   const [img, setImg] = useState("");
   const [imgtotal, setImgtotal] = useState("");
-  console.log(img, imgtotal);
+  console.log(skuvolt);
   const [precoDe, setprecoDe] = useState(route.params.precode);
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
   useEffect(() => {
     setModal(false);
-  }, [filhos, close]);
+  }, [route.params]);
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
@@ -226,12 +226,12 @@ export default function Produto({ route, navigation }) {
                             style={{
                               backgroundColor: "#FFF",
                               width,
-                              height: "60%",
+                              height: "75%",
                               position: "absolute",
-                              marginTop: "42%",
+                              marginTop: "30%",
                               zIndex: 1,
                             }}
-                          ></View>
+                          />
                         </View>
                       </>
                     )}
@@ -330,9 +330,16 @@ export default function Produto({ route, navigation }) {
                   left: 5,
                 }}
               >
-                <View style={{backgroundColor:'gray',opacity:0.5,borderRadius:5}}>
+                <View
+                  style={{
+                    backgroundColor: "gray",
+                    opacity: 0.5,
+                    borderRadius: 5,
+                  }}
+                >
                   <Text>
-                    {' '}{img + 1} {"/"} {imgtotal + 1}{' '}
+                    {" "}
+                    {img + 1} {"/"} {imgtotal + 1}{" "}
                   </Text>
                 </View>
               </View>
@@ -738,8 +745,9 @@ export default function Produto({ route, navigation }) {
                       backgroundColor: "#FFDB00",
                       marginTop: -45,
                       zIndex: 1,
+                      marginHorizontal: -20,
                     }}
-                  ></Appbar.Header>
+                  />
 
                   <View style={{ marginTop: 30 }}>
                     <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>

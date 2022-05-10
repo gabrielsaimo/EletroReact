@@ -132,6 +132,10 @@ android {
     }
 
     defaultConfig {
+        configurations.all {
+            resolutionStrategy { force 'androidx.sqlite:sqlite-framework:2.1.0' }
+            resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
+        }
         applicationId "com.reacteletro"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -190,10 +194,18 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:2.6.0'
     implementation 'com.facebook.fresco:animated-gif:1.12.0'
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
+    implementation "com.android.support:appcompat-v7:27.1.1"
+    
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
+    def work_version = "2.6.0"
+    def room_version = "2.4.1"
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
-
+    implementation("androidx.work:work-runtime-ktx:$work_version") {
+        force = true
+    }
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
     // If your app supports Android versions before Ice Cream Sandwich (API level 14)
     // All fresco packages should use the same version
     if (isGifEnabled || isWebpEnabled) {

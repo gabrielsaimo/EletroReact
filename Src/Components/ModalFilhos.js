@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Animated,
-  Dimensions,
-} from "react-native";
+import { View, StyleSheet, Animated, Dimensions } from "react-native";
 import ProdutoFilhos from "./ProdutoFilhos";
 const { height } = Dimensions.get("window");
 
-const Modal = ({volt, show, close, sku, navigation, navigator, ceps }) => {
+const Modal = ({ volt, show, close, sku, navigation, navigator, ceps }) => {
   const [state, setState] = useState({
     opacity: new Animated.Value(0),
     container: new Animated.Value(height),
@@ -77,7 +70,12 @@ const Modal = ({volt, show, close, sku, navigation, navigator, ceps }) => {
       >
         <View style={styles.indicator} />
 
-        <ProdutoFilhos sku={sku} navigation={navigation} navigate={navigator} volt={volt} />
+        <ProdutoFilhos
+          sku={sku}
+          navigation={navigation}
+          navigate={navigator}
+          volt={volt}
+        />
       </Animated.View>
     </Animated.View>
   );

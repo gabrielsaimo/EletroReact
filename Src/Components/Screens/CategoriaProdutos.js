@@ -5,7 +5,6 @@ import {
   Text,
   View,
   Image,
-  TextInput,
   Dimensions,
   SafeAreaView,
   RefreshControl,
@@ -34,10 +33,11 @@ export default function CategoriasProduto({ route, navigation }) {
     route.params.item +
     "&version=15";
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
-  const [search,setSeach] = useState(false);
-  const [data, setData] = useState([]);
+  const [search, setSeach] = useState(false);
+  const [data, setData] = useState("");
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [nun, setNun] = useState(0);
   const [title] = useState(route.params.title);
 
   const { height, width } = Dimensions.get("window");
@@ -54,29 +54,54 @@ export default function CategoriasProduto({ route, navigation }) {
   }, [refreshing]);
 
   async function loadApi() {
-    if (idCliente !== "") {
+    if (idCliente !== "" && idCliente !== undefined) {
       fetch(idCliente)
         .then((res) => res.json())
         .then((resData) => {
           setData(resData);
           setPage(page + 1);
           setLoading(false);
+          if (nun > 0 && nun < 2) {
+            alert("Demora de rotono no servidor");
+          } else if (nun > 2) {
+            alert("Erro de requisição");
+            navigation.goBack();
+          }
           setRefreshing(false);
-        }).catch((error) => {
+        })
+        .catch((error) => {
+          console.log(nun);
+          setNun(nun + 1);
+          if (nun === 1 || nun === 2) {
+            alert("Demora de rotono no servidor");
+          } else if (nun > 2) {
+            alert("Erro de requisição");
+            navigation.goBack();
+          }
           console.error(error);
-          setRefreshing(true)
+          setRefreshing(false);
+          setRefreshing(true);
         });
     } else {
       fetch(baseURL)
         .then((res) => res.json())
         .then((resData) => {
-          setData(resData);
+          if (resData === null) {
+            alert("Categoria Vazia :(");
+            navigation.goBack();
+          } else {
+            setData(resData);
+          }
+
           setPage(page + 1);
           setLoading(false);
           setRefreshing(false);
-        }).catch((error) => {
+        })
+        .catch((error) => {
+          console.log(nun);
+          setNun(nun + 1);
           console.error(error);
-          setRefreshing(true)
+          setRefreshing(true);
         });
     }
   }
@@ -127,124 +152,132 @@ export default function CategoriasProduto({ route, navigation }) {
     }
     return (
       <View style={{ alignItems: "center", flex: 1 }}>
-        {!data.emEstoque ? null : (
-          <TouchableOpacity
-            style={styles.buttonContainerStyle}
-            onPress={() =>
-              navigation.navigate("Produto", {
-                sku: data.codigo,
-                title: data.nome,
-                precode: data.precoDe,
-              })
-            }
-          >
-            <Image
-              source={{ uri: data.imagem }}
-              style={{
-                width: 120,
-                height: 120,
-                resizeMode: "contain",
-                margin: 10,
-              }}
-            />
-            <View
-              style={
-                data.favorito
-                  ? {
-                      flexDirection: "row",
-                      position: "absolute",
-                      top: -10,
-                      right: -10,
-                      alignSelf: "center",
+        {data === null
+          ? [<></>]
+          : [
+              <>
+                {!data.emEstoque ? null : (
+                  <TouchableOpacity
+                    style={styles.buttonContainerStyle}
+                    onPress={() =>
+                      navigation.navigate("Produto", {
+                        sku: data.codigo,
+                        title: data.nome,
+                        precode: data.precoDe,
+                      })
                     }
-                  : {
-                      flexDirection: "row",
-                      position: "absolute",
-                      top: -5,
-                      right: -5,
-                      alignSelf: "center",
-                    }
-              }
-            >
-              <IconButton
-                icon={
-                  data.favorito
-                    ? require("../assets/favorito.png")
-                    : require("../assets/heart.png")
-                }
-                color={data.favorito ? "#FFDB00" : "#6A7075"}
-                size={data.favorito ? 37 : 30}
-                onPress={() => {
-                  data.favorito ? excluir(data.codigo) : add(data.codigo);
-                }}
-              />
-            </View>
-            {!data.percentual > 0 ? (
-              <></>
-            ) : (
-              <View
-                style={{
-                  width: 80,
-                  height: 20,
-                  position: "absolute",
-                  margin: 5,
-                  backgroundColor: "#FEA535",
-                  alignItems: "center",
-                  borderRadius: 20,
-                }}
-              >
-                <Text>{data.percentual}% off</Text>
-              </View>
-            )}
+                  >
+                    <Image
+                      source={{ uri: data.imagem }}
+                      style={{
+                        width: 120,
+                        height: 120,
+                        resizeMode: "contain",
+                        margin: 10,
+                      }}
+                    />
+                    <View
+                      style={
+                        data.favorito
+                          ? {
+                              flexDirection: "row",
+                              position: "absolute",
+                              top: -10,
+                              right: -10,
+                              alignSelf: "center",
+                            }
+                          : {
+                              flexDirection: "row",
+                              position: "absolute",
+                              top: -5,
+                              right: -5,
+                              alignSelf: "center",
+                            }
+                      }
+                    >
+                      <IconButton
+                        icon={
+                          data.favorito
+                            ? require("../assets/favorito.png")
+                            : require("../assets/heart.png")
+                        }
+                        color={data.favorito ? "#FFDB00" : "#6A7075"}
+                        size={data.favorito ? 37 : 30}
+                        onPress={() => {
+                          data.favorito
+                            ? excluir(data.codigo)
+                            : add(data.codigo);
+                        }}
+                      />
+                    </View>
+                    {!data.percentual > 0 ? (
+                      <></>
+                    ) : (
+                      <View
+                        style={{
+                          width: 80,
+                          height: 20,
+                          position: "absolute",
+                          margin: 5,
+                          backgroundColor: "#FEA535",
+                          alignItems: "center",
+                          borderRadius: 20,
+                        }}
+                      >
+                        <Text>{data.percentual}% off</Text>
+                      </View>
+                    )}
 
-            <View>
-              <Text
-                numberOfLines={2}
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 13,
-                  maxWidth: 260,
-                  width: "90%",
-                }}
-              >
-                {data.nome}
-              </Text>
-              <View style={{ width: 80 }}>
-                <StarRating
-                  disabled={true}
-                  maxStars={5}
-                  rating={data.avaliacao}
-                  starSize={15}
-                  fullStarColor={"#FEA535"}
-                  emptyStarColor={"#6A7075"}
-                />
-              </View>
-              {!data.percentual > 0 ? (
-                <View style={{ height: 15 }}></View>
-              ) : (
-                <Text
-                  style={{
-                    fontSize: 10,
-                    width: "100%",
-                    textDecorationLine: "line-through",
-                  }}
-                >
-                  R$ {data.precoDe}
-                </Text>
-              )}
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 25,
-                  width: "100%",
-                  color: "#1534C8",
-                }}
-              >
-                R$ {data.precoPor}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
+                    <View>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: 13,
+                          maxWidth: 260,
+                          width: "90%",
+                        }}
+                      >
+                        {data.nome}
+                      </Text>
+                      <View style={{ width: 80 }}>
+                        <StarRating
+                          disabled={true}
+                          maxStars={5}
+                          rating={data.avaliacao}
+                          starSize={15}
+                          fullStarColor={"#FEA535"}
+                          emptyStarColor={"#6A7075"}
+                        />
+                      </View>
+                      {!data.percentual > 0 ? (
+                        <View style={{ height: 15 }}></View>
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 10,
+                            width: "100%",
+                            textDecorationLine: "line-through",
+                          }}
+                        >
+                          R$ {data.precoDe}
+                        </Text>
+                      )}
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: 25,
+                          width: "100%",
+                          color: "#1534C8",
+                        }}
+                      >
+                        R$ {data.precoPor}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              </>,
+            ]}
       </View>
     );
   }
@@ -452,7 +485,6 @@ export default function CategoriasProduto({ route, navigation }) {
   }
 
   function SearchBar() {
-
     return (
       <Appbar.Header
         style={{ backgroundColor: "#1534C8", alignItems: "center", zIndex: 99 }}
@@ -500,7 +532,7 @@ export default function CategoriasProduto({ route, navigation }) {
   return (
     <SafeAreaView>
       <View style={{ width: "100%", height: "100%" }}>
-        {search === true ? <SearchBarCata />:<SearchBar />}
+        {search === true ? <SearchBarCata /> : <SearchBar />}
         <Local style={{ zIndex: 100 }} />
         <Options />
         <SkeletonLoading visible={loading}>

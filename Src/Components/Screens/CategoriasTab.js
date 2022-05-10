@@ -22,14 +22,13 @@ export default class CategoriasTab extends Component {
 
   componentDidMount = () => {
     var categoria_prod =
-      "https://eletrosom.com/shell/ws/integrador/listaDepartamentos/?version=15";
+      "https://eletrosom.com/shell/ws/integrador/listaDepartamentos/?version=16";
     fetch(categoria_prod)
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson.categorias.cat.sub);
         this.setState({
           data: responseJson.categorias.cat,
-          data2: responseJson.categorias.cat,
           isLoading: false,
         });
       })
@@ -42,6 +41,7 @@ export default class CategoriasTab extends Component {
   };
 
   render() {
+    console.log(this.state.data);
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
       return (
@@ -63,9 +63,10 @@ export default class CategoriasTab extends Component {
               <TouchableOpacity
                 style={styles.buttonContainerStyle}
                 onPress={() =>
-                  navigate("CategoriasProduto", {
+                  navigate("SubCategoriasProdutos", {
                     item: item.idCat,
                     title: item.nomeCat,
+                    sub: item.sub
                   })
                 }
               >

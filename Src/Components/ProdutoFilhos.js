@@ -16,8 +16,9 @@ export default function App({ volt, sku, navigation }) {
     var RandomNumber = Math.floor(Math.random() * 100) + 1;
     item !== null
       ? navigation.navigate("Produto", {
-          sku: item.sku,
+          sku2: item.sku,
           filhos: item.voltagem.value,
+          key: Math.floor(Math.random() * 100) + 1,
         })
       : navigation.navigate("Produto", {
           close: close,
@@ -103,6 +104,7 @@ export default function App({ volt, sku, navigation }) {
               </View>
             )}
           />
+          <TouchableOpacity></TouchableOpacity>
         </View>
       )}
     </View>

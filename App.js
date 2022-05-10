@@ -16,6 +16,7 @@ import ModalFilhos from "./Src/Components/ModalFilhos";
 import ProdutoFilhos from "./Src/Components/ProdutoFilhos";
 import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
 import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
+import SubCategoriasProdutos from "./Src/Components/Screens/SubCategoriasProdutos";
 import Pedidos from "./Src/Components/Screens/Pedidos";
 import Cadastro from "./Src/Components/Screens/Cadastro";
 import Cadastrop2 from "./Src/Components/Screens/Cadastrop2";
@@ -50,6 +51,18 @@ const Categoria = () => {
         name="CategoriasProduto"
         component={CategoriasProduto}
         Options={{ headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="SubCategoriasProdutos"
+        component={SubCategoriasProdutos}
+        options={{
+          headerShown: true,
+          headerTintColor: "#fff",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "#1534C8",
+          },
+        }}
       />
       <Stack.Screen
         name="Produto"

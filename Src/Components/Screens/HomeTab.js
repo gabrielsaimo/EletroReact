@@ -9,6 +9,7 @@ import {
   Dimensions,
   RefreshControl,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 import SearchBarHome from "../SearchBarHome";
 import Local from "../Local";
@@ -115,142 +116,144 @@ export default function HomeTab() {
   }
 
   return (
-    <View style={{ height: "100%", width }}>
-      <SearchBarHome />
-      <Local style={{ width: 10, high: 20 }} />
-      {refreshing ? <ActivityIndicator /> : null}
-      <ScrollView
-        nestedScrollEnabled
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <Banner />
-        <SkeletonLoading visible={isLoading}>
-          <FlatList
-            data={data}
-            keyExtractor={(item,index) => index}
-            renderItem={({ item ,index}) => (
-              <View>
-                {!item.emEstoque ? null : (
-                  <View style={{ alignItems: "center", flex: 1 }}>
-                    <TouchableOpacity
-                      style={styles.buttonContainerStyle}
-                      onPress={() =>
-                        navigation.navigate("Produto", {
-                          sku: item.codigo,
-                          precode: item.precoDe,
-                        })
-                      }
-                    >
-                      <Image
-                        source={{ uri: item.imagem }}
-                        style={{
-                          width: 115,
-                          height: 115,
-                          resizeMode: "contain",
-                          margin: 10,
-                        }}
-                      />
-                      <View
-                      sky={index}
-                        style={
-                          item.favorito
-                            ? {
-                                flexDirection: "row",
-                                position: "absolute",
-                                top: -10,
-                                right: -10,
-                                alignSelf: "center",
-                              }
-                            : {
-                                flexDirection: "row",
-                                position: "absolute",
-                                top: -5,
-                                right: -5,
-                                alignSelf: "center",
-                              }
+    <SafeAreaView>
+      <View style={{ height: "100%", width }}>
+        <SearchBarHome />
+        <Local style={{ width: 10, high: 20 }} />
+        {refreshing ? <ActivityIndicator /> : null}
+        <ScrollView
+          nestedScrollEnabled
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <Banner />
+          <SkeletonLoading visible={isLoading}>
+            <FlatList
+              data={data}
+              keyExtractor={(item, index) => index}
+              renderItem={({ item, index }) => (
+                <View>
+                  {!item.emEstoque ? null : (
+                    <View style={{ alignItems: "center", flex: 1 }}>
+                      <TouchableOpacity
+                        style={styles.buttonContainerStyle}
+                        onPress={() =>
+                          navigation.navigate("Produto", {
+                            sku: item.codigo,
+                            precode: item.precoDe,
+                          })
                         }
                       >
-                        <IconButton
-                          icon={
-                            item.favorito
-                              ? require("../assets/favorito.png")
-                              : require("../assets/heart.png")
-                          }
-                          color={item.favorito ? "#FFDB00" : "#6A7075"}
-                          size={item.favorito ? 37 : 30}
-                          onPress={() => {
-                            item.favorito
-                              ? excluir(item.codigo)
-                              : add(item.codigo);
+                        <Image
+                          source={{ uri: item.imagem }}
+                          style={{
+                            width: 115,
+                            height: 115,
+                            resizeMode: "contain",
+                            margin: 10,
                           }}
                         />
-                      </View>
-                      {item.percentual > 0 ? (
                         <View
-                          style={{
-                            width: 80,
-                            height: 20,
-                            position: "absolute",
-                            margin: 5,
-                            backgroundColor: "#FEA535",
-                            alignItems: "center",
-                            borderRadius: 20,
-                          }}
+                          sky={index}
+                          style={
+                            item.favorito
+                              ? {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: -10,
+                                  right: -10,
+                                  alignSelf: "center",
+                                }
+                              : {
+                                  flexDirection: "row",
+                                  position: "absolute",
+                                  top: -5,
+                                  right: -5,
+                                  alignSelf: "center",
+                                }
+                          }
                         >
-                          <Text>{item.percentual}% off</Text>
+                          <IconButton
+                            icon={
+                              item.favorito
+                                ? require("../assets/favorito.png")
+                                : require("../assets/heart.png")
+                            }
+                            color={item.favorito ? "#FFDB00" : "#6A7075"}
+                            size={item.favorito ? 37 : 30}
+                            onPress={() => {
+                              item.favorito
+                                ? excluir(item.codigo)
+                                : add(item.codigo);
+                            }}
+                          />
                         </View>
-                      ) : (
-                        <></>
-                      )}
-                      <View style={{ width2 }}>
-                        <Text
-                          numberOfLines={2}
-                          style={{
-                            fontWeight: "bold",
-                            fontSize: 13,
-                            maxWidth: width2,
-                          }}
-                        >
-                          {item.nome}
-                        </Text>
                         {item.percentual > 0 ? (
-                          <Text
+                          <View
                             style={{
-                              textDecorationLine: "line-through",
-                              fontSize: 12,
+                              width: 80,
+                              height: 20,
+                              position: "absolute",
+                              margin: 5,
+                              backgroundColor: "#FEA535",
+                              alignItems: "center",
+                              borderRadius: 20,
                             }}
                           >
-                            R$ {item.precoDe}
-                          </Text>
+                            <Text>{item.percentual}% off</Text>
+                          </View>
                         ) : (
-                          <View style={{ height: 20 }}></View>
+                          <></>
                         )}
+                        <View style={{ width2 }}>
+                          <Text
+                            numberOfLines={2}
+                            style={{
+                              fontWeight: "bold",
+                              fontSize: 13,
+                              maxWidth: width2,
+                            }}
+                          >
+                            {item.nome}
+                          </Text>
+                          {item.percentual > 0 ? (
+                            <Text
+                              style={{
+                                textDecorationLine: "line-through",
+                                fontSize: 12,
+                              }}
+                            >
+                              R$ {item.precoDe}
+                            </Text>
+                          ) : (
+                            <View style={{ height: 20 }}></View>
+                          )}
 
-                        <Text
-                          style={{
-                            fontWeight: "bold",
-                            color: "blue",
-                            fontSize: 20,
-                          }}
-                        >
-                          R$ {item.precoPor}
-                        </Text>
-                        <Text style={{ color: "blue", fontSize: 15 }}>
-                          {item.formaPagamento}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            )}
-          />
-        </SkeletonLoading>
-      </ScrollView>
-    </View>
+                          <Text
+                            style={{
+                              fontWeight: "bold",
+                              color: "blue",
+                              fontSize: 20,
+                            }}
+                          >
+                            R$ {item.precoPor}
+                          </Text>
+                          <Text style={{ color: "blue", fontSize: 15 }}>
+                            {item.formaPagamento}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              )}
+            />
+          </SkeletonLoading>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
