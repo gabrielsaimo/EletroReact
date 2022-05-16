@@ -81,12 +81,12 @@ export default function Produto({ route, navigation }) {
     if (loading) return;
     setLoading(true);
     const baseURL =
-      "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
+      "https://www.eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
       route.params.sku +
       "&version=15&idCliente=" +
       id;
     const baseURL1 =
-      "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
+      "https://www.eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
       route.params.sku +
       "&version=15";
     if (id) {

@@ -43,7 +43,7 @@ export default function HomeTab() {
 
       if (idCliente === null) {
         var categoria_prod =
-          "https://eletrosom.com/shell/ws/integrador/listaProdutos?";
+          "https://www.eletrosom.com/shell/ws/integrador/listaProdutos?";
         fetch(categoria_prod)
           .then((response) => response.json())
           .then((responseJson) => {
@@ -58,7 +58,7 @@ export default function HomeTab() {
           });
       } else {
         var categoria_prod =
-          "https://eletrosom.com/shell/ws/integrador/listaProdutos?" + id;
+          "https://www.eletrosom.com/shell/ws/integrador/listaProdutos?" + id;
         fetch(categoria_prod)
           .then((response) => response.json())
           .then((responseJson) => {

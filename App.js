@@ -27,11 +27,12 @@ import Buscar from "./Src/Components/Buscar";
 import add_config_endereco from "./Src/Components/Screens/add_config_endereco";
 import passwordReset from "./Src/Components/Screens/passwordReset";
 import Cadastrofim from "./Src/Components/Cadastrofim";
+import { LogBox } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-console.disableYellowBox = true;
-
+//console.disableYellowBox = true;
+LogBox.ignoreAllLogs();
 const Categoria = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -57,6 +58,7 @@ const Categoria = () => {
         component={SubCategoriasProdutos}
         options={{
           headerShown: true,
+          headerTitle: "Sub Categorias",
           headerTintColor: "#fff",
           headerTitleAlign: "center",
           headerStyle: {

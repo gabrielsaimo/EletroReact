@@ -15,7 +15,6 @@ import Local from "../Local";
 import SearchBarCata from "../SearchBarCatalogo";
 import SkeletonLoading from "../SkeletonLoading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setStatusBarStyle } from "expo-status-bar";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -33,11 +32,16 @@ export default function CategoriasProduto({ route, navigation }) {
   const [title] = useState(route.params.title);
 
   const { height, width } = Dimensions.get("window");
-  const itemWidth = (width - 15) / 2;
+  const [fist, setFist] = useState(0);
   const [columns, setColumns] = useState(1);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [idCliente, setIdcliente] = useState("");
   const [idurl, setUrl] = useState("");
+  const [curti, setCurti] = useState([]);
+  useEffect(() => {
+    loadApi();
+    console.log("altualizou");
+  }, [refreshing]);
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setUrl(
       "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=" +
@@ -49,12 +53,8 @@ export default function CategoriasProduto({ route, navigation }) {
   });
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
-
-  useEffect(() => {
-    loadApi();
-  }, [refreshing]);
 
   async function loadApi() {
     setTimeout(() => {
@@ -63,7 +63,13 @@ export default function CategoriasProduto({ route, navigation }) {
         fetch(idurl)
           .then((res) => res.json())
           .then((resData) => {
-            setData(resData);
+            if (resData === null) {
+              alert("Categoria Vazia :((");
+              navigation.goBack();
+            } else {
+              setData(resData);
+              console.log("data foi");
+            }
             setPage(page + 1);
             setLoading(false);
             if (nun === 1 || nun === 2) {
@@ -83,7 +89,6 @@ export default function CategoriasProduto({ route, navigation }) {
               navigation.goBack();
             }
             console.error(error + "error 1");
-            setRefreshing(false);
             setRefreshing(true);
           });
       } else {
@@ -91,10 +96,11 @@ export default function CategoriasProduto({ route, navigation }) {
           .then((res) => res.json())
           .then((resData) => {
             if (resData === null) {
-              alert("Categoria Vazia :(");
+              alert("Categoria Vazia :((");
               navigation.goBack();
             } else {
               setData(resData);
+              console.log("data foi 2");
             }
 
             setPage(page + 1);
@@ -110,9 +116,10 @@ export default function CategoriasProduto({ route, navigation }) {
       }
     }, 1000);
   }
-  function ListItem({ data, navigation }) {
+  function ListItem({ data, index, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
+        setRefreshing(true);
         fetch(
           "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
           {
@@ -129,14 +136,13 @@ export default function CategoriasProduto({ route, navigation }) {
           }
         )
           .then((res) => res.json())
-          .then((resData) => {
-            setRefreshing(true);
-          });
+          .then((resData) => {});
       });
     }
 
     function add(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
+        setRefreshing(true);
         fetch("https://www.eletrosom.com/shell/ws/integrador/addFavoritos", {
           method: "POST",
           headers: {
@@ -150,9 +156,7 @@ export default function CategoriasProduto({ route, navigation }) {
           }),
         })
           .then((res) => res.json())
-          .then((resData) => {
-            setRefreshing(true);
-          });
+          .then((resData) => {});
       });
     }
     return (
@@ -238,9 +242,10 @@ export default function CategoriasProduto({ route, navigation }) {
                         numberOfLines={2}
                         style={{
                           fontWeight: "bold",
-                          fontSize: 13,
-                          maxWidth: 260,
-                          width: "90%",
+                          fontSize: 14,
+                          maxWidth: 230,
+                          zIndex: 99,
+                          width: "100%",
                         }}
                       >
                         {data.nome}
@@ -286,7 +291,7 @@ export default function CategoriasProduto({ route, navigation }) {
       </View>
     );
   }
-  function ListItem2({ data, navigation }) {
+  function ListItem2({ data, index, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
         fetch(
@@ -544,23 +549,26 @@ export default function CategoriasProduto({ route, navigation }) {
           <FlatList
             data={data}
             // onEndReachedThreshold={0.3}
-            keyExtractor={(item) => String(item.codigo)}
+            keyExtractor={(item, index) => index}
             numColumns={columns}
             key={columns}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <View>
+                {setFist(1)}
                 {columns === 1 ? (
                   <ListItem
                     data={item}
+                    index={index}
                     navigation={navigation}
                     navigate={navigator}
                   />
                 ) : (
                   <ListItem2
                     data={item}
+                    index={index}
                     navigation={navigation}
                     navigate={navigator}
                   />

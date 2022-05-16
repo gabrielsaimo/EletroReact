@@ -1,27 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import {
-  Dimensions,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IconButton } from "react-native-paper";
 
-export default function Cadastrofim({ route }) {
-  console.log(route.params);
-  const { width, height } = Dimensions.get("window");
-  const bottom = height - 90;
+export default function Cadastrofim() {
+  console.log("tela fim");
   const navigation = useNavigation();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [visible, setVisible] = useState(true);
-  if (route.params !== undefined) {
-    setName(route.params.nome);
-    setEmail(route.params.email);
-  }
   function click() {
     setVisible(false);
     navigation.navigate("Login");
@@ -77,6 +62,49 @@ export default function Cadastrofim({ route }) {
                 Conta criada com sucesso
               </Text>
             </View>
+            <View
+              style={{
+                height: 250,
+                borderRadius: 3,
+                alignItems: "center",
+                alignContent: "center",
+                paddingVertical: 10,
+                alignSelf: "center",
+                marginTop: 30,
+                paddingHorizontal: 20,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                  opacity: 0.7,
+                  color: "#fff",
+                  textAlign: "center",
+                }}
+              >
+                Parabéns! Agora você pode aproveitar todas as vantagens e
+                benefícios de ser Cliente Eletrosom. Faça login agora mesmo e
+                realize já as suas compras. 😉
+              </Text>
+            </View>
+            <TouchableOpacity style={{ width: "85%" }} onPress={() => click()}>
+              <View
+                style={{
+                  height: 50,
+                  backgroundColor: "#FFDB00",
+                  borderRadius: 3,
+                  alignItems: "center",
+                  alignContent: "center",
+                  paddingVertical: 10,
+                }}
+              >
+                <Text
+                  style={{ fontWeight: "bold", fontSize: 20, color: "#1534C8" }}
+                >
+                  Finalizar
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={{ height: "1%", flexDirection: "row" }}>
@@ -93,29 +121,6 @@ export default function Cadastrofim({ route }) {
             style={{ backgroundColor: "#FFF199", height: "100%", width: "25%" }}
           ></View>
         </View>
-
-        <TouchableOpacity
-          style={{ width: "85%", position: "absolute", marginTop: bottom }}
-          onPress={() => click()}
-        >
-          <View
-            style={{
-              height: 50,
-              backgroundColor: "#FFDB00",
-              borderRadius: 3,
-              alignItems: "center",
-              alignContent: "center",
-              paddingVertical: 10,
-              marginLeft: "18%",
-            }}
-          >
-            <Text
-              style={{ fontWeight: "bold", fontSize: 20, color: "#1534C8" }}
-            >
-              Finalizar
-            </Text>
-          </View>
-        </TouchableOpacity>
       </Modal>
     </>
   );

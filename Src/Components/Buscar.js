@@ -22,7 +22,7 @@ export default function Buscar({ route, navigation }) {
   const [idCliente, setIdcliente] = useState("");
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setIdcliente(
-      "https://eletrosom.com/shell/ws/integrador/busca2?q=" +
+      "https://www.eletrosom.com/shell/ws/integrador/busca2?q=" +
         route.params.q +
         "&idCliente=" +
         idCliente +
@@ -30,7 +30,7 @@ export default function Buscar({ route, navigation }) {
     );
   });
   const baseURL =
-    "https://eletrosom.com/shell/ws/integrador/busca2?q=" +
+    "https://www.eletrosom.com/shell/ws/integrador/busca2?q=" +
     route.params.q +
     "&dir=asc&version=15";
   const perPage = "?q=react&per_page=${perPage}&page=${page}";

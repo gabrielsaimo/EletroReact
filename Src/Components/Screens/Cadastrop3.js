@@ -53,91 +53,82 @@ export default function Cadastrop3({ route }) {
           }),
         })
           .then((res) => res.json())
-          .then((resData) => [setData(resData), console.log(resData)])
-          .catch((error) => [console.log(error), ifs()]);
+          .then((resData) => {
+            if (resData.codigoMensagem === 200) {
+              navigation.push("Cadastrofim", {
+                email: email,
+                password: password,
+                pessoa: pessoa,
+                cpf: CPF,
+                nome: Nome,
+                telefone: telefone,
+                date: date,
+              });
+            } else if (resData.codigoMensagem === 321) {
+              alert(resData.mensagem);
+              navigation.navigate("Cadastrop2", {
+                email: email,
+                password: password,
+                pessoa: pessoa,
+                cpf: CPF,
+                nome: Nome,
+                telefone: telefone,
+                date: date,
+              });
+            } else if (resData.codigoMensagem === 323) {
+              alert(resData.mensagem);
+              navigation.navigate("Cadastrop2", {
+                email: email,
+                password: password,
+                pessoa: pessoa,
+                cpf: CPF,
+                nome: Nome,
+                telefone: telefone,
+                date: date,
+              });
+            } else if (resData.codigoMensagem === 325) {
+              alert(resData.mensagem);
+              navigation.navigate("Cadastrop1", {
+                email: email,
+                password: password,
+                pessoa: pessoa,
+                cpf: CPF,
+                nome: Nome,
+                telefone: telefone,
+                date: date,
+              });
+            } else if (resData.codigoMensagem === 326) {
+              alert(resData.mensagem);
+              navigation.navigate("Cadastrop1", {
+                email: email,
+                password: password,
+                pessoa: pessoa,
+                cpf: CPF,
+                nome: Nome,
+                telefone: telefone,
+                date: date,
+              });
+            } else if (resData.codigoMensagem === 322) {
+              alert(resData.mensagem);
+              navigation.navigate("Cadastrop2", {
+                email: email,
+                password: password,
+                pessoa: pessoa,
+                cpf: CPF,
+                nome: Nome,
+                telefone: telefone,
+                date: date,
+              });
+            } else {
+              if (resData.codigoMensagem !== 200) {
+                alert("Data incorreta");
+              }
+            }
+          });
       }
     }
   }
-  if (data.codigoMensagem === 200) {
-    navigation.push("Cadastrofim", {
-      email: email,
-      password: password,
-      pessoa: pessoa,
-      cpf: CPF,
-      nome: Nome,
-      telefone: telefone,
-      date: date,
-    });
-  }else{
-    if(data !== ''){
-      ifs();
-    }
-    
-  }
 
-  function ifs() {
-    if (data.codigoMensagem === 200) {
-      navigation.push("Cadastrofim", {
-        email: email,
-        password: password,
-        pessoa: pessoa,
-        cpf: CPF,
-        nome: Nome,
-        telefone: telefone,
-        date: date,
-      });
-    } else if (data.codigoMensagem === 321) {
-      alert(data.mensagem);
-      navigation.navigate("Cadastrop2", {
-        email: email,
-        password: password,
-        pessoa: pessoa,
-        cpf: CPF,
-        nome: Nome,
-        telefone: telefone,
-        date: date,
-      });
-    } else if (data.codigoMensagem === 323) {
-      alert(data.mensagem);
-      navigation.navigate("Cadastrop2", {
-        email: email,
-        password: password,
-        pessoa: pessoa,
-        cpf: CPF,
-        nome: Nome,
-        telefone: telefone,
-        date: date,
-      });
-    } else if (data.codigoMensagem === 325) {
-      alert(data.mensagem);
-      navigation.navigate("Cadastrop1", {
-        email: email,
-        password: password,
-        pessoa: pessoa,
-        cpf: CPF,
-        nome: Nome,
-        telefone: telefone,
-        date: date,
-      });
-    }else if(data.codigoMensagem === 322){
-      alert(data.mensagem);
-      navigation.navigate("Cadastrop2", {
-        email: email,
-        password: password,
-        pessoa: pessoa,
-        cpf: CPF,
-        nome: Nome,
-        telefone: telefone,
-        date: date,
-      });
-    } else {
-      if (data.codigoMensagem !== 200) {
-        alert('Data incorreta');
-
-        //  ifs();
-      }
-    }
-  }
   return (
     <SafeAreaView>
       <View>
@@ -347,9 +338,7 @@ export default function Cadastrop3({ route }) {
             width: "90%",
             zIndex: 99,
           }}
-          onPress={() => {
-            Click();
-          }}
+          onPress={() => Click()}
         >
           <View
             style={{

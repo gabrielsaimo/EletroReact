@@ -22,7 +22,7 @@ export default class CategoriasTab extends Component {
 
   componentDidMount = () => {
     var categoria_prod =
-      "https://eletrosom.com/shell/ws/integrador/listaDepartamentos/?version=16";
+      "https://www.eletrosom.com/shell/ws/integrador/listaDepartamentos/?version=16";
     fetch(categoria_prod)
       .then((response) => response.json())
       .then((responseJson) => {

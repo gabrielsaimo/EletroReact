@@ -35,7 +35,7 @@ export default function MeusEnderecos({ route, navigation }) {
   const enderecos = () => {
     try {
       fetch(
-        "https://eletrosom.com/shell/ws/integrador/listaMeusEnderecos?idCliente=" +
+        "https://www.eletrosom.com/shell/ws/integrador/listaMeusEnderecos?idCliente=" +
           id +
           "&lista=Todos"
       )

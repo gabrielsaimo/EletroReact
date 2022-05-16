@@ -26,7 +26,7 @@ export default App = ({ sku }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("https://eletrosom.com/shell/ws/integrador/banners/?version=15")
+    fetch("https://www.eletrosom.com/shell/ws/integrador/banners/?version=15")
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => {

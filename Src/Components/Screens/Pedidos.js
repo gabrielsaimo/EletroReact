@@ -13,7 +13,7 @@ export default function Pedidos({ route, navigation }) {
   }, []);
 
   const baseURL =
-    "https://eletrosom.com/shell/ws/integrador/listaMeusPedidos?version=15&idCliente=" +
+    "https://www.eletrosom.com/shell/ws/integrador/listaMeusPedidos?version=15&idCliente=" +
     id;
 
   async function loadApi() {

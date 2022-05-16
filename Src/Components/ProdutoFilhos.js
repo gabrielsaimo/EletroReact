@@ -29,7 +29,7 @@ export default function App({ volt, sku, navigation }) {
 
   useEffect(() => {
     fetch(
-      "https://eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
+      "https://www.eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
         sku +
         "&version=15"
     )
