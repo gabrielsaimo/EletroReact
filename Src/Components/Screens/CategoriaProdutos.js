@@ -40,7 +40,6 @@ export default function CategoriasProduto({ route, navigation }) {
   const [curti, setCurti] = useState([]);
   useEffect(() => {
     loadApi();
-    console.log("altualizou");
   }, [refreshing]);
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setUrl(
@@ -59,36 +58,35 @@ export default function CategoriasProduto({ route, navigation }) {
   async function loadApi() {
     setTimeout(() => {
       if (idCliente !== null && idCliente !== 0) {
-        console.log(idCliente);
         fetch(idurl)
           .then((res) => res.json())
           .then((resData) => {
             if (resData === null) {
-              alert("Categoria Vazia :((");
+              alert("Categoria Vazia :(");
               navigation.goBack();
+              return;
             } else {
               setData(resData);
-              console.log("data foi");
             }
             setPage(page + 1);
             setLoading(false);
-            if (nun === 1 || nun === 2) {
-            } else if (nun > 2) {
+            if (nun === 1) {
+            } else if (nun > 1) {
               alert("Erro de requisição");
               navigation.goBack();
+              return;
             }
             setRefreshing(false);
           })
           .catch((error) => {
-            console.error(error);
-            console.log(nun);
             setNun(nun + 1);
-            if (nun === 1 || nun === 2) {
-            } else if (nun > 2) {
+            if (nun === 1) {
+            } else if (nun > 1) {
               alert("Erro de requisição");
               navigation.goBack();
+              return;
             }
-            console.error(error + "error 1");
+            console.error(error + " error 1");
             setRefreshing(true);
           });
       } else {
@@ -98,23 +96,21 @@ export default function CategoriasProduto({ route, navigation }) {
             if (resData === null) {
               alert("Categoria Vazia :((");
               navigation.goBack();
+              return;
             } else {
               setData(resData);
-              console.log("data foi 2");
             }
-
             setPage(page + 1);
             setLoading(false);
             setRefreshing(false);
           })
           .catch((error) => {
-            console.log(nun);
             setNun(nun + 1);
             console.error(error + "error 2");
-            setRefreshing(true);
+            return;
           });
       }
-    }, 1000);
+    }, 200);
   }
   function ListItem({ data, index, navigation }) {
     function excluir(sku) {
