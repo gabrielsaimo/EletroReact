@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  BackHandler,
   FlatList,
   Image,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import Local from "../Local";
 import { Appbar, IconButton } from "react-native-paper";
@@ -26,6 +25,7 @@ export default function FavoritosTab() {
   const navigation = useNavigation();
   const [columns, setColumns] = useState(1);
   const [error, setError] = useState(null);
+  const [filter_on, setFilter_on] = useState(0);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -34,7 +34,6 @@ export default function FavoritosTab() {
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setId(idCliente);
   });
-  console.log(id);
   const Favoriotos = () => {
     try {
       fetch("https://www.eletrosom.com/shell/ws/integrador/listaFavoritos", {
@@ -55,10 +54,9 @@ export default function FavoritosTab() {
         })
         .catch((error) => setRefreshing(true));
     } catch (error) {
-      console.log("erro porem sem id" + error);
       if (e && id == null) {
         setError(e);
-        console.log("aqui" + error);
+        console.log(error);
       }
     }
   };
@@ -80,34 +78,6 @@ export default function FavoritosTab() {
       </Appbar.Header>
     );
   }
-
-  const Options = () => {
-    return (
-      <View style={{ marginTop: -35, zIndex: 1 }}>
-        <Appbar.Header
-          style={{ backgroundColor: "#fff", alignItems: "center" }}
-        >
-          <Appbar.Content
-            title={Object.keys(data).length + " Produtos"}
-            style={{ alignItems: "center" }}
-            onPress={() => navigation.goBack()}
-          />
-          <Appbar.Action
-            icon={require("../../../Src/Components/assets/grade1.png")}
-            onPress={() => setColumns(1)}
-          />
-          <Appbar.Action
-            icon={require("../../../Src/Components/assets/grade.png")}
-            onPress={() => setColumns(2)}
-          />
-          <Appbar.Action icon="power-on" />
-          <Appbar.Action
-            icon={require("../../../Src/Components/assets/filtro.png")}
-          />
-        </Appbar.Header>
-      </View>
-    );
-  };
   function ListItem({ data, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
@@ -145,13 +115,41 @@ export default function FavoritosTab() {
         >
           <Image
             source={{ uri: data.imagem }}
-            style={{
-              width: 120,
-              height: 120,
-              resizeMode: "contain",
-              margin: 10,
-            }}
+            style={
+              data.emEstoque === 0
+                ? {
+                    width: 120,
+                    height: 120,
+                    resizeMode: "contain",
+                    margin: 10,
+                    opacity: 0.2,
+                  }
+                : { width: 120, height: 120, resizeMode: "contain", margin: 10 }
+            }
           />
+          {data.emEstoque === 0 ? (
+            <>
+              <View
+                style={{
+                  width: 100,
+                  height: 22,
+                  backgroundColor: "red",
+                  transform: [{ rotate: "-45deg" }],
+                  marginLeft: -120,
+                  marginRight: 20,
+                  marginTop: 50,
+                  borderRadius: 20,
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ color: "#FFF", fontWeight: "bold" }}>
+                  Esgotado
+                </Text>
+              </View>
+            </>
+          ) : (
+            <></>
+          )}
           <View
             style={
               data.favorito
@@ -293,12 +291,46 @@ export default function FavoritosTab() {
                   >
                     <Image
                       source={{ uri: data.imagem }}
-                      style={{
-                        width: 120,
-                        height: 120,
-                        marginLeft: 35,
-                      }}
+                      style={
+                        data.emEstoque === 0
+                          ? {
+                              width: 120,
+                              height: 120,
+                              resizeMode: "contain",
+                              marginLeft: 35,
+                              opacity: 0.2,
+                            }
+                          : {
+                              width: 120,
+                              height: 120,
+                              resizeMode: "contain",
+                              marginLeft: 35,
+                            }
+                      }
                     />
+                    {data.emEstoque === 0 ? (
+                      <>
+                        <View
+                          style={{
+                            width: 100,
+                            height: 22,
+                            backgroundColor: "red",
+                            transform: [{ rotate: "-45deg" }],
+                            marginTop: -70,
+                            marginBottom: 48,
+                            borderRadius: 20,
+                            marginLeft: 35,
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text style={{ color: "#FFF", fontWeight: "bold" }}>
+                            Esgotado
+                          </Text>
+                        </View>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                     <View
                       style={{
                         flexDirection: "row",
@@ -388,7 +420,80 @@ export default function FavoritosTab() {
     <View style={{ width: "100%", height: "100%" }}>
       <SearchBar />
       <Local style={{ zIndex: 100 }} />
-      <Options />
+      <View
+        style={{
+          height: 50,
+          flexDirection: "row",
+          width: "100%",
+          paddingVertical: 10,
+          backgroundColor: "#FFF",
+        }}
+      >
+        <View style={{ width: "48%", alignItems: "center" }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+            {Object.keys(data).length === 0
+              ? ["Calculando...", <ActivityIndicator />]
+              : Object.keys(data).length - 1 + " Produtos"}
+          </Text>
+        </View>
+        <View flexDirection={"row"}>
+          <TouchableOpacity
+            style={{ marginHorizontal: 8 }}
+            onPress={() => [setColumns(1), setFilter_on(0)]}
+          >
+            <Image
+              style={[
+                columns === 1 ? {} : { tintColor: "#CED4DA" },
+                { height: 25, width: 25 },
+              ]}
+              source={require("../../../Src/Components/assets/grade1.png")}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ marginHorizontal: 8 }}
+            onPress={() => [setColumns(2), setFilter_on(0)]}
+          >
+            <Image
+              style={[
+                columns === 2 ? {} : { tintColor: "#CED4DA" },
+                { height: 25, width: 25 },
+              ]}
+              source={require("../../../Src/Components/assets/grade.png")}
+            />
+          </TouchableOpacity>
+          <Text
+            style={{
+              marginHorizontal: 8,
+              fontSize: 25,
+              marginTop: -7,
+              color: "#CED4DA",
+            }}
+          >
+            |
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => setFilter_on(1)}
+          style={{ marginHorizontal: 8, flexDirection: "row" }}
+        >
+          <Image
+            style={{ height: 25, width: 25 }}
+            source={require("../../../Src/Components/assets/filtro.png")}
+          />
+          <Text
+            style={{
+              color: "#1534C8",
+              fontWeight: "bold",
+              marginTop: 5,
+              fontSize: 15,
+              marginLeft: 5,
+            }}
+          >
+            Filtrar
+          </Text>
+        </TouchableOpacity>
+      </View>
       <ScrollView
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}

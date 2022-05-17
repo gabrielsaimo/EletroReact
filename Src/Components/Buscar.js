@@ -9,6 +9,7 @@ import {
   Dimensions,
   SafeAreaView,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import { Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
@@ -19,29 +20,18 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function Buscar({ route, navigation }) {
-  const [idCliente, setIdcliente] = useState("");
-  AsyncStorage.getItem("idCliente").then((idCliente) => {
-    setIdcliente(
-      "https://www.eletrosom.com/shell/ws/integrador/busca2?q=" +
-        route.params.q +
-        "&idCliente=" +
-        idCliente +
-        "&dir=asc&version=15"
-    );
-  });
   const baseURL =
     "https://www.eletrosom.com/shell/ws/integrador/busca2?q=" +
     route.params.q +
     "&dir=asc&version=15";
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
-
+  const [idCliente, setIdcliente] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [title, setTitle] = useState("Buscar");
-
+  const [filter_on, setFilter_on] = useState(0);
   const { height, width } = Dimensions.get("window");
-  const itemWidth = (width - 15) / 2;
   const [columns, setColumns] = useState(1);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -54,34 +44,63 @@ export default function Buscar({ route, navigation }) {
   }, [refreshing]);
 
   async function loadApi() {
-    if (idCliente !== "") {
-      fetch(idCliente)
-        .then((res) => res.json())
-        .then((resData) => {
-          setData(resData);
-          console.log(resData);
-          setPage(page + 1);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch((error) => {
-          console.error(error);
-          setRefreshing(true);
-        });
-    } else {
-      fetch(baseURL)
-        .then((res) => res.json())
-        .then((resData) => {
-          setData(resData);
-          setPage(page + 1);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch((error) => {
-          console.error(error);
-          setRefreshing(true);
-        });
-    }
+    AsyncStorage.getItem("idCliente").then((idCliente) => {
+      setIdcliente();
+      if (idCliente !== null) {
+        fetch(
+          "https://www.eletrosom.com/shell/ws/integrador/busca2?q=" +
+            route.params.q +
+            "&idCliente=" +
+            idCliente +
+            "&dir=asc&version=15"
+        )
+          .then((res) => res.json())
+          .then((resData) => {
+            if (resData.codigoMensagem === 303) {
+              console.log(resData.codigoMensagem);
+              alert(resData.mensagem);
+              navigation.goBack();
+              return;
+            } else {
+              setData(resData);
+              return;
+            }
+
+            setPage(page + 1);
+            setLoading(false);
+            setRefreshing(false);
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("Erro na busca do produto");
+            navigation.goBack();
+            return;
+          });
+      } else {
+        fetch(baseURL)
+          .then((res) => res.json())
+          .then((resData) => {
+            if (resData.codigoMensagem === 303) {
+              console.log(resData.codigoMensagem);
+              alert(resData.mensagem);
+              navigation.goBack();
+              return;
+            } else {
+              setData(resData);
+              return;
+            }
+            setPage(page + 1);
+            setLoading(false);
+            setRefreshing(false);
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("Erro na busca do produto");
+            return;
+            setRefreshing(true);
+          });
+      }
+    });
   }
   function ListItem({ data, navigation }) {
     function excluir(sku) {
@@ -130,124 +149,117 @@ export default function Buscar({ route, navigation }) {
     }
     return (
       <View style={{ alignItems: "center", flex: 1 }}>
-        <TouchableOpacity
-          style={styles.buttonContainerStyle}
-          onPress={() =>
-            navigation.navigate("Produto", {
-              sku: data.codigo,
-              title: data.nome,
-              precode: data.precoDe,
-            })
-          }
-        >
-          <Image
-            source={{ uri: data.imagem }}
-            style={{
-              width: 120,
-              height: 120,
-              resizeMode: "contain",
-              margin: 10,
-            }}
-          />
-          <View
-            style={
-              data.favorito
-                ? {
-                    flexDirection: "row",
-                    position: "absolute",
-                    top: -10,
-                    right: -10,
-                    alignSelf: "center",
-                    zIndex: 999,
-                  }
-                : {
-                    flexDirection: "row",
-                    position: "absolute",
-                    top: -5,
-                    right: -5,
-                    alignSelf: "center",
-                    zIndex: 999,
-                  }
+        {data.codigo !== undefined ? (
+          <TouchableOpacity
+            style={styles.buttonContainerStyle}
+            onPress={() =>
+              navigation.navigate("Produto", {
+                sku: data.codigo,
+                title: data.nome,
+                precode: data.precoDe,
+              })
             }
           >
-            <IconButton
-              icon={
-                data.favorito
-                  ? require("./assets/favorito.png")
-                  : require("./assets/heart.png")
-              }
-              color={data.favorito ? "#FFDB00" : "#6A7075"}
-              size={data.favorito ? 37 : 30}
-              onPress={() => {
-                data.favorito ? excluir(data.codigo) : add(data.codigo);
+            <Image
+              source={{ uri: data.imagem }}
+              style={{
+                width: 120,
+                height: 120,
+                resizeMode: "contain",
+                margin: 10,
               }}
             />
-          </View>
-          {!data.percentual > 0 ? (
-            <></>
-          ) : (
-            <View
-              style={{
-                width: 80,
-                height: 20,
-                position: "absolute",
-                margin: 5,
-                backgroundColor: "#FEA535",
-                alignItems: "center",
-                borderRadius: 20,
-              }}
-            >
-              <Text>{data.percentual}% off</Text>
-            </View>
-          )}
 
-          <View>
-            <Text
-              numberOfLines={2}
-              style={{
-                fontWeight: "bold",
-                fontSize: 13,
-                maxWidth: 260,
-                width: "90%",
-              }}
-            >
-              {data.nome}
-            </Text>
-            <View style={{ width: 80 }}>
-              <StarRating
-                disabled={true}
-                maxStars={5}
-                rating={data.avaliacao}
-                starSize={15}
-                fullStarColor={"#FEA535"}
-                emptyStarColor={"#6A7075"}
-              />
-            </View>
             {!data.percentual > 0 ? (
-              <View style={{ height: 15 }}></View>
+              <></>
             ) : (
-              <Text
+              <View
                 style={{
-                  fontSize: 10,
-                  width: "100%",
-                  textDecorationLine: "line-through",
+                  width: 80,
+                  height: 20,
+                  position: "absolute",
+                  margin: 5,
+                  backgroundColor: "#FEA535",
+                  alignItems: "center",
+                  borderRadius: 20,
                 }}
               >
-                R$ {data.precoDe}
-              </Text>
+                <Text>{data.percentual}% off</Text>
+              </View>
             )}
-            <Text
-              style={{
-                fontWeight: "bold",
-                fontSize: 25,
-                width: "100%",
-                color: "#1534C8",
-              }}
-            >
-              R$ {data.precoPor}
-            </Text>
-          </View>
-        </TouchableOpacity>
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ width: "60%" }}>
+                <Text
+                  numberOfLines={2}
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 13,
+                    maxWidth: 260,
+                    width: "100%",
+                  }}
+                >
+                  {data.nome}
+                </Text>
+                <View style={{ width: 80 }}>
+                  <StarRating
+                    disabled={true}
+                    maxStars={5}
+                    rating={data.avaliacao}
+                    starSize={15}
+                    fullStarColor={"#FEA535"}
+                    emptyStarColor={"#6A7075"}
+                  />
+                </View>
+                {!data.percentual > 0 ? (
+                  <View style={{ height: 15 }}></View>
+                ) : (
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      width: "100%",
+                      textDecorationLine: "line-through",
+                    }}
+                  >
+                    R$ {data.precoDe}
+                  </Text>
+                )}
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 25,
+                    width: "100%",
+                    color: "#1534C8",
+                  }}
+                >
+                  R$ {data.precoPor}
+                </Text>
+              </View>
+              <View
+                style={[
+                  data.favorito
+                    ? { marginLeft: -3, marginTop: -15 }
+                    : { marginTop: -10 },
+                  { width: "25%" },
+                ]}
+              >
+                <IconButton
+                  icon={
+                    data.favorito
+                      ? require("../Components/assets/favorito.png")
+                      : require("../Components/assets/heart.png")
+                  }
+                  color={data.favorito ? "#FFDB00" : "#6A7075"}
+                  size={data.favorito ? 37 : 30}
+                  onPress={() => {
+                    data.favorito ? excluir(data.codigo) : add(data.codigo);
+                  }}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
       </View>
     );
   }
@@ -298,158 +310,162 @@ export default function Buscar({ route, navigation }) {
     }
     return (
       <View style={{ alignItems: "center" }}>
-        <View style={{ width: "100%" }}>
-          <View>
-            <TouchableOpacity
-              style={styles.buttonContainerStyle1}
-              onPress={() =>
-                navigation.navigate("Produto", {
-                  sku: data.codigo,
-                  title: data.nome,
-                  precode: data.precoDe,
-                  favorito: data.favorito,
-                })
-              }
-            >
-              <View style={{ Width: "100%" }}>
-                {!data.percentual > 0 ? (
-                  <></>
-                ) : (
-                  <View
-                    style={{
-                      width: 80,
-                      height: 20,
-                      position: "absolute",
-                      backgroundColor: "#FEA535",
-                      alignItems: "center",
-                      borderRadius: 20,
-                      margin: 10,
-                      zIndex: 99,
-                    }}
-                  >
-                    <Text>{data.percentual}% off</Text>
-                  </View>
-                )}
-                <View
-                  style={
-                    data.favorito
-                      ? {
-                          flexDirection: "row",
-                          position: "absolute",
-                          top: -10,
-                          right: -60,
-                          alignSelf: "center",
-                          zIndex: 999,
-                        }
-                      : {
-                          flexDirection: "row",
-                          position: "absolute",
-                          top: -5,
-                          right: -50,
-                          alignSelf: "center",
-                          zIndex: 999,
-                        }
-                  }
-                >
-                  <IconButton
-                    icon={
-                      data.favorito
-                        ? require("./assets/favorito.png")
-                        : require("./assets/heart.png")
-                    }
-                    color={data.favorito ? "#FFDB00" : "#6A7075"}
-                    size={data.favorito ? 37 : 30}
-                    onPress={() => {
-                      data.favorito ? excluir(data.codigo) : add(data.codigo);
-                    }}
-                  />
-                </View>
-                <View style={{ marginTop: 20 }}>
-                  <View
-                    style={{
-                      alignContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      Width: "200%",
-                    }}
-                  >
-                    <Image
-                      source={{ uri: data.imagem }}
+        {data.codigo !== undefined ? (
+          <View style={{ width: "100%" }}>
+            <View>
+              <TouchableOpacity
+                style={styles.buttonContainerStyle1}
+                onPress={() =>
+                  navigation.navigate("Produto", {
+                    sku: data.codigo,
+                    title: data.nome,
+                    precode: data.precoDe,
+                    favorito: data.favorito,
+                  })
+                }
+              >
+                <View style={{ Width: "100%" }}>
+                  {!data.percentual > 0 ? (
+                    <></>
+                  ) : (
+                    <View
                       style={{
-                        width: 120,
-                        height: 120,
-                        marginLeft: 35,
+                        width: 80,
+                        height: 20,
+                        position: "absolute",
+                        backgroundColor: "#FEA535",
+                        alignItems: "center",
+                        borderRadius: 20,
+                        margin: 10,
+                        zIndex: 99,
+                      }}
+                    >
+                      <Text>{data.percentual}% off</Text>
+                    </View>
+                  )}
+                  <View
+                    style={
+                      data.favorito
+                        ? {
+                            flexDirection: "row",
+                            position: "absolute",
+                            top: -10,
+                            right: -58,
+                            alignSelf: "center",
+                            zIndex: 999,
+                          }
+                        : {
+                            flexDirection: "row",
+                            position: "absolute",
+                            top: -5,
+                            right: -50,
+                            alignSelf: "center",
+                            zIndex: 999,
+                          }
+                    }
+                  >
+                    <IconButton
+                      icon={
+                        data.favorito
+                          ? require("./assets/favorito.png")
+                          : require("./assets/heart.png")
+                      }
+                      color={data.favorito ? "#FFDB00" : "#6A7075"}
+                      size={data.favorito ? 37 : 30}
+                      onPress={() => {
+                        data.favorito ? excluir(data.codigo) : add(data.codigo);
                       }}
                     />
                   </View>
-                </View>
+                  <View style={{ marginTop: 20 }}>
+                    <View
+                      style={{
+                        alignContent: "center",
+                        alignItems: "center",
+                        alignSelf: "center",
+                        Width: "200%",
+                      }}
+                    >
+                      <Image
+                        source={{ uri: data.imagem }}
+                        style={{
+                          width: 120,
+                          height: 120,
+                          marginLeft: 35,
+                        }}
+                      />
+                    </View>
+                  </View>
 
-                <View style={{ maxWidth: "50%" }}>
-                  <View>
+                  <View style={{ maxWidth: "50%" }}>
+                    <View>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: 13,
+                          width: "180%",
+                          marginLeft: 15,
+                        }}
+                      >
+                        {data.nome}
+                      </Text>
+                    </View>
+
+                    <View style={{ width: "100%", marginLeft: 15 }}>
+                      <StarRating
+                        disabled={true}
+                        maxStars={5}
+                        rating={data.avaliacao}
+                        starSize={15}
+                        fullStarColor={"#FEA535"}
+                        emptyStarColor={"#6A7075"}
+                      />
+                    </View>
+                    {!data.percentual > 0 ? (
+                      <View style={{ height: 15.7 }}></View>
+                    ) : (
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          width: "200%",
+                          textDecorationLine: "line-through",
+                          marginLeft: 15,
+                        }}
+                      >
+                        R$ {data.precoDe}
+                      </Text>
+                    )}
+
                     <Text
-                      numberOfLines={2}
                       style={{
                         fontWeight: "bold",
-                        fontSize: 13,
-                        width: "180%",
+                        fontSize: 25,
+                        width: "400%",
+                        color: "#1534C8",
                         marginLeft: 15,
                       }}
                     >
-                      {data.nome}
+                      R$ {data.precoPor}
                     </Text>
-                  </View>
-
-                  <View style={{ width: "100%", marginLeft: 15 }}>
-                    <StarRating
-                      disabled={true}
-                      maxStars={5}
-                      rating={data.avaliacao}
-                      starSize={15}
-                      fullStarColor={"#FEA535"}
-                      emptyStarColor={"#6A7075"}
-                    />
-                  </View>
-                  {!data.percentual > 0 ? (
-                    <View style={{ height: 15.7 }}></View>
-                  ) : (
                     <Text
                       style={{
+                        color: "blue",
                         fontSize: 10,
                         width: "200%",
-                        textDecorationLine: "line-through",
                         marginLeft: 15,
                       }}
                     >
-                      R$ {data.precoDe}
+                      {data.formaPagamento}
                     </Text>
-                  )}
-
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: 25,
-                      width: "400%",
-                      color: "#1534C8",
-                      marginLeft: 15,
-                    }}
-                  >
-                    R$ {data.precoPor}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "blue",
-                      fontSize: 10,
-                      width: "200%",
-                      marginLeft: 15,
-                    }}
-                  >
-                    {data.formaPagamento}
-                  </Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        ) : (
+          <></>
+        )}
       </View>
     );
   }
@@ -470,44 +486,90 @@ export default function Buscar({ route, navigation }) {
     );
   }
 
-  const Options = () => {
-    return (
-      <View style={{ marginTop: -35, zIndex: 1 }}>
-        <Appbar.Header
-          style={{ backgroundColor: "#fff", alignItems: "center" }}
-        >
-          <Appbar.Content
-            title={Object.keys(data).length + " Produtos"}
-            style={{ alignItems: "center" }}
-            onPress={() => navigation.goBack()}
-          />
-          <Appbar.Action
-            icon={require("./../../Src/Components/assets/grade1.png")}
-            onPress={() => setColumns(1)}
-          />
-          <Appbar.Action
-            icon={require("./../../Src/Components/assets/grade.png")}
-            onPress={() => setColumns(2)}
-          />
-          <Appbar.Action icon="power-on" />
-          <Appbar.Action
-            icon={require("./../../Src/Components/assets/filtro.png")}
-          />
-        </Appbar.Header>
-      </View>
-    );
-  };
-
   return (
     <SafeAreaView>
       <View style={{ width: "100%", height: "100%" }}>
         <SearchBar />
         <Local style={{ zIndex: 100 }} />
-        <Options />
+        <View
+          style={{
+            height: 50,
+            flexDirection: "row",
+            width: "100%",
+            paddingVertical: 10,
+            backgroundColor: "#FFF",
+          }}
+        >
+          <View style={{ width: "48%", alignItems: "center" }}>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+              {Object.keys(data).length === 0
+                ? ["Calculando...", <ActivityIndicator />]
+                : Object.keys(data).length - 1 + " Produtos"}
+            </Text>
+          </View>
+          <View flexDirection={"row"}>
+            <TouchableOpacity
+              style={{ marginHorizontal: 8 }}
+              onPress={() => [setColumns(1), setFilter_on(0)]}
+            >
+              <Image
+                style={[
+                  columns === 1 ? {} : { tintColor: "#CED4DA" },
+                  { height: 25, width: 25 },
+                ]}
+                source={require("./../../Src/Components/assets/grade1.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ marginHorizontal: 8 }}
+              onPress={() => [setColumns(2), setFilter_on(0)]}
+            >
+              <Image
+                style={[
+                  columns === 2 ? {} : { tintColor: "#CED4DA" },
+                  { height: 25, width: 25 },
+                ]}
+                source={require("./../../Src/Components/assets/grade.png")}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                marginHorizontal: 8,
+                fontSize: 25,
+                marginTop: -7,
+                color: "#CED4DA",
+              }}
+            >
+              |
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => setFilter_on(1)}
+            style={{ marginHorizontal: 8, flexDirection: "row" }}
+          >
+            <Image
+              style={{ height: 25, width: 25 }}
+              source={require("./../../Src/Components/assets/filtro.png")}
+            />
+            <Text
+              style={{
+                color: "#1534C8",
+                fontWeight: "bold",
+                marginTop: 5,
+                fontSize: 15,
+                marginLeft: 5,
+              }}
+            >
+              Filtrar
+            </Text>
+          </TouchableOpacity>
+        </View>
         <SkeletonLoading visible={loading}>
           <FlatList
             data={data}
             // onEndReachedThreshold={0.3}
+            initialNumToRender={data.length - 1}
             keyExtractor={(item, index) => index}
             numColumns={columns}
             key={columns}

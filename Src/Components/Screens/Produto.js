@@ -31,6 +31,7 @@ export default function Produto({ route, navigation }) {
   const [img, setImg] = useState("");
   const [imgtotal, setImgtotal] = useState("");
   console.log(skuvolt);
+  const [setcarrinho, setCarrinho] = useState(false);
   const [precoDe, setprecoDe] = useState(route.params.precode);
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
@@ -67,6 +68,14 @@ export default function Produto({ route, navigation }) {
     }
   }
   function clickCarrinho() {
+    if (!volt && filhos !== undefined) {
+      setCarrinho(true);
+      setTimeout(() => {
+        setCarrinho(false);
+      }, 4000);
+    } else {
+      setCarrinho(false);
+    }
     if (!volt && filhos === undefined) {
       setAlert(true);
       setTimeout(() => {
@@ -151,6 +160,32 @@ export default function Produto({ route, navigation }) {
               }}
             >
               Selecione a voltagem antes de continuar
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
+        {setcarrinho && filhos !== undefined ? (
+          <View
+            style={{
+              width: "100%",
+              height: 70,
+              marginTop: bottom,
+              backgroundColor: "#1534C8",
+              position: "absolute",
+              zIndex: 99,
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontSize: 18,
+                paddingVertical: 23,
+                fontWeight: "bold",
+              }}
+            >
+              Produto adicinado ao carrinho
             </Text>
           </View>
         ) : (
