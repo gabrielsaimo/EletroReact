@@ -9,9 +9,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-export default App = ({ sku }) => {
+export default App = () => {
   const { width } = Dimensions.get("window");
-  const height = (width * 50) / 95;
+  const width2 = Math.round(width - 10);
+  const height = (width * 60) / 95;
   const [active, isActive] = useState(0);
 
   const change = ({ nativeEvent }) => {
@@ -54,13 +55,13 @@ export default App = ({ sku }) => {
             data={data.banners}
             keyExtractor={(item) => item.img}
             renderItem={({ item }) => (
-              <View>
+              <View style={{ marginHorizontal: 10 }}>
                 <Image
                   style={{
-                    width,
+                    width: Math.round(width - 20),
                     height,
                     resizeMode: "contain",
-                    backgroundColor: "#fff",
+                    borderRadius: 2,
                   }}
                   key={item}
                   source={{ uri: item.img }}
@@ -73,14 +74,20 @@ export default App = ({ sku }) => {
             style={{
               flexDirection: "row",
               position: "absolute",
-              bottom: 0,
+              bottom: -10,
               alignSelf: "center",
             }}
           >
             {data.banners ? (
               data.banners.map((i, k) => (
-                <Text key={k} style={k == active ? styles.setbol : styles.bol}>
-                  ⬤
+                <Text
+                  key={k}
+                  style={[
+                    k == active ? styles.setbol : styles.bol,
+                    { fontSize: 35, fontWeight: "bold" },
+                  ]}
+                >
+                  ⚊
                 </Text>
               ))
             ) : (

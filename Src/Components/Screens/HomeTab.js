@@ -37,7 +37,6 @@ export default function HomeTab() {
     componentDidMount();
   }, [refreshing]);
   const componentDidMount = () => {
-    console.log();
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       var id = "idCliente=" + idCliente;
 
@@ -117,7 +116,7 @@ export default function HomeTab() {
 
   return (
     <SafeAreaView>
-      <View style={{ height: "100%", width }}>
+      <View style={{ height: "100%", width, backgroundColor: "#FFF" }}>
         <SearchBarHome />
         <Local style={{ width: 10, high: 20 }} />
         {refreshing ? <ActivityIndicator /> : null}
