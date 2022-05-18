@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { TextInputMask } from "react-native-masked-text";
