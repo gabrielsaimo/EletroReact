@@ -221,7 +221,7 @@ export default function App() {
             name="Perfils"
             component={Perfies}
             options={{
-              tabBarLabel: "Perfils",
+              tabBarLabel: "Perfil",
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons
                   name="account"
