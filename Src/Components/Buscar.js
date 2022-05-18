@@ -11,15 +11,16 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import { Appbar, IconButton } from "react-native-paper";
+import { Searchbar, Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "./Local";
 import SkeletonLoading from "./SkeletonLoading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
-export default function Buscar({ route, navigation }) {
+export default function Buscar({ route }) {
   const baseURL =
     "https://www.eletrosom.com/shell/ws/integrador/busca2?q=" +
     route.params.q +
@@ -27,14 +28,17 @@ export default function Buscar({ route, navigation }) {
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
   const [idCliente, setIdcliente] = useState("");
   const [data, setData] = useState([]);
+  const [search, setSeach] = useState(false);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [title, setTitle] = useState("Buscar");
+  const [title, setTitle] = useState(route.params.q);
   const [filter_on, setFilter_on] = useState(0);
   const { height, width } = Dimensions.get("window");
   const [columns, setColumns] = useState(1);
   const [refreshing, setRefreshing] = React.useState(false);
-
+  const navigation = useNavigation();
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const onChangeSearch = (query) => setSearchQuery(query);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -476,10 +480,44 @@ export default function Buscar({ route, navigation }) {
         style={{ backgroundColor: "#1534C8", alignItems: "center", zIndex: 99 }}
       >
         <Appbar.BackAction onPress={() => navigation.goBack()} />
+        <Appbar.Action />
         <Appbar.Content title={title} style={{ alignItems: "center" }} />
+        <Appbar.Action icon="magnify" onPress={() => setSeach(true)} />
         <Appbar.Action
           icon="cart-outline"
           onPress={() => navigation.navigate("CarrinhoTab")}
+        />
+      </Appbar.Header>
+    );
+  }
+  function BuscarNovo() {
+    return (
+      <Appbar.Header style={{ backgroundColor: "#1534C8", width: "85%" }}>
+        <Appbar.Action
+          icon="close"
+          onPress={() => setSeach(false)}
+        />
+        <Searchbar
+          inputStyle={{ backgroundColor: "white" }}
+          style={{
+            fontSize: 12,
+            elevation: 0,
+            borderRadius: 10,
+            high: 20,
+            marginTop: 15,
+            margin: 10,
+          }}
+          containerStyle={{
+            backgroundColor: "blue",
+            borderWidth: 1,
+            borderRadius: 5,
+          }}
+          onSubmitEditing={() =>
+            navigation.navigate("Buscar", { q: searchQuery })
+          }
+          placeholder="Buscar item"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
         />
       </Appbar.Header>
     );
@@ -488,7 +526,7 @@ export default function Buscar({ route, navigation }) {
   return (
     <SafeAreaView>
       <View style={{ width: "100%", height: "100%" }}>
-        <SearchBar />
+        {search === true ? <BuscarNovo /> : <SearchBar />}
         <Local style={{ zIndex: 100 }} />
         <View
           style={{

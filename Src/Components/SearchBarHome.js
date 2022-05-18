@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { Searchbar, Appbar } from "react-native-paper";
-const MyComponent = () => {
+export default function MyComponent({ q }) {
+  console.log(q);
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
@@ -14,21 +15,21 @@ const MyComponent = () => {
           elevation: 0,
           borderRadius: 10,
           high: 20,
-          marginTop:15,
-          margin:10
+          marginTop: 15,
+          margin: 10,
         }}
         containerStyle={{
           backgroundColor: "blue",
           borderWidth: 1,
           borderRadius: 5,
         }}
-        onSubmitEditing={()=> navigation.navigate("Buscar",{q:searchQuery})}
+        onSubmitEditing={() =>
+          navigation.navigate("Buscar", { q: searchQuery })
+        }
         placeholder="Buscar na eletrosom"
         onChangeText={onChangeSearch}
         value={searchQuery}
       />
     </Appbar.Header>
   );
-};
-
-export default MyComponent;
+}

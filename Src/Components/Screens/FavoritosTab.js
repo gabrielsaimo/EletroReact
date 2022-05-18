@@ -196,7 +196,7 @@ export default function FavoritosTab() {
             </View>
           )}
 
-          <View>
+          <View style={data.emEstoque === 0 ? { opacity: 0.3 } : {}}>
             <Text
               numberOfLines={2}
               style={{
@@ -446,7 +446,9 @@ export default function FavoritosTab() {
           >
             <Image
               style={[
-                columns === 1 ? {tintColor: "#1534C8"} : { tintColor: "#CED4DA"},
+                columns === 1
+                  ? { tintColor: "#1534C8" }
+                  : { tintColor: "#CED4DA" },
                 { height: 25, width: 25 },
               ]}
               source={require("../../../Src/Components/assets/grade1.png")}
@@ -458,7 +460,9 @@ export default function FavoritosTab() {
           >
             <Image
               style={[
-                columns === 2 ? {tintColor: "#1534C8"} : { tintColor: "#CED4DA" },
+                columns === 2
+                  ? { tintColor: "#1534C8" }
+                  : { tintColor: "#CED4DA" },
                 { height: 25, width: 25 },
               ]}
               source={require("../../../Src/Components/assets/grade.png")}
