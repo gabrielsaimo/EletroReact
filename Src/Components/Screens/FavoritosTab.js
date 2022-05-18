@@ -9,6 +9,7 @@ import {
   View,
   RefreshControl,
   ActivityIndicator,
+  StyleSheet,
 } from "react-native";
 import Local from "../Local";
 import { Appbar, IconButton } from "react-native-paper";
@@ -133,8 +134,7 @@ export default function FavoritosTab() {
                 style={{
                   width: 100,
                   height: 22,
-                  backgroundColor: "red",
-                  transform: [{ rotate: "-45deg" }],
+                  backgroundColor: "#E9ECEF",
                   marginLeft: -120,
                   marginRight: 20,
                   marginTop: 50,
@@ -142,7 +142,7 @@ export default function FavoritosTab() {
                   alignItems: "center",
                 }}
               >
-                <Text style={{ color: "#FFF", fontWeight: "bold" }}>
+                <Text style={{ color: "#000", fontWeight: "bold" }}>
                   Esgotado
                 </Text>
               </View>
@@ -314,8 +314,7 @@ export default function FavoritosTab() {
                           style={{
                             width: 100,
                             height: 22,
-                            backgroundColor: "red",
-                            transform: [{ rotate: "-45deg" }],
+                            backgroundColor: "#E9ECEF",
                             marginTop: -70,
                             marginBottom: 48,
                             borderRadius: 20,
@@ -323,9 +322,7 @@ export default function FavoritosTab() {
                             alignItems: "center",
                           }}
                         >
-                          <Text style={{ color: "#FFF", fontWeight: "bold" }}>
-                            Esgotado
-                          </Text>
+                          <Text style={styles.textg}>Esgotado</Text>
                         </View>
                       </>
                     ) : (
@@ -535,7 +532,7 @@ export default function FavoritosTab() {
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({
   buttonContainerStyle: {
     height: 140,
     marginTop: 3,
@@ -581,4 +578,7 @@ const styles = {
     shadowRadius: 2.5,
     elevation: 2,
   },
-};
+  textg: {
+    fontFamily: "Gadugi-bold",
+  },
+});
