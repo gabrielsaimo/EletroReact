@@ -134,7 +134,7 @@ export default function FavoritosTab() {
                 style={{
                   width: 100,
                   height: 22,
-                  backgroundColor: "#E9ECEF",
+                  backgroundColor: "#CED4DA",
                   marginLeft: -120,
                   marginRight: 20,
                   marginTop: 50,
@@ -314,7 +314,7 @@ export default function FavoritosTab() {
                           style={{
                             width: 100,
                             height: 22,
-                            backgroundColor: "#E9ECEF",
+                            backgroundColor: "#CED4DA",
                             marginTop: -70,
                             marginBottom: 48,
                             borderRadius: 20,
@@ -322,7 +322,7 @@ export default function FavoritosTab() {
                             alignItems: "center",
                           }}
                         >
-                          <Text style={styles.textg}>Esgotado</Text>
+                          <Text style={{ fontWeight: "bold" }}>Esgotado</Text>
                         </View>
                       </>
                     ) : (
@@ -347,7 +347,13 @@ export default function FavoritosTab() {
                   </View>
                 </View>
 
-                <View style={{ maxWidth: "50%" }}>
+                <View
+                  style={
+                    data.emEstoque === 0
+                      ? { opacity: 0.3, maxWidth: "50%" }
+                      : { maxWidth: "50%" }
+                  }
+                >
                   <View>
                     <Text
                       numberOfLines={2}
@@ -440,7 +446,7 @@ export default function FavoritosTab() {
           >
             <Image
               style={[
-                columns === 1 ? {} : { tintColor: "#CED4DA" },
+                columns === 1 ? {tintColor: "#1534C8"} : { tintColor: "#CED4DA"},
                 { height: 25, width: 25 },
               ]}
               source={require("../../../Src/Components/assets/grade1.png")}
@@ -452,7 +458,7 @@ export default function FavoritosTab() {
           >
             <Image
               style={[
-                columns === 2 ? {} : { tintColor: "#CED4DA" },
+                columns === 2 ? {tintColor: "#1534C8"} : { tintColor: "#CED4DA" },
                 { height: 25, width: 25 },
               ]}
               source={require("../../../Src/Components/assets/grade.png")}
@@ -577,8 +583,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 2.5,
     elevation: 2,
-  },
-  textg: {
-    fontFamily: "Gadugi-bold",
   },
 });

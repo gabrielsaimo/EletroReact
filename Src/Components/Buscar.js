@@ -41,6 +41,7 @@ export default function Buscar({ route, navigation }) {
   }, []);
   useEffect(() => {
     loadApi();
+    return;
   }, [refreshing]);
 
   async function loadApi() {
@@ -63,7 +64,6 @@ export default function Buscar({ route, navigation }) {
               return;
             } else {
               setData(resData);
-              return;
             }
 
             setPage(page + 1);
@@ -476,7 +476,6 @@ export default function Buscar({ route, navigation }) {
         style={{ backgroundColor: "#1534C8", alignItems: "center", zIndex: 99 }}
       >
         <Appbar.BackAction onPress={() => navigation.goBack()} />
-
         <Appbar.Content title={title} style={{ alignItems: "center" }} />
         <Appbar.Action
           icon="cart-outline"
@@ -514,7 +513,9 @@ export default function Buscar({ route, navigation }) {
             >
               <Image
                 style={[
-                  columns === 1 ? {} : { tintColor: "#CED4DA" },
+                  columns === 1
+                    ? { tintColor: "#1534C8" }
+                    : { tintColor: "#CED4DA" },
                   { height: 25, width: 25 },
                 ]}
                 source={require("./../../Src/Components/assets/grade1.png")}
@@ -526,7 +527,9 @@ export default function Buscar({ route, navigation }) {
             >
               <Image
                 style={[
-                  columns === 2 ? {} : { tintColor: "#CED4DA" },
+                  columns === 2
+                    ? { tintColor: "#1534C8" }
+                    : { tintColor: "#CED4DA" },
                   { height: 25, width: 25 },
                 ]}
                 source={require("./../../Src/Components/assets/grade.png")}

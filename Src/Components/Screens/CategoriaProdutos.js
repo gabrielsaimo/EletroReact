@@ -363,14 +363,14 @@ export default function CategoriasProduto({ route, navigation }) {
                             flexDirection: "row",
                             position: "absolute",
                             top: -10,
-                            right: -60,
+                            right: -50,
                             alignSelf: "center",
                           }
                         : {
                             flexDirection: "row",
                             position: "absolute",
                             top: -5,
-                            right: -50,
+                            right: -45,
                             alignSelf: "center",
                           }
                     }
@@ -524,7 +524,7 @@ export default function CategoriasProduto({ route, navigation }) {
             >
               <Image
                 style={[
-                  columns === 1 ? {} : { tintColor: "#CED4DA" },
+                  columns === 1 ? {tintColor: "#1534C8"} : { tintColor: "#CED4DA" },
                   { height: 25, width: 25 },
                 ]}
                 source={require("../../../Src/Components/assets/grade1.png")}
@@ -536,7 +536,7 @@ export default function CategoriasProduto({ route, navigation }) {
             >
               <Image
                 style={[
-                  columns === 2 ? {} : { tintColor: "#CED4DA" },
+                  columns === 2 ? {tintColor: "#1534C8"} : { tintColor: "#CED4DA" },
                   { height: 25, width: 25 },
                 ]}
                 source={require("../../../Src/Components/assets/grade.png")}
