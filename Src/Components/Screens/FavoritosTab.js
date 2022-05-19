@@ -53,7 +53,7 @@ export default function FavoritosTab() {
           setData(resData);
           setRefreshing(false);
         })
-        .catch((error) => setRefreshing(true));
+        .catch((error) => onRefresh);
     } catch (error) {
       if (e && id == null) {
         setError(e);
