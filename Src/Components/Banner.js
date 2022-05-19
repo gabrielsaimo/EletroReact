@@ -11,8 +11,7 @@ import {
 
 export default App = () => {
   const { width } = Dimensions.get("window");
-  const width2 = Math.round(width - 10);
-  const height = (width * 60) / 95;
+  const height = (width * 40) / 95;
   const [active, isActive] = useState(0);
 
   const change = ({ nativeEvent }) => {
@@ -46,7 +45,7 @@ export default App = () => {
           </View>
         </View>
       ) : (
-        <View style={{ width, height }}>
+        <View style={{ width, height, marginVertical: 20 }}>
           <FlatList
             horizontal
             pagingEnabled
@@ -61,7 +60,7 @@ export default App = () => {
                     width: Math.round(width - 20),
                     height,
                     resizeMode: "contain",
-                    borderRadius: 2,
+                    borderRadius: 15,
                   }}
                   key={item}
                   source={{ uri: item.img }}
@@ -74,7 +73,7 @@ export default App = () => {
             style={{
               flexDirection: "row",
               position: "absolute",
-              bottom: -10,
+              bottom: -40,
               alignSelf: "center",
             }}
           >

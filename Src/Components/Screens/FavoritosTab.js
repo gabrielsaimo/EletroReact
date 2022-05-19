@@ -20,7 +20,7 @@ const wait = (timeout) => {
 };
 
 export default function FavoritosTab() {
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(true);
   const [id, setId] = useState("");
   const [data, setData] = useState([]);
   const navigation = useNavigation();
@@ -53,7 +53,7 @@ export default function FavoritosTab() {
           setData(resData);
           setRefreshing(false);
         })
-        .catch((error) => onRefresh);
+        .catch((error) => {onRefresh();});
     } catch (error) {
       if (e && id == null) {
         setError(e);
