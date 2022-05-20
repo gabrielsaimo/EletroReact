@@ -13,8 +13,8 @@ import { IconButton } from "react-native-paper";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
-
-export default function endereco({ route }) {
+const { URL_PROD } = process.env;
+export default function add_config_endereco({ route }) {
   const [data, setData] = useState("");
   const [cep, setCep] = useState("");
   const [bairro, setBairro] = useState("");
@@ -88,34 +88,32 @@ export default function endereco({ route }) {
   }
 
   const Edite = async () => {
-    if (cep.length === 9) {
-      await fetch(
-        "https://www.eletrosom.com/shell/ws/integrador/dadosEndereco",
-        {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
+    if (cep.length === 9 || route.params.cep.length === 8) {
+      console.log(`${URL_PROD}/shell/ws/integrador/dadosEndereco`);
+      await fetch(`${URL_PROD}/shell/ws/integrador/dadosEndereco`, {
+        method: "POST",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cadastroEndereco: {
+            idCliente: idCliente,
+            idEndereco: idEndereco,
+            cep: cep,
+            endereco: endereco,
+            nomeEndereco: nomeEndereco,
+            numero: numero,
+            bairro: bairro,
+            complemento: complemento,
+            cidade: cidade,
+            estado: estado,
+            telefone: telefone,
+            celular: celular,
           },
-          body: JSON.stringify({
-            cadastroEndereco: {
-              idCliente: idCliente,
-              idEndereco: idEndereco,
-              cep: cep,
-              endereco: endereco,
-              nomeEndereco: nomeEndereco,
-              numero: numero,
-              bairro: bairro,
-              complemento: complemento,
-              cidade: cidade,
-              estado: estado,
-              telefone: telefone,
-              celular: celular,
-            },
-            version: 16,
-          }),
-        }
-      )
+          version: 16,
+        }),
+      })
         .then((res) => res.json())
         .then((resData) => {
           setDsata2(resData);
@@ -135,7 +133,6 @@ export default function endereco({ route }) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
-      
       <View style={{ marginTop: 80 }}>
         <View style={{ alignSelf: "flex-start", marginLeft: "85%" }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>

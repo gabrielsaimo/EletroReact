@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
+const { URL_PROD } = process.env;
 import Local from "../Local";
 import { Appbar, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -35,9 +36,9 @@ export default function FavoritosTab() {
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setId(idCliente);
   });
-  const Favoriotos = () => {
+  const Favoriotos = async () => {
     try {
-      fetch("https://www.eletrosom.com/shell/ws/integrador/listaFavoritos", {
+      await fetch(`${URL_PROD}/shell/ws/integrador/listaFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -53,7 +54,9 @@ export default function FavoritosTab() {
           setData(resData);
           setRefreshing(false);
         })
-        .catch((error) => {onRefresh();});
+        .catch((error) => {
+          onRefresh();
+        });
     } catch (error) {
       if (e && id == null) {
         setError(e);
@@ -82,21 +85,18 @@ export default function FavoritosTab() {
   function ListItem({ data, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch(
-          "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
-          {
-            method: "POST",
-            headers: {
-              Accept: "aplication/json",
-              "Content-type": "aplication/json",
-            },
-            body: JSON.stringify({
-              cliente: idCliente,
-              sku: sku,
-              version: 15,
-            }),
-          }
-        )
+        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+          method: "POST",
+          headers: {
+            Accept: "aplication/json",
+            "Content-type": "aplication/json",
+          },
+          body: JSON.stringify({
+            cliente: idCliente,
+            sku: sku,
+            version: 15,
+          }),
+        })
           .then((res) => res.json())
           .then((resData) => {
             setRefreshing(true);
@@ -244,21 +244,18 @@ export default function FavoritosTab() {
   function ListItem2({ data, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch(
-          "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
-          {
-            method: "POST",
-            headers: {
-              Accept: "aplication/json",
-              "Content-type": "aplication/json",
-            },
-            body: JSON.stringify({
-              cliente: idCliente,
-              sku: sku,
-              version: 15,
-            }),
-          }
-        )
+        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+          method: "POST",
+          headers: {
+            Accept: "aplication/json",
+            "Content-type": "aplication/json",
+          },
+          body: JSON.stringify({
+            cliente: idCliente,
+            sku: sku,
+            version: 15,
+          }),
+        })
           .then((res) => res.json())
           .then((resData) => {
             setRefreshing(true);

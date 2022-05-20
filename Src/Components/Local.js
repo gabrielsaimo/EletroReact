@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faLocationDot, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../Contexts/Auth";
+const { URL_PROD } = process.env;
 export default function Local() {
   const [id, setId] = useState("");
   const [data, setData] = useState("");
@@ -27,19 +28,17 @@ export default function Local() {
   const meucep = async () => {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       setId(idCliente);
+      fetch(
+        `${URL_PROD}/shell/ws/integrador/listaMeusEnderecos?idCliente=` + id
+      )
+        .then((res) => res.json())
+        .then((resData) => {
+          setData(resData);
+          setCep(resData.cep);
+          setEndereco(resData.endereco);
+          setNumero(resData.numero);
+        });
     });
-
-    await fetch(
-      "https://www.eletrosom.com/shell/ws/integrador/listaMeusEnderecos?idCliente=" +
-        id
-    )
-      .then((res) => res.json())
-      .then((resData) => {
-        setData(resData);
-        setCep(resData.cep);
-        setEndereco(resData.endereco);
-        setNumero(resData.numero);
-      });
   };
   if (cep === undefined && cidade === undefined) {
     useEffect(() => {

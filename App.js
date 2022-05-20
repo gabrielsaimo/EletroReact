@@ -25,8 +25,10 @@ import MeusEnderecos from "./Src/Components/Screens/MeusEnderecos";
 import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
 import Buscar from "./Src/Components/Buscar";
 import add_config_endereco from "./Src/Components/Screens/add_config_endereco";
+import add_config_cartao from "./Src/Components/Screens/add_config_cartao";
 import passwordReset from "./Src/Components/Screens/passwordReset";
 import Cadastrofim from "./Src/Components/Cadastrofim";
+import MeusCartoes from "./Src/Components/Screens/MeusCartoes";
 import { LogBox } from "react-native";
 
 const Tab = createBottomTabNavigator();
@@ -84,11 +86,13 @@ const Perfies = () => {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Pedidos" component={Pedidos} />
       <Stack.Screen name="MeusEnderecos" component={MeusEnderecos} />
+      <Stack.Screen name="MeusCartoes" component={MeusCartoes} />
       <Stack.Screen name="passwordReset" component={passwordReset} />
       <Stack.Screen
         name="add_config_endereco"
         component={add_config_endereco}
       />
+      <Stack.Screen name="add_config_cartao" component={add_config_cartao} />
       <Stack.Screen name="Cadastro" component={Cadastro} />
       <Stack.Screen name="Cadastrop2" component={Cadastrop2} />
       <Stack.Screen name="Cadastrop3" component={Cadastrop3} />

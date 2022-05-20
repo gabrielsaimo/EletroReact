@@ -22,19 +22,19 @@ const Modal = ({ volt, show, close, sku, navigation, navigator, ceps }) => {
     ]).start();
   };
 
-  const closeModal = () => {
-    Animated.sequence([
+  const closeModal = async () => {
+    await Animated.sequence([
       Animated.timing(state.modal, {
         toValue: height,
         duration: 250,
         useNativeDriver: false,
       }),
-      Animated.timing(state.opacity, {
+      await Animated.timing(state.opacity, {
         toValue: 0,
         duration: 300,
         useNativeDriver: false,
       }),
-      Animated.timing(state.container, {
+      await Animated.timing(state.container, {
         toValue: height,
         duration: 100,
         useNativeDriver: false,

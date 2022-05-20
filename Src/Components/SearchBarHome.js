@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { Searchbar, Appbar } from "react-native-paper";
 export default function MyComponent({ q }) {
-  console.log(q);
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);

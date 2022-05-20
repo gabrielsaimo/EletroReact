@@ -8,7 +8,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-
+const { URL_PROD } = process.env;
 export default App = () => {
   const { width } = Dimensions.get("window");
   const height = (width * 40) / 95;
@@ -26,7 +26,7 @@ export default App = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("https://www.eletrosom.com/shell/ws/integrador/banners/?version=15")
+    fetch(`${URL_PROD}/shell/ws/integrador/banners/?version=15`)
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => {
@@ -60,7 +60,7 @@ export default App = () => {
                     width: Math.round(width - 20),
                     height,
                     resizeMode: "contain",
-                    borderRadius: 15,
+                    borderRadius: 5,
                   }}
                   key={item}
                   source={{ uri: item.img }}

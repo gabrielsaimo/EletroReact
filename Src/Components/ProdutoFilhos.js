@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-
+const { URL_PROD } = process.env;
 export default function App({ volt, sku, navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -29,9 +29,7 @@ export default function App({ volt, sku, navigation }) {
 
   useEffect(() => {
     fetch(
-      "https://www.eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
-        sku +
-        "&version=15"
+      `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${sku}&version=15`
     )
       .then((response) => response.json())
       .then((json) => setData(json))

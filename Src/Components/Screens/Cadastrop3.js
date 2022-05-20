@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { TextInputMask } from "react-native-masked-text";
+const { URL_PROD } = process.env;
 export default function Cadastrop3({ route }) {
   const email = route.params.email;
   const password = route.params.password;
@@ -22,10 +23,10 @@ export default function Cadastrop3({ route }) {
   const [data, setData] = useState("");
 
   const navigation = useNavigation();
-  function Click() {
+  async function Click() {
     if (telefone !== "" && date !== "") {
       if (CPF !== "") {
-        fetch("https://www.eletrosom.com/shell/ws/integrador/minhaconta", {
+        await fetch(`${URL_PROD}/shell/ws/integrador/minhaconta`, {
           method: "POST",
           headers: {
             Accept: "aplication/json",

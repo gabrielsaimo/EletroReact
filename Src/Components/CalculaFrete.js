@@ -1,8 +1,9 @@
-import React, { useEffect, useState ,useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
 import CepCorreios from "./CepCorreios";
-export default function CalculaFrete({ cep, sku}) {
+const { URL_PROD } = process.env;
+export default function CalculaFrete({ cep, sku }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
 
@@ -10,12 +11,7 @@ export default function CalculaFrete({ cep, sku}) {
   console.log(data);
 
   useEffect(() => {
-    fetch(
-      "https://eletrosom.com/shell/ws/integrador/consultaFrete?sku=" +
-        sku +
-        "&cep=" +
-        cep
-    )
+    fetch(`${URL_PROD}/shell/ws/integrador/consultaFrete?sku=${sku}&cep=${cep}`)
       .then((response) => response.json())
       .then((json) => setData(json[0]))
       .catch((error) => console.error(error + " produtoFilhos.js"))

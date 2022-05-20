@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
+const { URL_PROD } = process.env;
 export default function AddFavorito({ route }) {
   const navigation = useNavigation();
   AsyncStorage.getItem("idCliente").then((idCliente) => {
@@ -12,7 +12,7 @@ export default function AddFavorito({ route }) {
   const page = route.params.page;
   const [id, setId] = useState("");
   const Add = async () => {
-    await fetch("https://www.eletrosom.com/shell/ws/integrador/addFavoritos", {
+    await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
       method: "POST",
       headers: {
         Accept: "aplication/json",

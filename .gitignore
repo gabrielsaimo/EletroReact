@@ -56,3 +56,6 @@ dist/
 
 # history
 *.history
+
+# dados importantes
+.env

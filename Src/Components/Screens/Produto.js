@@ -9,7 +9,9 @@ import {
   TextInput,
   ScrollView,
   Image,
+  Platform,
 } from "react-native";
+const { URL_PROD } = process.env;
 import Modal from "react-native-modal";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -35,6 +37,9 @@ export default function Produto({ route, navigation }) {
   const [precoDe, setprecoDe] = useState(route.params.precode);
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
+  const runFirst = `let selector = document.querySelector("img") 
+                    selector.style.display = "none"
+                    true;`;
   useEffect(() => {
     setModal(false);
   }, [route.params]);
@@ -89,15 +94,8 @@ export default function Produto({ route, navigation }) {
   async function loadApi() {
     if (loading) return;
     setLoading(true);
-    const baseURL =
-      "https://www.eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
-      route.params.sku +
-      "&version=15&idCliente=" +
-      id;
-    const baseURL1 =
-      "https://www.eletrosom.com/shell/ws/integrador/detalhaProdutos?sku=" +
-      route.params.sku +
-      "&version=15";
+    const baseURL = `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${route.params.sku}&version=15&idCliente=${id}`;
+    const baseURL1 = `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${route.params.sku}&version=15`;
     if (id) {
       const response = await axios.get(`${baseURL}`);
       setData([response.data]);
@@ -759,10 +757,10 @@ export default function Produto({ route, navigation }) {
                     >
                       <WebView
                         source={{
-                          uri:
-                            "https://www.eletrosom.com/shell/ws/integrador/caracteristicasProduto?codigoProduto=" +
-                            sku,
+                          uri: `${URL_PROD}/shell/ws/integrador/caracteristicasProduto?codigoProduto=${sku}`,
                         }}
+                        injectedJavaScript={runFirst}
+                        scalesPageToFit={false}
                       />
                     </View>
                   </View>
@@ -874,7 +872,7 @@ export default function Produto({ route, navigation }) {
                                             marginTop: 15,
                                           }}
                                         >
-                                          {i.campo}{" "}
+                                          {i.campo.substring(0, 30)}
                                         </Text>
                                         <Text style={{ marginLeft: 250 }}>
                                           {i.descricao}

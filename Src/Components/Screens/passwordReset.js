@@ -6,7 +6,7 @@ import { Appbar } from "react-native-paper";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
-
+const { URL_PROD } = process.env;
 export default function passwordReset({ route }) {
   const sendemail = route.params.emaill;
 
@@ -16,21 +16,18 @@ export default function passwordReset({ route }) {
 
   const Enviar = async () => {
     if (email != "") {
-      await fetch(
-        "https://www.eletrosom.com/shell/ws/integrador/esqueceuSenha",
-        {
-          method: "PUT",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: { email: email },
-            template: "email_reset",
-            websiteId: 1,
-          }),
-        }
-      )
+      await fetch(`${URL_PROD}/shell/ws/integrador/esqueceuSenha`, {
+        method: "PUT",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cliente: { email: email },
+          template: "email_reset",
+          websiteId: 1,
+        }),
+      })
         .then((res) => res.json())
         .then((resData) => {
           console.log(email);
@@ -89,7 +86,6 @@ export default function passwordReset({ route }) {
               keyboardType={"email-address"}
               onChangeText={(text) => setEmail(text)}
               placeholder="Seu email"
-              
             ></TextInput>
           </View>
         </View>

@@ -13,6 +13,7 @@ import {
   Button,
   StatusBar,
 } from "react-native";
+const { URL_PROD } = process.env;
 import { AuthContext } from "../../Contexts/Auth";
 import * as ImagePicker from "expo-image-picker";
 import { Appbar } from "react-native-paper";
@@ -103,8 +104,8 @@ export default function PerfilTab() {
       routes: [{ name: "Perfils" }],
     });
   };
-  function alteraCadastro(a) {
-    fetch("https://www.eletrosom.com/shell/ws/integrador/alteraCadastro", {
+  async function alteraCadastro(a) {
+    await fetch(`${URL_PROD}/shell/ws/integrador/alteraCadastro`, {
       method: "POST",
       headers: {
         Accept: "aplication/json",
@@ -304,7 +305,11 @@ export default function PerfilTab() {
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
             <TouchableOpacity
-              onPress={id != null ? () => ({}) : onToggleSnackBar}
+              onPress={
+                id != null
+                  ? () => navigation.navigate("MeusCartoes", { id: id })
+                  : onToggleSnackBar
+              }
             >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon

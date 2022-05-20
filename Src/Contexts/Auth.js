@@ -1,12 +1,11 @@
 import React, { createContext, useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState({});
   const [user1, setUser1] = useState({});
-
+  const [arraycard, setArrayCard] = useState([]);
   useEffect(() => {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       setUser1({ idCliente: idCliente });
@@ -21,8 +20,22 @@ function AuthProvider({ children }) {
       });
     }
   }
+  async function Cartao(titular, cardnome, numero, cod, validade) {
+    setArrayCard([
+      {
+        id: Object.keys(arraycard).length + 1,
+        titular: titular,
+        cardnome: cardnome,
+        numero: numero,
+        cod: cod,
+        validade: validade,
+      },
+      ...arraycard,
+    ]);
+    await AsyncStorage.setItem("arraycard", JSON.stringify(arraycard));
+  }
 
-  function signIn(
+  async function signIn(
     email,
     password,
     idCliente,
@@ -54,14 +67,15 @@ function AuthProvider({ children }) {
       AsyncStorage.setItem("numero", numero);
       AsyncStorage.setItem("cidade", cidade);
       setUser1({ idCliente: idCliente });
-    }else if (email === "" && foto_cliente !==""){
+    } else if (email === "" && foto_cliente !== "") {
       AsyncStorage.setItem("foto_cliente", foto_cliente);
     }
   }
 
-
   return (
-    <AuthContext.Provider value={{ signIn, user, user1, consultaCep }}>
+    <AuthContext.Provider
+      value={{ signIn, Cartao, user, user1, consultaCep, arraycard }}
+    >
       {children}
     </AuthContext.Provider>
   );

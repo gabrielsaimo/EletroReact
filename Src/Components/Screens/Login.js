@@ -1,14 +1,19 @@
 import React, { useContext, useState } from "react";
+const { CLIENTE_ID } = process.env;
+const { REDIRECT_URI } = process.env;
+const { URL_PROD } = process.env;
 import {
   View,
   StyleSheet,
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
 import { AuthContext } from "../../Contexts/Auth";
+import * as AuthSession from "expo-auth-session";
 import { Appbar } from "react-native-paper";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -22,10 +27,28 @@ export default function Login() {
 
   const navigation = useNavigation();
 
+  async function handleSingIn() {
+    const RESPONSE_YPE = "token";
+    const SCOPE = encodeURI("profile email");
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENTE_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_YPE}&scope=${SCOPE}`;
+
+    const response = await AuthSession.startAsync({ authUrl });
+    if (response.type === "success") {
+      console.log("ok");
+      loadProfile();
+      async function loadProfile() {
+        const response2 = await fetch(
+          `https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${response.params.access_token}`
+        );
+        const userInfo = await response2.json();
+        console.log(userInfo);
+      }
+    }
+  }
   const Logar = async () => {
     if (email != "" && password != "") {
       setLoad(true);
-      await fetch("https://www.eletrosom.com/shell/ws/integrador/login", {
+      await fetch(`${URL_PROD}/shell/ws/integrador/login`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -48,8 +71,7 @@ export default function Login() {
             const FotoCliente = resData.dados_cliente.foto_cliente;
 
             fetch(
-              "https://www.eletrosom.com/shell/ws/integrador/listaMeusEnderecos?idCliente=" +
-                idCliente
+              `${URL_PROD}/shell/ws/integrador/listaMeusEnderecos?idCliente=${idCliente}`
             )
               .then((ress) => ress.json())
               .then((resDatas) => {
@@ -135,10 +157,59 @@ export default function Login() {
       <View style={{ alignItems: "center" }}>
         <View style={{ alignItems: "center", marginVertical: 30 }}>
           <Text style={{ fontSize: 30 }}>Bem vindo</Text>
-          <Text>Entre ou crie sua conta Eletrosm</Text>
+          <Text style={{ color: "#6A7075" }}>
+            Entre ou crie sua conta Eletrosm
+          </Text>
         </View>
-
+        <Text style={{ color: "#6A7075" }}>Inciar sessão com:</Text>
+        <View style={{ flexDirection: "row", marginTop: 15 }}>
+          <TouchableOpacity
+            onPress={() => handleSingIn()}
+            style={{
+              width: 150,
+              height: 50,
+              backgroundColor: "#E9ECEF",
+              borderRadius: 10,
+              alignItems: "center",
+            }}
+          >
+            <Image
+              style={{
+                height: 25,
+                width: 112,
+                marginTop: "auto",
+                marginBottom: "auto",
+              }}
+              source={require("../assets/google.png")}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={{}}
+            style={{
+              width: 150,
+              height: 50,
+              backgroundColor: "#E9ECEF",
+              borderRadius: 10,
+              alignItems: "center",
+              marginLeft: 10,
+            }}
+          >
+            <Image
+              style={{
+                height: 25,
+                width: 120,
+                marginTop: "auto",
+                marginBottom: "auto",
+              }}
+              source={require("../assets/facebook.png")}
+            />
+          </TouchableOpacity>
+        </View>
         <View>
+          <View style={{ alignItems: "center", marginTop: 15 }}>
+            <Text style={{ color: "#6A7075" }}>Ou use seu e-mail:</Text>
+          </View>
+
           <View>
             <TextInput
               style={styles.input}
@@ -160,7 +231,12 @@ export default function Login() {
             />
           </View>
           <Text
-            style={{ alignSelf: "flex-end", margin: 10 }}
+            style={{
+              alignSelf: "flex-end",
+              margin: 10,
+              color: "#6A7075",
+              fontWeight: "bold",
+            }}
             onPress={() =>
               navigation.navigate("passwordReset", { emaill: email })
             }

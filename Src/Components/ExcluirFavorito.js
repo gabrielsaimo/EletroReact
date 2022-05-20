@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
+const { URL_PROD } = process.env;
 export default function ExcluirFavorito({ route }) {
   const navigation = useNavigation();
   AsyncStorage.getItem("idCliente").then((idCliente) => {
@@ -13,7 +13,7 @@ export default function ExcluirFavorito({ route }) {
   const [id, setId] = useState("");
   const Excluir = async () => {
     await fetch(
-      "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
+      `${URL_PROD}/shell/ws/integrador/excluirFavoritos`,
       {
         method: "POST",
         headers: {

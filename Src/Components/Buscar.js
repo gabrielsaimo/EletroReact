@@ -11,6 +11,7 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
+
 import { Searchbar, Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "./Local";
@@ -21,10 +22,9 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function Buscar({ route }) {
-  const baseURL =
-    "https://www.eletrosom.com/shell/ws/integrador/busca2?q=" +
-    route.params.q +
-    "&dir=asc&version=15";
+  const { URL_PROD } = process.env;
+  const baseURL = `${URL_PROD}/shell/ws/integrador/busca2?q=${route.params.q}
+    &dir=asc&version=15`;
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
   const [idCliente, setIdcliente] = useState("");
   const [data, setData] = useState([]);
@@ -53,7 +53,7 @@ export default function Buscar({ route }) {
       setIdcliente();
       if (idCliente !== null) {
         fetch(
-          "https://www.eletrosom.com/shell/ws/integrador/busca2?q=" +
+          `${URL_PROD}/shell/ws/integrador/busca2?q=` +
             route.params.q +
             "&idCliente=" +
             idCliente +
@@ -109,21 +109,18 @@ export default function Buscar({ route }) {
   function ListItem({ data, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch(
-          "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
-          {
-            method: "POST",
-            headers: {
-              Accept: "aplication/json",
-              "Content-type": "aplication/json",
-            },
-            body: JSON.stringify({
-              cliente: idCliente,
-              sku: sku,
-              version: 15,
-            }),
-          }
-        )
+        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+          method: "POST",
+          headers: {
+            Accept: "aplication/json",
+            "Content-type": "aplication/json",
+          },
+          body: JSON.stringify({
+            cliente: idCliente,
+            sku: sku,
+            version: 15,
+          }),
+        })
           .then((res) => res.json())
           .then((resData) => {
             setRefreshing(true);
@@ -133,7 +130,7 @@ export default function Buscar({ route }) {
 
     function add(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch("https://www.eletrosom.com/shell/ws/integrador/addFavoritos", {
+        fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
           method: "POST",
           headers: {
             Accept: "aplication/json",
@@ -270,21 +267,18 @@ export default function Buscar({ route }) {
   function ListItem2({ data, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch(
-          "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
-          {
-            method: "POST",
-            headers: {
-              Accept: "aplication/json",
-              "Content-type": "aplication/json",
-            },
-            body: JSON.stringify({
-              cliente: idCliente,
-              sku: sku,
-              version: 15,
-            }),
-          }
-        )
+        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+          method: "POST",
+          headers: {
+            Accept: "aplication/json",
+            "Content-type": "aplication/json",
+          },
+          body: JSON.stringify({
+            cliente: idCliente,
+            sku: sku,
+            version: 15,
+          }),
+        })
           .then((res) => res.json())
           .then((resData) => {
             setRefreshing(true);
@@ -294,7 +288,7 @@ export default function Buscar({ route }) {
 
     function add(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch("https://www.eletrosom.com/shell/ws/integrador/addFavoritos", {
+        fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
           method: "POST",
           headers: {
             Accept: "aplication/json",
@@ -493,10 +487,7 @@ export default function Buscar({ route }) {
   function BuscarNovo() {
     return (
       <Appbar.Header style={{ backgroundColor: "#1534C8", width: "85%" }}>
-        <Appbar.Action
-          icon="close"
-          onPress={() => setSeach(false)}
-        />
+        <Appbar.Action icon="close" onPress={() => setSeach(false)} />
         <Searchbar
           inputStyle={{ backgroundColor: "white" }}
           style={{

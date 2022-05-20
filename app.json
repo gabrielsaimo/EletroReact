@@ -2,6 +2,7 @@
   "expo": {
     "name": "Eletrosom",
     "slug": "ReactEletro",
+    "scheme": "reacteletro",
     "icon": "./Src/Components/assets/iconapp.png",
     "version": "1.0.0",
     "orientation":"portrait",

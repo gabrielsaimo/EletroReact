@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TouchableOpacity, FlatList, Text, View } from "react-native";
 import axios from "axios";
 import { Appbar } from "react-native-paper";
+const { URL_PROD } = process.env;
 export default function Pedidos({ route, navigation }) {
   const id = route.params.idCliente;
 
@@ -12,9 +13,7 @@ export default function Pedidos({ route, navigation }) {
     loadApi();
   }, []);
 
-  const baseURL =
-    "https://www.eletrosom.com/shell/ws/integrador/listaMeusPedidos?version=15&idCliente=" +
-    id;
+  const baseURL = `${URL_PROD}/shell/ws/integrador/listaMeusPedidos?version=15&idCliente=${id}`;
 
   async function loadApi() {
     if (loading) return;

@@ -10,7 +10,7 @@ import {
   Button,
 } from "react-native";
 import Local from "../Local";
-
+const { URL_PROD } = process.env;
 export default class CategoriasTab extends Component {
   constructor(props) {
     super(props);
@@ -20,10 +20,9 @@ export default class CategoriasTab extends Component {
     };
   }
 
-  componentDidMount = () => {
-    var categoria_prod =
-      "https://www.eletrosom.com/shell/ws/integrador/listaDepartamentos/?version=16";
-    fetch(categoria_prod)
+  componentDidMount = async () => {
+    var categoria_prod = `${URL_PROD}/shell/ws/integrador/listaDepartamentos/?version=16`;
+    await fetch(categoria_prod)
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson.categorias.cat.sub);
@@ -33,7 +32,7 @@ export default class CategoriasTab extends Component {
         });
       })
       .catch((error) => {
-        if (error){
+        if (error) {
           console.error(error);
           componentDidMount();
         }
@@ -41,7 +40,6 @@ export default class CategoriasTab extends Component {
   };
 
   render() {
-    console.log(this.state.data);
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
       return (
@@ -66,7 +64,7 @@ export default class CategoriasTab extends Component {
                   navigate("SubCategoriasProdutos", {
                     item: item.idCat,
                     title: item.nomeCat,
-                    sub: item.sub
+                    sub: item.sub,
                   })
                 }
               >

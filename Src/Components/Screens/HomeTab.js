@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from "react-native";
+const { URL_PROD } = process.env;
 import SearchBarHome from "../SearchBarHome";
 import Local from "../Local";
 import Banner from "../Banner";
@@ -41,8 +42,7 @@ export default function HomeTab() {
       var id = "idCliente=" + idCliente;
 
       if (idCliente === null) {
-        var categoria_prod =
-          "https://www.eletrosom.com/shell/ws/integrador/listaProdutos?";
+        var categoria_prod = `${URL_PROD}/shell/ws/integrador/listaProdutos?`;
         fetch(categoria_prod)
           .then((response) => response.json())
           .then((responseJson) => {
@@ -56,8 +56,7 @@ export default function HomeTab() {
             setRefreshing(true);
           });
       } else {
-        var categoria_prod =
-          "https://www.eletrosom.com/shell/ws/integrador/listaProdutos?" + id;
+        var categoria_prod = `${URL_PROD}/shell/ws/integrador/listaProdutos?${id}`;
         fetch(categoria_prod)
           .then((response) => response.json())
           .then((responseJson) => {
@@ -75,7 +74,7 @@ export default function HomeTab() {
 
   function excluir(sku) {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
-      fetch("https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos", {
+      fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -95,7 +94,7 @@ export default function HomeTab() {
   }
   function add(sku) {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
-      fetch("https://www.eletrosom.com/shell/ws/integrador/addFavoritos", {
+      fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",

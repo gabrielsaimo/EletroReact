@@ -9,6 +9,7 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
+const { URL_PROD } = process.env;
 import { Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "../Local";
@@ -19,10 +20,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function CategoriasProduto({ route, navigation }) {
-  const baseURL =
-    "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=" +
-    route.params.item +
-    "&version=15";
+  const baseURL = `${URL_PROD}/shell/ws/integrador/listaProdutos?departamento=${route.params.item}&version=15`;
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
   const [search, setSeach] = useState(false);
   const [data, setData] = useState("");
@@ -41,10 +39,7 @@ export default function CategoriasProduto({ route, navigation }) {
   }, [refreshing]);
   AsyncStorage.getItem("idCliente").then((idCliente) => {
     setUrl(
-      "https://eletrosom.com/shell/ws/integrador/listaProdutos?departamento=" +
-        route.params.item +
-        "&version=15&idCliente=" +
-        idCliente
+      `${URL_PROD}/shell/ws/integrador/listaProdutos?departamento=${route.params.item}&version=15&idCliente=${idCliente}`
     );
     setIdcliente(idCliente);
   });
@@ -114,21 +109,18 @@ export default function CategoriasProduto({ route, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
         setRefreshing(true);
-        fetch(
-          "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
-          {
-            method: "POST",
-            headers: {
-              Accept: "aplication/json",
-              "Content-type": "aplication/json",
-            },
-            body: JSON.stringify({
-              cliente: idCliente,
-              sku: sku,
-              version: 15,
-            }),
-          }
-        )
+        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+          method: "POST",
+          headers: {
+            Accept: "aplication/json",
+            "Content-type": "aplication/json",
+          },
+          body: JSON.stringify({
+            cliente: idCliente,
+            sku: sku,
+            version: 15,
+          }),
+        })
           .then((res) => res.json())
           .then((resData) => {});
       });
@@ -137,7 +129,7 @@ export default function CategoriasProduto({ route, navigation }) {
     function add(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
         setRefreshing(true);
-        fetch("https://www.eletrosom.com/shell/ws/integrador/addFavoritos", {
+        fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
           method: "POST",
           headers: {
             Accept: "aplication/json",
@@ -279,21 +271,18 @@ export default function CategoriasProduto({ route, navigation }) {
   function ListItem2({ data, index, navigation }) {
     function excluir(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch(
-          "https://www.eletrosom.com/shell/ws/integrador/excluirFavoritos",
-          {
-            method: "POST",
-            headers: {
-              Accept: "aplication/json",
-              "Content-type": "aplication/json",
-            },
-            body: JSON.stringify({
-              cliente: idCliente,
-              sku: sku,
-              version: 15,
-            }),
-          }
-        )
+        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+          method: "POST",
+          headers: {
+            Accept: "aplication/json",
+            "Content-type": "aplication/json",
+          },
+          body: JSON.stringify({
+            cliente: idCliente,
+            sku: sku,
+            version: 15,
+          }),
+        })
           .then((res) => res.json())
           .then((resData) => {
             setRefreshing(true);
@@ -303,7 +292,7 @@ export default function CategoriasProduto({ route, navigation }) {
 
     function add(sku) {
       AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch("https://www.eletrosom.com/shell/ws/integrador/addFavoritos", {
+        fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
           method: "POST",
           headers: {
             Accept: "aplication/json",
@@ -524,7 +513,9 @@ export default function CategoriasProduto({ route, navigation }) {
             >
               <Image
                 style={[
-                  columns === 1 ? {tintColor: "#1534C8"} : { tintColor: "#CED4DA" },
+                  columns === 1
+                    ? { tintColor: "#1534C8" }
+                    : { tintColor: "#CED4DA" },
                   { height: 25, width: 25 },
                 ]}
                 source={require("../../../Src/Components/assets/grade1.png")}
@@ -536,7 +527,9 @@ export default function CategoriasProduto({ route, navigation }) {
             >
               <Image
                 style={[
-                  columns === 2 ? {tintColor: "#1534C8"} : { tintColor: "#CED4DA" },
+                  columns === 2
+                    ? { tintColor: "#1534C8" }
+                    : { tintColor: "#CED4DA" },
                   { height: 25, width: 25 },
                 ]}
                 source={require("../../../Src/Components/assets/grade.png")}

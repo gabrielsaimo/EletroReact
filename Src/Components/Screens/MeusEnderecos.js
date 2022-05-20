@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+const { URL_PROD } = process.env;
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons/faTrashCan";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons/faPenToSquare";
@@ -32,12 +33,10 @@ export default function MeusEnderecos({ route, navigation }) {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
-  const enderecos = () => {
+  const enderecos = async () => {
     try {
-      fetch(
-        "https://www.eletrosom.com/shell/ws/integrador/listaMeusEnderecos?idCliente=" +
-          id +
-          "&lista=Todos"
+      await fetch(
+        `${URL_PROD}/shell/ws/integrador/listaMeusEnderecos?idCliente=${id}&lista=Todos`
       )
         .then((res) => res.json())
         .then((resData) => {
@@ -53,11 +52,10 @@ export default function MeusEnderecos({ route, navigation }) {
       }
     }
   };
-  const deleteEndereco = (id) => {
+  const deleteEndereco = async (id) => {
     try {
-      fetch(
-        "https://www.eletrosom.com/shell/ws/integrador/excluirEndereco?idEndereco=" +
-          id
+      await fetch(
+        `${URL_PROD}/shell/ws/integrador/excluirEndereco?idEndereco=${id}`
       )
         .then((res) => res.json())
         .then((resData) => {
