@@ -7,6 +7,7 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
+const { URL_PROD } = process.env;
 import { AuthContext } from "../../Contexts/Auth";
 import { SafeAreaView } from "react-navigation";
 import { TextInputMask } from "react-native-masked-text";
@@ -14,7 +15,7 @@ import { IconButton } from "react-native-paper";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
-const { URL_PROD } = process.env;
+
 export default function add_config_cartao({ route }) {
   const { Cartao, arraycard } = useContext(AuthContext);
   const [data, setData] = useState("");
@@ -26,7 +27,7 @@ export default function add_config_cartao({ route }) {
   const navigation = useNavigation();
 
   const Edite = async () => {
-    if (numero.length === 19 || route.params.numero.length === 17) {
+    if (numero.length >= 16 || route.params.numero.length === 17) {
       await fetch(`${URL_PROD}/shell/ws/integrador/validarCartao`, {
         method: "POST",
         headers: {

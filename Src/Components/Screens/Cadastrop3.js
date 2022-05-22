@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Checkbox, RadioButton, TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { TextInputMask } from "react-native-masked-text";
-const { URL_PROD } = process.env;
+
 export default function Cadastrop3({ route }) {
+  const { URL_PROD } = process.env;
   const email = route.params.email;
   const password = route.params.password;
   const pessoa = route.params.pessoa;
@@ -20,8 +21,6 @@ export default function Cadastrop3({ route }) {
   const [date, setDate] = useState("");
   const [sendEmail, setEmail] = useState("");
   const [sendTelefone, setTele] = useState("");
-  const [data, setData] = useState("");
-
   const navigation = useNavigation();
   async function Click() {
     if (telefone !== "" && date !== "") {

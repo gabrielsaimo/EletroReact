@@ -13,7 +13,6 @@ export default App = () => {
   const { width } = Dimensions.get("window");
   const height = (width * 40) / 95;
   const [active, isActive] = useState(0);
-
   const change = ({ nativeEvent }) => {
     const slide = Math.ceil(
       nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width

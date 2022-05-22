@@ -40,7 +40,6 @@ export default function HomeTab() {
   const componentDidMount = () => {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       var id = "idCliente=" + idCliente;
-
       if (idCliente === null) {
         var categoria_prod = `${URL_PROD}/shell/ws/integrador/listaProdutos?`;
         fetch(categoria_prod)

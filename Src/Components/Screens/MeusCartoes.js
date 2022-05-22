@@ -16,13 +16,11 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function MeusCartoes({ route, navigation }) {
-  const id = route.params.idCliente;
-  const { Cartao, arraycard } = useContext(AuthContext);
-
+  const { user1, arraycard } = useContext(AuthContext);
+  const id = user1.idCliente;
   const [data1, setData1] = useState(arraycard);
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
-  console.log(data1);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -49,6 +47,7 @@ export default function MeusCartoes({ route, navigation }) {
     <View style={{ marginBottom: 70 }}>
       <SearchBar />
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }}></View>
+
       <ScrollView
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}
@@ -61,71 +60,91 @@ export default function MeusCartoes({ route, navigation }) {
           data={data1}
           keyExtractor={(item, index) => index}
           renderItem={({ item }) => (
-            <View
-              style={{
-                paddingHorizontal: 10,
-                marginVertical: 15,
-                backgroundColor: "#F8F9FA",
-                borderRadius: 25,
-                height: 100,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: "auto",
-                  marginBottom: "auto",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
-              >
-                <View>
-                  <Image
-                    style={[
-                      {
-                        marginVertical: 25,
-                        marginRight: 30,
-                      },
-                      item.cod === "EL"
-                        ? { width: 77, height: 28 }
-                        : { width: 72, height: 45 },
-                    ]}
-                    source={
-                      item.cod === "MC"
-                        ? require("../../../Src/Components/assets/master_card.png")
-                        : item.cod === "VI"
-                        ? require("../../../Src/Components/assets/visa.png")
-                        : item.cod === "AE"
-                        ? require("../../../Src/Components/assets/american_express.png")
-                        : item.cod === "DN"
-                        ? require("../../../Src/Components/assets/diners.png")
-                        : item.cod === "EL"
-                        ? require("../../../Src/Components/assets/elo.png")
-                        : item.cod === "HI"
-                        ? require("../../../Src/Components/assets/hipercard.png")
-                        : require("../../../Src/Components/assets/card_icon.png")
-                    }
-                  />
-                </View>
-                <View style={{ marginTop: "auto", marginBottom: "auto" }}>
-                  <Text
-                    style={{ color: "#000", fontWeight: "bold", fontSize: 20 }}
-                  >
-                    {item.cardnome}
-                  </Text>
-                  <Text
+            <>
+              {item.idcliente.idCliente === user1.idCliente ? (
+                <View
+                  style={{
+                    paddingHorizontal: 10,
+                    marginVertical: 15,
+                    backgroundColor: "#E9ECEF",
+                    borderRadius: 10,
+                    height: 100,
+                  }}
+                >
+                  <View
                     style={{
-                      color: "#6A7075",
-                      fontWeight: "bold",
-                      fontSize: 15,
+                      flexDirection: "row",
+                      marginTop: "auto",
+                      marginBottom: "auto",
+                      marginLeft: "auto",
+                      marginRight: "auto",
                     }}
                   >
-                    {"**** **** **** "}
-                    {item.numero.substring(15, 19)}
-                  </Text>
+                    <View>
+                      <Image
+                        style={[
+                          {
+                            marginVertical: 25,
+                            marginRight: 30,
+                          },
+                          item.cod === "EL"
+                            ? { width: 77, height: 28 }
+                            : item.cod === undefined
+                            ? { width: 70, height: 49 }
+                            : { width: 72, height: 45 },
+                        ]}
+                        source={
+                          item.cod === "MC"
+                            ? require("../../../Src/Components/assets/master_card.png")
+                            : item.cod === "VI"
+                            ? require("../../../Src/Components/assets/visa.png")
+                            : item.cod === "AE"
+                            ? require("../../../Src/Components/assets/american_express.png")
+                            : item.cod === "DN" ||
+                              item.numero.substring(0, 2) == ["30", "36", "38"]
+                            ? require("../../../Src/Components/assets/diners.png")
+                            : item.cod === "EL"
+                            ? require("../../../Src/Components/assets/elo.png")
+                            : item.cod === "HI" ||
+                              item.numero.substring(0, 4) === "6062"
+                            ? require("../../../Src/Components/assets/hipercard.png")
+                            : require("../../../Src/Components/assets/card_icon.png")
+                        }
+                      />
+                    </View>
+                    <View style={{ marginTop: "auto", marginBottom: "auto" }}>
+                      <Text
+                        style={{
+                          color: "#343A40",
+                          fontWeight: "bold",
+                          fontSize: 20,
+                        }}
+                      >
+                        {item.numero.substring(0, 4) === "6062"
+                          ? "Hipercard"
+                          : item.cardnome}
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#6A7075",
+                          fontWeight: "bold",
+                          fontSize: 15,
+                          marginTop: 5,
+                        }}
+                      >
+                        {"**** **** **** "}
+                        {item.numero.substring(
+                          item.numero.length - 4,
+                          item.numero.length
+                        )}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-              </View>
-            </View>
+              ) : (
+                <></>
+              )}
+            </>
           )}
         />
         <TouchableOpacity

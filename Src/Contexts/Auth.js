@@ -10,6 +10,11 @@ function AuthProvider({ children }) {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       setUser1({ idCliente: idCliente });
     });
+    AsyncStorage.getItem("arraycard").then((arry) => {
+      if (arraycard.length === 0 && arry.length > 5) {
+        setArrayCard(JSON.parse(arry));
+      }
+    });
   }, []);
 
   function consultaCep(cep, sku) {
@@ -23,6 +28,7 @@ function AuthProvider({ children }) {
   async function Cartao(titular, cardnome, numero, cod, validade) {
     setArrayCard([
       {
+        idcliente: user1,
         id: Object.keys(arraycard).length + 1,
         titular: titular,
         cardnome: cardnome,
@@ -32,7 +38,23 @@ function AuthProvider({ children }) {
       },
       ...arraycard,
     ]);
-    await AsyncStorage.setItem("arraycard", JSON.stringify(arraycard));
+
+    AsyncStorage.setItem(
+      "arraycard",
+      JSON.stringify([
+        {
+          idcliente: user1,
+          id: Object.keys(arraycard).length + 1,
+          titular: titular,
+          cardnome: cardnome,
+          numero: numero,
+          cod: cod,
+          validade: validade,
+        },
+        ...arraycard,
+      ])
+    );
+    console.log(arraycard);
   }
 
   async function signIn(

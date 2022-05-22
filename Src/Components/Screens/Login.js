@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
+const { URL_PROD } = process.env;
 const { CLIENTE_ID } = process.env;
 const { REDIRECT_URI } = process.env;
-const { URL_PROD } = process.env;
 import {
   View,
   StyleSheet,
