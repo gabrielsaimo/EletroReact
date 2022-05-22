@@ -28,37 +28,49 @@ export default function add_config_cartao({ route }) {
 
   const Edite = async () => {
     if (numero.length >= 16 || route.params.numero.length === 17) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/validarCartao`, {
-        method: "POST",
-        headers: {
-          Accept: "aplication/json",
-          "Content-type": "aplication/json",
-        },
-        body: JSON.stringify({
-          card: numero,
-          version: 16,
-        }),
-      })
-        .then((res) => res.json())
-        .then((resData) => {
-          setData(resData);
-          if (
-            [resData.nome, numero, nome, validade] !== [undefined, null, ""]
-          ) {
-            setArray([
-              {
-                titular: nome,
-                cardnome: resData.nome,
-                numero: numero,
-                cod: resData.codigo,
-                valiade: validade,
-              },
-              ...arraycards,
-            ]);
-            Cartao(nome, resData.nome, numero, resData.codigo, validade);
-          }
-          navigation.goBack();
-        });
+      if (nome.length > 0) {
+        if (validade.length === 7) {
+          await fetch(`${URL_PROD}/shell/ws/integrador/validarCartao`, {
+            method: "POST",
+            headers: {
+              Accept: "aplication/json",
+              "Content-type": "aplication/json",
+            },
+            body: JSON.stringify({
+              card: numero,
+              version: 16,
+            }),
+          })
+            .then((res) => res.json())
+            .then((resData) => {
+              setData(resData);
+              if (
+                [resData.nome, numero, nome, validade] !== [undefined, null, ""]
+              ) {
+                setArray([
+                  {
+                    titular: nome,
+                    cardnome: resData.nome,
+                    numero: numero,
+                    cod: resData.codigo,
+                    valiade: validade,
+                  },
+                  ...arraycards,
+                ]);
+                Cartao(nome, resData.nome, numero, resData.codigo, validade);
+              }
+              navigation.goBack();
+            })
+            .catch((error) => {
+              console.error(error + " add_config_cartao.js");
+              alert(error);
+            });
+        } else {
+          alert("Validade incorreta");
+        }
+      } else {
+        alert("Nome do titular vazio!");
+      }
     } else {
       alert("Dados de cartão incorretos");
     }
@@ -118,6 +130,11 @@ export default function add_config_cartao({ route }) {
               <View style={{ width: "100%", marginRight: "4%" }}>
                 <View style={{ flexDirection: "row" }}>
                   <Text style={styles.uptext}>Nome do titular</Text>
+                  <Text
+                    style={{ color: "red", marginBottom: -10, marginTop: 5 }}
+                  >
+                    *
+                  </Text>
                 </View>
                 <TextInput
                   style={styles.input}
@@ -133,6 +150,11 @@ export default function add_config_cartao({ route }) {
               <View style={{ width: "48%", marginRight: "4%" }}>
                 <View style={{ flexDirection: "row" }}>
                   <Text style={styles.uptext}>Validade</Text>
+                  <Text
+                    style={{ color: "red", marginBottom: -10, marginTop: 5 }}
+                  >
+                    *
+                  </Text>
                 </View>
                 <TextInputMask
                   type={"datetime"}

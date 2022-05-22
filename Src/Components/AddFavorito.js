@@ -1,16 +1,10 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../Src/Contexts/Auth";
 const { URL_PROD } = process.env;
 export default function AddFavorito({ route }) {
-  const navigation = useNavigation();
-  AsyncStorage.getItem("idCliente").then((idCliente) => {
-    setId(idCliente);
-  });
-
+  const { user1 } = useContext(AuthContext);
   const sku = route.params.sku;
   const page = route.params.page;
-  const [id, setId] = useState("");
   const Add = async () => {
     await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
       method: "POST",
@@ -19,7 +13,7 @@ export default function AddFavorito({ route }) {
         "Content-type": "aplication/json",
       },
       body: JSON.stringify({
-        cliente: id,
+        cliente: user1.idCliente,
         sku: sku,
         version: 15,
       }),

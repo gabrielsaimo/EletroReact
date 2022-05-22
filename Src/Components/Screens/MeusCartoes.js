@@ -101,7 +101,9 @@ export default function MeusCartoes({ route, navigation }) {
                             : item.cod === "AE"
                             ? require("../../../Src/Components/assets/american_express.png")
                             : item.cod === "DN" ||
-                              item.numero.substring(0, 2) == ["30", "36", "38"]
+                              item.numero.substring(0, 2) === "30" ||
+                              item.numero.substring(0, 2) === "36" ||
+                              item.numero.substring(0, 2) === "38"
                             ? require("../../../Src/Components/assets/diners.png")
                             : item.cod === "EL"
                             ? require("../../../Src/Components/assets/elo.png")
@@ -122,6 +124,10 @@ export default function MeusCartoes({ route, navigation }) {
                       >
                         {item.numero.substring(0, 4) === "6062"
                           ? "Hipercard"
+                          : item.numero.substring(0, 2) === "30" ||
+                            item.numero.substring(0, 2) === "36" ||
+                            item.numero.substring(0, 2) === "38"
+                          ? "Diners"
                           : item.cardnome}
                       </Text>
                       <Text

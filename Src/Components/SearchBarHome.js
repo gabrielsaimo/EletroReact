@@ -1,9 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import { Searchbar, Appbar } from "react-native-paper";
-export default function MyComponent({ q }) {
+import { AuthContext } from "../Contexts/Auth";
+export default function MyComponent() {
+  const { user1 } = useContext(AuthContext);
   const navigation = useNavigation();
-  const [searchQuery, setSearchQuery] = React.useState("");
+  console.log(user1.idcliente);
+  const [searchQuery, setSearchQuery] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
   return (
     <Appbar.Header style={{ backgroundColor: "#1534C8" }}>
@@ -23,7 +26,10 @@ export default function MyComponent({ q }) {
           borderRadius: 5,
         }}
         onSubmitEditing={() =>
-          navigation.navigate("Buscar", { q: searchQuery })
+          navigation.navigate("Buscar", {
+            q: searchQuery,
+            idcliente: user1.idcliente,
+          })
         }
         placeholder="Buscar na eletrosom"
         onChangeText={onChangeSearch}

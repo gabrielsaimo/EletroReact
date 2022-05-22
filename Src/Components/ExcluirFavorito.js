@@ -1,43 +1,34 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useState } from "react";
+import { AuthContext } from "../../Src/Contexts/Auth";
+import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 const { URL_PROD } = process.env;
 export default function ExcluirFavorito({ route }) {
+  const { user1 } = useContext(AuthContext);
   const navigation = useNavigation();
-  AsyncStorage.getItem("idCliente").then((idCliente) => {
-    setId(idCliente);
-  });
-
   const sku = route.params.sku;
   const page = route.params.page;
-  const [id, setId] = useState("");
   const Excluir = async () => {
-    await fetch(
-      `${URL_PROD}/shell/ws/integrador/excluirFavoritos`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "aplication/json",
-          "Content-type": "aplication/json",
-        },
-        body: JSON.stringify({
-          cliente: id,
-          sku: sku,
-          version: 15,
-        }),
-      }
-    )
+    await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+      method: "POST",
+      headers: {
+        Accept: "aplication/json",
+        "Content-type": "aplication/json",
+      },
+      body: JSON.stringify({
+        cliente: user1.idCliente,
+        sku: sku,
+        version: 15,
+      }),
+    })
       .then((res) => res.json())
       .then((resData) => {
         console.log(resData);
-        setTimeout(
-            () => { navigation.reset({
-              routes: [{ name: page }],
-              
-            })
-            navigation.goBack(); },
-            0
-          )
+        setTimeout(() => {
+          navigation.reset({
+            routes: [{ name: page }],
+          });
+          navigation.goBack();
+        }, 0);
       });
   };
 

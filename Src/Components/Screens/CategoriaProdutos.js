@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   TouchableOpacity,
   FlatList,
@@ -9,19 +9,21 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
+
 const { URL_PROD } = process.env;
 import { Appbar, IconButton } from "react-native-paper";
+import { AuthContext } from "../../Contexts/Auth";
 import StarRating from "react-native-star-rating";
 import Local from "../Local";
 import SearchBarCata from "../SearchBarCatalogo";
 import SkeletonLoading from "../SkeletonLoading";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function CategoriasProduto({ route, navigation }) {
   const baseURL = `${URL_PROD}/shell/ws/integrador/listaProdutos?departamento=${route.params.item}&version=15`;
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
+  const { user1 } = useContext(AuthContext);
   const [search, setSeach] = useState(false);
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(true);
@@ -30,120 +32,108 @@ export default function CategoriasProduto({ route, navigation }) {
   const [title] = useState(route.params.title);
   const [columns, setColumns] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
-  const [idCliente, setIdcliente] = useState("");
-  const [idurl, setUrl] = useState("");
   const [filter_on, setFilter_on] = useState(0);
-  const [curti, setCurti] = useState([]);
   useEffect(() => {
     loadApi();
   }, [refreshing]);
-  AsyncStorage.getItem("idCliente").then((idCliente) => {
-    setUrl(
-      `${URL_PROD}/shell/ws/integrador/listaProdutos?departamento=${route.params.item}&version=15&idCliente=${idCliente}`
-    );
-    setIdcliente(idCliente);
-  });
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
 
   async function loadApi() {
-    setTimeout(() => {
-      if (idCliente !== null && idCliente !== 0) {
-        fetch(idurl)
-          .then((res) => res.json())
-          .then((resData) => {
-            if (resData === null) {
-              alert("Categoria Vazia :(");
-              navigation.goBack();
-              return;
-            } else {
-              setData(resData);
-            }
-            setPage(page + 1);
-            setLoading(false);
-            if (nun === 1) {
-            } else if (nun > 1) {
-              alert("Erro de requisição");
-              navigation.goBack();
-              return;
-            }
-            setRefreshing(false);
-          })
-          .catch((error) => {
-            setNun(nun + 1);
-            if (nun === 1) {
-            } else if (nun > 1) {
-              alert("Erro de requisição");
-              navigation.goBack();
-              return;
-            }
-            console.error(error + " error 1");
-            setRefreshing(true);
-          });
-      } else {
-        fetch(baseURL)
-          .then((res) => res.json())
-          .then((resData) => {
-            if (resData === null) {
-              alert("Categoria Vazia :((");
-              navigation.goBack();
-              return;
-            } else {
-              setData(resData);
-            }
-            setPage(page + 1);
-            setLoading(false);
-            setRefreshing(false);
-          })
-          .catch((error) => {
-            setNun(nun + 1);
-            console.error(error + "error 2");
+    if (user1.idCliente !== null) {
+      await fetch(
+        `${URL_PROD}/shell/ws/integrador/listaProdutos?departamento=${route.params.item}&version=15&idCliente=${user1.idCliente}`
+      )
+        .then((res) => res.json())
+        .then((resData) => {
+          if (resData === null) {
+            alert("Categoria Vazia :(");
+            navigation.goBack();
+          } else {
+            setData(resData);
+          }
+          setPage(page + 1);
+          setLoading(false);
+          if (nun === 1) {
+          } else if (nun > 1) {
+            alert("Erro de requisição");
+            navigation.goBack();
             return;
-          });
-      }
-    }, 200);
+          }
+          setRefreshing(false);
+          return;
+        })
+        .catch((error) => {
+          setNun(nun + 1);
+          if (nun === 1) {
+          } else if (nun > 1) {
+            alert("Erro de requisição");
+            navigation.goBack();
+            return;
+          }
+          console.error(error + " error 1");
+          setRefreshing(true);
+        });
+    } else {
+      await fetch(baseURL)
+        .then((res) => res.json())
+        .then((resData) => {
+          if (resData === null) {
+            alert("Categoria Vazia :((");
+            navigation.goBack();
+          } else {
+            setData(resData);
+          }
+          setPage(page + 1);
+          setLoading(false);
+          setRefreshing(false);
+          return;
+        })
+        .catch((error) => {
+          setNun(nun + 1);
+          console.error(error + "error 2");
+          return;
+        });
+    }
   }
   function ListItem({ data, index, navigation }) {
-    function excluir(sku) {
-      AsyncStorage.getItem("idCliente").then((idCliente) => {
-        setRefreshing(true);
-        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: idCliente,
-            sku: sku,
-            version: 15,
-          }),
-        })
-          .then((res) => res.json())
-          .then((resData) => {});
-      });
+    async function excluir(sku) {
+      setRefreshing(true);
+      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+        method: "POST",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cliente: user1.idCliente,
+          sku: sku,
+          version: 15,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {});
     }
 
-    function add(sku) {
-      AsyncStorage.getItem("idCliente").then((idCliente) => {
-        setRefreshing(true);
-        fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: idCliente,
-            sku: sku,
-            version: 15,
-          }),
-        })
-          .then((res) => res.json())
-          .then((resData) => {});
-      });
+    async function add(sku) {
+      setRefreshing(true);
+      await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
+        method: "POST",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cliente: user1.idCliente,
+          sku: sku,
+          version: 15,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {});
     }
     return (
       <View style={{ alignItems: "center", flex: 1 }}>
@@ -269,46 +259,42 @@ export default function CategoriasProduto({ route, navigation }) {
     );
   }
   function ListItem2({ data, index, navigation }) {
-    function excluir(sku) {
-      AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: idCliente,
-            sku: sku,
-            version: 15,
-          }),
-        })
-          .then((res) => res.json())
-          .then((resData) => {
-            setRefreshing(true);
-          });
-      });
+    async function excluir(sku) {
+      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+        method: "POST",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cliente: user1.idCliente,
+          sku: sku,
+          version: 15,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          setRefreshing(true);
+        });
     }
 
-    function add(sku) {
-      AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: idCliente,
-            sku: sku,
-            version: 15,
-          }),
-        })
-          .then((res) => res.json())
-          .then((resData) => {
-            setRefreshing(true);
-          });
-      });
+    async function add(sku) {
+      await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
+        method: "POST",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cliente: user1.idCliente,
+          sku: sku,
+          version: 15,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          setRefreshing(true);
+        });
     }
     return (
       <View style={{ alignItems: "center" }}>

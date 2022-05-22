@@ -48,7 +48,6 @@ export default function Produto({ route, navigation }) {
   const [isVisiblefpagamento, setFpagamento] = useState(false);
   const { consultaCep, user, user1 } = useContext(AuthContext);
   const [usercep, setUsercep] = useState(user.cep);
-  const [id, setId] = useState(user1.idCliente);
   const { width, height } = Dimensions.get("window");
   const bottom = height - 87;
   const [alert, setAlert] = useState(false);
@@ -94,13 +93,15 @@ export default function Produto({ route, navigation }) {
   async function loadApi() {
     if (loading) return;
     setLoading(true);
-    const baseURL = `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${route.params.sku}&version=15&idCliente=${id}`;
-    const baseURL1 = `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${route.params.sku}&version=15`;
-    if (id) {
-      const response = await axios.get(`${baseURL}`);
+    if (user1.idCliente) {
+      const response = await axios.get(
+        `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${route.params.sku}&version=15&idCliente=${user1.idCliente}`
+      );
       setData([response.data]);
     } else {
-      const response = await axios.get(`${baseURL1}`);
+      const response = await axios.get(
+        `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${route.params.sku}&version=15`
+      );
       setData([response.data]);
     }
   }

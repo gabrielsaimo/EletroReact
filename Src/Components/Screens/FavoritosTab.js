@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -11,17 +10,19 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
-const { URL_PROD } = process.env;
 import Local from "../Local";
 import { Appbar, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import StarRating from "react-native-star-rating";
+import { AuthContext } from "../../Contexts/Auth";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
 export default function FavoritosTab() {
-  const [refreshing, setRefreshing] = React.useState(true);
+  const { URL_PROD } = process.env;
+  const { user1 } = useContext(AuthContext);
+  const [refreshing, setRefreshing] = useState(true);
   const [id, setId] = useState("");
   const [data, setData] = useState([]);
   const navigation = useNavigation();
@@ -33,9 +34,6 @@ export default function FavoritosTab() {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  AsyncStorage.getItem("idCliente").then((idCliente) => {
-    setId(idCliente);
-  });
   const Favoriotos = async () => {
     try {
       await fetch(`${URL_PROD}/shell/ws/integrador/listaFavoritos`, {
@@ -45,7 +43,7 @@ export default function FavoritosTab() {
           "Content-type": "aplication/json",
         },
         body: JSON.stringify({
-          cliente: id,
+          cliente: user1.idCliente,
           version: 15,
         }),
       })
@@ -55,10 +53,11 @@ export default function FavoritosTab() {
           setRefreshing(false);
         })
         .catch((error) => {
+          console.log(error);
           onRefresh();
         });
     } catch (error) {
-      if (e && id == null) {
+      if (e && user1.idCliente == null) {
         setError(e);
         console.log(error);
       }
@@ -66,7 +65,7 @@ export default function FavoritosTab() {
   };
 
   useEffect(() => {
-    if (id !== null) {
+    if (user1.idCliente !== null) {
       Favoriotos();
     } else {
       alert("logue para ver seus Favoritos");
@@ -83,25 +82,23 @@ export default function FavoritosTab() {
     );
   }
   function ListItem({ data, navigation }) {
-    function excluir(sku) {
-      AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: idCliente,
-            sku: sku,
-            version: 15,
-          }),
-        })
-          .then((res) => res.json())
-          .then((resData) => {
-            setRefreshing(true);
-          });
-      });
+    async function excluir(sku) {
+      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+        method: "POST",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cliente: user1.idCliente,
+          sku: sku,
+          version: 15,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          setRefreshing(true);
+        });
     }
     return (
       <View style={{ alignItems: "center", flex: 1 }}>
@@ -242,25 +239,23 @@ export default function FavoritosTab() {
     );
   }
   function ListItem2({ data, navigation }) {
-    function excluir(sku) {
-      AsyncStorage.getItem("idCliente").then((idCliente) => {
-        fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
-          method: "POST",
-          headers: {
-            Accept: "aplication/json",
-            "Content-type": "aplication/json",
-          },
-          body: JSON.stringify({
-            cliente: idCliente,
-            sku: sku,
-            version: 15,
-          }),
-        })
-          .then((res) => res.json())
-          .then((resData) => {
-            setRefreshing(true);
-          });
-      });
+    async function excluir(sku) {
+      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+        method: "POST",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify({
+          cliente: user1.idCliente,
+          sku: sku,
+          version: 15,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          setRefreshing(true);
+        });
     }
     return (
       <View style={{ alignItems: "center" }}>

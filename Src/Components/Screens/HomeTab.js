@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   TouchableOpacity,
   FlatList,
@@ -16,15 +16,16 @@ import SearchBarHome from "../SearchBarHome";
 import Local from "../Local";
 import Banner from "../Banner";
 import SkeletonLoading from "../SkeletonLoading";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../Contexts/Auth";
 const { height, width } = Dimensions.get("window");
 const width2 = width - 180;
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function HomeTab() {
+  const { user1 } = useContext(AuthContext);
   const navigation = useNavigation();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -37,79 +38,72 @@ export default function HomeTab() {
   useEffect(() => {
     componentDidMount();
   }, [refreshing]);
-  const componentDidMount = () => {
-    AsyncStorage.getItem("idCliente").then((idCliente) => {
-      var id = "idCliente=" + idCliente;
-      if (idCliente === null) {
-        var categoria_prod = `${URL_PROD}/shell/ws/integrador/listaProdutos?`;
-        fetch(categoria_prod)
-          .then((response) => response.json())
-          .then((responseJson) => {
-            setData(responseJson);
-            setLoading(false);
-            setRefreshing(false);
-          })
-          .catch((error) => {
-            console.error(error);
-            setRefreshing(false);
-            setRefreshing(true);
-          });
-      } else {
-        var categoria_prod = `${URL_PROD}/shell/ws/integrador/listaProdutos?${id}`;
-        fetch(categoria_prod)
-          .then((response) => response.json())
-          .then((responseJson) => {
-            setData(responseJson);
-            setLoading(false);
-            setRefreshing(false);
-          })
-          .catch((error) => {
-            console.error(error);
-            setRefreshing(true);
-          });
-      }
-    });
+  const componentDidMount = async () => {
+    if (user1.idCliente === null) {
+      await fetch(`${URL_PROD}/shell/ws/integrador/listaProdutos?`)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setData(responseJson);
+          setLoading(false);
+          setRefreshing(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setRefreshing(false);
+          setRefreshing(true);
+        });
+    } else {
+      await fetch(
+        `${URL_PROD}/shell/ws/integrador/listaProdutos?idCliente=${user1.idCliente}`
+      )
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setData(responseJson);
+          setLoading(false);
+          setRefreshing(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setRefreshing(true);
+        });
+    }
   };
 
-  function excluir(sku) {
-    AsyncStorage.getItem("idCliente").then((idCliente) => {
-      fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
-        method: "POST",
-        headers: {
-          Accept: "aplication/json",
-          "Content-type": "aplication/json",
-        },
-        body: JSON.stringify({
-          cliente: idCliente,
-          sku: sku,
-          version: 15,
-        }),
-      })
-        .then((res) => res.json())
-        .then((resData) => {
-          setRefreshing(true);
-        });
-    });
+  async function excluir(sku) {
+    await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+      method: "POST",
+      headers: {
+        Accept: "aplication/json",
+        "Content-type": "aplication/json",
+      },
+      body: JSON.stringify({
+        cliente: user1.idCliente,
+        sku: sku,
+        version: 15,
+      }),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        setRefreshing(true);
+      });
   }
-  function add(sku) {
-    AsyncStorage.getItem("idCliente").then((idCliente) => {
-      fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
-        method: "POST",
-        headers: {
-          Accept: "aplication/json",
-          "Content-type": "aplication/json",
-        },
-        body: JSON.stringify({
-          cliente: idCliente,
-          sku: sku,
-          version: 15,
-        }),
-      })
-        .then((res) => res.json())
-        .then((resData) => {
-          setRefreshing(true);
-        });
-    });
+  async function add(sku) {
+    await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
+      method: "POST",
+      headers: {
+        Accept: "aplication/json",
+        "Content-type": "aplication/json",
+      },
+      body: JSON.stringify({
+        cliente: user1.idCliente,
+        sku: sku,
+        version: 15,
+      }),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        setRefreshing(true);
+      });
   }
 
   return (

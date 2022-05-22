@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../Contexts/Auth";
 const { URL_PROD } = process.env;
 export default function Local() {
-  const [id, setId] = useState("");
+  const { user1 } = useContext(AuthContext);
   const [data, setData] = useState("");
   const [endereco, setEndereco] = useState("");
   const [cep, setCep] = useState("");
@@ -24,21 +24,18 @@ export default function Local() {
   AsyncStorage.getItem("cidade").then((cidade) => {
     setCidade(cidade);
   });
-
   const meucep = async () => {
-    AsyncStorage.getItem("idCliente").then((idCliente) => {
-      setId(idCliente);
-      fetch(
-        `${URL_PROD}/shell/ws/integrador/listaMeusEnderecos?idCliente=` + id
-      )
-        .then((res) => res.json())
-        .then((resData) => {
-          setData(resData);
-          setCep(resData.cep);
-          setEndereco(resData.endereco);
-          setNumero(resData.numero);
-        });
-    });
+    await fetch(
+      `${URL_PROD}/shell/ws/integrador/listaMeusEnderecos?idCliente=` +
+        user1.idCliente
+    )
+      .then((res) => res.json())
+      .then((resData) => {
+        setData(resData);
+        setCep(resData.cep);
+        setEndereco(resData.endereco);
+        setNumero(resData.numero);
+      });
   };
   if (cep === undefined && cidade === undefined) {
     useEffect(() => {

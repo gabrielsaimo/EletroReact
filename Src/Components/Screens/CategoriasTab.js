@@ -10,6 +10,7 @@ import {
   Button,
 } from "react-native";
 import Local from "../Local";
+
 const { URL_PROD } = process.env;
 export default class CategoriasTab extends Component {
   constructor(props) {
