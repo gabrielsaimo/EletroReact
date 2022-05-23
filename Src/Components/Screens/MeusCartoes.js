@@ -4,28 +4,156 @@ import {
   Text,
   View,
   RefreshControl,
-  FlatList,
   TouchableOpacity,
   Image,
+  StyleSheet,
 } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
 import { AuthContext } from "../../Contexts/Auth";
 import { Appbar } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
-import ListItemSwipeable from "react-native-elements/dist/list/ListItemSwipeable";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function MeusCartoes({ route, navigation }) {
   const { user1, arraycard } = useContext(AuthContext);
-  const id = user1.idCliente;
-  const [data1, setData1] = useState(arraycard);
+  const [data1, setData1] = useState([arraycard]);
+  const [index, setIndex] = useState(0);
+  data1.map((i, _) => {
+    if (index < i.key) {
+      var ii = i.key;
+      setIndex(ii.toString());
+    }
+  });
+
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
+  const closeRow = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
+  };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  const renderItem = (item) => (
+    <>
+      {item.item.idcliente === user1.idCliente ? (
+        <View
+          style={{
+            backgroundColor: "#E9ECEF",
+            borderRadius: 10,
+            height: 100,
+            marginVertical: 10,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: "auto",
+              marginBottom: "auto",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <View>
+              <Image
+                style={[
+                  {
+                    marginVertical: 25,
+                    marginRight: 30,
+                  },
+                  item.item.cod === "EL"
+                    ? { width: 77, height: 28 }
+                    : item.item.cod === undefined
+                    ? { width: 70, height: 49 }
+                    : { width: 72, height: 45 },
+                ]}
+                source={
+                  item.item.cod === "MC"
+                    ? require("../../../Src/Components/assets/master_card.png")
+                    : item.item.cod === "VI"
+                    ? require("../../../Src/Components/assets/visa.png")
+                    : item.item.cod === "AE"
+                    ? require("../../../Src/Components/assets/american_express.png")
+                    : item.item.cod === "DN" ||
+                      item.item.numero.substring(0, 2) === "30" ||
+                      item.item.numero.substring(0, 2) === "36" ||
+                      item.item.numero.substring(0, 2) === "38"
+                    ? require("../../../Src/Components/assets/diners.png")
+                    : item.item.cod === "EL"
+                    ? require("../../../Src/Components/assets/elo.png")
+                    : item.item.cod === "HI" ||
+                      item.item.numero.substring(0, 4) === "6062"
+                    ? require("../../../Src/Components/assets/hipercard.png")
+                    : require("../../../Src/Components/assets/card_icon.png")
+                }
+              />
+            </View>
+            <View style={{ marginTop: "auto", marginBottom: "auto" }}>
+              <Text
+                style={{
+                  color: "#343A40",
+                  fontWeight: "bold",
+                  fontSize: 20,
+                }}
+              >
+                {item.item.numero.substring(0, 4) === "6062"
+                  ? "Hipercard"
+                  : item.item.numero.substring(0, 2) === "30" ||
+                    item.item.numero.substring(0, 2) === "36" ||
+                    item.item.numero.substring(0, 2) === "38"
+                  ? "Diners"
+                  : item.item.cardnome}
+              </Text>
+              <Text
+                style={{
+                  color: "#6A7075",
+                  fontWeight: "bold",
+                  fontSize: 15,
+                  marginTop: 5,
+                }}
+              >
+                {"**** **** **** "}
+                {item.item.numero.substring(
+                  item.item.numero.length - 4,
+                  item.item.numero.length
+                )}
+              </Text>
+            </View>
+          </View>
+        </View>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+
+  const renderHiddenItem = (item, rowMap) => (
+    <TouchableOpacity
+      onPress={() => closeRow(rowMap, item.item.key)}
+      style={{
+        alignItems: "center",
+        marginTop: 10,
+        marginLeft: "1%",
+        height: 100,
+        width: "98%",
+        flexDirection: "row",
+        backgroundColor: "#FE0202",
+        justifyContent: "flex-end",
+        borderRadius: 10,
+      }}
+    >
+      <Image
+        style={{ width: 45, height: 45, marginRight: 10 }}
+        source={require("../../../Src/Components/assets/delete_icon.png")}
+      ></Image>
+    </TouchableOpacity>
+  );
+
   const SearchBar = () => {
     return (
       <Appbar.Header
@@ -57,106 +185,20 @@ export default function MeusCartoes({ route, navigation }) {
         }
         style={{ margin: 15 }}
       >
-        <FlatList
+        <SwipeListView
           data={data1}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item }) => (
-            <>
-              {item.idcliente.idCliente === user1.idCliente ? (
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                    marginVertical: 15,
-                    backgroundColor: "#E9ECEF",
-                    borderRadius: 10,
-                    height: 100,
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }}
-                  >
-                    <View>
-                      <Image
-                        style={[
-                          {
-                            marginVertical: 25,
-                            marginRight: 30,
-                          },
-                          item.cod === "EL"
-                            ? { width: 77, height: 28 }
-                            : item.cod === undefined
-                            ? { width: 70, height: 49 }
-                            : { width: 72, height: 45 },
-                        ]}
-                        source={
-                          item.cod === "MC"
-                            ? require("../../../Src/Components/assets/master_card.png")
-                            : item.cod === "VI"
-                            ? require("../../../Src/Components/assets/visa.png")
-                            : item.cod === "AE"
-                            ? require("../../../Src/Components/assets/american_express.png")
-                            : item.cod === "DN" ||
-                              item.numero.substring(0, 2) === "30" ||
-                              item.numero.substring(0, 2) === "36" ||
-                              item.numero.substring(0, 2) === "38"
-                            ? require("../../../Src/Components/assets/diners.png")
-                            : item.cod === "EL"
-                            ? require("../../../Src/Components/assets/elo.png")
-                            : item.cod === "HI" ||
-                              item.numero.substring(0, 4) === "6062"
-                            ? require("../../../Src/Components/assets/hipercard.png")
-                            : require("../../../Src/Components/assets/card_icon.png")
-                        }
-                      />
-                    </View>
-                    <View style={{ marginTop: "auto", marginBottom: "auto" }}>
-                      <Text
-                        style={{
-                          color: "#343A40",
-                          fontWeight: "bold",
-                          fontSize: 20,
-                        }}
-                      >
-                        {item.numero.substring(0, 4) === "6062"
-                          ? "Hipercard"
-                          : item.numero.substring(0, 2) === "30" ||
-                            item.numero.substring(0, 2) === "36" ||
-                            item.numero.substring(0, 2) === "38"
-                          ? "Diners"
-                          : item.cardnome}
-                      </Text>
-                      <Text
-                        style={{
-                          color: "#6A7075",
-                          fontWeight: "bold",
-                          fontSize: 15,
-                          marginTop: 5,
-                        }}
-                      >
-                        {"**** **** **** "}
-                        {item.numero.substring(
-                          item.numero.length - 4,
-                          item.numero.length
-                        )}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              ) : (
-                <></>
-              )}
-            </>
-          )}
+          disableRightSwipe={true}
+          renderItem={renderItem}
+          renderHiddenItem={renderHiddenItem}
+          previewRowKey={index}
+          previewOpenValue={-75}
+          rightOpenValue={-75}
         />
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("add_config_cartao", { idCliente: id })
+            navigation.navigate("add_config_cartao", {
+              idCliente: user1.idCliente,
+            })
           }
           style={{
             alignItems: "center",
@@ -189,3 +231,44 @@ export default function MeusCartoes({ route, navigation }) {
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    flex: 1,
+  },
+  backTextWhite: {
+    color: "#FFF",
+  },
+  rowFront: {
+    alignItems: "center",
+    backgroundColor: "#CCC",
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    justifyContent: "center",
+    height: 50,
+  },
+  rowBack: {
+    alignItems: "center",
+    backgroundColor: "#DDD",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingLeft: 15,
+  },
+  backRightBtn: {
+    alignItems: "center",
+    bottom: 0,
+    justifyContent: "center",
+    position: "absolute",
+    top: 0,
+    width: 75,
+  },
+  backRightBtnLeft: {
+    backgroundColor: "blue",
+    right: 75,
+  },
+  backRightBtnRight: {
+    backgroundColor: "red",
+    right: 0,
+  },
+});

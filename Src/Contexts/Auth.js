@@ -26,10 +26,12 @@ function AuthProvider({ children }) {
     }
   }
   async function Cartao(titular, cardnome, numero, cod, validade) {
+    var id = Object.keys(arraycard).length + 1;
+    var key = id.toString();
     setArrayCard([
       {
-        idcliente: user1,
-        id: Object.keys(arraycard).length + 1,
+        idcliente: user1.idCliente,
+        key: key,
         titular: titular,
         cardnome: cardnome,
         numero: numero,
