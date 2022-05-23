@@ -17,8 +17,8 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function MeusCartoes({ route, navigation }) {
-  const { user1, arraycard } = useContext(AuthContext);
-  const [data1, setData1] = useState([arraycard]);
+  const { Cartao, user1, arraycard } = useContext(AuthContext);
+  const [data1, setData1] = useState([]);
   const [index, setIndex] = useState(0);
   data1.map((i, _) => {
     if (index < i.key) {
@@ -38,6 +38,17 @@ export default function MeusCartoes({ route, navigation }) {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  const deleteRow = (rowMap, rowKey) => {
+    closeRow(rowMap, rowKey);
+    const newdata = data1.splice(rowKey, 1);
+    /* navigation.reset({
+      routes: [{ name: "MeusCatoes" }],
+    });*/
+    setData1(newdata);
+    console.log(newdata);
+    Cartao("1", "2", "3", "4", "5", data1);
+  };
 
   const renderItem = (item) => (
     <>
@@ -134,7 +145,7 @@ export default function MeusCartoes({ route, navigation }) {
 
   const renderHiddenItem = (item, rowMap) => (
     <TouchableOpacity
-      onPress={() => closeRow(rowMap, item.item.key)}
+      onPress={() => deleteRow(rowMap, item.index)}
       style={{
         alignItems: "center",
         marginTop: 10,
@@ -170,7 +181,7 @@ export default function MeusCartoes({ route, navigation }) {
   };
   useEffect(() => {
     setData1(arraycard);
-  }, [refreshing, isFocused]);
+  }, [refreshing, isFocused, deleteRow]);
   const go = async () => {};
   return (
     <View style={{ marginBottom: 70 }}>

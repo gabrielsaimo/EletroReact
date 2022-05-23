@@ -44,9 +44,7 @@ export default function add_config_cartao({ route }) {
             .then((res) => res.json())
             .then((resData) => {
               setData(resData);
-              if (
-                [resData.nome, numero, nome, validade] !== [undefined, null, ""]
-              ) {
+              if ([numero, nome, validade] !== [undefined, null, ""]) {
                 setArray([
                   {
                     titular: nome,
@@ -63,7 +61,7 @@ export default function add_config_cartao({ route }) {
             })
             .catch((error) => {
               console.error(error + " add_config_cartao.js");
-              alert(error);
+              alert("Cartão não aceito");
             });
         } else {
           alert("Validade incorreta");
@@ -78,7 +76,7 @@ export default function add_config_cartao({ route }) {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ backgroundColor: "#fff", height: "100%" }}>
       <View style={{ marginTop: 80 }}>
         <View style={{ alignSelf: "flex-start", marginLeft: "85%" }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>

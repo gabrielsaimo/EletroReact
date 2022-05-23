@@ -5,13 +5,15 @@ export const AuthContext = createContext({});
 function AuthProvider({ children }) {
   const [user, setUser] = useState({});
   const [user1, setUser1] = useState({});
+  const [array, setArray] = useState("");
+  const [exclui, setExclui] = useState(false);
   const [arraycard, setArrayCard] = useState([]);
   useEffect(() => {
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       setUser1({ idCliente: idCliente });
     });
     AsyncStorage.getItem("arraycard").then((arry) => {
-      if (arraycard.length === 0 && arry.length > 5) {
+      if (arraycard.length === 0 && arry.length > 0 && !exclui) {
         setArrayCard(JSON.parse(arry));
       }
     });
@@ -25,28 +27,17 @@ function AuthProvider({ children }) {
       });
     }
   }
-  async function Cartao(titular, cardnome, numero, cod, validade) {
-    var id = Object.keys(arraycard).length + 1;
-    var key = id.toString();
-    setArrayCard([
-      {
-        idcliente: user1.idCliente,
-        key: key,
-        titular: titular,
-        cardnome: cardnome,
-        numero: numero,
-        cod: cod,
-        validade: validade,
-      },
-      ...arraycard,
-    ]);
-
-    AsyncStorage.setItem(
-      "arraycard",
-      JSON.stringify([
+  async function Cartao(titular, cardnome, numero, cod, validade, exluir) {
+    if (exluir === undefined) {
+      var id = Object.keys(arraycard).length + 1;
+      var key = id.toString();
+      arraycard.map((i, k) => {
+        i.key === key ? (key = key + 1) : key;
+      });
+      setArrayCard([
         {
-          idcliente: user1,
-          id: Object.keys(arraycard).length + 1,
+          idcliente: user1.idCliente,
+          key: key,
           titular: titular,
           cardnome: cardnome,
           numero: numero,
@@ -54,9 +45,26 @@ function AuthProvider({ children }) {
           validade: validade,
         },
         ...arraycard,
-      ])
-    );
-    console.log(arraycard);
+      ]);
+
+      AsyncStorage.setItem(
+        "arraycard",
+        JSON.stringify([
+          {
+            idcliente: user1.idCliente,
+            key: key,
+            titular: titular,
+            cardnome: cardnome,
+            numero: numero,
+            cod: cod,
+            validade: validade,
+          },
+          ...arraycard,
+        ])
+      );
+    } else {
+      AsyncStorage.setItem("arraycard", JSON.stringify(exluir));
+    }
   }
 
   async function signIn(
@@ -98,7 +106,14 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, Cartao, user, user1, consultaCep, arraycard }}
+      value={{
+        signIn,
+        Cartao,
+        consultaCep,
+        arraycard,
+        user,
+        user1,
+      }}
     >
       {children}
     </AuthContext.Provider>
