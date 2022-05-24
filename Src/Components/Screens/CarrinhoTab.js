@@ -51,7 +51,7 @@ export default class CarrinhoTab extends Component {
                 marginTop: "5%",
               }}
             >
-              Oque voce acha de aprovetar as melhores ofertas na eletrosom
+              Oque voce acha de aprovetar as melhores ofertas na Eletrosom
             </Text>
             <Image
               style={{ height: "60%", width: "75%", marginTop: "15%" }}
