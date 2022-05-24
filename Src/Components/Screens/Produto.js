@@ -798,7 +798,21 @@ export default function Produto({ route, navigation }) {
                   ></Appbar.Header>
 
                   <View style={{ marginTop: 30 }}>
-                    <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
+                    <Appbar.Header
+                      style={{
+                        backgroundColor: "#FFDB00",
+                        marginTop: -45,
+                        zIndex: 1,
+                        marginHorizontal: -20,
+                      }}
+                    />
+                    <View
+                      style={{
+                        alignSelf: "flex-start",
+                        marginLeft: 10,
+                        marginTop: 20,
+                      }}
+                    >
                       <TouchableOpacity onPress={() => setDescri(false)}>
                         <FontAwesomeIcon
                           icon={faAngleLeft}
@@ -806,6 +820,17 @@ export default function Produto({ route, navigation }) {
                           size={30}
                         />
                       </TouchableOpacity>
+                      <View style={{ alignItems: "center" }}>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            marginTop: -32,
+                            marginLeft: "22%",
+                          }}
+                        >
+                          Descrição do Produto
+                        </Text>
+                      </View>
                     </View>
                     <View
                       style={{ width: "100%", height: "100%", marginTop: 50 }}
