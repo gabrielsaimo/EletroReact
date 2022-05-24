@@ -51,7 +51,7 @@ export default function MeusCartoes({ route, navigation }) {
   const renderItem = (item) => (
     <>
       {load ? (
-        <View style={{ height: 120, marginVertical: 10 }} />
+        <View style={{ height: 101, marginVertical: 10 }} />
       ) : item.item.idcliente === user1.idCliente ? (
         <View
           style={{
@@ -195,7 +195,7 @@ export default function MeusCartoes({ route, navigation }) {
     setData1(arraycard);
     setTimeout(() => {
       setLoad(false);
-    }, 3000);
+    }, 500);
   }, [refreshing, isFocused, data1]);
 
   return (

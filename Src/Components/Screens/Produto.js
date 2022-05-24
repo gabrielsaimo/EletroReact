@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import ImageViewer from "react-native-image-zoom-viewer";
 import {
   TouchableOpacity,
@@ -10,6 +10,7 @@ import {
   ScrollView,
   Image,
   Platform,
+  Animated,
 } from "react-native";
 const { URL_PROD } = process.env;
 import Modal from "react-native-modal";
@@ -47,6 +48,7 @@ export default function Produto({ route, navigation }) {
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
   const { consultaCep, user, user1 } = useContext(AuthContext);
+  const [configuravel, setConfiguravel] = useState(false);
   const [usercep, setUsercep] = useState(user.cep);
   const { width, height } = Dimensions.get("window");
   const bottom = height - 87;
@@ -56,6 +58,23 @@ export default function Produto({ route, navigation }) {
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
   const [imgclik, setImgclik] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const fadeIn = () => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+    }).start();
+  };
+
+  const fadeOut = () => {
+    // Will change fadeAnim value to 0 in 3 seconds
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 1000,
+    }).start();
+  };
   function Clickcep() {
     consultaCep(TextInput_cep, sku);
 
@@ -63,30 +82,49 @@ export default function Produto({ route, navigation }) {
   }
   function clickComprar() {
     if (!volt && filhos === undefined) {
+      fadeIn();
       setAlert(true);
       setTimeout(() => {
+        fadeOut();
+      }, 5000);
+      setTimeout(() => {
         setAlert(false);
-      }, 4000);
+      }, 8000);
     } else {
       setAlert(false);
     }
   }
   function clickCarrinho() {
     if (!volt && filhos !== undefined) {
+      fadeIn();
       setCarrinho(true);
       setTimeout(() => {
+        fadeOut();
+      }, 5000);
+      setTimeout(() => {
         setCarrinho(false);
-      }, 4000);
+      }, 8000);
     } else {
       setCarrinho(false);
     }
     if (!volt && filhos === undefined) {
+      fadeIn();
       setAlert(true);
       setTimeout(() => {
+        fadeOut();
+      }, 5000);
+      setTimeout(() => {
         setAlert(false);
-      }, 4000);
-    } else {
-      setAlert(false);
+      }, 8000);
+    } else if (configuravel == false) {
+      fadeIn();
+      setCarrinho(true);
+      setTimeout(() => {
+        fadeOut();
+      }, 5000);
+      setTimeout(() => {
+        setCarrinho(false);
+      }, 8000);
     }
   }
 
@@ -139,7 +177,7 @@ export default function Produto({ route, navigation }) {
         <Local />
 
         {alert && filhos === undefined ? (
-          <View
+          <Animated.View
             style={{
               width: "100%",
               height: 70,
@@ -148,6 +186,7 @@ export default function Produto({ route, navigation }) {
               position: "absolute",
               zIndex: 99,
               alignItems: "center",
+              opacity: fadeAnim,
             }}
           >
             <Text
@@ -160,20 +199,21 @@ export default function Produto({ route, navigation }) {
             >
               Selecione a voltagem antes de continuar
             </Text>
-          </View>
+          </Animated.View>
         ) : (
           <></>
         )}
-        {setcarrinho && filhos !== undefined ? (
-          <View
+        {setcarrinho ? (
+          <Animated.View
             style={{
+              opacity: fadeAnim,
               width: "100%",
               height: 70,
               marginTop: bottom,
               backgroundColor: "#1534C8",
               position: "absolute",
               zIndex: 99,
-              alignItems: "center",
+              flexDirection: "row",
             }}
           >
             <Text
@@ -181,12 +221,23 @@ export default function Produto({ route, navigation }) {
                 color: "white",
                 fontSize: 18,
                 paddingVertical: 23,
-                fontWeight: "bold",
+                marginLeft: "auto",
               }}
             >
-              Produto adicinado ao carrinho
+              ✓{"     "}Produto adicinado ao carrinho{"     "}
             </Text>
-          </View>
+            <Text
+              style={{
+                color: "white",
+                fontSize: 18,
+                paddingVertical: 23,
+                fontWeight: "bold",
+                marginRight: "auto",
+              }}
+            >
+              Ver
+            </Text>
+          </Animated.View>
         ) : (
           <></>
         )}
@@ -309,6 +360,9 @@ export default function Produto({ route, navigation }) {
                     <>
                       <TouchableOpacity onPress={() => setImgclik(true)}>
                         <View>
+                          {item.tipoProduto === "configurable"
+                            ? setConfiguravel(true)
+                            : setConfiguravel(false)}
                           <Image
                             style={{
                               width,
