@@ -227,6 +227,7 @@ export default function Produto({ route, navigation }) {
               ✓{"     "}Produto adicinado ao carrinho{"     "}
             </Text>
             <Text
+              onPress={() => console.log("ver!")}
               style={{
                 color: "white",
                 fontSize: 18,
