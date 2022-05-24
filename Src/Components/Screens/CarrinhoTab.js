@@ -22,7 +22,7 @@ export default class CarrinhoTab extends Component {
             style={{
               alignSelf: "center",
               marginLeft: 10,
-              backgroundColor: "#D4D4D4",
+              backgroundColor: "#EDF2FF",
               borderRadius: 100,
               width: 75,
               height: 75,
