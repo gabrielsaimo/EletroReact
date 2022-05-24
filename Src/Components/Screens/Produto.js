@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import ImageViewer from "react-native-image-zoom-viewer";
 import {
   TouchableOpacity,
   FlatList,
@@ -30,10 +29,10 @@ import ShareButton from "../ShereButtom";
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
   const skuvolt = route.params.sku2;
+  //! skuvolt tem q ser usado para o carrinho !!!
   const filhos = route.params.filhos;
   const [img, setImg] = useState("");
   const [imgtotal, setImgtotal] = useState("");
-  console.log(skuvolt);
   const [setcarrinho, setCarrinho] = useState(false);
   const [precoDe, setprecoDe] = useState(route.params.precode);
   const [cepvisible, setVisiblecep] = useState(false);
