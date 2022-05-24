@@ -58,4 +58,4 @@ dist/
 *.history
 
 # dados importantes
-.env
+#.env
