@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -8,6 +9,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 const { URL_PROD } = process.env;
 export default App = () => {
   const { width } = Dimensions.get("window");
@@ -23,7 +25,26 @@ export default App = () => {
   };
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
+  const navigation = useNavigation();
+  function BannerOpen(rotina, valor) {
+    if (rotina === "detalheproduto") {
+      navigation.navigate("Produto", {
+        sku: valor,
+      });
+    } else if (rotina === "pesquisa") {
+      navigation.navigate("Buscar", {
+        q: valor,
+      });
+    } else if (rotina === "categoria") {
+      navigation.navigate("CategoriasProduto", {
+        item: valor,
+        title: "Eletrosom",
+      });
+    } else if (rotina == [null, ""]) {
+    } else {
+      alert(rotina);
+    }
+  }
   useEffect(() => {
     fetch(`${URL_PROD}/shell/ws/integrador/banners/?version=15`)
       .then((response) => response.json())
@@ -54,16 +75,22 @@ export default App = () => {
             keyExtractor={(item) => item.img}
             renderItem={({ item }) => (
               <View style={{ marginHorizontal: 10 }}>
-                <Image
-                  style={{
-                    width: Math.round(width - 20),
-                    height,
-                    resizeMode: "contain",
-                    borderRadius: 5,
+                <TouchableOpacity
+                  onPress={() => {
+                    BannerOpen(item.rotina, item.valor);
                   }}
-                  key={item}
-                  source={{ uri: item.img }}
-                ></Image>
+                >
+                  <Image
+                    style={{
+                      width: Math.round(width - 20),
+                      height,
+                      resizeMode: "contain",
+                      borderRadius: 5,
+                    }}
+                    key={item}
+                    source={{ uri: item.img }}
+                  />
+                </TouchableOpacity>
               </View>
             )}
           />

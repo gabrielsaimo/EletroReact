@@ -19,7 +19,7 @@ import SkeletonLoading from "../SkeletonLoading";
 import { IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../Contexts/Auth";
-const { height, width } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const width2 = width - 180;
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -29,7 +29,6 @@ export default function HomeTab() {
   const navigation = useNavigation();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [image, setImagem] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
