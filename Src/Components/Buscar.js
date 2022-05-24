@@ -162,21 +162,98 @@ export default function Buscar({ route }) {
               }}
             />
 
-            {!data.percentual > 0 ? (
-              <></>
+            {data.percentual > 0 ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  position: "absolute",
+                  marginTop: 5,
+                  marginLeft: 5,
+                }}
+              >
+                <View
+                  style={{
+                    width: 50,
+                    paddingVertical: 10,
+                    backgroundColor: "#1534C8",
+                    alignItems: "center",
+                    borderRadius: 6,
+                  }}
+                >
+                  <Text style={{ fontSize: 11, color: "#FFF" }}>
+                    {data.percentual}% off
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    width: 70,
+                    paddingVertical: 10,
+                    backgroundColor: "#FFDB01",
+                    alignItems: "center",
+                    marginLeft: 5,
+                    borderRadius: 6,
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      alignSelf: "flex-start",
+                      color: "#1534C8",
+                    }}
+                  >
+                    {" "}
+                    12x{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 9,
+                      color: "#1534C8",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    sem juros
+                  </Text>
+                </View>
+              </View>
             ) : (
               <View
                 style={{
-                  width: 80,
-                  height: 20,
+                  flexDirection: "row",
                   position: "absolute",
-                  margin: 5,
-                  backgroundColor: "#FEA535",
-                  alignItems: "center",
-                  borderRadius: 20,
                 }}
               >
-                <Text>{data.percentual}% off</Text>
+                <View
+                  style={{
+                    width: 70,
+                    paddingVertical: 10,
+                    backgroundColor: "#FFDB01",
+                    alignItems: "center",
+                    marginLeft: 5,
+                    borderRadius: 6,
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      alignSelf: "flex-start",
+                      color: "#1534C8",
+                    }}
+                  >
+                    {" "}
+                    12x{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 9,
+                      color: "#1534C8",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    sem juros
+                  </Text>
+                </View>
               </View>
             )}
             <View style={{ flexDirection: "row" }}>
@@ -311,21 +388,103 @@ export default function Buscar({ route }) {
               >
                 <View style={{ Width: "100%" }}>
                   {!data.percentual > 0 ? (
-                    <></>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        position: "absolute",
+                        marginTop: -12,
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: 70,
+                          paddingVertical: 10,
+                          backgroundColor: "#FFDB01",
+                          alignItems: "center",
+                          marginLeft: 5,
+                          borderRadius: 6,
+                          flexDirection: "row",
+                          zIndex: 99,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 11,
+                            alignSelf: "flex-start",
+                            color: "#1534C8",
+                          }}
+                        >
+                          {" "}
+                          12x{" "}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 9,
+                            color: "#1534C8",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          sem juros
+                        </Text>
+                      </View>
+                    </View>
                   ) : (
                     <View
                       style={{
-                        width: 80,
-                        height: 20,
+                        flexDirection: "row",
                         position: "absolute",
-                        backgroundColor: "#FEA535",
-                        alignItems: "center",
-                        borderRadius: 20,
-                        margin: 10,
-                        zIndex: 99,
+                        marginTop: -12,
                       }}
                     >
-                      <Text>{data.percentual}% off</Text>
+                      <View
+                        style={{
+                          width: 50,
+                          paddingVertical: 10,
+                          paddingHorizontal: 5,
+                          backgroundColor: "#1534C8",
+                          alignItems: "center",
+                          marginLeft: 5,
+                          borderRadius: 6,
+                          flexDirection: "row",
+                          zIndex: 99,
+                        }}
+                      >
+                        <Text style={{ color: "#FFF", fontSize: 11 }}>
+                          {data.percentual}% off
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          width: 70,
+                          paddingVertical: 10,
+                          backgroundColor: "#FFDB01",
+                          alignItems: "center",
+                          marginLeft: 5,
+                          borderRadius: 6,
+                          flexDirection: "row",
+                          zIndex: 99,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 11,
+                            alignSelf: "flex-start",
+                            color: "#1534C8",
+                          }}
+                        >
+                          {" "}
+                          12x{" "}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 9,
+                            color: "#1534C8",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          sem juros
+                        </Text>
+                      </View>
                     </View>
                   )}
                   <View
@@ -623,10 +782,10 @@ export default function Buscar({ route }) {
 
 const styles = {
   buttonContainerStyle: {
-    height: 140,
-    marginTop: 3,
+    height: 150,
+    marginTop: 5,
     width: "100%",
-    paddingTop: 10,
+    paddingTop: 20,
     paddingBottom: 5,
     flexDirection: "row",
     backgroundColor: "#fff",
@@ -649,7 +808,7 @@ const styles = {
     height: 270,
     margin: 0.5,
     width: "99.5%",
-
+    paddingTop: 15,
     flexDirection: "row",
     backgroundColor: "#fff",
     borderWidth: Platform.OS === "ios" ? 0.5 : 0,

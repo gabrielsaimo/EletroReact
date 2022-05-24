@@ -536,10 +536,10 @@ export default function FavoritosTab() {
 
 const styles = StyleSheet.create({
   buttonContainerStyle: {
-    height: 140,
-    marginTop: 3,
+    height: 150,
+    marginTop: 5,
     width: "100%",
-    paddingTop: 10,
+    paddingTop: 20,
     paddingBottom: 5,
     flexDirection: "row",
     backgroundColor: "#fff",
@@ -562,7 +562,6 @@ const styles = StyleSheet.create({
     height: 270,
     margin: 0.5,
     width: "99.5%",
-
     flexDirection: "row",
     backgroundColor: "#fff",
     borderWidth: Platform.OS === "ios" ? 0.5 : 0,

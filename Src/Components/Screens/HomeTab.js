@@ -183,19 +183,96 @@ export default function HomeTab() {
                         {item.percentual > 0 ? (
                           <View
                             style={{
-                              width: 80,
-                              height: 20,
+                              flexDirection: "row",
                               position: "absolute",
-                              margin: 5,
-                              backgroundColor: "#FEA535",
-                              alignItems: "center",
-                              borderRadius: 20,
+                              marginTop: 5,
+                              marginLeft: 5,
                             }}
                           >
-                            <Text>{item.percentual}% off</Text>
+                            <View
+                              style={{
+                                width: 50,
+                                paddingVertical: 10,
+                                backgroundColor: "#1534C8",
+                                alignItems: "center",
+                                borderRadius: 6,
+                              }}
+                            >
+                              <Text style={{ fontSize: 11, color: "#FFF" }}>
+                                {item.percentual}% off
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                width: 70,
+                                paddingVertical: 10,
+                                backgroundColor: "#FFDB01",
+                                alignItems: "center",
+                                marginLeft: 5,
+                                borderRadius: 6,
+                                flexDirection: "row",
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontSize: 11,
+                                  alignSelf: "flex-start",
+                                  color: "#1534C8",
+                                }}
+                              >
+                                {" "}
+                                12x{" "}
+                              </Text>
+                              <Text
+                                style={{
+                                  fontSize: 9,
+                                  color: "#1534C8",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                sem juros
+                              </Text>
+                            </View>
                           </View>
                         ) : (
-                          <></>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              position: "absolute",
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: 70,
+                                paddingVertical: 10,
+                                backgroundColor: "#FFDB01",
+                                alignItems: "center",
+                                marginLeft: 5,
+                                borderRadius: 6,
+                                flexDirection: "row",
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontSize: 11,
+                                  alignSelf: "flex-start",
+                                  color: "#1534C8",
+                                }}
+                              >
+                                {" "}
+                                12x{" "}
+                              </Text>
+                              <Text
+                                style={{
+                                  fontSize: 9,
+                                  color: "#1534C8",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                sem juros
+                              </Text>
+                            </View>
+                          </View>
                         )}
                         <View style={{ width2 }}>
                           <Text
@@ -249,10 +326,10 @@ export default function HomeTab() {
 
 const styles = {
   buttonContainerStyle: {
-    height: 140,
-    marginTop: 3,
+    height: 170,
+    marginTop: 5,
     width: "100%",
-    paddingTop: 10,
+    paddingTop: 30,
     paddingBottom: 5,
     flexDirection: "row",
     backgroundColor: "white",
