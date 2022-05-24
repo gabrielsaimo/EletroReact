@@ -63,7 +63,9 @@ function AuthProvider({ children }) {
         ])
       );
     } else {
+      setExclui(true);
       AsyncStorage.setItem("arraycard", JSON.stringify(exluir));
+      console.log(JSON.stringify(exluir));
     }
   }
 

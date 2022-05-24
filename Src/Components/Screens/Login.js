@@ -244,8 +244,12 @@ export default function Login() {
             Esqueci a senha
           </Text>
         </View>
-        <TouchableOpacity style={{ width: "85%" }} onPress={ClickLogin}>
-          {load === false ? (
+        <TouchableOpacity
+          disabled={load}
+          style={{ width: "85%" }}
+          onPress={ClickLogin}
+        >
+          {!load ? (
             <View
               style={{
                 height: 50,

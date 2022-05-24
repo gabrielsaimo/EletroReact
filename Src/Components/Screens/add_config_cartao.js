@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 const { URL_PROD } = process.env;
 import { AuthContext } from "../../Contexts/Auth";
@@ -23,10 +24,11 @@ export default function add_config_cartao({ route }) {
   const [nome, setNome] = useState("");
   const [validade, setValidade] = useState("");
   const [arraycards, setArray] = useState("");
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const Edite = async () => {
+    setLoading(true);
     if (numero.length >= 16 || route.params.numero.length === 17) {
       if (nome.length > 0) {
         if (validade.length === 7) {
@@ -62,15 +64,19 @@ export default function add_config_cartao({ route }) {
             .catch((error) => {
               console.error(error + " add_config_cartao.js");
               alert("Cartão não aceito");
+              setLoading(false);
             });
         } else {
           alert("Validade incorreta");
+          setLoading(false);
         }
       } else {
         alert("Nome do titular vazio!");
+        setLoading(false);
       }
     } else {
       alert("Dados de cartão incorretos");
+      setLoading(false);
     }
     return;
   };
@@ -171,9 +177,17 @@ export default function add_config_cartao({ route }) {
               </View>
             </View>
           </View>
-          <TouchableOpacity style={{ width: "85%" }} onPress={() => Edite()}>
+          <TouchableOpacity
+            disabled={isLoading}
+            style={{ width: "85%" }}
+            onPress={() => Edite()}
+          >
             <View style={styles.btnadd}>
-              <Text>Adicionar cartão</Text>
+              {isLoading ? (
+                <ActivityIndicator size="small" color="#0000ff" />
+              ) : (
+                <Text>Adicionar cartão</Text>
+              )}
             </View>
           </TouchableOpacity>
         </View>

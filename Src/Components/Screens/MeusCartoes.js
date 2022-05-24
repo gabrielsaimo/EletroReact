@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { AuthContext } from "../../Contexts/Auth";
@@ -20,6 +21,7 @@ export default function MeusCartoes({ route, navigation }) {
   const { Cartao, user1, arraycard } = useContext(AuthContext);
   const [data1, setData1] = useState([]);
   const [index, setIndex] = useState(0);
+  const [load, setLoad] = useState(false);
   data1.map((i, _) => {
     if (index < i.key) {
       var ii = i.key;
@@ -36,23 +38,21 @@ export default function MeusCartoes({ route, navigation }) {
   };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
+    wait(2000).then(() => {
+      setRefreshing(false);
+    });
   }, []);
 
   const deleteRow = (rowMap, rowKey) => {
     closeRow(rowMap, rowKey);
     const newdata = data1.splice(rowKey, 1);
-    /* navigation.reset({
-      routes: [{ name: "MeusCatoes" }],
-    });*/
-    setData1(newdata);
-    console.log(newdata);
-    Cartao("1", "2", "3", "4", "5", data1);
+    [setData1(newdata), Cartao("1", "2", "3", "4", "5", data1)];
   };
-
   const renderItem = (item) => (
     <>
-      {item.item.idcliente === user1.idCliente ? (
+      {load ? (
+        <View style={{ height: 120, marginVertical: 10 }} />
+      ) : item.item.idcliente === user1.idCliente ? (
         <View
           style={{
             backgroundColor: "#E9ECEF",
@@ -144,25 +144,36 @@ export default function MeusCartoes({ route, navigation }) {
   );
 
   const renderHiddenItem = (item, rowMap) => (
-    <TouchableOpacity
-      onPress={() => deleteRow(rowMap, item.index)}
-      style={{
-        alignItems: "center",
-        marginTop: 10,
-        marginLeft: "1%",
-        height: 100,
-        width: "98%",
-        flexDirection: "row",
-        backgroundColor: "#FE0202",
-        justifyContent: "flex-end",
-        borderRadius: 10,
-      }}
-    >
-      <Image
-        style={{ width: 45, height: 45, marginRight: 10 }}
-        source={require("../../../Src/Components/assets/delete_icon.png")}
-      ></Image>
-    </TouchableOpacity>
+    <>
+      {load ? (
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          marginLeft="auto"
+          marginRight="auto"
+        />
+      ) : (
+        <TouchableOpacity
+          onPress={() => [setLoad(true), deleteRow(rowMap, item.index)]}
+          style={{
+            alignItems: "center",
+            marginTop: 10,
+            marginLeft: "1%",
+            height: 100,
+            width: "98%",
+            flexDirection: "row",
+            backgroundColor: "#FE0202",
+            justifyContent: "flex-end",
+            borderRadius: 10,
+          }}
+        >
+          <Image
+            style={{ width: 45, height: 45, marginRight: 10 }}
+            source={require("../../../Src/Components/assets/delete_icon.png")}
+          ></Image>
+        </TouchableOpacity>
+      )}
+    </>
   );
 
   const SearchBar = () => {
@@ -180,9 +191,13 @@ export default function MeusCartoes({ route, navigation }) {
     );
   };
   useEffect(() => {
+    onRefresh;
     setData1(arraycard);
-  }, [refreshing, isFocused, deleteRow]);
-  const go = async () => {};
+    setTimeout(() => {
+      setLoad(false);
+    }, 3000);
+  }, [refreshing, isFocused, data1]);
+
   return (
     <View style={{ marginBottom: 70 }}>
       <SearchBar />
