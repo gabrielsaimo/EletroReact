@@ -1,15 +1,10 @@
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { Component } from "react";
 import {
-  Button,
   View,
   Text,
-  TouchableOpacity,
   SafeAreaView,
   Image,
 } from "react-native";
-import { Appbar } from "react-native-paper";
 
 export default class CarrinhoTab extends Component {
   render() {
