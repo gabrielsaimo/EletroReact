@@ -15,7 +15,7 @@ export default class CarrinhoTab extends Component {
   render() {
     return (
       <SafeAreaView style={{ height: "100%", backgroundColor: "#FFF" }}>
-        <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 10 }} />
+        <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 7 }} />
 
         <View style={{ marginTop: 30 }}>
           <View
