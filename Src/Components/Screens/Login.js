@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-const { URL_PROD } = process.env;
 const { CLIENTE_ID } = process.env;
 const { REDIRECT_URI } = process.env;
+const { URL_PROD } = process.env;
 import {
   View,
   StyleSheet,
@@ -79,8 +79,6 @@ export default function Login() {
                 const numero = resDatas.numero;
                 const cep = resDatas.cep;
                 const cidade = resDatas.cidade;
-                console.log(cidade);
-                console.log(resDatas);
                 signIn(
                   email,
                   password,
@@ -119,8 +117,8 @@ export default function Login() {
     }
   };
 
-  function ClickLogin() {
-    Logar();
+  async function ClickLogin() {
+    await Logar();
   }
   return (
     <SafeAreaView>
