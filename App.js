@@ -73,7 +73,7 @@ const Categoria = () => {
         component={Produto}
         Options={{ headerTitleAlign: "center" }}
       />
-      <Stack.Screen name="CarrinhoTab" component={CarrinhoTab} />
+      <Stack.Screen name="CarrinhoTab" component={Carrinho} />
       <Stack.Screen name="ModalFilhos" component={ModalFilhos} />
       <Stack.Screen name="ProdutoFilhos" component={ProdutoFilhos} />
     </Stack.Navigator>
@@ -143,21 +143,24 @@ const Favorioto = () => {
     </Stack.Navigator>
   );
 };
+const Carrinho = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: true,
+        headerTintColor: "#fff",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#1534C8",
+        },
+      }}
+    >
+      <Stack.Screen name="Carrinho" component={CarrinhoTab} />
+    </Stack.Navigator>
+  );
+};
 
 export default function App() {
-  const ButtonAlert = () =>
-    Alert.alert("Teste Alert", "My Alert Msg", [
-      {
-        text: "Ask me later",
-        onPress: () => console.log("Ask me later pressed"),
-      },
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]);
   return (
     <NavigationContainer>
       <AuthProvider>
@@ -199,7 +202,7 @@ export default function App() {
           />
           <Tab.Screen
             name="Carrinho"
-            component={CarrinhoTab}
+            component={Carrinho}
             options={{
               tabBarLabel: "Carrinho",
               tabBarIcon: ({ color, size }) => (

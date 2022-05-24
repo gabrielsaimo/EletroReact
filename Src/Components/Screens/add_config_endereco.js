@@ -48,15 +48,12 @@ export default function add_config_endereco({ route }) {
       setEdite(false);
     }
     if (cep.length == 9 && data == "") {
-      console.log("entrou aqui 2");
       fetch("https://viacep.com.br/ws/" + cep + "/json/")
         .then((response) => response.json())
         .then((json) => setData(json))
         .catch((error) => console.error(error + " produtoFilhos.js"))
         .finally(() => setLoading(false));
     } else if (data !== "" && cidade == "") {
-      console.log("entrou aqui 3");
-
       setCidade(data.localidade);
       if (data.logradouro !== undefined) {
         setBairro(data.bairro);
@@ -71,7 +68,6 @@ export default function add_config_endereco({ route }) {
     route.params.endereco !== "" &&
     edit == ""
   ) {
-    console.log("entrou aqui 4");
     setCep(route.params.cep);
     setBairro(route.params.bairro);
     setCelular(route.params.celular);
@@ -89,7 +85,6 @@ export default function add_config_endereco({ route }) {
 
   const Edite = async () => {
     if (cep.length === 9 || route.params.cep.length === 8) {
-      console.log(`${URL_PROD}/shell/ws/integrador/dadosEndereco`);
       await fetch(`${URL_PROD}/shell/ws/integrador/dadosEndereco`, {
         method: "POST",
         headers: {
