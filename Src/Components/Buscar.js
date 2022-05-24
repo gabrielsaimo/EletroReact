@@ -174,20 +174,22 @@ export default function Buscar({ route }) {
                 <View
                   style={{
                     width: 50,
-                    paddingVertical: 10,
+                    paddingVertical: 7,
                     backgroundColor: "#1534C8",
                     alignItems: "center",
                     borderRadius: 6,
                   }}
                 >
-                  <Text style={{ fontSize: 11, color: "#FFF" }}>
+                  <Text
+                    style={{ fontSize: 11, color: "#FFF", fontWeight: "bold" }}
+                  >
                     {data.percentual}% off
                   </Text>
                 </View>
                 <View
                   style={{
-                    width: 70,
-                    paddingVertical: 10,
+                    width: 65,
+                    paddingVertical: 7,
                     backgroundColor: "#FFDB01",
                     alignItems: "center",
                     marginLeft: 5,
@@ -200,19 +202,11 @@ export default function Buscar({ route }) {
                       fontSize: 11,
                       alignSelf: "flex-start",
                       color: "#1534C8",
-                    }}
-                  >
-                    {" "}
-                    12x{" "}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 9,
-                      color: "#1534C8",
                       fontWeight: "bold",
                     }}
                   >
-                    sem juros
+                    {" "}
+                    12x s/juros
                   </Text>
                 </View>
               </View>
@@ -225,8 +219,8 @@ export default function Buscar({ route }) {
               >
                 <View
                   style={{
-                    width: 70,
-                    paddingVertical: 10,
+                    width: 65,
+                    paddingVertical: 7,
                     backgroundColor: "#FFDB01",
                     alignItems: "center",
                     marginLeft: 5,
@@ -239,19 +233,11 @@ export default function Buscar({ route }) {
                       fontSize: 11,
                       alignSelf: "flex-start",
                       color: "#1534C8",
-                    }}
-                  >
-                    {" "}
-                    12x{" "}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 9,
-                      color: "#1534C8",
                       fontWeight: "bold",
                     }}
                   >
-                    sem juros
+                    {" "}
+                    12x s/juros
                   </Text>
                 </View>
               </View>
@@ -397,7 +383,7 @@ export default function Buscar({ route }) {
                     >
                       <View
                         style={{
-                          width: 70,
+                          width: 65,
                           paddingVertical: 10,
                           backgroundColor: "#FFDB01",
                           alignItems: "center",
@@ -412,19 +398,11 @@ export default function Buscar({ route }) {
                             fontSize: 11,
                             alignSelf: "flex-start",
                             color: "#1534C8",
-                          }}
-                        >
-                          {" "}
-                          12x{" "}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 9,
-                            color: "#1534C8",
                             fontWeight: "bold",
                           }}
                         >
-                          sem juros
+                          {" "}
+                          12x s/juros
                         </Text>
                       </View>
                     </View>
@@ -439,7 +417,7 @@ export default function Buscar({ route }) {
                       <View
                         style={{
                           width: 50,
-                          paddingVertical: 10,
+                          paddingVertical: 7,
                           paddingHorizontal: 5,
                           backgroundColor: "#1534C8",
                           alignItems: "center",
@@ -449,14 +427,20 @@ export default function Buscar({ route }) {
                           zIndex: 99,
                         }}
                       >
-                        <Text style={{ color: "#FFF", fontSize: 11 }}>
+                        <Text
+                          style={{
+                            color: "#FFF",
+                            fontSize: 11,
+                            fontWeight: "bold",
+                          }}
+                        >
                           {data.percentual}% off
                         </Text>
                       </View>
                       <View
                         style={{
-                          width: 70,
-                          paddingVertical: 10,
+                          width: 65,
+                          paddingVertical: 7,
                           backgroundColor: "#FFDB01",
                           alignItems: "center",
                           marginLeft: 5,
@@ -470,19 +454,11 @@ export default function Buscar({ route }) {
                             fontSize: 11,
                             alignSelf: "flex-start",
                             color: "#1534C8",
-                          }}
-                        >
-                          {" "}
-                          12x{" "}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 9,
-                            color: "#1534C8",
                             fontWeight: "bold",
                           }}
                         >
-                          sem juros
+                          {" "}
+                          12x s/juros
                         </Text>
                       </View>
                     </View>
