@@ -25,13 +25,16 @@ import CalculaFrete from "../CalculaFrete";
 import { WebView } from "react-native-webview";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import ShareButton from "../ShereButtom";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
   const skuvolt = route.params.sku2;
   const filhos = route.params.filhos;
+  const isFocused = useIsFocused();
   const [img, setImg] = useState("");
   const [imgtotal, setImgtotal] = useState("");
+  const [voltar, setVoltar] = useState(false);
   const [setcarrinho, setCarrinho] = useState(false);
   const [precoDe, setprecoDe] = useState(route.params.precode);
   const [cepvisible, setVisiblecep] = useState(false);
@@ -125,23 +128,6 @@ export default function Produto({ route, navigation }) {
     }
   }
   async function Comprar() {
-    console.log(
-      JSON.stringify({
-        checkout: {
-          produtos: [
-            {
-              sku:
-                route.params.sku2 === undefined
-                  ? "" + sku + ""
-                  : "" + skuvolt + "",
-              qtde: "1",
-            },
-          ],
-          cep: "",
-        },
-        version: 15,
-      })
-    );
     await fetch(`${URL_PROD}/shell/ws/integrador/carrinho`, {
       method: "POST",
       headers: {
@@ -187,17 +173,26 @@ export default function Produto({ route, navigation }) {
   }
   useEffect(() => {
     loadApi();
-  }, []);
+    console.log(isFocused);
+    if (isFocused === false && !voltar) {
+      navigation.goBack();
+    }
+  }, [isFocused]);
   useEffect(() => {
     setModal(false);
-  }, [route.params]);
+  }, [isFocused]);
 
   const SearchBar = () => {
     return (
       <Appbar.Header
         style={{ backgroundColor: "#1534C8", alignItems: "center" }}
       >
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
+        <Appbar.BackAction
+          onPress={() => {
+            navigation.goBack();
+            setVoltar(true);
+          }}
+        />
         <Appbar.Content title={"Detalhes"} style={{ alignItems: "center" }} />
         <Appbar.Action
           icon="cart-outline"
