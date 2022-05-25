@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "498803738282",
+    "project_id": "reacteletro",
+    "storage_bucket": "reacteletro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498803738282:android:e6aa944de8b3f6a19bf2d3",
+        "android_client_info": {
+          "package_name": "com.reacteletro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498803738282-5sbv2t3ed8jr14u2675i439iiktuvkeh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reacteletro",
+            "certificate_hash": "1cca96e59b056bf2de8d0da42ca2ce6b4e74cf8b"
+          }
+        },
+        {
+          "client_id": "498803738282-0j38hf5nt3f54vtfcn67oen32r9a212u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChrPP_tXZfQz7zFfJGgEKJifw8zm6JO3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498803738282-0j38hf5nt3f54vtfcn67oen32r9a212u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
