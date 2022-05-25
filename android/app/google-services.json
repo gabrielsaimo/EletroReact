@@ -1,42 +1,86 @@
 {
   "project_info": {
-    "project_number": "498803738282",
-    "project_id": "reacteletro",
-    "storage_bucket": "reacteletro.appspot.com"
+    "project_number": "483268122203",
+    "firebase_url": "https://eletrosom-e33dc.firebaseio.com",
+    "project_id": "eletrosom-e33dc",
+    "storage_bucket": "eletrosom-e33dc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:498803738282:android:e6aa944de8b3f6a19bf2d3",
+        "mobilesdk_app_id": "1:483268122203:android:e8e9ecf1edcdaf6157d17e",
         "android_client_info": {
-          "package_name": "com.reacteletro"
+          "package_name": "com.eletrosom.eletrosom"
         }
       },
       "oauth_client": [
         {
-          "client_id": "498803738282-5sbv2t3ed8jr14u2675i439iiktuvkeh.apps.googleusercontent.com",
+          "client_id": "483268122203-p6grtokqesd0illa2tumntbrro5pi0vv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.reacteletro",
-            "certificate_hash": "1cca96e59b056bf2de8d0da42ca2ce6b4e74cf8b"
+            "package_name": "com.eletrosom.eletrosom",
+            "certificate_hash": "b33b99b726720fd05e3167b554b86e1c9fba3f85"
           }
         },
         {
-          "client_id": "498803738282-0j38hf5nt3f54vtfcn67oen32r9a212u.apps.googleusercontent.com",
+          "client_id": "483268122203-ih4jmq04a7fdnuue00hpmn5e5icsk54k.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyChrPP_tXZfQz7zFfJGgEKJifw8zm6JO3U"
+          "current_key": "AIzaSyBsG1-fbHdYSyVIgGFygfrYQVgPPHfQsBA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "498803738282-0j38hf5nt3f54vtfcn67oen32r9a212u.apps.googleusercontent.com",
+              "client_id": "483268122203-ih4jmq04a7fdnuue00hpmn5e5icsk54k.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "483268122203-74deu951gmvgviidlrjtd5jmua8erp28.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.electrosom"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483268122203:android:43a326cbd4e5253757d17e",
+        "android_client_info": {
+          "package_name": "com.reacteletro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483268122203-ih4jmq04a7fdnuue00hpmn5e5icsk54k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsG1-fbHdYSyVIgGFygfrYQVgPPHfQsBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483268122203-ih4jmq04a7fdnuue00hpmn5e5icsk54k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "483268122203-74deu951gmvgviidlrjtd5jmua8erp28.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.electrosom"
+              }
             }
           ]
         }
