@@ -29,7 +29,6 @@ import ShareButton from "../ShereButtom";
 export default function Produto({ route, navigation }) {
   const sku = route.params.sku;
   const skuvolt = route.params.sku2;
-  //! skuvolt tem q ser usado para o carrinho !!!
   const filhos = route.params.filhos;
   const [img, setImg] = useState("");
   const [imgtotal, setImgtotal] = useState("");
@@ -40,9 +39,7 @@ export default function Produto({ route, navigation }) {
   const runFirst = `let selector = document.querySelector("img") 
                     selector.style.display = "none"
                     true;`;
-  useEffect(() => {
-    setModal(false);
-  }, [route.params]);
+
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
@@ -91,6 +88,7 @@ export default function Produto({ route, navigation }) {
       }, 8000);
     } else {
       setAlert(false);
+      Comprar();
     }
   }
   function clickCarrinho() {
@@ -126,6 +124,51 @@ export default function Produto({ route, navigation }) {
       }, 8000);
     }
   }
+  async function Comprar() {
+    console.log(
+      JSON.stringify({
+        checkout: {
+          produtos: [
+            {
+              sku:
+                route.params.sku2 === undefined
+                  ? "" + sku + ""
+                  : "" + skuvolt + "",
+              qtde: "1",
+            },
+          ],
+          cep: "",
+        },
+        version: 15,
+      })
+    );
+    await fetch(`${URL_PROD}/shell/ws/integrador/carrinho`, {
+      method: "POST",
+      headers: {
+        Accept: "aplication/json",
+        "Content-type": "aplication/json",
+      },
+      body: JSON.stringify({
+        checkout: {
+          produtos: [
+            {
+              sku:
+                route.params.sku2 === undefined
+                  ? "" + sku + ""
+                  : "" + skuvolt + "",
+              qtde: "1",
+            },
+          ],
+          cep: TextInput_cep,
+        },
+        version: 15,
+      }),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        console.log(resData.retorno);
+      });
+  }
 
   async function loadApi() {
     if (loading) return;
@@ -145,6 +188,9 @@ export default function Produto({ route, navigation }) {
   useEffect(() => {
     loadApi();
   }, []);
+  useEffect(() => {
+    setModal(false);
+  }, [route.params]);
 
   const SearchBar = () => {
     return (
