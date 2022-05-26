@@ -116,6 +116,7 @@ const Produtos = () => {
           ),
         }}
       />
+      <Stack.Screen name="CarrinhoTab" component={Carrinho} />
       <Stack.Screen
         name="Produto"
         component={Produto}
@@ -127,6 +128,8 @@ const Produtos = () => {
         component={FavoritosTab}
         Options={{ headerShown: false, headerTitleAlign: "center" }}
       />
+
+      <Stack.Screen name="CategoriasProduto" component={CategoriasProduto} />
       <Stack.Screen name="Buscar" component={Buscar} />
     </Stack.Navigator>
   );

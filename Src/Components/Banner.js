@@ -27,7 +27,7 @@ export default App = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   function BannerOpen(rotina, valor) {
-    if (rotina === "detalheproduto") {
+    if (rotina === "detalhaProdutos") {
       navigation.navigate("Produto", {
         sku: valor,
       });
@@ -57,12 +57,9 @@ export default App = () => {
   }, [isLoading]);
 
   return (
-    <View style={{ flex: 0 }}>
+    <View style={{ flex: 0 ,marginTop:-10}}>
       {isLoading ? (
         <View style={{ width, height }}>
-          <View style={[styles.container, styles.horizontal]}>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
         </View>
       ) : (
         <View style={{ width, height, marginVertical: 20 }}>
@@ -84,7 +81,7 @@ export default App = () => {
                     style={{
                       width: Math.round(width - 20),
                       height,
-                      resizeMode: "contain",
+                      resizeMode: "stretch",
                       borderRadius: 5,
                     }}
                     key={item}

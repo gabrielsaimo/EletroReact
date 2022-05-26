@@ -446,7 +446,7 @@ export default function CategoriasProduto({ route, navigation }) {
                       </View>
                       <View
                         style={{
-                          width: "57%",
+                          width: "50%",
                           paddingVertical: 7,
                           backgroundColor: "#FFDB01",
                           alignItems: "center",

@@ -5,7 +5,8 @@ export const AuthContext = createContext({});
 function AuthProvider({ children }) {
   const [user, setUser] = useState({});
   const [user1, setUser1] = useState({});
-  const [array, setArray] = useState("");
+  const [arrayCompra, setArrayCompra] = useState([]);
+  const [carrinho, setCarrinho] = useState([]);
   const [exclui, setExclui] = useState(false);
   const [arraycard, setArrayCard] = useState([]);
   useEffect(() => {
@@ -15,6 +16,12 @@ function AuthProvider({ children }) {
     AsyncStorage.getItem("arraycard").then((arry) => {
       if (arraycard.length === 0 && arry.length > 0 && !exclui) {
         setArrayCard(JSON.parse(arry));
+      }
+    });
+    AsyncStorage.getItem("arrayCompra").then((arry) => {
+      console.log(arry);
+      if (arrayCompra.length === 0 && arry.length > 0 && !exclui) {
+        setArrayCompra(JSON.parse(arry));
       }
     });
   }, []);
@@ -27,8 +34,30 @@ function AuthProvider({ children }) {
       });
     }
   }
-  async function Cartao(titular, cardnome, numero, cod, validade, exluir) {
-    if (exluir === undefined) {
+  async function Compra(sku, qtde, excluir) {
+    if (excluir === undefined) {
+      var id = Object.keys(arraycard).length + 1;
+      var key = id.toString();
+      arraycard.map((i, k) => {
+        i.key === key ? (key = key + 1) : key;
+      });
+    }
+    setArrayCompra(sku);
+  }
+
+  async function Carrinho(sku, qtde, excluir) {
+    if (excluir === undefined) {
+      var id = Object.keys(arraycard).length + 1;
+      var key = id.toString();
+      arraycard.map((i, k) => {
+        i.key === key ? (key = key + 1) : key;
+      });
+    }
+    setCarrinho({ sku: sku, qtde: qtde, key: key }, carrinho);
+  }
+
+  async function Cartao(titular, cardnome, numero, cod, validade, excluir) {
+    if (excluir === undefined) {
       var id = Object.keys(arraycard).length + 1;
       var key = id.toString();
       arraycard.map((i, k) => {
@@ -64,8 +93,8 @@ function AuthProvider({ children }) {
       );
     } else {
       setExclui(true);
-      AsyncStorage.setItem("arraycard", JSON.stringify(exluir));
-      console.log(JSON.stringify(exluir));
+      AsyncStorage.setItem("arraycard", JSON.stringify(excluir));
+      console.log(JSON.stringify(excluir));
     }
   }
 
@@ -111,7 +140,9 @@ function AuthProvider({ children }) {
       value={{
         signIn,
         Cartao,
+        Compra,
         consultaCep,
+        arrayCompra,
         arraycard,
         user,
         user1,

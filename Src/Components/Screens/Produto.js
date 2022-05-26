@@ -27,7 +27,7 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import ShareButton from "../ShereButtom";
 import { useIsFocused } from "@react-navigation/native";
 
-export default function Produto({ route, navigation }) {
+export default function Produto({ route, navigation}) {
   const sku = route.params.sku;
   const skuvolt = route.params.sku2;
   const filhos = route.params.filhos;
@@ -46,7 +46,7 @@ export default function Produto({ route, navigation }) {
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
-  const { consultaCep, user, user1 } = useContext(AuthContext);
+  const { consultaCep, user, user1, Compra } = useContext(AuthContext);
   const [configuravel, setConfiguravel] = useState(false);
   const [usercep, setUsercep] = useState(user.cep);
   const { width, height } = Dimensions.get("window");
@@ -128,6 +128,10 @@ export default function Produto({ route, navigation }) {
     }
   }
   async function Comprar() {
+    Compra(
+      route.params.sku2 === undefined ? "" + sku + "" : "" + skuvolt + "",
+      1
+    );
     await fetch(`${URL_PROD}/shell/ws/integrador/carrinho`, {
       method: "POST",
       headers: {
@@ -145,14 +149,15 @@ export default function Produto({ route, navigation }) {
               qtde: "1",
             },
           ],
-          cep: TextInput_cep,
+          cep: "",
         },
         version: 15,
       }),
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData.retorno);
+        setVoltar(true);
+        Compra(resData.retorno);
       });
   }
 

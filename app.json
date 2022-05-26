@@ -5,13 +5,25 @@
     "scheme": "reacteletro",
     "icon": "./Src/Components/assets/iconapp.png",
     "version": "1.0.0",
-    "orientation":"portrait",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "orientation": "portrait",
+    "assetBundlePatterns": ["**/*"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./Src/Components/assets/iconapp.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/path/to/myOtherSound.wav",
+            "./local/path/to/myOtherSound.wav"
+          ],
+          "mode": "production"
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true
     },

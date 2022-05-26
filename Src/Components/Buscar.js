@@ -439,7 +439,7 @@ export default function Buscar({ route }) {
                       </View>
                       <View
                         style={{
-                          width: "57%",
+                          width: "50%",
                           paddingVertical: 7,
                           backgroundColor: "#FFDB01",
                           alignItems: "center",
