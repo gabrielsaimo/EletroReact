@@ -191,7 +191,7 @@ export default function HomeTab() {
                           >
                             <View
                               style={{
-                                width: 50,
+                                width: "45%",
                                 paddingVertical: 7,
                                 backgroundColor: "#1534C8",
                                 alignItems: "center",
@@ -210,7 +210,7 @@ export default function HomeTab() {
                             </View>
                             <View
                               style={{
-                                width: "57%",
+                                width: "62%",
                                 paddingVertical: 7,
                                 backgroundColor: "#FFDB01",
                                 alignItems: "center",

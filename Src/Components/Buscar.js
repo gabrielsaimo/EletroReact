@@ -416,7 +416,7 @@ export default function Buscar({ route }) {
                     >
                       <View
                         style={{
-                          width: 50,
+                          width: "40%",
                           paddingVertical: 7,
                           paddingHorizontal: 5,
                           backgroundColor: "#1534C8",
@@ -781,7 +781,7 @@ const styles = {
     elevation: 2,
   },
   buttonContainerStyle1: {
-    height: 270,
+    height: 280,
     margin: 0.5,
     width: "99.5%",
     paddingTop: 15,
