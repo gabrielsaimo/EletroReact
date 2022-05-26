@@ -188,7 +188,7 @@ export default function Buscar({ route }) {
                 </View>
                 <View
                   style={{
-                    width: "57%",
+                    width: "62%",
                     paddingVertical: 7,
                     backgroundColor: "#FFDB01",
                     alignItems: "center",
@@ -219,7 +219,7 @@ export default function Buscar({ route }) {
               >
                 <View
                   style={{
-                    width: "57%",
+                    width: "100%",
                     paddingVertical: 7,
                     backgroundColor: "#FFDB01",
                     alignItems: "center",
@@ -383,7 +383,7 @@ export default function Buscar({ route }) {
                     >
                       <View
                         style={{
-                          width: "57%",
+                          width: "65%",
                           paddingVertical: 10,
                           backgroundColor: "#FFDB01",
                           alignItems: "center",
