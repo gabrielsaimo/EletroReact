@@ -128,10 +128,6 @@ export default function Produto({ route, navigation}) {
     }
   }
   async function Comprar() {
-    Compra(
-      route.params.sku2 === undefined ? "" + sku + "" : "" + skuvolt + "",
-      1
-    );
     await fetch(`${URL_PROD}/shell/ws/integrador/carrinho`, {
       method: "POST",
       headers: {
@@ -157,7 +153,7 @@ export default function Produto({ route, navigation}) {
       .then((res) => res.json())
       .then((resData) => {
         setVoltar(true);
-        Compra(resData.retorno);
+        Compra([resData.retorno]);
       });
   }
 
