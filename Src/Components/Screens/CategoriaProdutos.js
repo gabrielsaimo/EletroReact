@@ -21,7 +21,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function CategoriasProduto({ route, navigation }) {
-  const baseURL = `${URL_PROD}/shell/ws/integrador/listaProdutos?departamento=${route.params.item}&version=15`;
+  const baseURL = `${URL_PROD}listaProdutos?departamento=${route.params.item}&version=15`;
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
   const { user1 } = useContext(AuthContext);
   const [search, setSeach] = useState(false);
@@ -45,7 +45,7 @@ export default function CategoriasProduto({ route, navigation }) {
   async function loadApi() {
     if (user1.idCliente !== null) {
       await fetch(
-        `${URL_PROD}/shell/ws/integrador/listaProdutos?departamento=${route.params.item}&version=15&idCliente=${user1.idCliente}`
+        `${URL_PROD}listaProdutos?departamento=${route.params.item}&version=15&idCliente=${user1.idCliente}`
       )
         .then((res) => res.json())
         .then((resData) => {
@@ -102,7 +102,7 @@ export default function CategoriasProduto({ route, navigation }) {
   function ListItem({ data, index, navigation }) {
     async function excluir(sku) {
       setRefreshing(true);
-      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+      await fetch(`${URL_PROD}excluirFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -120,7 +120,7 @@ export default function CategoriasProduto({ route, navigation }) {
 
     async function add(sku) {
       setRefreshing(true);
-      await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
+      await fetch(`${URL_PROD}addFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -327,7 +327,7 @@ export default function CategoriasProduto({ route, navigation }) {
   }
   function ListItem2({ data, index, navigation }) {
     async function excluir(sku) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+      await fetch(`${URL_PROD}excluirFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -346,7 +346,7 @@ export default function CategoriasProduto({ route, navigation }) {
     }
 
     async function add(sku) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
+      await fetch(`${URL_PROD}addFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",

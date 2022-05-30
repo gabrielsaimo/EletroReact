@@ -11,7 +11,7 @@ export default function CalculaFrete({ cep, sku }) {
   console.log(data);
 
   useEffect(() => {
-    fetch(`${URL_PROD}/shell/ws/integrador/consultaFrete?sku=${sku}&cep=${cep}`)
+    fetch(`${URL_PROD}consultaFrete?sku=${sku}&cep=${cep}`)
       .then((response) => response.json())
       .then((json) => setData(json[0]))
       .catch((error) => console.error(error + " produtoFilhos.js"))

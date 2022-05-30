@@ -32,7 +32,7 @@ export default function add_config_cartao({ route }) {
     if (numero.length >= 16 || route.params.numero.length === 17) {
       if (nome.length > 0) {
         if (validade.length === 7) {
-          await fetch(`${URL_PROD}/shell/ws/integrador/validarCartao`, {
+          await fetch(`${URL_PROD}validarCartao`, {
             method: "POST",
             headers: {
               Accept: "aplication/json",

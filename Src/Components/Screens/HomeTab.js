@@ -11,8 +11,8 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from "react-native";
-const { URL_PROD } = process.env;
 import SearchBarHome from "../SearchBarHome";
+const { URL_PROD } = process.env;
 import Local from "../Local";
 import Banner from "../Banner";
 import SkeletonLoading from "../SkeletonLoading";
@@ -39,7 +39,7 @@ export default function HomeTab() {
   }, [refreshing]);
   const componentDidMount = async () => {
     if (user1.idCliente === null) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/listaProdutos?`)
+      await fetch(`${URL_PROD}listaProdutos?`)
         .then((response) => response.json())
         .then((responseJson) => {
           setData(responseJson);
@@ -53,7 +53,7 @@ export default function HomeTab() {
         });
     } else {
       await fetch(
-        `${URL_PROD}/shell/ws/integrador/listaProdutos?idCliente=${user1.idCliente}`
+        `${URL_PROD}listaProdutos?idCliente=${user1.idCliente}`
       )
         .then((response) => response.json())
         .then((responseJson) => {
@@ -69,7 +69,7 @@ export default function HomeTab() {
   };
 
   async function excluir(sku) {
-    await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+    await fetch(`${URL_PROD}excluirFavoritos`, {
       method: "POST",
       headers: {
         Accept: "aplication/json",
@@ -87,7 +87,7 @@ export default function HomeTab() {
       });
   }
   async function add(sku) {
-    await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
+    await fetch(`${URL_PROD}addFavoritos`, {
       method: "POST",
       headers: {
         Accept: "aplication/json",
@@ -110,7 +110,6 @@ export default function HomeTab() {
       <View style={{ height: "100%", width, backgroundColor: "#FFF" }}>
         <SearchBarHome />
         <Local style={{ width: 10, high: 20 }} />
-        {refreshing ? <ActivityIndicator /> : null}
         <ScrollView
           nestedScrollEnabled
           showsVerticalScrollIndicator={false}

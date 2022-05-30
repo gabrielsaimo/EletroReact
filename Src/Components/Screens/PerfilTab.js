@@ -105,7 +105,7 @@ export default function PerfilTab() {
     });
   };
   async function alteraCadastro(a) {
-    await fetch(`${URL_PROD}/shell/ws/integrador/alteraCadastro`, {
+    await fetch(`${URL_PROD}alteraCadastro`, {
       method: "POST",
       headers: {
         Accept: "aplication/json",

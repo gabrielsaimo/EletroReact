@@ -16,7 +16,7 @@ export default function passwordReset({ route }) {
 
   const Enviar = async () => {
     if (email != "") {
-      await fetch(`${URL_PROD}/shell/ws/integrador/esqueceuSenha`, {
+      await fetch(`${URL_PROD}esqueceuSenha`, {
         method: "PUT",
         headers: {
           Accept: "aplication/json",

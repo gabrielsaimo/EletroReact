@@ -8,7 +8,7 @@ export default function ExcluirFavorito({ route }) {
   const sku = route.params.sku;
   const page = route.params.page;
   const Excluir = async () => {
-    await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+    await fetch(`${URL_PROD}excluirFavoritos`, {
       method: "POST",
       headers: {
         Accept: "aplication/json",

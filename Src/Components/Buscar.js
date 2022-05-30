@@ -23,7 +23,7 @@ const wait = (timeout) => {
 export default function Buscar({ route }) {
   const { URL_PROD } = process.env;
   const { user1 } = useContext(AuthContext);
-  const baseURL = `${URL_PROD}/shell/ws/integrador/busca2?q=${route.params.q}
+  const baseURL = `${URL_PROD}busca2?q=${route.params.q}
     &dir=asc&version=15`;
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
   const [data, setData] = useState([]);
@@ -50,7 +50,7 @@ export default function Buscar({ route }) {
   async function loadApi() {
     if (user1.idCliente !== null) {
       await fetch(
-        `${URL_PROD}/shell/ws/integrador/busca2?q=` +
+        `${URL_PROD}busca2?q=` +
           route.params.q +
           "&idCliente=" +
           user1.idCliente +
@@ -103,7 +103,7 @@ export default function Buscar({ route }) {
   }
   function ListItem({ data, navigation }) {
     async function excluir(sku) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+      await fetch(`${URL_PROD}excluirFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -122,7 +122,7 @@ export default function Buscar({ route }) {
     }
 
     async function add(sku) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
+      await fetch(`${URL_PROD}addFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -320,7 +320,7 @@ export default function Buscar({ route }) {
   }
   function ListItem2({ data, navigation }) {
     async function excluir(sku) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+      await fetch(`${URL_PROD}excluirFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -339,7 +339,7 @@ export default function Buscar({ route }) {
     }
 
     async function add(sku) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
+      await fetch(`${URL_PROD}addFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",

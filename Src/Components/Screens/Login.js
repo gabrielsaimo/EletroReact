@@ -48,7 +48,7 @@ export default function Login() {
   const Logar = async () => {
     if (email != "" && password != "") {
       setLoad(true);
-      await fetch(`${URL_PROD}/shell/ws/integrador/login`, {
+      await fetch(`${URL_PROD}login`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -71,7 +71,7 @@ export default function Login() {
             const FotoCliente = resData.dados_cliente.foto_cliente;
 
             fetch(
-              `${URL_PROD}/shell/ws/integrador/listaMeusEnderecos?idCliente=${idCliente}`
+              `${URL_PROD}listaMeusEnderecos?idCliente=${idCliente}`
             )
               .then((ress) => ress.json())
               .then((resDatas) => {

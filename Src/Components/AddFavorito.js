@@ -6,7 +6,7 @@ export default function AddFavorito({ route }) {
   const sku = route.params.sku;
   const page = route.params.page;
   const Add = async () => {
-    await fetch(`${URL_PROD}/shell/ws/integrador/addFavoritos`, {
+    await fetch(`${URL_PROD}addFavoritos`, {
       method: "POST",
       headers: {
         Accept: "aplication/json",

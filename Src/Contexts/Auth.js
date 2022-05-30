@@ -6,7 +6,9 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState({});
   const [user1, setUser1] = useState({});
   const [arrayCompra, setArrayCompra] = useState([]);
-  const [carrinho, setCarrinho] = useState([]);
+  const [multcar, setMultcar] = useState([]);
+  const [carrinho, setCarrinho] = useState({});
+
   const [exclui, setExclui] = useState(false);
   const [arraycard, setArrayCard] = useState([]);
   useEffect(() => {
@@ -19,12 +21,23 @@ function AuthProvider({ children }) {
       }
     });
     AsyncStorage.getItem("arrayCompra").then((arry) => {
-      console.log(arry);
       if (arrayCompra.length === 0 && arry.length > 0 && !exclui) {
         setArrayCompra(JSON.parse(arry));
       }
     });
-  }, []);
+    if (carrinho.length === 0) {
+    } else {
+      const gg = JSON.stringify(carrinho);
+      gg.replace(/[.!'@,><|://\\;&*()_+=]/g, "");
+      const gs = gg.replace(/[!'@,><|://\\;&*()_+=]/g, "").replace("}{", "},{");
+      setMultcar(
+        gs
+          .replace(/""/g, '":"')
+          .replace(/":"q/g, '","q')
+          .replace(/":"k/g, '","k')
+      );
+    }
+  }, [carrinho]);
 
   function consultaCep(cep, sku) {
     if (cep !== "") {
@@ -53,7 +66,11 @@ function AuthProvider({ children }) {
         i.key === key ? (key = key + 1) : key;
       });
     }
-    setCarrinho({ sku: sku, qtde: qtde, key: key }, carrinho);
+    if (carrinho.length === undefined) {
+      setCarrinho([{ sku: sku, qtde: "1", key: key }]);
+    } else {
+      setCarrinho([{ sku: sku, qtde: "1", key: key }, ...carrinho]);
+    }
   }
 
   async function Cartao(titular, cardnome, numero, cod, validade, excluir) {
@@ -94,7 +111,6 @@ function AuthProvider({ children }) {
     } else {
       setExclui(true);
       AsyncStorage.setItem("arraycard", JSON.stringify(excluir));
-      console.log(JSON.stringify(excluir));
     }
   }
 
@@ -142,7 +158,9 @@ function AuthProvider({ children }) {
         Cartao,
         Compra,
         consultaCep,
+        Carrinho,
         arrayCompra,
+        multcar,
         arraycard,
         user,
         user1,

@@ -29,7 +29,7 @@ export default function App({ volt, sku, navigation }) {
 
   useEffect(() => {
     fetch(
-      `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${sku}&version=15`
+      `${URL_PROD}detalhaProdutos?sku=${sku}&version=15`
     )
       .then((response) => response.json())
       .then((json) => setData(json))

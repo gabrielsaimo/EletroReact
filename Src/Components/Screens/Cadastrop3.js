@@ -25,7 +25,7 @@ export default function Cadastrop3({ route }) {
   async function Click() {
     if (telefone !== "" && date !== "") {
       if (CPF !== "") {
-        await fetch(`${URL_PROD}/shell/ws/integrador/minhaconta`, {
+        await fetch(`${URL_PROD}minhaconta`, {
           method: "POST",
           headers: {
             Accept: "aplication/json",

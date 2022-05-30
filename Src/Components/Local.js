@@ -26,7 +26,7 @@ export default function Local() {
   });
   const meucep = async () => {
     await fetch(
-      `${URL_PROD}/shell/ws/integrador/listaMeusEnderecos?idCliente=` +
+      `${URL_PROD}listaMeusEnderecos?idCliente=` +
         user1.idCliente
     )
       .then((res) => res.json())

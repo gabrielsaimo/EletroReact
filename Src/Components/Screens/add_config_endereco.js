@@ -85,7 +85,7 @@ export default function add_config_endereco({ route }) {
 
   const Edite = async () => {
     if (cep.length === 9 || route.params.cep.length === 8) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/dadosEndereco`, {
+      await fetch(`${URL_PROD}dadosEndereco`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",

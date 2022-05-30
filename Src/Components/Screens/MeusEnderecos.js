@@ -36,7 +36,7 @@ export default function MeusEnderecos({ route, navigation }) {
   const enderecos = async () => {
     try {
       await fetch(
-        `${URL_PROD}/shell/ws/integrador/listaMeusEnderecos?idCliente=${id}&lista=Todos`
+        `${URL_PROD}listaMeusEnderecos?idCliente=${id}&lista=Todos`
       )
         .then((res) => res.json())
         .then((resData) => {
@@ -55,7 +55,7 @@ export default function MeusEnderecos({ route, navigation }) {
   const deleteEndereco = async (id) => {
     try {
       await fetch(
-        `${URL_PROD}/shell/ws/integrador/excluirEndereco?idEndereco=${id}`
+        `${URL_PROD}excluirEndereco?idEndereco=${id}`
       )
         .then((res) => res.json())
         .then((resData) => {

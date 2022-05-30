@@ -36,7 +36,7 @@ export default function FavoritosTab() {
 
   const Favoriotos = async () => {
     try {
-      await fetch(`${URL_PROD}/shell/ws/integrador/listaFavoritos`, {
+      await fetch(`${URL_PROD}listaFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -83,7 +83,7 @@ export default function FavoritosTab() {
   }
   function ListItem({ data, navigation }) {
     async function excluir(sku) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+      await fetch(`${URL_PROD}excluirFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",
@@ -240,7 +240,7 @@ export default function FavoritosTab() {
   }
   function ListItem2({ data, navigation }) {
     async function excluir(sku) {
-      await fetch(`${URL_PROD}/shell/ws/integrador/excluirFavoritos`, {
+      await fetch(`${URL_PROD}excluirFavoritos`, {
         method: "POST",
         headers: {
           Accept: "aplication/json",

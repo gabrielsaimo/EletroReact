@@ -9,8 +9,9 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 const { URL_PROD } = process.env;
+console.log(URL_PROD);
+import { TouchableOpacity } from "react-native-gesture-handler";
 export default App = () => {
   const { width } = Dimensions.get("window");
   const height = (width * 40) / 95;
@@ -46,7 +47,7 @@ export default App = () => {
     }
   }
   useEffect(() => {
-    fetch(`${URL_PROD}/shell/ws/integrador/banners/?version=15`)
+    fetch(`${URL_PROD}banners/?version=15`)
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => {
@@ -57,10 +58,9 @@ export default App = () => {
   }, [isLoading]);
 
   return (
-    <View style={{ flex: 0 ,marginTop:-10}}>
+    <View style={{ flex: 0, marginTop: -10 }}>
       {isLoading ? (
-        <View style={{ width, height }}>
-        </View>
+        <View style={{ width, height }}></View>
       ) : (
         <View style={{ width, height, marginVertical: 20 }}>
           <FlatList
@@ -106,10 +106,14 @@ export default App = () => {
                   key={k}
                   style={[
                     k == active ? styles.setbol : styles.bol,
-                    { fontSize: 35, fontWeight: "bold" },
+                    {
+                      fontSize: 35,
+                      fontWeight: "bold",
+                      transform: [{ rotate: "-90deg" }],
+                    },
                   ]}
                 >
-                  ⚊
+                  {"  "}❘{"  "}
                 </Text>
               ))
             ) : (

@@ -13,7 +13,7 @@ export default function Pedidos({ route, navigation }) {
     loadApi();
   }, []);
 
-  const baseURL = `${URL_PROD}/shell/ws/integrador/listaMeusPedidos?version=15&idCliente=${id}`;
+  const baseURL = `${URL_PROD}listaMeusPedidos?version=15&idCliente=${id}`;
 
   async function loadApi() {
     if (loading) return;

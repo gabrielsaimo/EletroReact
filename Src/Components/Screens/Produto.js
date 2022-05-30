@@ -11,7 +11,7 @@ import {
   Platform,
   Animated,
 } from "react-native";
-const { URL_PROD } = process.env;
+
 import Modal from "react-native-modal";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -27,7 +27,8 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import ShareButton from "../ShereButtom";
 import { useIsFocused } from "@react-navigation/native";
 
-export default function Produto({ route, navigation}) {
+export default function Produto({ route, navigation }) {
+  const { URL_PROD } = process.env;
   const sku = route.params.sku;
   const skuvolt = route.params.sku2;
   const filhos = route.params.filhos;
@@ -42,11 +43,11 @@ export default function Produto({ route, navigation}) {
   const runFirst = `let selector = document.querySelector("img") 
                     selector.style.display = "none"
                     true;`;
-
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
-  const { consultaCep, user, user1, Compra } = useContext(AuthContext);
+  const { consultaCep, user, user1, Compra, Carrinho } =
+    useContext(AuthContext);
   const [configuravel, setConfiguravel] = useState(false);
   const [usercep, setUsercep] = useState(user.cep);
   const { width, height } = Dimensions.get("window");
@@ -128,7 +129,7 @@ export default function Produto({ route, navigation}) {
     }
   }
   async function Comprar() {
-    await fetch(`${URL_PROD}/shell/ws/integrador/carrinho`, {
+    await fetch(`${URL_PROD}carrinho`, {
       method: "POST",
       headers: {
         Accept: "aplication/json",
@@ -154,6 +155,8 @@ export default function Produto({ route, navigation}) {
       .then((resData) => {
         setVoltar(true);
         Compra([resData.retorno]);
+        Carrinho(sku, 1);
+        navigation.navigate("Carrinho");
       });
   }
 
@@ -162,19 +165,18 @@ export default function Produto({ route, navigation}) {
     setLoading(true);
     if (user1.idCliente) {
       const response = await axios.get(
-        `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${route.params.sku}&version=15&idCliente=${user1.idCliente}`
+        `${URL_PROD}detalhaProdutos?sku=${route.params.sku}&version=15&idCliente=${user1.idCliente}`
       );
       setData([response.data]);
     } else {
       const response = await axios.get(
-        `${URL_PROD}/shell/ws/integrador/detalhaProdutos?sku=${route.params.sku}&version=15`
+        `${URL_PROD}detalhaProdutos?sku=${route.params.sku}&version=15`
       );
       setData([response.data]);
     }
   }
   useEffect(() => {
     loadApi();
-    console.log(isFocused);
     if (isFocused === false && !voltar) {
       navigation.goBack();
     }
@@ -879,7 +881,7 @@ export default function Produto({ route, navigation}) {
                     >
                       <WebView
                         source={{
-                          uri: `${URL_PROD}/shell/ws/integrador/caracteristicasProduto?codigoProduto=${sku}`,
+                          uri: `${URL_PROD}caracteristicasProduto?codigoProduto=${sku}`,
                         }}
                         injectedJavaScript={runFirst}
                         scalesPageToFit={false}

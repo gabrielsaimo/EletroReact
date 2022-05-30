@@ -18,25 +18,13 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function MeusCartoes({ route, navigation }) {
-  const { Cartao, user1, arraycard, arrayCompra } = useContext(AuthContext);
-  const [data1, setData1] = useState([]);
-  const [index, setIndex] = useState(0);
+  const { URL_PROD } = process.env;
+  const { Cartao, user1, multcar, arrayCompra } = useContext(AuthContext);
+  const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
-  console.log(arrayCompra); /*
-  arrayCompra.map((i, _) => {
-    if (index < i.key) {
-      var ii = i.key;
-      setIndex(ii.toString());
-    }
-  });*/
-
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
-  const closeRow = (rowMap, rowKey) => {
-    if (rowMap[rowKey]) {
-      rowMap[rowKey].closeRow();
-    }
-  };
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => {
@@ -44,101 +32,35 @@ export default function MeusCartoes({ route, navigation }) {
     });
   }, [isFocused]);
 
-  const deleteRow = (rowMap, rowKey) => {
-    closeRow(rowMap, rowKey);
-    const newdata = data1.splice(rowKey, 1);
-    [setData1(newdata), Cartao("1", "2", "3", "4", "5", data1)];
-  };
-  const renderItem = (item) => (
-    <>
-      <View
-        style={{
-          backgroundColor: "#E9ECEF",
-          borderRadius: 10,
-          height: 100,
-          marginVertical: 10,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: "auto",
-            marginBottom: "auto",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <View>
-            <Image
-              style={{ width: 100, height: 100 }}
-              source={{ uri: item.item.produtos[0].imagem }}
-            />
-          </View>
-          <View style={{ marginTop: "auto", marginBottom: "auto",width:'100%' }}>
-            <Text
-              style={{
-                color: "#343A40",
-                fontWeight: "bold",
-                fontSize: 12,
-                width: "70%",
-                marginLeft: 10,
-              }}
-            >
-              {item.item.produtos[0].nome}
-            </Text>
-            <Text
-              style={{
-                color: "#1534C8",
-                fontWeight: "bold",
-                fontSize: 15,
-                marginTop: 5,
-                marginLeft: 10,
-              }}
-            >
-              R$ {item.item.produtos[0].valorUnitario.replace("0000", "")}
-            </Text>
-          </View>
-        </View>
-      </View>
-    </>
-  );
-
-  const renderHiddenItem = (item, rowMap) => (
-    <>
-      {load ? (
-        <ActivityIndicator
-          size="large"
-          color="#0000ff"
-          marginLeft="auto"
-          marginRight="auto"
-        />
-      ) : (
-        <TouchableOpacity
-          onPress={() => [setLoad(true), deleteRow(rowMap, item.index)]}
-          style={{
-            alignItems: "center",
-            marginTop: 10,
-            marginLeft: "1%",
-            height: 100,
-            width: "98%",
-            flexDirection: "row",
-            backgroundColor: "#FE0202",
-            justifyContent: "flex-end",
-            borderRadius: 10,
-          }}
-        >
-          <Image
-            style={{ width: 45, height: 45, marginRight: 10 }}
-            source={require("../../../Src/Components/assets/delete_icon.png")}
-          ></Image>
-        </TouchableOpacity>
-      )}
-    </>
-  );
+  async function Meucarrinho() {
+    await fetch(`${URL_PROD}carrinho`, {
+      method: "POST",
+      headers: {
+        Accept: "aplication/json",
+        "Content-type": "aplication/json",
+      },
+      body: JSON.stringify({
+        checkout: {
+          produtos: multcar,
+          cep: "",
+        },
+        version: 15,
+      })
+        .replace(/[//\\]/g, "")
+        .replace('"[', "[")
+        .replace(']"', "]"),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        setData(resData);
+        setLoad(false);
+      });
+  }
 
   useEffect(() => {
     onRefresh;
-    setData1(arrayCompra);
+    Meucarrinho();
+    setData(data);
     setTimeout(() => {
       setLoad(false);
     }, 500);
@@ -147,48 +69,54 @@ export default function MeusCartoes({ route, navigation }) {
   return (
     <View style={{ marginBottom: 70 }}>
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }}></View>
-
-      <ScrollView
-        nestedScrollEnabled
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        style={{ margin: 15 }}
-      >
-        <SwipeListView
-          data={data1}
-          disableRightSwipe={true}
-          renderItem={renderItem}
-          renderHiddenItem={renderHiddenItem}
-          previewRowKey={index}
-          previewOpenValue={-75}
-          rightOpenValue={-75}
-        />
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("add_config_cartao", {
-              idCliente: user1.idCliente,
-            })
-          }
-          style={{
-            alignItems: "center",
-            borderWidth: 1,
-            borderColor: "#BAC8FF",
-            height: 50,
-            paddingVertical: 12,
-            borderRadius: 5,
-            marginBottom: 30,
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <Text style={{ color: "#1534C8", fontWeight: "bold" }}>
-              {" "}
-              Prosseguir para compra
-            </Text>
+      {data.lenght > 0 ? (
+        <></>
+      ) : (
+        <View style={{ marginBottom: 70 }}>
+          <View style={{ marginTop: 30 }}>
+            <View
+              style={{
+                alignSelf: "center",
+                marginLeft: 10,
+                backgroundColor: "#EDF2FF",
+                borderRadius: 100,
+                width: 75,
+                height: 75,
+              }}
+            >
+              <Image
+                style={{
+                  width: 50,
+                  height: 55,
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginVertical: 10,
+                }}
+                source={require("../assets/carrinho.png")}
+              />
+            </View>
+            <View style={{ alignItems: "center", marginTop: 20 }}>
+              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                Seu carrinho está vazio
+              </Text>
+              <Text
+                style={{
+                  fontSize: 15,
+                  marginHorizontal: 55,
+                  textAlign: "center",
+                  marginTop: "5%",
+                }}
+              >
+                Oque voce acha de aprovetar as melhores ofertas na Eletrosom
+              </Text>
+              <Image
+                style={{ height: "65%", width: "75%", marginTop: "15%" }}
+                source={require("../assets/tela_vazia.png")}
+              />
+            </View>
           </View>
-        </TouchableOpacity>
-      </ScrollView>
+        </View>
+      )}
     </View>
   );
 }
