@@ -1,17 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  ScrollView,
-  Text,
-  View,
-  RefreshControl,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  ActivityIndicator,
-} from "react-native";
-import { SwipeListView } from "react-native-swipe-list-view";
+import { Text, View, Image, StyleSheet } from "react-native";
 import { AuthContext } from "../../Contexts/Auth";
-import { Appbar } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
 
 const wait = (timeout) => {
@@ -120,44 +109,3 @@ export default function MeusCartoes({ route, navigation }) {
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    flex: 1,
-  },
-  backTextWhite: {
-    color: "#FFF",
-  },
-  rowFront: {
-    alignItems: "center",
-    backgroundColor: "#CCC",
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
-    justifyContent: "center",
-    height: 50,
-  },
-  rowBack: {
-    alignItems: "center",
-    backgroundColor: "#DDD",
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingLeft: 15,
-  },
-  backRightBtn: {
-    alignItems: "center",
-    bottom: 0,
-    justifyContent: "center",
-    position: "absolute",
-    top: 0,
-    width: 75,
-  },
-  backRightBtnLeft: {
-    backgroundColor: "blue",
-    right: 75,
-  },
-  backRightBtnRight: {
-    backgroundColor: "red",
-    right: 0,
-  },
-});
