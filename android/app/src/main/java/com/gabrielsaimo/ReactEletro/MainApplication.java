@@ -17,6 +17,7 @@ import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
 
 import com.facebook.react.bridge.JSIModulePackage;
+import com.reacteletro.BuildConfig;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

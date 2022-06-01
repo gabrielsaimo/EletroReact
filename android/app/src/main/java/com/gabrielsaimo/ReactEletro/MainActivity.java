@@ -2,10 +2,11 @@ package com.gabrielsaimo.ReactEletro;
 
 import android.os.Build;
 import android.os.Bundle;
-
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import com.reacteletro.R;
+
 import org.devio.rn.splashscreen.SplashScreen;
 import expo.modules.ReactActivityDelegateWrapper;
 
