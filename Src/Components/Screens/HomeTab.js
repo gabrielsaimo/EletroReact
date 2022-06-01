@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import SearchBarHome from "../SearchBarHome";
 const { URL_PROD } = process.env;
+import styles from "../Styles/Style.js";
 import Local from "../Local";
 import Banner from "../Banner";
 import SkeletonLoading from "../SkeletonLoading";
@@ -52,9 +53,7 @@ export default function HomeTab() {
           setRefreshing(true);
         });
     } else {
-      await fetch(
-        `${URL_PROD}listaProdutos?idCliente=${user1.idCliente}`
-      )
+      await fetch(`${URL_PROD}listaProdutos?idCliente=${user1.idCliente}`)
         .then((response) => response.json())
         .then((responseJson) => {
           setData(responseJson);
@@ -180,83 +179,22 @@ export default function HomeTab() {
                           />
                         </View>
                         {item.percentual > 0 ? (
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              position: "absolute",
-                              marginTop: 5,
-                              marginLeft: 5,
-                            }}
-                          >
-                            <View
-                              style={{
-                                width: "45%",
-                                paddingVertical: 7,
-                                backgroundColor: "#1534C8",
-                                alignItems: "center",
-                                borderRadius: 6,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  fontSize: 11,
-                                  color: "#FFF",
-                                  fontWeight: "bold",
-                                }}
-                              >
+                          <View style={styles.abosolutrow}>
+                            <View style={styles.corpotag1}>
+                              <Text style={styles.textBrancog}>
                                 {item.percentual}% off
                               </Text>
                             </View>
-                            <View
-                              style={{
-                                width: "62%",
-                                paddingVertical: 7,
-                                backgroundColor: "#FFDB01",
-                                alignItems: "center",
-                                marginLeft: 5,
-                                borderRadius: 6,
-                                flexDirection: "row",
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  fontSize: 11,
-                                  alignSelf: "flex-start",
-                                  color: "#1534C8",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                {" "}
+                            <View style={styles.tag1}>
+                              <Text style={styles.textstartazul}>
                                 12x s/juros
                               </Text>
                             </View>
                           </View>
                         ) : (
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              position: "absolute",
-                            }}
-                          >
-                            <View
-                              style={{
-                                width: "57%",
-                                paddingVertical: 10,
-                                backgroundColor: "#FFDB01",
-                                alignItems: "center",
-                                marginLeft: 5,
-                                borderRadius: 6,
-                                flexDirection: "row",
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  fontSize: 11,
-                                  alignSelf: "flex-start",
-                                  color: "#1534C8",
-                                }}
-                              >
-                                {" "}
+                          <View style={styles.abosolutrow}>
+                            <View style={[styles.tag1, { width: "100%" }]}>
+                              <Text style={styles.textstartazul}>
                                 12x s/juros
                               </Text>
                             </View>
@@ -311,29 +249,3 @@ export default function HomeTab() {
     </SafeAreaView>
   );
 }
-
-const styles = {
-  buttonContainerStyle: {
-    height: 170,
-    marginTop: 5,
-    width: "100%",
-    paddingTop: 30,
-    paddingBottom: 5,
-    flexDirection: "row",
-    backgroundColor: "white",
-    borderWidth: Platform.OS === "ios" ? 0.5 : 0,
-    borderRadius: 2,
-    borderColor:
-      Platform.OS === "ios" ? "rgb(225, 225, 225)" : "rgba(0,0,0,.0)",
-
-    // shadow
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 2.5,
-    elevation: 2,
-  },
-};

@@ -9,7 +9,7 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-
+import styles from "../Styles/Style.js";
 const { URL_PROD } = process.env;
 import { Appbar, IconButton } from "react-native-paper";
 import { AuthContext } from "../../Contexts/Auth";
@@ -163,86 +163,20 @@ export default function CategoriasProduto({ route, navigation }) {
                     />
 
                     {data.percentual > 0 ? (
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          position: "absolute",
-                          marginTop: 5,
-                          marginLeft: 5,
-                        }}
-                      >
-                        <View
-                          style={{
-                            width: "42%",
-                            paddingVertical: 7,
-                            backgroundColor: "#1534C8",
-                            alignItems: "center",
-                            borderRadius: 6,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 11,
-                              color: "#FFF",
-                              fontWeight: "bold",
-                            }}
-                          >
+                      <View style={styles.abosolutrow}>
+                        <View style={styles.corpotag1}>
+                          <Text style={styles.textBrancog}>
                             {data.percentual}% off
                           </Text>
                         </View>
-                        <View
-                          style={{
-                            width: "62%",
-                            paddingVertical: 7,
-                            backgroundColor: "#FFDB01",
-                            alignItems: "center",
-                            marginLeft: 5,
-                            borderRadius: 6,
-                            flexDirection: "row",
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 11,
-                              alignSelf: "flex-start",
-                              color: "#1534C8",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {" "}
-                            12x s/juros
-                          </Text>
+                        <View style={styles.tag1}>
+                          <Text style={styles.textstartazul}>12x s/juros</Text>
                         </View>
                       </View>
                     ) : (
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          position: "absolute",
-                        }}
-                      >
-                        <View
-                          style={{
-                            width: "100%",
-                            paddingVertical: 7,
-                            backgroundColor: "#FFDB01",
-                            alignItems: "center",
-                            marginLeft: 5,
-                            borderRadius: 6,
-                            flexDirection: "row",
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 11,
-                              alignSelf: "flex-start",
-                              color: "#1534C8",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {" "}
-                            12x s/juros
-                          </Text>
+                      <View style={styles.abosolutrow}>
+                        <View style={[styles.tag1, { width: "100%" }]}>
+                          <Text style={styles.textstartazul}>12x s/juros</Text>
                         </View>
                       </View>
                     )}
@@ -381,92 +315,20 @@ export default function CategoriasProduto({ route, navigation }) {
               >
                 <View style={{ Width: "100%" }}>
                   {!data.percentual > 0 ? (
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        position: "absolute",
-                        marginTop: -12,
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: "65%",
-                          paddingVertical: 7,
-                          backgroundColor: "#FFDB01",
-                          alignItems: "center",
-                          marginLeft: 5,
-                          borderRadius: 6,
-                          flexDirection: "row",
-                          zIndex: 99,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 11,
-                            alignSelf: "flex-start",
-                            color: "#1534C8",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {" "}
-                          12x s/juros
-                        </Text>
+                    <View style={[styles.abosolutrow, { marginTop: -10 }]}>
+                      <View style={styles.tag1}>
+                        <Text style={styles.textstartazul}>12x s/juros</Text>
                       </View>
                     </View>
                   ) : (
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        position: "absolute",
-                        marginTop: -12,
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: "40%",
-                          paddingVertical: 7,
-                          paddingHorizontal: 5,
-                          backgroundColor: "#1534C8",
-                          alignItems: "center",
-                          marginLeft: 5,
-                          borderRadius: 6,
-                          flexDirection: "row",
-                          zIndex: 99,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: "#FFF",
-                            fontSize: 11,
-                            fontWeight: "bold",
-                          }}
-                        >
+                    <View style={[styles.abosolutrow, { marginTop: -10 }]}>
+                      <View style={styles.corpotag1}>
+                        <Text style={styles.textBrancog}>
                           {data.percentual}% off
                         </Text>
                       </View>
-                      <View
-                        style={{
-                          width: "50%",
-                          paddingVertical: 7,
-                          backgroundColor: "#FFDB01",
-                          alignItems: "center",
-                          marginLeft: 5,
-                          borderRadius: 6,
-                          flexDirection: "row",
-                          zIndex: 99,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 11,
-                            alignSelf: "flex-start",
-                            color: "#1534C8",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {" "}
-                          12x s/juros
-                        </Text>
+                      <View style={[styles.tag1, { width: "48%" }]}>
+                        <Text style={styles.textstartazul}>12x s/juros</Text>
                       </View>
                     </View>
                   )}
@@ -731,51 +593,3 @@ export default function CategoriasProduto({ route, navigation }) {
     </SafeAreaView>
   );
 }
-
-const styles = {
-  buttonContainerStyle: {
-    height: 150,
-    marginTop: 5,
-    width: "100%",
-    paddingTop: 20,
-    paddingBottom: 5,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    borderWidth: Platform.OS === "ios" ? 0.5 : 0,
-    borderRadius: 2,
-    borderColor:
-      Platform.OS === "ios" ? "rgb(225, 225, 225)" : "rgba(0,0,0,.0)",
-
-    // shadow
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 2.5,
-    elevation: 2,
-  },
-  buttonContainerStyle1: {
-    height: 280,
-    margin: 0.5,
-    width: "99.5%",
-    paddingTop: 15,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    borderWidth: Platform.OS === "ios" ? 0.5 : 0,
-    borderRadius: 2,
-    borderColor:
-      Platform.OS === "ios" ? "rgb(225, 225, 225)" : "rgba(0,0,0,.0)",
-
-    // shadow
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 2.5,
-    elevation: 2,
-  },
-};

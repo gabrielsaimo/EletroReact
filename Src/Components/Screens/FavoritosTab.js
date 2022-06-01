@@ -11,6 +11,7 @@ import {
   StyleSheet,
 } from "react-native";
 import Local from "../Local";
+import SearchBarHome from "../SearchBarHome";
 import { Appbar, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import StarRating from "react-native-star-rating";
@@ -147,6 +148,7 @@ export default function FavoritosTab() {
           ) : (
             <></>
           )}
+
           <View
             style={
               data.favorito
