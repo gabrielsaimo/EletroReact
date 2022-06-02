@@ -25,6 +25,11 @@ function AuthProvider({ children }) {
         setArrayCompra(JSON.parse(arry));
       }
     });
+    AsyncStorage.getItem("multcar").then((arry) => {
+      if (multcar.length === 0 && arry.length > 0 && !exclui) {
+        setMultcar(JSON.parse(arry));
+      }
+    });
     if (carrinho.length === 0) {
     } else {
       const gg = JSON.stringify(carrinho);
@@ -36,8 +41,15 @@ function AuthProvider({ children }) {
           .replace(/":"q/g, '","q')
           .replace(/":"k/g, '","k')
       );
+      AsyncStorage.setItem(
+        "multcar",
+        gs
+          .replace(/""/g, '":"')
+          .replace(/":"q/g, '","q')
+          .replace(/":"k/g, '","k')
+      );
     }
-  }, [carrinho]);
+  }, [carrinho, arrayCompra]);
 
   function consultaCep(cep, sku) {
     if (cep !== "") {
