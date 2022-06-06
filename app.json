@@ -6,7 +6,9 @@
     "icon": "./Src/Components/assets/iconapp.png",
     "version": "1.0.0",
     "orientation": "portrait",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -25,14 +27,16 @@
       ]
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ios.reacteletro"
     },
     "splash": {
       "image": "./Src/Components/assets/tela1.png",
       "backgroundColor": "#1534C8"
     },
     "android": {
-      "package": "com.gabrielsaimo.ReactEletro"
+      "package": "com.gabrielsaimo.ReactEletro",
+      "googleServicesFile": "./google-services.json"
     }
   }
 }

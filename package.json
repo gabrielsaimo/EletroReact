@@ -54,6 +54,7 @@
     "react-native-paper": "^4.11.2",
     "react-native-passmeter": "^0.0.5",
     "react-native-popup-menu": "^0.15.12",
+    "react-native-push-notification": "^8.1.1",
     "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "4.2.4",
     "react-native-screens": "~3.11.1",

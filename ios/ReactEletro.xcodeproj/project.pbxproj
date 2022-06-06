@@ -33,6 +33,7 @@
 		D884037C64C14E9D8D887CFA /* Gadugi-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90A05A557C064E5F9107ABB6 /* Gadugi-bold.ttf */; };
 		C143D9F133C240209BE9FC9C /* gadugi-gras.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D1B382067044B7993C40748 /* gadugi-gras.ttf */; };
 		5A1C408C814A4A9FA72A1D14 /* gadugi-normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7F607A3575D41E18BAD3E8F /* gadugi-normal.ttf */; };
+		11C098B4170C4F47A6FEFE4C /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AD9B6F9BBD429F9B7BFACE /* noop-file.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,8 @@
 		90A05A557C064E5F9107ABB6 /* Gadugi-bold.ttf */ = {isa = PBXFileReference; name = "Gadugi-bold.ttf"; path = "../Src/Components/assets/fonts/Gadugi-bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		3D1B382067044B7993C40748 /* gadugi-gras.ttf */ = {isa = PBXFileReference; name = "gadugi-gras.ttf"; path = "../Src/Components/assets/fonts/gadugi-gras.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		D7F607A3575D41E18BAD3E8F /* gadugi-normal.ttf */ = {isa = PBXFileReference; name = "gadugi-normal.ttf"; path = "../Src/Components/assets/fonts/gadugi-normal.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		79AD9B6F9BBD429F9B7BFACE /* noop-file.swift */ = {isa = PBXFileReference; name = "noop-file.swift"; path = "ReactEletro/noop-file.swift"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.swift; explicitFileType = undefined; includeInIndex = 0; };
+		EAC31CBC4EE7452FB74DB995 /* ReactEletro-Bridging-Header.h */ = {isa = PBXFileReference; name = "ReactEletro-Bridging-Header.h"; path = "ReactEletro/ReactEletro-Bridging-Header.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +97,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
+				79AD9B6F9BBD429F9B7BFACE /* noop-file.swift */,
+				EAC31CBC4EE7452FB74DB995 /* ReactEletro-Bridging-Header.h */,
 			);
 			name = ReactEletro;
 			sourceTree = "<group>";
@@ -281,6 +286,7 @@
 				D884037C64C14E9D8D887CFA /* Gadugi-bold.ttf in Resources */,
 				C143D9F133C240209BE9FC9C /* gadugi-gras.ttf in Resources */,
 				5A1C408C814A4A9FA72A1D14 /* gadugi-normal.ttf in Resources */,
+				C5976A52463B4D46941764A9 /* ReactEletro-Bridging-Header.h in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +378,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
+				11C098B4170C4F47A6FEFE4C /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,11 +405,13 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.ReactEletro;
-				PRODUCT_NAME = ReactEletro;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ios.reacteletro";
+				PRODUCT_NAME = "Eletrosom";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_OBJC_BRIDGING_HEADER = ReactEletro/ReactEletro-Bridging-Header.h;
 			};
 			name = Debug;
 		};
@@ -421,10 +430,12 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.ReactEletro;
-				PRODUCT_NAME = ReactEletro;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ios.reacteletro";
+				PRODUCT_NAME = "Eletrosom";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_OBJC_BRIDGING_HEADER = ReactEletro/ReactEletro-Bridging-Header.h;
 			};
 			name = Release;
 		};
