@@ -322,7 +322,9 @@ export default function CategoriasProduto({ route, navigation }) {
                     </View>
                   ) : (
                     <View style={[styles.abosolutrow, { marginTop: -10 }]}>
-                      <View style={styles.corpotag1}>
+                      <View
+                        style={[styles.corpotag1, { flexDirection: "row" }]}
+                      >
                         <Text style={styles.textBrancog}>
                           {data.percentual}% off
                         </Text>
@@ -489,8 +491,8 @@ export default function CategoriasProduto({ route, navigation }) {
           <View style={{ width: "48%", alignItems: "center" }}>
             <Text style={{ fontSize: 20, fontWeight: "bold" }}>
               {Object.keys(data).length === 0
-                ? ["Calculando...", <ActivityIndicator />]
-                : Object.keys(data).length - 1 + " Produtos"}
+                ? [<ActivityIndicator />]
+                : Object.keys(data).length + " Produtos"}
             </Text>
           </View>
           <View flexDirection={"row"}>

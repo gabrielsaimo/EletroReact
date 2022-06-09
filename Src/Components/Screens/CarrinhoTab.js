@@ -28,7 +28,6 @@ export default function MeusCartoes({ route, navigation }) {
   }, [isFocused]);
 
   async function Meucarrinho() {
-    setLoad(true);
     await fetch(`${URL_PROD}carrinho`, {
       method: "POST",
       headers: {
@@ -67,7 +66,7 @@ export default function MeusCartoes({ route, navigation }) {
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }}></View>
       {load == false ? (
         <>
-          {multcar !== "{}" ? (
+          {multcar !== "{}" && data.retorno.produtos.length > 0 && !load ? (
             <FlatList
               data={data.retorno.produtos}
               showsHorizontalScrollIndicator={false}

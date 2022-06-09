@@ -33,7 +33,6 @@ import { LogBox } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-//console.disableYellowBox = true;
 LogBox.ignoreAllLogs();
 const Categoria = () => {
   return (

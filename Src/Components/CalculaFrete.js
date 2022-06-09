@@ -11,7 +11,7 @@ export default function CalculaFrete({ cep, sku }) {
   console.log(data);
 
   useEffect(() => {
-    fetch(`${URL_PROD}consultaFrete?sku=${sku}&cep=${cep}`)
+    fetch(`${URL_PROD}consultaFrete?sku=${sku}&cep=${cep}&version=2`)
       .then((response) => response.json())
       .then((json) => setData(json[0]))
       .catch((error) => console.error(error + " produtoFilhos.js"))
@@ -58,13 +58,3 @@ export default function CalculaFrete({ cep, sku }) {
     </View>
   );
 }
-const style = StyleSheet.create({
-  bol: {
-    color: "#D4D4D4",
-    margin: 3,
-  },
-  setbol: {
-    color: "#000",
-    margin: 3,
-  },
-});
