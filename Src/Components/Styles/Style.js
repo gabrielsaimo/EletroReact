@@ -1,5 +1,11 @@
 import { StyleSheet } from "react-native";
 export default StyleSheet.create({
+  produtoImagem: {
+    width: 115,
+    height: 115,
+    resizeMode: "contain",
+    margin: 10,
+  },
   textBrancog: {
     fontSize: 11,
     color: "#FFF",
