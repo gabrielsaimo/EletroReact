@@ -56,6 +56,7 @@ export default class CategoriasTab extends Component {
         <FlatList
           data={this.state.data}
           style={{ height: "100 %" }}
+          initialNumToRender={20}
           keyExtractor={(item) => String(item.idCat)}
           renderItem={({ item }) => (
             <View style={{ alignItems: "center", flex: 1 }}>

@@ -66,6 +66,7 @@ export default App = () => {
           <FlatList
             horizontal
             pagingEnabled
+            initialNumToRender={5}
             onScroll={change}
             showsHorizontalScrollIndicator={false}
             data={data.banners}

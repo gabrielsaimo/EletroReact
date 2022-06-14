@@ -35,9 +35,7 @@ export default function MeusEnderecos({ route, navigation }) {
   }, []);
   const enderecos = async () => {
     try {
-      await fetch(
-        `${URL_PROD}listaMeusEnderecos?idCliente=${id}&lista=Todos`
-      )
+      await fetch(`${URL_PROD}listaMeusEnderecos?idCliente=${id}&lista=Todos`)
         .then((res) => res.json())
         .then((resData) => {
           setData(resData);
@@ -54,9 +52,7 @@ export default function MeusEnderecos({ route, navigation }) {
   };
   const deleteEndereco = async (id) => {
     try {
-      await fetch(
-        `${URL_PROD}excluirEndereco?idEndereco=${id}`
-      )
+      await fetch(`${URL_PROD}excluirEndereco?idEndereco=${id}`)
         .then((res) => res.json())
         .then((resData) => {
           setRefreshing(true);
@@ -99,6 +95,7 @@ export default function MeusEnderecos({ route, navigation }) {
         <FlatList
           data={data}
           keyExtractor={(item, index) => index}
+          initialNumToRender={4}
           renderItem={({ item }) => (
             <View
               style={{
@@ -208,7 +205,7 @@ export default function MeusEnderecos({ route, navigation }) {
               </MenuContext>
             </View>
           )}
-        ></FlatList>
+        />
         <TouchableOpacity
           onPress={() =>
             navigation.navigate("add_config_endereco", { idCliente: id })

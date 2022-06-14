@@ -61,6 +61,8 @@ export default function App({ volt, sku, navigation }) {
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
+            initialNumToRender={20}
+            refreshing={isLoading} //! tirar se não for necessário
             data={data.filhos}
             keyExtractor={(item, index) => index}
             renderItem={({ item, index }) => (

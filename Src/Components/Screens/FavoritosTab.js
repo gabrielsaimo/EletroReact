@@ -506,6 +506,7 @@ export default function FavoritosTab() {
           <FlatList
             data={data}
             numColumns={columns}
+            initialNumToRender={10}
             key={columns}
             keyExtractor={(item) => item.codigo}
             renderItem={({ item }) => (
@@ -525,7 +526,7 @@ export default function FavoritosTab() {
                 )}
               </View>
             )}
-          ></FlatList>
+          />
         ) : (
           <View style={{ alignItems: "center", marginTop: 100 }}>
             <Text> Vazio</Text>

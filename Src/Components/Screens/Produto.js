@@ -289,6 +289,8 @@ export default function Produto({ route, navigation }) {
         <FlatList
           data={data}
           keyExtractor={(item, index) => index}
+          initialNumToRender={10}
+          refreshing={loading}
           renderItem={({ item, index }) => (
             <View
               style={{
@@ -334,6 +336,7 @@ export default function Produto({ route, navigation }) {
                   <FlatList
                     horizontal
                     pagingEnabled
+                    refreshing={loading}
                     onScroll={change}
                     showsHorizontalScrollIndicator={false}
                     data={item.imagem}
@@ -397,6 +400,8 @@ export default function Produto({ route, navigation }) {
                   horizontal
                   pagingEnabled
                   onScroll={change}
+                  initialNumToRender={10}
+                  refreshing={loading}
                   showsHorizontalScrollIndicator={false}
                   data={item.imagem}
                   keyExtractor={(item, index) => index}

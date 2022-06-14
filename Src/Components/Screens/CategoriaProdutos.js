@@ -563,6 +563,7 @@ export default function CategoriasProduto({ route, navigation }) {
             data={data}
             // onEndReachedThreshold={0.3}
             keyExtractor={(item, index) => index}
+            initialNumToRender={10}
             numColumns={columns}
             key={columns}
             refreshControl={

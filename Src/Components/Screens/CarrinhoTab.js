@@ -70,6 +70,8 @@ export default function MeusCartoes({ route, navigation }) {
             <FlatList
               data={data.retorno.produtos}
               showsHorizontalScrollIndicator={false}
+              initialNumToRender={10}
+              refreshing={load} //! tirar se não for necessário
               keyExtractor={(item, index) => index}
               renderItem={({ item, index }) => (
                 <View>

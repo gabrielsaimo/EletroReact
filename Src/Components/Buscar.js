@@ -589,6 +589,7 @@ export default function Buscar({ route }) {
             data={data}
             // onEndReachedThreshold={0.3}
             initialNumToRender={data.length - 1}
+            refreshing={loading}
             keyExtractor={(item, index) => index}
             numColumns={columns}
             key={columns}

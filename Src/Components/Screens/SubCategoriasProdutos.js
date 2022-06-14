@@ -25,6 +25,7 @@ export default function SubCategoriasProdutos({ route }) {
           <FlatList
             data={data}
             style={{ height: "100 %" }}
+            initialNumToRender={20}
             keyExtractor={(item) => String(item.idSub)}
             renderItem={({ item }) => (
               <View style={{ alignItems: "center", flex: 1 }}>

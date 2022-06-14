@@ -39,6 +39,8 @@ export default function Pedidos({ route, navigation }) {
       {data.length > 0 && data[0] !== null ? (
         <FlatList
           data={data}
+          initialNumToRender={5}
+          refreshing={loading}
           keyExtractor={(item) => item.incrementId}
           renderItem={({ item }) => (
             <>
