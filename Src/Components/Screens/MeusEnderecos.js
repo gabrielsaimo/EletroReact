@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -21,11 +21,14 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu";
+import { AuthContext } from "../../Contexts/Auth";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function MeusEnderecos({ route, navigation }) {
-  const id = route.params.idCliente;
+  const { user1 } = useContext(AuthContext);
+  const id = user1.idCliente;
+  console.log(route.params.rota);
   const [data, setData] = useState([]);
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
@@ -82,7 +85,8 @@ export default function MeusEnderecos({ route, navigation }) {
   };
   return (
     <View style={{ marginBottom: 70 }}>
-      <SearchBar />
+      {route.params.rota != undefined ? <></> : <SearchBar />}
+
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }}></View>
       <ScrollView
         nestedScrollEnabled

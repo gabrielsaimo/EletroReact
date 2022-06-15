@@ -40,7 +40,7 @@ export default function Produto({ route, navigation }) {
   const [precoDe, setprecoDe] = useState(route.params.precode);
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
-  const runFirst = `let selector = document.querySelector("img") 
+  const runFirst = `let selector = document.querySelectorAll("img") 
                     selector.style.display = "none"
                     true;`;
   const [isVisibleDescr, setDescri] = useState(false);
@@ -92,13 +92,13 @@ export default function Produto({ route, navigation }) {
       }, 8000);
     } else {
       setAlert(false);
-      Comprar();
     }
   }
   function clickCarrinho() {
     if (!volt && filhos !== undefined) {
       fadeIn();
       setCarrinho(true);
+      Comprar();
       setTimeout(() => {
         fadeOut();
       }, 5000);
@@ -111,6 +111,7 @@ export default function Produto({ route, navigation }) {
     if (!volt && filhos === undefined) {
       fadeIn();
       setAlert(true);
+      Comprar();
       setTimeout(() => {
         fadeOut();
       }, 5000);
@@ -120,6 +121,7 @@ export default function Produto({ route, navigation }) {
     } else if (configuravel == false) {
       fadeIn();
       setCarrinho(true);
+      Comprar();
       setTimeout(() => {
         fadeOut();
       }, 5000);
@@ -140,9 +142,9 @@ export default function Produto({ route, navigation }) {
           produtos: [
             {
               sku:
-                route.params.sku2 === undefined
-                  ? "" + sku + ""
-                  : "" + skuvolt + "",
+                route.params.sku === undefined
+                  ? "" + skuvolt + ""
+                  : "" + sku + "",
               qtde: "1",
             },
           ],
@@ -155,7 +157,12 @@ export default function Produto({ route, navigation }) {
       .then((resData) => {
         setVoltar(true);
         Compra([resData.retorno]);
-        Carrinho(sku, 1);
+        if(skuvolt === undefined){
+          Carrinho(sku, 1);
+        }else{
+          Carrinho(skuvolt, 1);
+        }
+        
         navigation.navigate("Carrinho");
       });
   }
@@ -180,10 +187,10 @@ export default function Produto({ route, navigation }) {
     if (isFocused === false && !voltar) {
       navigation.goBack();
     }
-  }, [isFocused]);
+  }, [isFocused, route.params]);
   useEffect(() => {
     setModal(false);
-  }, [isFocused]);
+  }, [isFocused, route.params]);
 
   const SearchBar = () => {
     return (

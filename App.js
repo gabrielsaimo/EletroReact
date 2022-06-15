@@ -158,6 +158,7 @@ const Carrinho = () => {
       }}
     >
       <Stack.Screen name="Carrinho" component={CarrinhoTab} />
+      <Stack.Screen name="MeusEnderecos" component={MeusEnderecos} />
     </Stack.Navigator>
   );
 };

@@ -26,6 +26,9 @@ function AuthProvider({ children }) {
       }
     });
     AsyncStorage.getItem("multcar").then((arry) => {
+      console.log(arry);
+      console.log(multcar);
+      console.log("aqui");
       if (multcar.length === 0 && arry.length > 0 && !exclui) {
         setMultcar(JSON.parse(arry));
       }
@@ -64,7 +67,7 @@ function AuthProvider({ children }) {
       var id = Object.keys(arraycard).length + 1;
       var key = id.toString();
       arraycard.map((i, k) => {
-        i.key === key ? (key = key + 1) : key;
+        i.key === key ? key : (key = key + 1);
       });
     }
     setArrayCompra(sku);
