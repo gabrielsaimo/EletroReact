@@ -41,7 +41,9 @@ export default function Produto({ route, navigation }) {
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
   const runFirst = `let selector = document.querySelectorAll("img") 
-                    selector.style.display = "none"
+                    selector[0].style.display = "none"
+                    selector[1].style.display = "none"
+                    selector[2].style.display = "none"
                     true;`;
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
@@ -56,6 +58,7 @@ export default function Produto({ route, navigation }) {
   const [volt, setVolt] = useState(false);
   const [TextInput_cep, setTextCep] = useState(usercep);
   const [data, setData] = useState("");
+  console.log("🚀 ~ file: Produto.js ~ line 59 ~ Produto ~ data", data);
   const [loading, setLoading] = useState(false);
   const [imgclik, setImgclik] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -143,8 +146,8 @@ export default function Produto({ route, navigation }) {
             {
               sku:
                 route.params.sku === undefined
-                  ? "" + skuvolt + ""
-                  : "" + sku + "",
+                  ? "" + route.params.sku2 + ""
+                  : "" + route.params.sku + "",
               qtde: "1",
             },
           ],
@@ -157,12 +160,12 @@ export default function Produto({ route, navigation }) {
       .then((resData) => {
         setVoltar(true);
         Compra([resData.retorno]);
-        if(skuvolt === undefined){
+        if (skuvolt === undefined) {
           Carrinho(sku, 1);
-        }else{
+        } else {
           Carrinho(skuvolt, 1);
         }
-        
+
         navigation.navigate("Carrinho");
       });
   }
@@ -893,7 +896,9 @@ export default function Produto({ route, navigation }) {
                     >
                       <WebView
                         source={{
-                          uri: `${URL_PROD}caracteristicasProduto?codigoProduto=${sku}`,
+                          uri: `${URL_PROD}caracteristicasProduto?codigoProduto=${
+                            sku === undefined ? skuvolt : sku
+                          }`,
                         }}
                         injectedJavaScript={runFirst}
                         scalesPageToFit={false}
