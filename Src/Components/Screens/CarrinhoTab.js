@@ -7,7 +7,6 @@ import {
   FlatList,
   ActivityIndicator,
   TextInput,
-  TouchableHighlight,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
@@ -157,6 +156,7 @@ export default function MeusCartoes({ route }) {
                               borderBottomLeftRadius: 4,
                               marginRight: -1,
                               alignItems: "center",
+                              borderColor: "#E5E5E5",
                             }}
                           >
                             <Text
@@ -176,6 +176,7 @@ export default function MeusCartoes({ route }) {
                               borderTopWidth: 1,
                               borderBottomWidth: 1,
                               alignItems: "center",
+                              borderColor: "#E5E5E5",
                             }}
                           >
                             <Text style={{ fontSize: 18 }}>
@@ -191,6 +192,7 @@ export default function MeusCartoes({ route }) {
                               borderTopRightRadius: 4,
                               borderBottomRightRadius: 4,
                               alignItems: "center",
+                              borderColor: "#E5E5E5",
                             }}
                           >
                             <Text style={{ fontSize: 18, color: "#1534C8" }}>
@@ -335,7 +337,11 @@ export default function MeusCartoes({ route }) {
                     }}
                   >
                     <Text style={{ color: "#6A7075" }}>
-                      Produtos ({Object.keys(data.retorno.produtos).length}){" "}
+                      Produtos (
+                      {Object.keys(data.retorno.produtos).length === undefined
+                        ? 0
+                        : data.retorno.produtos.length}
+                      ){" "}
                     </Text>
                     <Text style={{ fontWeight: "bold", color: "#6A7075" }}>
                       R$ {data.retorno.totalGeral},00

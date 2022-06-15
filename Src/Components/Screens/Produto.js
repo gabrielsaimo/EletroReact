@@ -58,24 +58,23 @@ export default function Produto({ route, navigation }) {
   const [volt, setVolt] = useState(false);
   const [TextInput_cep, setTextCep] = useState(usercep);
   const [data, setData] = useState("");
-  console.log("🚀 ~ file: Produto.js ~ line 59 ~ Produto ~ data", data);
   const [loading, setLoading] = useState(false);
   const [imgclik, setImgclik] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const fadeIn = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 1000,
+      useNativeDriver: true,
     }).start();
   };
 
   const fadeOut = () => {
-    // Will change fadeAnim value to 0 in 3 seconds
     Animated.timing(fadeAnim, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: true,
     }).start();
   };
   function Clickcep() {
@@ -165,8 +164,6 @@ export default function Produto({ route, navigation }) {
         } else {
           Carrinho(skuvolt, 1);
         }
-
-        navigation.navigate("Carrinho");
       });
   }
 
@@ -280,7 +277,7 @@ export default function Produto({ route, navigation }) {
               ✓{"     "}Produto adicinado ao carrinho{"     "}
             </Text>
             <Text
-              onPress={() => console.log("ver!")}
+              onPress={() => navigation.navigate("Carrinho")}
               style={{
                 color: "white",
                 fontSize: 18,
