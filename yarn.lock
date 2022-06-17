@@ -12363,9 +12363,6 @@ watchpack@^1.6.1:
   dependencies:
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
-  optionalDependencies:
-    chokidar "^3.4.0"
-    chokidar2 "file:../.cache/yarn/v6/npm-watchpack-1.7.1-integrity/node_modules/watchpack/chokidar2"
 
 wbuf@^1.1.0, wbuf@^1.7.3:
   version "1.7.3"
@@ -12404,7 +12401,6 @@ webpack-dev-server@3.11.0:
   dependencies:
     ansi-html "0.0.7"
     bonjour "^3.5.0"
-    chokidar "^2.1.8"
     compression "^1.7.4"
     connect-history-api-fallback "^1.6.0"
     debug "^4.1.1"

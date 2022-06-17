@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import { AuthContext } from "../../Contexts/Auth";
 import { IconButton } from "react-native-paper";
@@ -59,11 +60,11 @@ export default function MeusCartoes({ route }) {
       .then((res) => res.json())
       .then((resData) => {
         setData(resData);
-        console.log([resData, setLoad(false)]);
+        setLoad(false);
       })
       .catch((error) => {
         console.log(error);
-        alert("Erro ao carregar o carrinho");
+        alert("Erro ao carregar o carrinho"); //!
       });
   }
 
@@ -76,11 +77,16 @@ export default function MeusCartoes({ route }) {
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
   }
   return (
-    <View style={{ marginBottom: 70 }}>
+    <SafeAreaView style={{ marginBottom: 70 }}>
+      {console.log(data.length)}
+      {console.log(data)}
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }} />
       {load == false ? (
         <>
-          {multcar !== "{}" && data.codigoMensagem != 325 && !load ? (
+          {multcar !== "{}" &&
+          data.codigoMensagem != 325 &&
+          data.retorno.totalGeral != 0 &&
+          !load ? (
             <>
               <ScrollView
                 nestedScrollEnabled
@@ -415,17 +421,17 @@ export default function MeusCartoes({ route }) {
                         borderRadius: 5,
                         marginVertical: 30,
                       }}
+                      onPress={() => {
+                        navigation.navigate("MeusEnderecos", {
+                          rota: "carrinho",
+                        });
+                      }}
                     >
                       <Text
                         style={{
                           color: "#FFF",
                           fontWeight: "bold",
                           fontSize: 20,
-                        }}
-                        onPress={() => {
-                          navigation.navigate("MeusEnderecos", {
-                            rota: "carrinho",
-                          });
                         }}
                       >
                         Prosseguir para compra
@@ -485,6 +491,6 @@ export default function MeusCartoes({ route }) {
       ) : (
         <ActivityIndicator />
       )}
-    </View>
+    </SafeAreaView>
   );
 }
