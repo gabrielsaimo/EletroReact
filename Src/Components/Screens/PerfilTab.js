@@ -99,6 +99,7 @@ export default function PerfilTab() {
     }
   };
   const logout = () => {
+    signIn(null, null, null, null, null, null, null, null, null, null);
     AsyncStorage.clear();
     navigation.reset({
       routes: [{ name: "Perfils" }],
@@ -220,13 +221,19 @@ export default function PerfilTab() {
               <Text style={{ marginLeft: 3, fontSize: 15, color: "#6A7075" }}>
                 Fáça seu
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Login", { rota: "perfil" })}
+              >
                 <Text style={styles.textPart2}>login</Text>
               </TouchableOpacity>
             </View>
             <View style={{ marginTop: -30, flexDirection: "row" }}>
               <Text style={{ fontSize: 15, color: "#6A7075" }}>ou</Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Cadastro", { rota: "perfil" })
+                }
+              >
                 <Text style={styles.textPart2}>cadastre-se</Text>
               </TouchableOpacity>
             </View>
@@ -278,7 +285,10 @@ export default function PerfilTab() {
               onPress={
                 id != null
                   ? () =>
-                      navigation.navigate("MeusEnderecos", { idCliente: id })
+                      navigation.navigate("MeusEnderecos", {
+                        idCliente: id,
+                        rota: "perfil",
+                      })
                   : onToggleSnackBar
               }
             >
@@ -307,7 +317,11 @@ export default function PerfilTab() {
             <TouchableOpacity
               onPress={
                 id != null
-                  ? () => navigation.navigate("MeusCartoes", { id: id })
+                  ? () =>
+                      navigation.navigate("MeusCartoes", {
+                        id: id,
+                        rota: "perfil",
+                      })
                   : onToggleSnackBar
               }
             >
@@ -359,11 +373,7 @@ export default function PerfilTab() {
               style={{ width: "100%", height: 1, backgroundColor: "#CED4DA" }}
             ></View>
             <TouchableOpacity
-              onPress={
-                id != null
-                  ? () => navigation.navigate("Cadastrofim")
-                  : onToggleSnackBar
-              }
+              onPress={id != null ? () => {} : onToggleSnackBar}
             >
               <View style={{ flexDirection: "row", paddingVertical: 20 }}>
                 <FontAwesomeIcon

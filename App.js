@@ -30,6 +30,7 @@ import passwordReset from "./Src/Components/Screens/passwordReset";
 import Cadastrofim from "./Src/Components/Cadastrofim";
 import MeusCartoes from "./Src/Components/Screens/MeusCartoes";
 import { LogBox } from "react-native";
+import Checkout from "./Src/Components/Chekout";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -158,7 +159,13 @@ const Carrinho = () => {
       }}
     >
       <Stack.Screen name="Carrinho" component={CarrinhoTab} />
-      <Stack.Screen name="MeusEnderecos" component={MeusEnderecos} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Endereços" component={MeusEnderecos} />
+      <Stack.Screen
+        name="Entrega"
+        component={Checkout}
+        Options={{ headerShown: false, headerTitleAlign: "center" }}
+      />
     </Stack.Navigator>
   );
 };

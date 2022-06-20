@@ -15,14 +15,18 @@ import { AuthContext } from "../../Contexts/Auth";
 import { IconButton } from "react-native-paper";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { TextInputMask } from "react-native-masked-text";
-
+import { Snackbar } from "react-native-paper";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
-export default function MeusCartoes() {
+export default function MeusCartoes({ route }) {
   const { URL_PROD } = process.env;
   const navigation = useNavigation();
-  const { Compra, user1, multcar, arrayCompra } = useContext(AuthContext);
+  const { user1, Compra, multcar, arrayCompra } = useContext(AuthContext);
+  console.log(
+    "🚀 ~ file: CarrinhoTab.js ~ line 25 ~ MeusCartoes ~ user1",
+    user1
+  );
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
   const [intervalo, setIntervalo] = useState(false);
@@ -32,8 +36,11 @@ export default function MeusCartoes() {
   );
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
+  const [visible, setVisible] = React.useState(false);
   const [cepvisible, setVisiblecep] = useState(false);
   const [TextInput_cep, setTextCep] = useState("");
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => {
@@ -280,7 +287,7 @@ export default function MeusCartoes() {
                               </View>
 
                               <View style={{ padding: 10 }}>
-                                <Text>Chega {data.retorno.frete[0].prazo}</Text>
+                                <Text>{data.retorno.frete[0].prazo}</Text>
                               </View>
                             </>
                           ) : (
@@ -383,21 +390,19 @@ export default function MeusCartoes() {
                     <View style={{ alignItems: "center" }}>
                       <TouchableOpacity
                         style={{
-                          backgroundColor: !intervalo ? "#9BCB3D" : "#E4E4E4",
+                          backgroundColor: "#9BCB3D",
                           padding: 15,
                           paddingHorizontal: 75,
                           borderRadius: 5,
                           marginVertical: 30,
                         }}
-                        disabled={intervalo}
                         onPress={() => {
                           user1.idCliente != null
-                            ? navigation.navigate("MeusEnderecos", {
+                            ? navigation.navigate("Endereços", {
                                 rota: "carrinho",
+                                cart: JSON.stringify(data.retorno.produtos),
                               })
-                            : alert(
-                                "Para continuar, você precisa estar logado"
-                              );
+                            : onToggleSnackBar();
                         }}
                       >
                         <Text
@@ -410,6 +415,19 @@ export default function MeusCartoes() {
                           Prosseguir para compra
                         </Text>
                       </TouchableOpacity>
+                    </View>
+                    <View style={{ marginTop: 50 }}>
+                      <Snackbar
+                        visible={visible}
+                        onDismiss={onDismissSnackBar}
+                        action={{
+                          label: "Logar",
+                          onPress: () =>
+                            navigation.navigate("Login", { rota: "carrinho" }),
+                        }}
+                      >
+                        Logue para prosseguir
+                      </Snackbar>
                     </View>
                   </View>
                 )}

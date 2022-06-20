@@ -8,6 +8,7 @@ const { URL_PROD } = process.env;
 export default function CalculaFrete({ cep, sku }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
+  console.log("🚀 ~ file: CalculaFrete.js ~ line 11 ~ CalculaFrete ~ data", data)
   useEffect(() => {
     fetch(`${URL_PROD}consultaFrete?sku=${sku}&cep=${cep}&version=18`)
       .then((response) => response.json())

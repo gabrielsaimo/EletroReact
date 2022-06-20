@@ -19,7 +19,9 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Login() {
+export default function Login({ route }) {
+  const rota = route.params.rota;
+  console.log("🚀 ~ file: Login.js ~ line 24 ~ Login ~ rota", rota);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn } = useContext(AuthContext);
@@ -34,7 +36,6 @@ export default function Login() {
 
     const response = await AuthSession.startAsync({ authUrl });
     if (response.type === "success") {
-      console.log("ok");
       loadProfile();
       async function loadProfile() {
         const response2 = await fetch(
@@ -70,9 +71,7 @@ export default function Login() {
             const Rg = resData.dados_cliente.rg;
             const FotoCliente = resData.dados_cliente.foto_cliente;
 
-            fetch(
-              `${URL_PROD}listaMeusEnderecos?idCliente=${idCliente}`
-            )
+            fetch(`${URL_PROD}listaMeusEnderecos?idCliente=${idCliente}`)
               .then((ress) => ress.json())
               .then((resDatas) => {
                 const Endereco = resDatas.endereco;
@@ -99,12 +98,16 @@ export default function Login() {
               .catch((error) => console.log(error));
 
             setTimeout(() => {
-              navigation.reset({
-                routes: [{ name: "Perfils" }],
-                key: null,
-                initial: false,
-              });
-              navigation.goBack();
+              if (rota == "carrinho") {
+                navigation.navigate("Carrinho");
+              } else {
+                navigation.reset({
+                  routes: [{ name: "Perfils" }],
+                  key: null,
+                  initial: false,
+                });
+                navigation.goBack();
+              }
             }, 1000);
           } else if (resData.codigoMensagem == 317) {
             alert("Login ou Senha Inválidos");
@@ -123,34 +126,42 @@ export default function Login() {
   return (
     <SafeAreaView>
       <View>
-        <Appbar.Header
-          style={{ backgroundColor: "#1534C8", marginTop: 0, zIndex: 1 }}
-        ></Appbar.Header>
+        {rota != "carrinho" ? (
+          <Appbar.Header
+            style={{ backgroundColor: "#1534C8", marginTop: 0, zIndex: 1 }}
+          />
+        ) : (
+          <></>
+        )}
+
         <View
           style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 10 }}
         ></View>
       </View>
-
-      <View style={{ marginTop: 30 }}>
-        <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Perfil")}>
-            <FontAwesomeIcon
-              icon={faAngleLeft}
-              style={{ color: "#1534C8" }}
-              size={30}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{ alignSelf: "center", marginTop: -38 }}>
-          <View style={styles.card2}>
-            <Text style={styles.texteletro}>eletrosom</Text>
-            <Text style={styles.textponto}>.</Text>
-            <TouchableOpacity onPress={{}}>
-              <Text style={styles.textcom}>com</Text>
+      {rota != "carrinho" ? (
+        <View style={{ marginTop: 30 }}>
+          <View style={{ alignSelf: "flex-start", marginLeft: 10 }}>
+            <TouchableOpacity onPress={() => navigation.navigate("Perfil")}>
+              <FontAwesomeIcon
+                icon={faAngleLeft}
+                style={{ color: "#1534C8" }}
+                size={30}
+              />
             </TouchableOpacity>
           </View>
+          <View style={{ alignSelf: "center", marginTop: -38 }}>
+            <View style={styles.card2}>
+              <Text style={styles.texteletro}>eletrosom</Text>
+              <Text style={styles.textponto}>.</Text>
+              <TouchableOpacity onPress={{}}>
+                <Text style={styles.textcom}>com</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </View>
+      ) : (
+        <></>
+      )}
 
       <View style={{ alignItems: "center" }}>
         <View style={{ alignItems: "center", marginVertical: 30 }}>
