@@ -7,11 +7,11 @@ function AuthProvider({ children }) {
   const [user1, setUser1] = useState({});
   const [arrayCompra, setArrayCompra] = useState([]);
   const [multcar, setMultcar] = useState([]);
-  const [carrinho, setCarrinho] = useState({});
-
+  const [carrinho, setCarrinho] = useState([]);
   const [exclui, setExclui] = useState(false);
   const [arraycard, setArrayCard] = useState([]);
   useEffect(() => {
+    let isMounted = true;
     AsyncStorage.getItem("idCliente").then((idCliente) => {
       setUser1({ idCliente: idCliente });
     });
@@ -21,38 +21,41 @@ function AuthProvider({ children }) {
       }
     });
     AsyncStorage.getItem("arrayCompra").then((arry) => {
-      if (arrayCompra.length === 0 && arry.length > 0 && !exclui) {
+      if (arrayCompra.length === 0 && arry != undefined && !exclui) {
         setArrayCompra(JSON.parse(arry));
       }
     });
-    AsyncStorage.getItem("multcar").then((arry) => {
-      console.log(arry);
-      console.log(multcar);
-      console.log("aqui");
-      if (multcar.length === 0 && arry.length > 0 && !exclui) {
-        setMultcar(JSON.parse(arry));
+    //! carrinho
+    AsyncStorage.getItem("multcar").then((mult) => {
+      if (
+        (mult.length > 0 && multcar.length === 0) ||
+        multcar.length === undefined
+      ) {
+        setCarrinho(JSON.parse(mult));
+        setMultcar(mult);
       }
     });
+
     if (carrinho.length === 0) {
     } else {
       const gg = JSON.stringify(carrinho);
       gg.replace(/[.!'@,><|://\\;&*()_+=]/g, "");
-      const gs = gg.replace(/[!'@,><|://\\;&*()_+=]/g, "").replace("}{", "},{");
-      setMultcar(
-        gs
-          .replace(/""/g, '":"')
-          .replace(/":"q/g, '","q')
-          .replace(/":"k/g, '","k')
-      );
-      AsyncStorage.setItem(
-        "multcar",
-        gs
-          .replace(/""/g, '":"')
-          .replace(/":"q/g, '","q')
-          .replace(/":"k/g, '","k')
-      );
+      const gs = gg
+        .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+        .replace("}{", "},{")
+        .replace(/""/g, '":"')
+        .replace(/":"q/g, '","q')
+        .replace(/":"k/g, '","k')
+        .replace(/""/g, '"')
+        .replace(/":"}/g, '"}');
+
+      setMultcar(gs);
+      AsyncStorage.setItem("multcar", gs);
     }
-  }, [carrinho, arrayCompra]);
+    return () => {
+      isMounted = false;
+    };
+  }, [arrayCompra, multcar,carrinho]);
 
   function consultaCep(cep, sku) {
     if (cep !== "") {
@@ -62,29 +65,97 @@ function AuthProvider({ children }) {
       });
     }
   }
-  async function Compra(sku, qtde, excluir) {
-    if (excluir === undefined) {
+  async function Compra(sku, qtde, excluir, editar) {
+    if (sku != undefined) {
       var id = Object.keys(arraycard).length + 1;
-      var key = id.toString();
-      arraycard.map((i, k) => {
-        i.key === key ? key : (key = key + 1);
-      });
+      var key = user1.idCliente;
+    } else if (excluir != undefined) {
+      setMultcar(
+        excluir
+          .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+          .replace("}{", "},{")
+          .replace(/""/g, '":"')
+          .replace(/":"q/g, '","q')
+          .replace(/":"k/g, '","k')
+          .replace(/""/g, '"')
+          .replace(/":"}/g, '"}')
+      );
+      setCarrinho(
+        JSON.parse(
+          excluir
+            .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+            .replace("}{", "},{")
+            .replace(/""/g, '":"')
+            .replace(/":"q/g, '","q')
+            .replace(/":"k/g, '","k')
+            .replace(/""/g, '"')
+            .replace(/":"}/g, '"}')
+        )
+      );
+      AsyncStorage.setItem(
+        "multcar",
+        excluir
+          .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+          .replace("}{", "},{")
+          .replace(/""/g, '":"')
+          .replace(/":"q/g, '","q')
+          .replace(/":"k/g, '","k')
+          .replace(/""/g, '"')
+          .replace(/":"}/g, '"}')
+      );
     }
+    if (editar != undefined) {
+      setMultcar(
+        editar
+          .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+          .replace("}{", "},{")
+          .replace(/""/g, '":"')
+          .replace(/":"q/g, '","q')
+          .replace(/":"k/g, '","k')
+          .replace(/""/g, '"')
+          .replace(/":"}/g, '"}')
+      );
+      setCarrinho(
+        JSON.parse(
+          editar
+            .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+            .replace("}{", "},{")
+            .replace(/""/g, '":"')
+            .replace(/":"q/g, '","q')
+            .replace(/":"k/g, '","k')
+            .replace(/""/g, '"')
+            .replace(/":"}/g, '"}')
+        )
+      );
+      AsyncStorage.setItem(
+        "multcar",
+        editar
+          .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+          .replace("}{", "},{")
+          .replace(/""/g, '":"')
+          .replace(/":"q/g, '","q')
+          .replace(/":"k/g, '","k')
+          .replace(/""/g, '"')
+          .replace(/":"}/g, '"}')
+      );
+    }
+
     setArrayCompra(sku);
   }
 
   async function Carrinho(sku, qtde, excluir) {
     if (excluir === undefined) {
-      var id = Object.keys(arraycard).length + 1;
-      var key = id.toString();
-      arraycard.map((i, k) => {
-        i.key === key ? (key = key + 1) : key;
-      });
+      var id = Object.keys(multcar).length + 1;
     }
     if (carrinho.length === undefined) {
-      setCarrinho([{ sku: sku, qtde: "1", key: key }]);
+      setCarrinho([
+        { sku: sku, qtde: "1", key: JSON.stringify(user1.idCliente) },
+      ]);
     } else {
-      setCarrinho([{ sku: sku, qtde: "1", key: key }, ...carrinho]);
+      setCarrinho([
+        { sku: sku, qtde: "1", key: JSON.stringify(user1.idCliente) },
+        ...carrinho,
+      ]);
     }
   }
 

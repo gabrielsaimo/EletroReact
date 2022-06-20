@@ -170,7 +170,7 @@ export default function MeusCartoes({ route, navigation }) {
           <Image
             style={{ width: 45, height: 45, marginRight: 10 }}
             source={require("../../../Src/Components/assets/delete_icon.png")}
-          ></Image>
+          />
         </TouchableOpacity>
       )}
     </>

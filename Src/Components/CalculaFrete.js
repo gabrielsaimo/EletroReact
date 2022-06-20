@@ -9,9 +9,11 @@ export default function CalculaFrete({ cep, sku }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
   useEffect(() => {
-    fetch(`${URL_PROD}consultaFrete?sku=${sku}&cep=${cep}&version=17`)
+    fetch(`${URL_PROD}consultaFrete?sku=${sku}&cep=${cep}&version=18`)
       .then((response) => response.json())
-      .then((json) => setData(json))
+      .then((json) => {
+        setData(json);
+      })
       .catch((error) => console.error(error + " produtoFilhos.js"))
       .finally(() => setLoading(false));
   }, []);

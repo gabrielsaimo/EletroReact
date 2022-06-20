@@ -10,6 +10,7 @@ import {
   Image,
   Platform,
   Animated,
+  ActivityIndicator,
 } from "react-native";
 
 import Modal from "react-native-modal";
@@ -54,6 +55,7 @@ export default function Produto({ route, navigation }) {
   const [usercep, setUsercep] = useState(user.cep);
   const { width, height } = Dimensions.get("window");
   const bottom = height - 87;
+  const [load, setLoad] = useState(false);
   const [alert, setAlert] = useState(false);
   const [volt, setVolt] = useState(false);
   const [TextInput_cep, setTextCep] = useState(usercep);
@@ -83,6 +85,7 @@ export default function Produto({ route, navigation }) {
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
   }
   function clickComprar() {
+    setLoad(true);
     if (!volt && filhos === undefined) {
       fadeIn();
       setAlert(true);
@@ -92,11 +95,14 @@ export default function Produto({ route, navigation }) {
       setTimeout(() => {
         setAlert(false);
       }, 8000);
+      setLoad(false);
     } else {
       setAlert(false);
+      setLoad(false);
     }
   }
   function clickCarrinho() {
+    setLoad(true);
     if (!volt && filhos !== undefined) {
       fadeIn();
       setCarrinho(true);
@@ -107,29 +113,25 @@ export default function Produto({ route, navigation }) {
       setTimeout(() => {
         setCarrinho(false);
       }, 8000);
+      setLoad(false);
     } else {
       setCarrinho(false);
+      setLoad(false);
     }
     if (!volt && filhos === undefined) {
+      setLoad(true);
       fadeIn();
+      console.log("entrou 1");
       setAlert(true);
-      Comprar();
       setTimeout(() => {
         fadeOut();
       }, 5000);
       setTimeout(() => {
         setAlert(false);
       }, 8000);
+      setLoad(false);
     } else if (configuravel == false) {
-      fadeIn();
-      setCarrinho(true);
       Comprar();
-      setTimeout(() => {
-        fadeOut();
-      }, 5000);
-      setTimeout(() => {
-        setCarrinho(false);
-      }, 8000);
     }
   }
   async function Comprar() {
@@ -159,10 +161,22 @@ export default function Produto({ route, navigation }) {
       .then((resData) => {
         setVoltar(true);
         Compra([resData.retorno]);
+        setLoad(false);
+        fadeIn();
+        setCarrinho(true);
+
+        setTimeout(() => {
+          fadeOut();
+        }, 5000);
+        setTimeout(() => {
+          setCarrinho(false);
+        }, 8000);
         if (skuvolt === undefined) {
           Carrinho(sku, 1);
+          setLoad(false);
         } else {
           Carrinho(skuvolt, 1);
+          setLoad(false);
         }
       });
   }
@@ -183,13 +197,15 @@ export default function Produto({ route, navigation }) {
     }
   }
   useEffect(() => {
+    let isMounted = true;
+    setModal(false);
     loadApi();
     if (isFocused === false && !voltar) {
       navigation.goBack();
     }
-  }, [isFocused, route.params]);
-  useEffect(() => {
-    setModal(false);
+    return () => {
+      isMounted = false;
+    };
   }, [isFocused, route.params]);
 
   const SearchBar = () => {
@@ -206,7 +222,7 @@ export default function Produto({ route, navigation }) {
         <Appbar.Content title={"Detalhes"} style={{ alignItems: "center" }} />
         <Appbar.Action
           icon="cart-outline"
-          onPress={() => navigation.popToTop()}
+          onPress={() => navigation.navigate("Carrinho")}
         />
       </Appbar.Header>
     );
@@ -653,14 +669,17 @@ export default function Produto({ route, navigation }) {
                           backgroundColor: "#FFDB00",
                           borderRadius: 5,
                         }}
-                      ></IconButton>
+                      />
                     </View>
                   </View>
                 )}
 
                 {cepvisible ? (
                   <View style={{ marginTop: -15 }}>
-                    <CalculaFrete cep={TextInput_cep} sku={sku} />
+                    <CalculaFrete
+                      cep={TextInput_cep}
+                      sku={sku == undefined ? skuvolt : sku}
+                    />
                   </View>
                 ) : (
                   <></>
@@ -679,6 +698,7 @@ export default function Produto({ route, navigation }) {
                 )}
               </View>
               <TouchableOpacity
+                disabled={load}
                 style={{ width: "100%", marginTop: 20 }}
                 onPress={() => clickComprar()}
               >
@@ -691,20 +711,36 @@ export default function Produto({ route, navigation }) {
                     alignItems: "center",
                   }}
                 >
-                  <Text
-                    style={{
-                      paddingVertical: 15,
-                      fontSize: 20,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Comprar agora
-                  </Text>
+                  {load ? (
+                    <View
+                      style={{
+                        height: 50,
+                        backgroundColor: "#FFDB00",
+                        borderRadius: 3,
+                        alignItems: "center",
+                        alignContent: "center",
+                        paddingVertical: 15,
+                      }}
+                    >
+                      <ActivityIndicator size="small" color="#0000ff" />
+                    </View>
+                  ) : (
+                    <Text
+                      style={{
+                        paddingVertical: 15,
+                        fontSize: 20,
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Comprar agora
+                    </Text>
+                  )}
                 </View>
               </TouchableOpacity>
 
               <TouchableOpacity
+                disabled={load}
                 style={{ width: "100%", marginTop: 15 }}
                 onPress={() => clickCarrinho()}
               >
@@ -719,16 +755,31 @@ export default function Produto({ route, navigation }) {
                     borderColor: "#9BCB3D",
                   }}
                 >
-                  <Text
-                    style={{
-                      paddingVertical: 13,
-                      fontSize: 20,
-                      color: "#9BCB3D",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Adicionar ao carrinho
-                  </Text>
+                  {load ? (
+                    <View
+                      style={{
+                        height: 50,
+                        backgroundColor: "#FFDB00",
+                        borderRadius: 3,
+                        alignItems: "center",
+                        alignContent: "center",
+                        paddingVertical: 15,
+                      }}
+                    >
+                      <ActivityIndicator size="small" color="#0000ff" />
+                    </View>
+                  ) : (
+                    <Text
+                      style={{
+                        paddingVertical: 13,
+                        fontSize: 20,
+                        color: "#9BCB3D",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Adicionar ao carrinho
+                    </Text>
+                  )}
                 </View>
               </TouchableOpacity>
               <View
