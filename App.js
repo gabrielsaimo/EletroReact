@@ -31,6 +31,7 @@ import Cadastrofim from "./Src/Components/Cadastrofim";
 import MeusCartoes from "./Src/Components/Screens/MeusCartoes";
 import { LogBox } from "react-native";
 import Checkout from "./Src/Components/Chekout";
+import ResumoChechout from "./Src/Components/ResumoCheckout";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -162,12 +163,12 @@ const Carrinho = () => {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Endereços" component={MeusEnderecos} />
       <Stack.Screen name="Adicionar Endereço" component={add_config_endereco} />
-
       <Stack.Screen
         name="Checkout"
         component={Checkout}
         Options={{ headerShown: false, headerTitleAlign: "center" }}
       />
+      <Stack.Screen name="Resumo" component={ResumoChechout} />
     </Stack.Navigator>
   );
 };

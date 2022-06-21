@@ -23,17 +23,9 @@ export default function MeusCartoes({ route }) {
   const { URL_PROD } = process.env;
   const navigation = useNavigation();
   const { user1, Compra, multcar, arrayCompra } = useContext(AuthContext);
-  console.log(
-    "🚀 ~ file: CarrinhoTab.js ~ line 25 ~ MeusCartoes ~ user1",
-    user1
-  );
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
   const [intervalo, setIntervalo] = useState(false);
-  console.log(
-    "🚀 ~ file: CarrinhoTab.js ~ line 29 ~ MeusCartoes ~ intervalo",
-    intervalo
-  );
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
@@ -401,6 +393,7 @@ export default function MeusCartoes({ route }) {
                             ? navigation.navigate("Endereços", {
                                 rota: "carrinho",
                                 cart: JSON.stringify(data.retorno.produtos),
+                                valorTotal: data.retorno.totalGeral,
                               })
                             : onToggleSnackBar();
                         }}

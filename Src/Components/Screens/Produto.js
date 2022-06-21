@@ -11,6 +11,7 @@ import {
   Platform,
   Animated,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 
 import Modal from "react-native-modal";
@@ -41,6 +42,7 @@ export default function Produto({ route, navigation }) {
   const [precoDe, setprecoDe] = useState(route.params.precode);
   const [cepvisible, setVisiblecep] = useState(false);
   const [modal, setModal] = useState(false);
+  const [voltfilhos, setFilhos] = useState(0);
   const runFirst = `let selector = document.querySelectorAll("img") 
                     selector[0].style.display = "none"
                     selector[1].style.display = "none"
@@ -121,7 +123,6 @@ export default function Produto({ route, navigation }) {
     if (!volt && filhos === undefined) {
       setLoad(true);
       fadeIn();
-      console.log("entrou 1");
       setAlert(true);
       setTimeout(() => {
         fadeOut();
@@ -539,6 +540,7 @@ export default function Produto({ route, navigation }) {
                   style={{ width: "100%" }}
                   onPress={() => setModal(true)}
                 >
+                  {setFilhos(item.filhos)}
                   <View
                     style={{
                       width: "100%",
@@ -660,7 +662,13 @@ export default function Produto({ route, navigation }) {
                       </TextInput>
                       <IconButton
                         icon={require("../assets/pin_gps.png")}
-                        onPress={() => Clickcep()}
+                        onPress={() =>
+                          volt === false && filhos !== undefined
+                            ? Clickcep()
+                            : voltfilhos.length > 0 && filhos === undefined
+                            ? (fadeIn(), setAlert(true))
+                            : Clickcep()
+                        }
                         activeOpacity={0.7}
                         style={{
                           width: 50,

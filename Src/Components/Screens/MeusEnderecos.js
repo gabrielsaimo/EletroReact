@@ -30,7 +30,7 @@ const wait = (timeout) => {
 export default function MeusEnderecos({ route, navigation }) {
   const { user1 } = useContext(AuthContext);
   const id = user1.idCliente;
-  const { rota, cart } = route.params;
+  const { rota, cart, valorTotal } = route.params;
   const [data, setData] = useState([]);
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -51,9 +51,10 @@ export default function MeusEnderecos({ route, navigation }) {
         .catch((error) => setRefreshing(true));
     } catch (error) {
       console.log("erro porem sem id" + error);
+      setRefreshing(true);
       if (e && id == null) {
         setError(e);
-        console.log("aqui" + error);
+        console.log(error);
       }
     }
   };
@@ -428,7 +429,11 @@ export default function MeusEnderecos({ route, navigation }) {
               marginBottom: 10,
             }}
             onPress={() => {
-              navigation.navigate("Checkout", { endereco: value, cart: cart });
+              navigation.navigate("Checkout", {
+                endereco: value,
+                cart: cart,
+                valorTotal: valorTotal,
+              });
             }}
           >
             <Text
