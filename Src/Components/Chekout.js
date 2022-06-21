@@ -3,14 +3,16 @@ import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../Contexts/Auth";
 const { URL_PROD } = process.env;
 export default function Checkout({ route, navigation }) {
-  const { user1, endereco, cart } = route.params;
+  const { user1 } = useContext(AuthContext);
+  const { endereco, cart } = route.params;
   const [data, setData] = useState(JSON.parse(endereco));
   const [data2, setData2] = useState(JSON.parse(cart));
-  console.log("🚀 ~ file: Chekout.js ~ line 10 ~ Checkout ~ data2", data2);
   const [value, setValue] = useState(null);
   const [pagamento, setPagamento] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [pagSelect, setPagSelect] = useState(null);
   const [data3, setDat3] = useState([]);
+  const [pagamentos, setPagamentos] = useState([]);
   const { multcar } = useContext(AuthContext);
   function Pagamento() {
     fetch(`${URL_PROD}pagamentoDisponiveisCliente`, {
@@ -34,7 +36,7 @@ export default function Checkout({ route, navigation }) {
     })
       .then((res) => res.json())
       .then((resData) => {
-        setDat3(resData);
+        setPagamentos(resData);
       })
       .catch((error) => {
         console.log(error);
@@ -76,12 +78,67 @@ export default function Checkout({ route, navigation }) {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+    if (pagamento === true) {
+      Pagamento();
+    }
+  }, [pagamento]);
 
   return (
-    <View style={{ backgroundColor: "#FFF", height: "100%" }}>
+    <View style={{ backgroundColor: "#FFF" }}>
       {pagamento ? (
-        <></>
+        <FlatList
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          directionalLockEnabled={true}
+          data={pagamentos.formaPagamento}
+          keyExtractor={(item, index) => index}
+          initialNumToRender={3}
+          renderItem={({ item, index }) => (
+            <View>
+              <TouchableOpacity
+                style={{
+                  height: 130,
+                  borderWidth: pagSelect === index ? 0 : 1,
+                  margin: 5,
+                  width: 130,
+                  borderRadius: 10,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: pagSelect === index ? "#1534C8" : "#FFF",
+                  paddingHorizontal: 16,
+                  borderColor: "#6A7075",
+                }}
+                onPress={() => {
+                  setPagSelect(index);
+                }}
+              >
+                <View
+                  style={{ alignItems: "center", justifyContent: "center" }}
+                >
+                  <Image
+                    style={{
+                      width: 45,
+                      height: 45,
+                      tintColor: pagSelect === index ? "#FFF" : "#1534C8",
+                    }}
+                    source={
+                      item.codigoPagamento === "boleto_bradesco"
+                        ? require("../Components/assets/boleto.png")
+                        : item.codigoPagamento === "pagamento_um_cartao"
+                        ? require("../Components/assets/creditcard.png")
+                        : require("../Components/assets/2creditcard.png")
+                    }
+                  />
+                  <Text
+                    style={{ color: pagSelect === index ? "#FFF" : "#1534C8" }}
+                  >
+                    {item.descricaoPagamento}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
       ) : (
         <>
           <View
@@ -261,7 +318,7 @@ export default function Checkout({ route, navigation }) {
                           marginTop: 20,
                         }}
                         onPress={() => {
-                          setPagamento(true);
+                          setPagamento(true), Pagamento();
                         }}
                       >
                         <Text

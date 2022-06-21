@@ -14,7 +14,7 @@ const { URL_PROD } = process.env;
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons/faTrashCan";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons/faPenToSquare";
-import { Appbar, RadioButton } from "react-native-paper";
+import { Appbar } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
 import {
   MenuContext,
@@ -179,22 +179,28 @@ export default function MeusEnderecos({ route, navigation }) {
                         optionsContainerStyle={{ width: 100 }}
                         style={{ margin: 5 }}
                       >
+                        {console.log(rota)}
                         <MenuOption
                           onSelect={() =>
-                            navigation.navigate("add_config_endereco", {
-                              idCliente: id,
-                              idEndereco: item.idEndereco,
-                              numero: item.numero,
-                              cep: item.cep,
-                              complemento: item.complemento,
-                              telefone: item.telefone,
-                              celular: item.celular,
-                              nomeEndereco: item.nomeEndereco,
-                              bairro: item.bairro,
-                              estado: item.estado,
-                              endereco: item.endereco,
-                              cidade: item.cidade,
-                            })
+                            navigation.navigate(
+                              rota == "carrinho"
+                                ? "Adicionar Endereço"
+                                : "add_config_endereco",
+                              {
+                                idCliente: id,
+                                idEndereco: item.idEndereco,
+                                numero: item.numero,
+                                cep: item.cep,
+                                complemento: item.complemento,
+                                telefone: item.telefone,
+                                celular: item.celular,
+                                nomeEndereco: item.nomeEndereco,
+                                bairro: item.bairro,
+                                estado: item.estado,
+                                endereco: item.endereco,
+                                cidade: item.cidade,
+                              }
+                            )
                           }
                         >
                           <View style={{ flexDirection: "row" }}>
@@ -296,20 +302,25 @@ export default function MeusEnderecos({ route, navigation }) {
                       >
                         <MenuOption
                           onSelect={() =>
-                            navigation.navigate("add_config_endereco", {
-                              idCliente: id,
-                              idEndereco: item.idEndereco,
-                              numero: item.numero,
-                              cep: item.cep,
-                              complemento: item.complemento,
-                              telefone: item.telefone,
-                              celular: item.celular,
-                              nomeEndereco: item.nomeEndereco,
-                              bairro: item.bairro,
-                              estado: item.estado,
-                              endereco: item.endereco,
-                              cidade: item.cidade,
-                            })
+                            navigation.navigate(
+                              rota == "carrinho"
+                                ? "Adicionar Endereço"
+                                : "add_config_endereco",
+                              {
+                                idCliente: id,
+                                idEndereco: item.idEndereco,
+                                numero: item.numero,
+                                cep: item.cep,
+                                complemento: item.complemento,
+                                telefone: item.telefone,
+                                celular: item.celular,
+                                nomeEndereco: item.nomeEndereco,
+                                bairro: item.bairro,
+                                estado: item.estado,
+                                endereco: item.endereco,
+                                cidade: item.cidade,
+                              }
+                            )
                           }
                         >
                           <View style={{ flexDirection: "row" }}>
@@ -374,7 +385,10 @@ export default function MeusEnderecos({ route, navigation }) {
 
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("add_config_endereco", { idCliente: id })
+            navigation.navigate(
+              rota == "carrinho" ? "Adicionar Endereço" : "add_config_endereco",
+              { idCliente: id }
+            )
           }
           style={{
             alignItems: "center",
@@ -414,7 +428,7 @@ export default function MeusEnderecos({ route, navigation }) {
               marginBottom: 10,
             }}
             onPress={() => {
-              navigation.navigate("Entrega", { endereco: value, cart: cart });
+              navigation.navigate("Checkout", { endereco: value, cart: cart });
             }}
           >
             <Text

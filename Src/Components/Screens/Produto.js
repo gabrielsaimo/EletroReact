@@ -641,7 +641,9 @@ export default function Produto({ route, navigation }) {
                     <View style={{ flexDirection: "row" }}>
                       <TextInput
                         placeholder="Digite seu Cep"
-                        onChangeText={(data) => setTextCep(data)}
+                        onChangeText={(data) =>
+                          data.length == 8 ? setTextCep(data) : {}
+                        }
                         keyboardType={"numeric"}
                         maxLength={8}
                         height={50}
