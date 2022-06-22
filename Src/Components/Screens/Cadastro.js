@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { RadioButton, TextInput } from "react-native-paper";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
@@ -26,13 +26,19 @@ export default function Cadastro() {
             pessoa: pessoa,
           });
         } else {
-          alert("Selecione se é pessoa Fisica/Juridica");
+          Alert.alert("Ops!", "Selecione se é pessoa Fisica/Juridica", [
+            { text: "OK", onPress: () => console.log("OK Pressed") },
+          ]);
         }
       } else {
-        alert("Senha muito curta");
+        Alert.alert("Ops!", "Senha muito curta", [
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ]);
       }
     } else {
-      alert("Email invalido");
+      Alert.alert("Ops!", "Email invalido", [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
     }
   }
   return (

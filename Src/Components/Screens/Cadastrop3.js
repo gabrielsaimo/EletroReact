@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Checkbox, RadioButton, TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -121,7 +121,9 @@ export default function Cadastrop3({ route }) {
               });
             } else {
               if (resData.codigoMensagem !== 200) {
-                alert("Data incorreta");
+                Alert.alert("Ops!", "Data incorreta", [
+                  { text: "OK", onPress: () => console.log("OK Pressed") },
+                ]);
               }
             }
           });

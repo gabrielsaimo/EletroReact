@@ -394,6 +394,7 @@ export default function MeusCartoes({ route }) {
                                 rota: "carrinho",
                                 cart: JSON.stringify(data.retorno.produtos),
                                 valorTotal: data.retorno.totalGeral,
+                                valorGeral: data.retorno.totalGeral,
                               })
                             : onToggleSnackBar();
                         }}

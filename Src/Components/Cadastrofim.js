@@ -9,7 +9,7 @@ export default function Cadastrofim() {
   const [visible, setVisible] = useState(true);
   function click() {
     setVisible(false);
-    navigation.navigate("Login");
+    navigation.navigate("Login", { rota: "Cadastro" });
   }
 
   return (

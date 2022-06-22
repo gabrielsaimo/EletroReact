@@ -1,19 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Alert,
-  FlatList,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../Contexts/Auth";
 import NumberFormat from "react-number-format";
 import DialogInput from "react-native-dialog-input";
+import { Alert } from "react-native";
 export default function Checkout({ route, navigation }) {
   const { URL_PROD } = process.env;
   const { user1 } = useContext(AuthContext);
-  const { endereco, cart, valorTotal } = route.params;
+  const { endereco, cart, valorTotal, valorGeral } = route.params;
   const [frete, setFreteN] = useState(0);
   const [fretecets, setCetsFrete] = useState(0);
   const [valorFrete, setvalorFrete] = useState(0);
@@ -32,9 +26,10 @@ export default function Checkout({ route, navigation }) {
   const [data3, setDat3] = useState([]);
   const [buyok, setBuyOk] = useState(false);
   const [pagamentos, setPagamentos] = useState([]);
+  const [valorFinal, setValorTotal] = useState(0);
+  const [reload, setReload] = useState(false);
   const { multcar } = useContext(AuthContext);
   function Pagamento() {
-    setTotal(Number(frete) + Number(valorTotal) + "," + fretecets);
     fetch(`${URL_PROD}pagamentoDisponiveisCliente`, {
       method: "POST",
       headers: {
@@ -62,7 +57,7 @@ export default function Checkout({ route, navigation }) {
         console.log(error);
       });
   }
-  function Cupom() {
+  function Cupom(cupom) {
     fetch(`${URL_PROD}consultaCupom`, {
       method: "POST",
       headers: {
@@ -84,7 +79,18 @@ export default function Checkout({ route, navigation }) {
       .then((res) => res.json())
       .then((resData) => {
         setDataCupom(resData);
+        setValorTotal(resData.retorno.valorTotal);
         setDesconto(resData.retorno.descontoCupom);
+        let desc = resData.retorno.descontoCupom;
+        if (desc !== "0,00") {
+          var emoje = "🤩🤩🤩";
+        } else {
+          var emoje = "😕😕😕";
+        }
+        Alert.alert(resData.retorno.message, emoje, [
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ]);
+        setReload(true);
       })
       .catch((error) => {
         console.log(error);
@@ -123,6 +129,53 @@ export default function Checkout({ route, navigation }) {
       });
   }
   useEffect(() => {
+    if (valorFinal != 0 && desconto != "0,00") {
+      var calc =
+        fretecets -
+        Number(
+          desconto
+            .replace(".", "")
+            .replace(/[0-9][0-9][0-9][0-9][0-9],/g, "")
+            .replace(/[0-9][0-9][0-9][0-9],/g, "")
+            .replace(/[0-9][0-9][0-9],/g, "")
+            .replace(/[0-9][0-9],/g, "")
+            .replace(/[0-9],/g, "")
+            .replace("-", "")
+        );
+      if (calc.toString().length === 1) {
+        var calc = "0" + calc;
+      }
+      if (calc < 0 && desconto > 0 && desconto != "0,00") {
+        setTotal(
+          Number(frete) +
+            Number(valorFinal.replace(".", "").replace(/,[0-9][0-9]/, "")) +
+            "," +
+            fretecets -
+            Number(
+              desconto
+                .replace(".", "")
+                .replace(/[0-9][0-9][0-9][0-9][0-9],/g, "")
+                .replace(/[0-9][0-9][0-9][0-9],/g, "")
+                .replace(/[0-9][0-9][0-9],/g, "")
+                .replace(/[0-9][0-9],/g, "")
+                .replace(/[0-9],/g, "")
+                .replace("-", "")
+            )
+        );
+      } else {
+        setTotal(
+          Number(frete) +
+            Number(valorFinal.replace(".", "").replace(/,[0-9][0-9]/, "")) +
+            1 +
+            "," +
+            calc
+        );
+      }
+    } else {
+      var soma = Number(frete) + Number(valorTotal) + "," + fretecets;
+      setTotal(soma);
+    }
+
     fetch(`${URL_PROD}consultaFrete`, {
       method: "POST",
       headers: {
@@ -161,12 +214,21 @@ export default function Checkout({ route, navigation }) {
     if (pagamento === true) {
       Pagamento();
     }
-  }, [pagamento]);
+    setReload(false);
+  }, [pagamento, reload]);
 
   return (
     <View style={{ backgroundColor: "#FFF" }}>
       {pagamento ? (
         <>
+          <View
+            style={{
+              backgroundColor: "#9BCB3D",
+              zIndex: 1,
+              height: 5,
+              width: "60%",
+            }}
+          />
           <View
             style={{
               paddingVertical: 30,
@@ -201,6 +263,7 @@ export default function Checkout({ route, navigation }) {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             directionalLockEnabled={true}
+            style={{ height: "20%" }}
             data={pagamentos.formaPagamento}
             keyExtractor={(item, index) => index}
             initialNumToRender={3}
@@ -208,9 +271,9 @@ export default function Checkout({ route, navigation }) {
               <View>
                 <TouchableOpacity
                   style={{
-                    height: 130,
+                    height: "90%",
+                    margin: 10,
                     borderWidth: pagSelect === item.codigoPagamento ? 0 : 1,
-                    margin: 5,
                     width: 130,
                     borderRadius: 10,
                     alignItems: "center",
@@ -330,7 +393,7 @@ export default function Checkout({ route, navigation }) {
               submitInput={(inputText) => {
                 setCupom(inputText);
                 setVisibleCupom(false);
-                cupom.length > 0 ? Cupom() : {};
+                Cupom(inputText);
               }}
               closeDialog={() => {
                 setVisibleCupom(false);
@@ -348,6 +411,13 @@ export default function Checkout({ route, navigation }) {
             <View>
               <Text style={{ marginBottom: 15 }}>Produtos</Text>
               <Text style={{ marginBottom: 15 }}>Frete</Text>
+              {desconto != 0 && desconto != "0,00" ? (
+                <>
+                  <Text style={{ marginBottom: 15 }}>Desconto </Text>
+                </>
+              ) : (
+                <></>
+              )}
             </View>
             <View>
               <NumberFormat
@@ -366,6 +436,11 @@ export default function Checkout({ route, navigation }) {
               <Text style={{ marginBottom: 15 }}>
                 {valorFrete === "R$ 0,00" ? "Grátis" : valorFrete}
               </Text>
+              {desconto != 0 && desconto != "0,00" ? (
+                <Text style={{ marginBottom: 15 }}>R$ -{desconto}</Text>
+              ) : (
+                <></>
+              )}
             </View>
           </View>
           <View
@@ -385,7 +460,8 @@ export default function Checkout({ route, navigation }) {
                 <Text style={{ fontSize: 20 }}>
                   {value
                     .replace(",", ".")
-                    .substring(0, value.replace(",", ".").length - 1)}
+                    .substring(0, value.replace(",", ".").length - 1)
+                    .replace("-", "")}
                 </Text>
               )}
             />
@@ -409,6 +485,8 @@ export default function Checkout({ route, navigation }) {
                   cart: cart,
                   valorTotal: total,
                   pagSelect: pagSelect,
+                  valorGeral: valorGeral,
+                  frete: value,
                 })
               }
             >
@@ -477,6 +555,14 @@ export default function Checkout({ route, navigation }) {
             <>
               <View
                 style={{
+                  backgroundColor: "#9BCB3D",
+                  zIndex: 1,
+                  height: 5,
+                  width: "40%",
+                }}
+              />
+              <View
+                style={{
                   paddingVertical: 30,
                   paddingHorizontal: "10%",
                   marginLeft: "auto",
@@ -532,7 +618,18 @@ export default function Checkout({ route, navigation }) {
                     {data.endereco}, {data.numero}{" "}
                   </Text>
                 </View>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.goBack({
+                      endereco: endereco,
+                      cart: cart,
+                      valorTotal: total,
+                      pagSelect: pagSelect,
+                      valorGeral: valorGeral,
+                      frete: value,
+                    })
+                  }
+                >
                   <Text style={{ fontSize: 13, color: "#1534C8" }}>
                     {"Alterar >"}
                   </Text>
@@ -554,91 +651,112 @@ export default function Checkout({ route, navigation }) {
               initialNumToRender={3}
               renderItem={({ item, index }) => (
                 <View>
-                  <TouchableOpacity
-                    style={{
-                      paddingHorizontal: 10,
-                      paddingVertical: 10,
-                      backgroundColor:
-                        selected === index ? "#D3EDEC" : "#F8F9FA",
-                      borderRadius: 15,
-                      flexDirection: "row",
-                    }}
-                    onPress={() => {
-                      setValue(JSON.stringify(item));
-                      setSelected(index);
-                    }}
-                  >
-                    <View style={{ justifyContent: "center", marginRight: 10 }}>
-                      {selected === index ? (
-                        <Image
-                          style={{ width: 20, height: 20 }}
-                          source={require("../Components/assets/selected.png")}
-                        />
-                      ) : (
-                        <Image
-                          style={{ width: 20, height: 20 }}
-                          source={require("../Components/assets/selecte.png")}
-                        />
-                      )}
-                    </View>
-                    <View>
-                      <Text>Via {item.descricao}</Text>
-                      <Text>{item.prazo}</Text>
-                      <Text style={{ fontWeight: "bold" }}>
-                        {item.valor == "R$ 0,00" ? "Frete Grátis" : item.valor}
-                        {
-                          (setFreteN(
-                            item.valor
-                              .replace("R$ ", "")
-                              .replace(".", "")
-                              .replace(/,[0-9][0-9]/g, "")
-                          ),
-                          setCetsFrete(
-                            item.valor
-                              .replace("R$ ", "")
-                              .replace(/[0-9].[0-9][0-9][0-9],/g, "")
-                              .replace(/[0-9][0-9][0-9],/g, "")
-                              .replace(/[0-9][0-9],/g, "")
-                              .replace(/[0-9],/g, "")
-                          ),
-                          setvalorFrete(item.valor))
-                        }
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
+                  {item.descricao === null ? (
+                    <>
+                      <View
+                        style={{
+                          margin: 20,
+                          padding: 10,
+                          alignItems: "center",
+                          backgroundColor: "#ff5454",
+                          borderRadius: 10,
+                        }}
+                      >
+                        <Text>{"Indisponivel para esse CEP"}</Text>
+                      </View>
+                    </>
+                  ) : (
+                    <>
+                      <TouchableOpacity
+                        style={{
+                          paddingHorizontal: 10,
+                          paddingVertical: 10,
+                          backgroundColor:
+                            selected === index ? "#D3EDEC" : "#F8F9FA",
+                          borderRadius: 15,
+                          flexDirection: "row",
+                        }}
+                        onPress={() => {
+                          setValue(JSON.stringify(item));
+                          setSelected(index);
+                        }}
+                      >
+                        <View
+                          style={{ justifyContent: "center", marginRight: 10 }}
+                        >
+                          {selected === index ? (
+                            <Image
+                              style={{ width: 20, height: 20 }}
+                              source={require("../Components/assets/selected.png")}
+                            />
+                          ) : (
+                            <Image
+                              style={{ width: 20, height: 20 }}
+                              source={require("../Components/assets/selecte.png")}
+                            />
+                          )}
+                        </View>
+
+                        <View>
+                          <Text>Via {item.descricao}</Text>
+                          <Text>{item.prazo}</Text>
+                          <Text style={{ fontWeight: "bold" }}>
+                            {item.valor == "R$ 0,00"
+                              ? "Frete Grátis"
+                              : item.valor}
+                            {
+                              (setFreteN(
+                                item.valor
+                                  .replace("R$ ", "")
+                                  .replace(".", "")
+                                  .replace(/,[0-9][0-9]/g, "")
+                              ),
+                              setCetsFrete(
+                                item.valor
+                                  .replace("R$ ", "")
+                                  .replace(/[0-9].[0-9][0-9][0-9],/g, "")
+                                  .replace(/[0-9][0-9][0-9],/g, "")
+                                  .replace(/[0-9][0-9],/g, "")
+                                  .replace(/[0-9],/g, "")
+                              ),
+                              setvalorFrete(item.valor))
+                            }
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </>
+                  )}
                 </View>
               )}
               ListFooterComponent={() => (
                 <>
-                  {selected != null ? (
-                    <TouchableOpacity
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor:
+                        selected === null ? "#E4E4E4" : "#9BCB3D",
+                      borderRadius: 5,
+                      padding: 20,
+                      paddingHorizontal: 15,
+                      alignItems: "center",
+                      marginBottom: 10,
+                      marginTop: 20,
+                      marginHorizontal: 20,
+                    }}
+                    disabled={selected === null ? true : false}
+                    onPress={() => {
+                      setPagamento(true), Pagamento();
+                    }}
+                  >
+                    <Text
                       style={{
-                        backgroundColor: "#9BCB3D",
-                        borderRadius: 5,
-                        padding: 20,
-                        paddingHorizontal: 15,
-                        alignItems: "center",
-                        marginBottom: 10,
-                        marginTop: 20,
-                        marginHorizontal: 20,
-                      }}
-                      onPress={() => {
-                        setPagamento(true), Pagamento();
+                        color: "#FFF",
+                        fontWeight: "bold",
+                        fontSize: 20,
                       }}
                     >
-                      <Text
-                        style={{
-                          color: "#FFF",
-                          fontWeight: "bold",
-                          fontSize: 20,
-                        }}
-                      >
-                        Prossegir para pagamento
-                      </Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <></>
-                  )}
+                      Prossegir para pagamento
+                    </Text>
+                  </TouchableOpacity>
                 </>
               )}
             />

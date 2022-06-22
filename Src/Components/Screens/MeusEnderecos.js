@@ -17,7 +17,7 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import { Appbar } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
 import {
-  MenuContext,
+  MenuProvider,
   Menu,
   MenuOptions,
   MenuOption,
@@ -30,7 +30,7 @@ const wait = (timeout) => {
 export default function MeusEnderecos({ route, navigation }) {
   const { user1 } = useContext(AuthContext);
   const id = user1.idCliente;
-  const { rota, cart, valorTotal } = route.params;
+  const { rota, cart, valorTotal, valorGeral } = route.params;
   const [data, setData] = useState([]);
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -91,7 +91,12 @@ export default function MeusEnderecos({ route, navigation }) {
   return (
     <View style={{ marginBottom: 70, backgroundColor: "#FFF", height: "100%" }}>
       {rota == "carrinho" ? <></> : <SearchBar />}
-      <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }} />
+
+      {rota == "carrinho" ? (
+        <View style={{ backgroundColor: "#9BCB3D", zIndex: 1, height: 5,width:'20%' }} />
+      ) : (
+        <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }} />
+      )}
       {rota == "carrinho" ? (
         <View>
           <View
@@ -161,7 +166,7 @@ export default function MeusEnderecos({ route, navigation }) {
                     {item.nomeEndereco}
                   </Text>
                 </View>
-                <MenuContext>
+                <MenuProvider>
                   <View>
                     <Menu style={{ alignSelf: "flex-end" }}>
                       <MenuTrigger>
@@ -258,7 +263,7 @@ export default function MeusEnderecos({ route, navigation }) {
                     {item.cidade}/{item.estado} - {item.cep}
                   </Text>
                   <Text>Destinatário: {item.nome}</Text>
-                </MenuContext>
+                </MenuProvider>
               </TouchableOpacity>
             )}
           />
@@ -282,7 +287,7 @@ export default function MeusEnderecos({ route, navigation }) {
                     {item.nomeEndereco}
                   </Text>
                 </View>
-                <MenuContext>
+                <MenuProvider>
                   <View>
                     <Menu style={{ alignSelf: "flex-end" }}>
                       <MenuTrigger>
@@ -378,7 +383,7 @@ export default function MeusEnderecos({ route, navigation }) {
                     {item.cidade}/{item.estado} - {item.cep}
                   </Text>
                   <Text>Destinatário: {item.nome}</Text>
-                </MenuContext>
+                </MenuProvider>
               </View>
             )}
           />
@@ -418,21 +423,23 @@ export default function MeusEnderecos({ route, navigation }) {
             </Text>
           </View>
         </TouchableOpacity>
-        {selected != null ? (
+        {rota == "carrinho" ? (
           <TouchableOpacity
             style={{
-              backgroundColor: "#9BCB3D",
+              backgroundColor: selected != null ? "#9BCB3D" : "#E4E4E4",
               borderRadius: 5,
               padding: 20,
               paddingHorizontal: 15,
               alignItems: "center",
               marginBottom: 10,
             }}
+            disabled={selected === null ? true : false}
             onPress={() => {
               navigation.navigate("Checkout", {
                 endereco: value,
                 cart: cart,
                 valorTotal: valorTotal,
+                valorGeral: valorGeral,
               });
             }}
           >

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Image,
+  Alert,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
@@ -110,11 +111,19 @@ export default function Login({ route }) {
               }
             }, 1000);
           } else if (resData.codigoMensagem == 317) {
-            alert("Login ou Senha Inválidos");
-            setLoad(false);
+            Alert.alert("Ops!", "Login ou Senha Inválidos", [
+              {
+                text: "ok",
+                onPress: () => setLoad(false),
+              },
+            ]);
           } else {
-            alert("Erro ao logar");
-            setLoad(false);
+            Alert.alert("Erro!", "Erro ao logar", [
+              {
+                text: "ok",
+                onPress: () => setLoad(false),
+              },
+            ]);
           }
         });
     }

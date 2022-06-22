@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
 import { Appbar } from "react-native-paper";
@@ -33,7 +33,12 @@ export default function passwordReset({ route }) {
           console.log(email);
           console.log(resData);
           if (resData.mensagem == 200) {
-            alert("email de redefinição enviado");
+            Alert.alert("Ops!", "Email de redefinição enviado", [
+              {
+                text: "ok",
+                onPress: () => console.log("ok"),
+              },
+            ]);
           } else {
             alert(resData.mensagem);
           }

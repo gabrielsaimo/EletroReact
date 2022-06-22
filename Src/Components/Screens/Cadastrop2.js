@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -34,7 +34,9 @@ export default function Cadastrop2({ route }) {
         rg: rg,
       });
     } else {
-      alert("Preencha todos os campos");
+      Alert.alert("Ops!", "Preencha todos os campos", [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
     }
   }
   return (

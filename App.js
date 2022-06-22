@@ -144,6 +144,7 @@ const Favorioto = () => {
         Options={{ headerShown: false, headerTitleAlign: "center" }}
       />
       <Stack.Screen name="ExcluirFavorito" component={ExcluirFavorito} />
+      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   );
 };

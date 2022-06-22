@@ -9,6 +9,7 @@ import {
   RefreshControl,
   ActivityIndicator,
   StyleSheet,
+  Alert,
 } from "react-native";
 import Local from "../Local";
 import SearchBarHome from "../SearchBarHome";
@@ -69,7 +70,16 @@ export default function FavoritosTab() {
     if (user1.idCliente !== null) {
       Favoriotos();
     } else {
-      alert("logue para ver seus Favoritos");
+      Alert.alert("Ops!", "logue para ver seus Favoritos", [
+        {
+          text: "ok",
+          onPress: () => console.log("Cancel Pressed"),
+        },
+        {
+          text: "Logar",
+          onPress: () => navigation.navigate("Login", { rota: "favoritos" }),
+        },
+      ]);
     }
   }, [refreshing]);
 
