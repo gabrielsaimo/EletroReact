@@ -7,6 +7,7 @@ export default function ResumoChechout({ route, navigation }) {
   const [data2, setData2] = useState(JSON.parse(cart));
   const [data, setData] = useState(JSON.parse(endereco));
   const [dataFrete, setDatafrete] = useState(JSON.parse(frete));
+  const CHAVE_API = "m7RNi13C1RbmbZs9T1GlXuKMc5AxUIqU";
   return (
     <View>
       <FlatList
@@ -225,7 +226,7 @@ export default function ResumoChechout({ route, navigation }) {
                     style={{
                       color: "#1534C8",
                       fontWeight: "bold",
-                      fontSize: 18,
+                      fontSize: 17,
                     }}
                   >
                     {dataFrete.valor === "R$ 0,00"
@@ -292,10 +293,14 @@ export default function ResumoChechout({ route, navigation }) {
                             fontWeight: "bold",
                           }}
                         >
-                          {value
-                            .replace(",", ".")
-                            .substring(0, value.replace(",", ".").length - 1)
-                            .replace("-", "")}
+                          {value.length > 11
+                            ? value
+                                .replace(",", ".")
+                                .substring(0, value.length - 1)
+                                .replace("-", "")
+                            : value
+                                .substring(0, value.length - 1)
+                                .replace("-", "")}
                         </Text>
                       )}
                     />
@@ -354,10 +359,12 @@ export default function ResumoChechout({ route, navigation }) {
                         fontWeight: "bold",
                       }}
                     >
-                      {value
-                        .replace(",", ".")
-                        .substring(0, value.replace(",", ".").length - 1)
-                        .replace("-", "")}
+                      {value.length > 11
+                        ? value
+                            .replace(",", ".")
+                            .substring(0, value.length - 1)
+                            .replace("-", "")
+                        : value.substring(0, value.length - 1).replace("-", "")}
                     </Text>
                   )}
                 />

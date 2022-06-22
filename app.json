@@ -16,10 +16,6 @@
         {
           "icon": "./Src/Components/assets/iconapp.png",
           "color": "#ffffff",
-          "sounds": [
-            "./local/path/to/myOtherSound.wav",
-            "./local/path/to/myOtherSound.wav"
-          ],
           "mode": "production"
         }
       ]

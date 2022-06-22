@@ -130,7 +130,7 @@ export default function Checkout({ route, navigation }) {
   }
   useEffect(() => {
     if (valorFinal != 0 && desconto != "0,00") {
-      var calc =
+      var val =
         fretecets -
         Number(
           desconto
@@ -142,6 +142,7 @@ export default function Checkout({ route, navigation }) {
             .replace(/[0-9],/g, "")
             .replace("-", "")
         );
+      calc = val.toString().replace("-", "");
       if (calc.toString().length === 1) {
         var calc = "0" + calc;
       }
@@ -427,9 +428,12 @@ export default function Checkout({ route, navigation }) {
                 prefix="R$ "
                 renderText={(value) => (
                   <Text style={{ marginBottom: 15 }}>
-                    {value
-                      .replace(",", ".")
-                      .substring(0, value.replace(",", ".").length - 1)}
+                    {value.length > 11
+                      ? value
+                          .replace(",", ".")
+                          .substring(0, value.length - 1)
+                          .replace("-", "")
+                      : value.substring(0, value.length - 1).replace("-", "")}
                   </Text>
                 )}
               />
@@ -458,10 +462,12 @@ export default function Checkout({ route, navigation }) {
               prefix="R$ "
               renderText={(value) => (
                 <Text style={{ fontSize: 20 }}>
-                  {value
-                    .replace(",", ".")
-                    .substring(0, value.replace(",", ".").length - 1)
-                    .replace("-", "")}
+                  {value.length > 11
+                    ? value
+                        .replace(",", ".")
+                        .substring(0, value.length - 1)
+                        .replace("-", "")
+                    : value.substring(0, value.length - 1).replace("-", "")}
                 </Text>
               )}
             />

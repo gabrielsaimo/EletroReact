@@ -1014,6 +1014,7 @@ export default function Produto({ route, navigation }) {
                             <>
                               {i.descricao.length > 60 ? (
                                 <View
+                                  key={i}
                                   style={{
                                     flexDirection: "column",
                                     marginVertical: 10,
@@ -1231,7 +1232,7 @@ export default function Produto({ route, navigation }) {
                 {item.resenhas.map ? (
                   <View>
                     {item.resenhas.map((i, k) => (
-                      <View style={{ marginVertical: 20 }}>
+                      <View key={i} style={{ marginVertical: 20 }}>
                         <View style={{ width: 80 }}>
                           <StarRating
                             disabled={true}

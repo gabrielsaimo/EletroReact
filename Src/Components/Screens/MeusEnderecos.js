@@ -90,12 +90,20 @@ export default function MeusEnderecos({ route, navigation }) {
   };
   return (
     <View style={{ marginBottom: 70, backgroundColor: "#FFF", height: "100%" }}>
-      {rota == "carrinho" ? <></> : <SearchBar />}
-
       {rota == "carrinho" ? (
-        <View style={{ backgroundColor: "#9BCB3D", zIndex: 1, height: 5,width:'20%' }} />
+        <View
+          style={{
+            backgroundColor: "#9BCB3D",
+            zIndex: 1,
+            height: 5,
+            width: "20%",
+          }}
+        />
       ) : (
-        <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }} />
+        <>
+          <SearchBar />
+          <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }} />
+        </>
       )}
       {rota == "carrinho" ? (
         <View>
