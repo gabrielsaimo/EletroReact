@@ -10,7 +10,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 const { URL_PROD } = process.env;
-console.log(URL_PROD);
 import { TouchableOpacity } from "react-native-gesture-handler";
 export default App = () => {
   const { width } = Dimensions.get("window");
@@ -70,8 +69,8 @@ export default App = () => {
             onScroll={change}
             showsHorizontalScrollIndicator={false}
             data={data.banners}
-            keyExtractor={(item) => item.img}
-            renderItem={({ item }) => (
+            keyExtractor={(item, index) => index}
+            renderItem={({ item, index }) => (
               <View style={{ marginHorizontal: 10 }}>
                 <TouchableOpacity
                   onPress={() => {
@@ -82,7 +81,7 @@ export default App = () => {
                     style={{
                       width: Math.round(width - 20),
                       height,
-                      resizeMode: "stretch",
+                      resizeMode: "contain",
                       borderRadius: 5,
                     }}
                     key={item}

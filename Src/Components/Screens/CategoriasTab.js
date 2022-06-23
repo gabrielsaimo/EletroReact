@@ -3,11 +3,9 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   FlatList,
-  SectionList,
   Text,
   View,
   Image,
-  Button,
 } from "react-native";
 import Local from "../Local";
 
@@ -26,7 +24,6 @@ export default class CategoriasTab extends Component {
     await fetch(categoria_prod)
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson.categorias.cat.sub);
         this.setState({
           data: responseJson.categorias.cat,
           isLoading: false,

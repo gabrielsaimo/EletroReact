@@ -30,8 +30,6 @@ export default function passwordReset({ route }) {
       })
         .then((res) => res.json())
         .then((resData) => {
-          console.log(email);
-          console.log(resData);
           if (resData.mensagem == 200) {
             Alert.alert("Ops!", "Email de redefinição enviado", [
               {

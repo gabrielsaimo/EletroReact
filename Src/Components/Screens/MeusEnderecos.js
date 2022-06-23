@@ -50,7 +50,6 @@ export default function MeusEnderecos({ route, navigation }) {
         })
         .catch((error) => setRefreshing(true));
     } catch (error) {
-      console.log("erro porem sem id" + error);
       setRefreshing(true);
       if (e && id == null) {
         setError(e);
@@ -147,7 +146,6 @@ export default function MeusEnderecos({ route, navigation }) {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        style={{ margin: 15 }}
       >
         {rota == "carrinho" ? (
           <FlatList
@@ -159,7 +157,7 @@ export default function MeusEnderecos({ route, navigation }) {
                 style={{
                   paddingHorizontal: 10,
                   paddingBottom: 15,
-                  marginVertical: 15,
+                  margin: 15,
                   backgroundColor:
                     selected === item.idEndereco ? "#D3EDEC" : "#F8F9FA",
                   borderRadius: 25,
@@ -193,7 +191,6 @@ export default function MeusEnderecos({ route, navigation }) {
                         optionsContainerStyle={{ width: 100 }}
                         style={{ margin: 5 }}
                       >
-                        {console.log(rota)}
                         <MenuOption
                           onSelect={() =>
                             navigation.navigate(
@@ -288,6 +285,7 @@ export default function MeusEnderecos({ route, navigation }) {
                   marginVertical: 15,
                   backgroundColor: "#F8F9FA",
                   borderRadius: 25,
+                  marginHorizontal: 20,
                 }}
               >
                 <View style={{ marginVertical: 10, marginBottom: -30 }}>
@@ -412,6 +410,7 @@ export default function MeusEnderecos({ route, navigation }) {
             paddingVertical: 12,
             borderRadius: 5,
             marginBottom: 30,
+            marginHorizontal: 20,
           }}
         >
           <View style={{ flexDirection: "row" }}>
@@ -436,10 +435,11 @@ export default function MeusEnderecos({ route, navigation }) {
             style={{
               backgroundColor: selected != null ? "#9BCB3D" : "#E4E4E4",
               borderRadius: 5,
-              padding: 20,
+              paddingVertical: 15,
               paddingHorizontal: 15,
               alignItems: "center",
-              marginBottom: 10,
+              marginBottom: 30,
+              marginHorizontal: 15,
             }}
             disabled={selected === null ? true : false}
             onPress={() => {

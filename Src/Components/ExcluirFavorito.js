@@ -23,12 +23,10 @@ export default function ExcluirFavorito({ route }) {
       .then((res) => res.json())
       .then((resData) => {
         console.log(resData);
-        setTimeout(() => {
-          navigation.reset({
-            routes: [{ name: page }],
-          });
-          navigation.goBack();
-        }, 0);
+        navigation.reset({
+          routes: [{ name: page }],
+        });
+        navigation.goBack();
       });
   };
 

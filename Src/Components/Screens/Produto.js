@@ -51,7 +51,7 @@ export default function Produto({ route, navigation }) {
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
-  const { consultaCep, user, user1, Compra, Carrinho } =
+  const { consultaCep, user, user1, Compra, Carrinho, Compras } =
     useContext(AuthContext);
   const [configuravel, setConfiguravel] = useState(false);
   const [usercep, setUsercep] = useState(user.cep);
@@ -101,6 +101,7 @@ export default function Produto({ route, navigation }) {
     } else {
       setAlert(false);
       setLoad(false);
+      Comprar();
     }
   }
   function clickCarrinho() {
@@ -108,7 +109,6 @@ export default function Produto({ route, navigation }) {
     if (!volt && filhos !== undefined) {
       fadeIn();
       setCarrinho(true);
-      Comprar();
       setTimeout(() => {
         fadeOut();
       }, 5000);
@@ -132,10 +132,49 @@ export default function Produto({ route, navigation }) {
       }, 8000);
       setLoad(false);
     } else if (configuravel == false) {
-      Comprar();
+      Carrinhos();
     }
   }
   async function Comprar() {
+    await fetch(`${URL_PROD}carrinho`, {
+      method: "POST",
+      headers: {
+        Accept: "aplication/json",
+        "Content-type": "aplication/json",
+      },
+      body: JSON.stringify({
+        checkout: {
+          produtos: [
+            {
+              sku:
+                route.params.sku === undefined
+                  ? "" + route.params.sku2 + ""
+                  : "" + route.params.sku + "",
+              qtde: "1",
+            },
+          ],
+          cep: "",
+        },
+        version: 15,
+      }),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        setVoltar(true);
+        Compra([resData.retorno]);
+        setLoad(false);
+        setCarrinho(true);
+        if (skuvolt === undefined) {
+          Compras(sku, 1);
+          setLoad(false);
+        } else {
+          Compras(skuvolt, 1);
+          setLoad(false);
+        }
+        navigation.navigate("Carrinho");
+      });
+  }
+  async function Carrinhos() {
     await fetch(`${URL_PROD}carrinho`, {
       method: "POST",
       headers: {
@@ -695,14 +734,25 @@ export default function Produto({ route, navigation }) {
                   <></>
                 )}
                 {cepvisible ? (
-                  <Text
-                    style={{ color: "blue", marginLeft: 15 }}
-                    onPress={() =>
-                      !cepvisible ? setVisiblecep(true) : setVisiblecep(false)
-                    }
-                  >
-                    Alterar endereço de entrega {">"}
-                  </Text>
+                  <>
+                    <View
+                      style={{
+                        height: 1,
+                        backgroundColor: "#CED4DA",
+                        width: width,
+                        marginVertical: 10,
+                        marginLeft: -10,
+                      }}
+                    />
+                    <Text
+                      style={{ color: "blue", marginLeft: 15 }}
+                      onPress={() =>
+                        !cepvisible ? setVisiblecep(true) : setVisiblecep(false)
+                      }
+                    >
+                      Alterar endereço de entrega {">"}
+                    </Text>
+                  </>
                 ) : (
                   <></>
                 )}

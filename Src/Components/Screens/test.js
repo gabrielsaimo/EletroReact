@@ -14,7 +14,7 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import { AuthContext } from "../../Contexts/Auth";
 
 export default function CarrinhoTab({ route }) {
-  const { Campra, user1, arrayCompra } = useContext(AuthContext);
+  const { arrayCompra } = useContext(AuthContext);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => {
@@ -82,9 +82,7 @@ export default function CarrinhoTab({ route }) {
           previewOpenValue={-75}
           rightOpenValue={-75}
         />
-        {console.log(arrayCompra.desconto)}
       </ScrollView>
-
       <>
         <View style={{ marginBottom: 70 }}>
           <View

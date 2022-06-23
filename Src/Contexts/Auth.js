@@ -7,7 +7,9 @@ function AuthProvider({ children }) {
   const [user1, setUser1] = useState({});
   const [arrayCompra, setArrayCompra] = useState([]);
   const [multcar, setMultcar] = useState([]);
+  const [uncar, setUncar] = useState([]);
   const [carrinho, setCarrinho] = useState([]);
+  const [Comprar, setCompra] = useState([]);
   const [exclui, setExclui] = useState(false);
   const [arraycard, setArrayCard] = useState([]);
   useEffect(() => {
@@ -20,12 +22,8 @@ function AuthProvider({ children }) {
         setArrayCard(JSON.parse(arry));
       }
     });
-    AsyncStorage.getItem("arrayCompra").then((arry) => {
-      if (arrayCompra.length === 0 && arry != undefined && !exclui) {
-        setArrayCompra(JSON.parse(arry));
-      }
-    });
-    //! carrinho
+
+    //! cache carrinho
     AsyncStorage.getItem("multcar").then((mult) => {
       if (
         (mult.length > 0 && multcar.length === 0) ||
@@ -35,7 +33,6 @@ function AuthProvider({ children }) {
         setMultcar(mult);
       }
     });
-
     if (carrinho.length === 0) {
     } else {
       const gg = JSON.stringify(carrinho);
@@ -52,10 +49,26 @@ function AuthProvider({ children }) {
       setMultcar(gs);
       AsyncStorage.setItem("multcar", gs);
     }
+    if (Comprar.length === 0) {
+    } else {
+      const gg = JSON.stringify(Comprar);
+      gg.replace(/[.!'@,><|://\\;&*()_+=]/g, "");
+      const gs = gg
+        .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+        .replace("}{", "},{")
+        .replace(/""/g, '":"')
+        .replace(/":"q/g, '","q')
+        .replace(/":"k/g, '","k')
+        .replace(/""/g, '"')
+        .replace(/":"}/g, '"}');
+
+      setUncar(gs);
+      AsyncStorage.setItem("uncar", gs);
+    }
     return () => {
       isMounted = false;
     };
-  }, [arrayCompra, multcar,carrinho]);
+  }, [multcar, carrinho, Comprar]);
 
   function consultaCep(cep, sku) {
     if (cep !== "") {
@@ -91,17 +104,6 @@ function AuthProvider({ children }) {
             .replace(/""/g, '"')
             .replace(/":"}/g, '"}')
         )
-      );
-      AsyncStorage.setItem(
-        "multcar",
-        excluir
-          .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-          .replace("}{", "},{")
-          .replace(/""/g, '":"')
-          .replace(/":"q/g, '","q')
-          .replace(/":"k/g, '","k')
-          .replace(/""/g, '"')
-          .replace(/":"}/g, '"}')
       );
     }
     if (editar != undefined) {
@@ -141,6 +143,73 @@ function AuthProvider({ children }) {
     }
 
     setArrayCompra(sku);
+  }
+  async function confiCompra(sku, qtde, excluir, editar) {
+    if (sku != undefined) {
+      var id = Object.keys(arraycard).length + 1;
+      var key = user1.idCliente;
+    } else if (excluir != undefined) {
+      setUncar(
+        excluir
+          .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+          .replace("}{", "},{")
+          .replace(/""/g, '":"')
+          .replace(/":"q/g, '","q')
+          .replace(/":"k/g, '","k')
+          .replace(/""/g, '"')
+          .replace(/":"}/g, '"}')
+      );
+      setCompra(
+        JSON.parse(
+          excluir
+            .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+            .replace("}{", "},{")
+            .replace(/""/g, '":"')
+            .replace(/":"q/g, '","q')
+            .replace(/":"k/g, '","k')
+            .replace(/""/g, '"')
+            .replace(/":"}/g, '"}')
+        )
+      );
+    }
+    if (editar != undefined) {
+      setUncar(
+        editar
+          .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+          .replace("}{", "},{")
+          .replace(/""/g, '":"')
+          .replace(/":"q/g, '","q')
+          .replace(/":"k/g, '","k')
+          .replace(/""/g, '"')
+          .replace(/":"}/g, '"}')
+      );
+      setCompra(
+        JSON.parse(
+          editar
+            .replace(/[!'@,><|://\\;&*()_+=]/g, "")
+            .replace("}{", "},{")
+            .replace(/""/g, '":"')
+            .replace(/":"q/g, '","q')
+            .replace(/":"k/g, '","k')
+            .replace(/""/g, '"')
+            .replace(/":"}/g, '"}')
+        )
+      );
+    }
+
+    setArrayCompra(sku);
+  }
+
+  function Compras(sku, qtde, excluir) {
+    console.log(sku);
+    console.log([
+      {
+        sku: sku,
+        qtde: "1",
+        key: "1",
+      },
+    ]);
+    setCompra([{ sku: sku, qtde: "1", key: "1" }]);
   }
 
   async function Carrinho(sku, qtde, excluir) {
@@ -245,7 +314,10 @@ function AuthProvider({ children }) {
         Compra,
         consultaCep,
         Carrinho,
+        Compras,
+        confiCompra,
         arrayCompra,
+        Comprar,
         multcar,
         arraycard,
         user,

@@ -136,7 +136,7 @@ export default function CategoriasProduto({ route, navigation }) {
         .then((resData) => {});
     }
     return (
-      <View style={{ alignItems: "center", flex: 1 }}>
+      <View style={{ alignItems: "center", flex: 1, width: "100%" }}>
         {data === null
           ? [<></>]
           : [
@@ -180,16 +180,19 @@ export default function CategoriasProduto({ route, navigation }) {
                         </View>
                       </View>
                     )}
-                    <View style={{ flexDirection: "row" }}>
-                      <View style={{ width: "60%" }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <View style={{ width: "50%" }}>
                         <Text
                           numberOfLines={2}
                           style={{
                             fontWeight: "bold",
                             fontSize: 14,
-                            maxWidth: 230,
                             zIndex: 99,
-                            width: "100%",
                           }}
                         >
                           {data.nome}
@@ -233,7 +236,7 @@ export default function CategoriasProduto({ route, navigation }) {
                           data.favorito
                             ? { marginLeft: -3, marginTop: -15 }
                             : { marginTop: -10 },
-                          { width: "25%" },
+                          { width: "50%" },
                         ]}
                       >
                         <IconButton

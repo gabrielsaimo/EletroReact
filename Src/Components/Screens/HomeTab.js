@@ -106,7 +106,7 @@ export default function HomeTab() {
 
   return (
     <SafeAreaView>
-      <View style={{ height: "100%", width, backgroundColor: "#FFF" }}>
+      <View style={{ height: "100%", width }}>
         <SearchBarHome />
         <Local style={{ width: 10, high: 20 }} />
         <ScrollView
@@ -116,7 +116,10 @@ export default function HomeTab() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          <Banner />
+          <View style={{ backgroundColor: "#FFF" }}>
+            <Banner />
+          </View>
+
           <SkeletonLoading visible={isLoading}>
             <FlatList
               data={data}

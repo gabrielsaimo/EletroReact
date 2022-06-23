@@ -16,13 +16,15 @@ import { IconButton } from "react-native-paper";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { TextInputMask } from "react-native-masked-text";
 import { Snackbar } from "react-native-paper";
+import NumberFormat from "react-number-format";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function MeusCartoes({ route }) {
   const { URL_PROD } = process.env;
   const navigation = useNavigation();
-  const { user1, Compra, multcar, arrayCompra } = useContext(AuthContext);
+  const { user1, Compra, multcar, arrayCompra, Comprar, confiCompra } =
+    useContext(AuthContext);
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
   const [intervalo, setIntervalo] = useState(false);
@@ -48,7 +50,7 @@ export default function MeusCartoes({ route }) {
     return () => {
       isMounted = false;
     };
-  }, [refreshing, isFocused, arrayCompra, load]);
+  }, [refreshing, isFocused, arrayCompra, load, Comprar]);
   function Meucarrinho() {
     fetch(`${URL_PROD}carrinho`, {
       method: "POST",
@@ -58,7 +60,10 @@ export default function MeusCartoes({ route }) {
       },
       body: JSON.stringify({
         checkout: {
-          produtos: multcar,
+          produtos:
+            JSON.stringify(Comprar).length > 2
+              ? JSON.stringify(Comprar)
+              : multcar,
           cep: TextInput_cep,
         },
         version: 15,
@@ -78,77 +83,129 @@ export default function MeusCartoes({ route }) {
         Meucarrinho();
       });
   }
-
   function Clickcep() {
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
     onRefresh();
   }
   function additem(sku) {
     setIntervalo(true);
-    let array = JSON.parse(multcar.replace(/"}{"/g, '"},{"'));
+
+    let array = JSON.parse(
+      JSON.stringify(Comprar).length > 2
+        ? JSON.stringify(Comprar)
+        : multcar.replace(/"}{"/g, '"},{"')
+    );
     const objIndex = array.findIndex((obj) => obj.sku == sku);
     array[objIndex].qtde = Number(array[objIndex].qtde) + 1;
-    Compra(
-      undefined,
-      undefined,
-      undefined,
-      JSON.stringify(array)
-        .replace(array[objIndex].qtde + ",", array[objIndex].qtde)
-        .replace(
-          array[objIndex].qtde + '"k',
-          '"' + array[objIndex].qtde + '","k'
+    JSON.stringify(Comprar).length > 2
+      ? confiCompra(
+          undefined,
+          undefined,
+          undefined,
+          JSON.stringify(array)
+            .replace(array[objIndex].qtde + ",", array[objIndex].qtde)
+            .replace(
+              array[objIndex].qtde + '"k',
+              '"' + array[objIndex].qtde + '","k'
+            )
+            .replace(/true,/g, "")
+            .replace(/true/g, "")
+            .replace(/"}{"/g, '"},{"')
         )
-        .replace(/true,/g, "")
-        .replace(/true/g, "")
-        .replace(/"}{"/g, '"},{"')
-    );
+      : Compra(
+          undefined,
+          undefined,
+          undefined,
+          JSON.stringify(array)
+            .replace(array[objIndex].qtde + ",", array[objIndex].qtde)
+            .replace(
+              array[objIndex].qtde + '"k',
+              '"' + array[objIndex].qtde + '","k'
+            )
+            .replace(/true,/g, "")
+            .replace(/true/g, "")
+            .replace(/"}{"/g, '"},{"')
+        );
     onRefresh();
     setTimeout(() => {
       setIntervalo(false);
-    }, 3000);
+    }, 4000);
   }
   function tiraitem(sku, qtd) {
     setIntervalo(true);
-    let array = JSON.parse(multcar.replace(/"}{"/g, '"},{"'));
+    let array = JSON.parse(
+      JSON.stringify(Comprar).length > 2
+        ? JSON.stringify(Comprar)
+        : multcar.replace(/"}{"/g, '"},{"')
+    );
     const objIndex = array.findIndex((obj) => obj.sku == sku);
     array[objIndex].qtde = Number(array[objIndex].qtde) - 1;
 
-    Compra(
-      undefined,
-      undefined,
-      undefined,
-      JSON.stringify(array)
-        .replace(array[objIndex].qtde + ",", array[objIndex].qtde)
-        .replace(
-          array[objIndex].qtde + '"k',
-          '"' + array[objIndex].qtde + '","k'
+    JSON.stringify(Comprar).length > 2
+      ? confiCompra(
+          undefined,
+          undefined,
+          undefined,
+          JSON.stringify(array)
+            .replace(array[objIndex].qtde + ",", array[objIndex].qtde)
+            .replace(
+              array[objIndex].qtde + '"k',
+              '"' + array[objIndex].qtde + '","k'
+            )
+            .replace(/true,/g, "")
+            .replace(/true/g, "")
+            .replace(/"}{"/g, '"},{"')
         )
-        .replace(/true,/g, "")
-        .replace(/true/g, "")
-        .replace(/"}{"/g, '"},{"')
-    );
+      : Compra(
+          undefined,
+          undefined,
+          undefined,
+          JSON.stringify(array)
+            .replace(array[objIndex].qtde + ",", array[objIndex].qtde)
+            .replace(
+              array[objIndex].qtde + '"k',
+              '"' + array[objIndex].qtde + '","k'
+            )
+            .replace(/true,/g, "")
+            .replace(/true/g, "")
+            .replace(/"}{"/g, '"},{"')
+        );
     onRefresh();
     setTimeout(() => {
       setIntervalo(false);
-    }, 3000);
+    }, 4000);
   }
+  //! Excli qdt
   function removeitem(sku, qtd) {
     setIntervalo(true);
-    let array = JSON.parse(multcar.replace(/"}{"/g, '"},{"'));
+    let array = JSON.parse(
+      JSON.stringify(Comprar).length > 2
+        ? JSON.stringify(Comprar)
+        : multcar.replace(/"}{"/g, '"},{"')
+    );
     const objIndex = array.findIndex((obj) => obj.sku == sku);
     array[objIndex] = delete array[objIndex];
-    Compra(
-      undefined,
-      undefined,
-      JSON.stringify(array)
-        .replace(/true,/g, "")
-        .replace(/true/g, "")
-        .replace(/"}{"/g, '"},{"')
-    );
+    JSON.stringify(Comprar).length > 2
+      ? confiCompra(
+          undefined,
+          undefined,
+          JSON.stringify(array)
+            .replace(/true,/g, "")
+            .replace(/true/g, "")
+            .replace(/"}{"/g, '"},{"')
+        )
+      : Compra(
+          undefined,
+          undefined,
+          JSON.stringify(array)
+            .replace(/true,/g, "")
+            .replace(/true/g, "")
+            .replace(/"}{"/g, '"},{"')
+        );
     onRefresh();
     setTimeout(() => {
       setIntervalo(false);
-    }, 3000);
+    }, 3500);
   }
   return (
     <SafeAreaView style={{ backgroundColor: "#FFF", height: "100%" }}>
@@ -237,50 +294,86 @@ export default function MeusCartoes({ route }) {
                         <>
                           {data.retorno.frete[0].cep != "" ? (
                             <>
-                              <View
-                                style={{
-                                  height: 2,
-                                  backgroundColor: "#CED4DA",
-                                  width: "100%",
-                                  borderRadius: 20,
-                                }}
-                              />
-                              <View
-                                style={{
-                                  flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  marginRight: 15,
-                                }}
-                              >
-                                <Text
-                                  style={{
-                                    marginLeft: 15,
-                                    marginTop: 10,
-                                    fontSize: 20,
-                                    color: "#6A7075",
-                                  }}
-                                >
-                                  CEP - {data.retorno.frete[0].cep}
-                                </Text>
-                                <Text
-                                  style={{
-                                    color: "blue",
-                                    marginLeft: 15,
-                                    marginTop: 10,
-                                  }}
-                                  onPress={() =>
-                                    !cepvisible
-                                      ? setVisiblecep(true)
-                                      : setVisiblecep(false)
-                                  }
-                                >
-                                  Alterar{">"}
-                                </Text>
-                              </View>
+                              {data.retorno.frete[0].codigoFrete === null ? (
+                                <>
+                                  <View
+                                    style={{
+                                      width: "90%",
+                                      justifyContent: "center",
+                                      marginVertical: 10,
+                                      marginLeft: "auto",
+                                      marginRight: "auto",
+                                      height: 50,
+                                      alignItems: "center",
+                                      backgroundColor: "#ff5454",
+                                      borderRadius: 10,
+                                    }}
+                                  >
+                                    <Text>{"Indisponivel para esse CEP"}</Text>
+                                  </View>
+                                  <Text
+                                    style={{
+                                      color: "blue",
+                                      marginLeft: 15,
+                                      marginTop: 10,
+                                    }}
+                                    onPress={() =>
+                                      !cepvisible
+                                        ? setVisiblecep(true)
+                                        : setVisiblecep(false)
+                                    }
+                                  >
+                                    Alterar{">"}
+                                  </Text>
+                                </>
+                              ) : (
+                                <>
+                                  <View
+                                    style={{
+                                      height: 2,
+                                      backgroundColor: "#CED4DA",
+                                      width: "100%",
+                                      borderRadius: 20,
+                                    }}
+                                  />
+                                  <View
+                                    style={{
+                                      flexDirection: "row",
+                                      justifyContent: "space-between",
+                                      marginRight: 15,
+                                    }}
+                                  >
+                                    <Text
+                                      style={{
+                                        marginLeft: 15,
+                                        marginTop: 10,
+                                        fontSize: 20,
+                                        color: "#6A7075",
+                                      }}
+                                    >
+                                      CEP - {data.retorno.frete[0].cep}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        color: "blue",
+                                        marginLeft: 15,
+                                        marginTop: 10,
+                                      }}
+                                      onPress={() =>
+                                        !cepvisible
+                                          ? setVisiblecep(true)
+                                          : setVisiblecep(false)
+                                      }
+                                    >
+                                      Alterar{">"}
+                                    </Text>
+                                  </View>
 
-                              <View style={{ padding: 10 }}>
-                                <Text>{data.retorno.frete[0].prazo}</Text>
-                              </View>
+                                  <View style={{ padding: 10 }}>
+                                    <Text>{data.retorno.frete[0].prazo}</Text>
+                                  </View>
+                                </>
+                              )}
                             </>
                           ) : (
                             <ActivityIndicator />
@@ -349,35 +442,54 @@ export default function MeusCartoes({ route }) {
                       }}
                     >
                       <Text style={{ color: "#6A7075" }}>Total</Text>
-                      <Text
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: 30,
-                          color: "#1534C8",
-                        }}
-                      >
-                        R${" "}
-                        {parseFloat(
-                          data.retorno.frete[0].valor
-                            .replace(/R[$ ]/g, "")
-                            .replace(".", "")
-                        ) + Number(data.retorno.totalGeral)}
-                        ,
-                        {data.retorno.frete[0].valor != "R$ 0,00"
-                          ? data.retorno.frete[0].valor
+
+                      <NumberFormat
+                        value={
+                          parseFloat(
+                            data.retorno.frete[0].valor
+                              .replace(/R[$ ]/g, "")
                               .replace(".", "")
-                              .replace(/R[$ ]/g, "")
-                              .replace(/ [0-9][0-9][0-9][0-9],/g, "")
-                              .replace(/ [0-9][0-9][0-9],/g, "")
-                              .replace(/ [0-9][0-9],/g, "")
-                              .replace(/ [0-9],/g, "")
-                          : data.retorno.frete[0].valor
-                              .replace(/R[$ ]/g, "")
-                              .replace(/ [0-9][0-9][0-9][0-9],/g, "")
-                              .replace(/ [0-9][0-9][0-9],/g, "")
-                              .replace(/ [0-9][0-9],/g, "")
-                              .replace(/ [0-9],/g, "")}
-                      </Text>
+                          ) +
+                          Number(data.retorno.totalGeral) +
+                          (data.retorno.frete[0].valor != "R$ 0,00"
+                            ? data.retorno.frete[0].valor
+                                .replace(".", "")
+                                .replace(/R[$ ]/g, "")
+                                .replace(/ [0-9][0-9][0-9][0-9],/g, "")
+                                .replace(/ [0-9][0-9][0-9],/g, "")
+                                .replace(/ [0-9][0-9],/g, "")
+                                .replace(/ [0-9],/g, "")
+                            : data.retorno.frete[0].valor
+                                .replace(/R[$ ]/g, "")
+                                .replace(/ [0-9][0-9][0-9][0-9],/g, "")
+                                .replace(/ [0-9][0-9][0-9],/g, "")
+                                .replace(/ [0-9][0-9],/g, "")
+                                .replace(/ [0-9],/g, "")
+                          ).toString() +
+                          ",0"
+                        }
+                        displayType="text"
+                        thousandSeparator
+                        prefix="R$ "
+                        renderText={(value) => (
+                          <Text
+                            style={{
+                              fontSize: 25,
+                              color: "#1534C8",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {value.length > 11
+                              ? value
+                                  .replace(",", ".")
+                                  .substring(0, value.length - 1)
+                                  .replace("-", "")
+                              : value
+                                  .substring(0, value.length - 1)
+                                  .replace("-", "")}
+                          </Text>
+                        )}
+                      />
                     </View>
                     <View style={{ alignItems: "center" }}>
                       <TouchableOpacity
@@ -553,6 +665,7 @@ export default function MeusCartoes({ route }) {
                             alignItems: "center",
                             borderColor: "#E5E5E5",
                           }}
+                          disabled={intervalo}
                           onPress={() => {
                             additem(item.sku, item.quantidade);
                           }}

@@ -6,8 +6,18 @@ import DialogInput from "react-native-dialog-input";
 import { Alert } from "react-native";
 export default function Checkout({ route, navigation }) {
   const { URL_PROD } = process.env;
-  const { user1 } = useContext(AuthContext);
-  const { endereco, cart, valorTotal, valorGeral } = route.params;
+  const { user1, multcar, Comprar } = useContext(AuthContext);
+  const {
+    endereco,
+    cart,
+    valorTotal,
+    valorGeral,
+    codParcela,
+    rota,
+    cartao,
+    xparcela,
+    vpacelas,
+  } = route.params;
   const [frete, setFreteN] = useState(0);
   const [fretecets, setCetsFrete] = useState(0);
   const [valorFrete, setvalorFrete] = useState(0);
@@ -24,11 +34,9 @@ export default function Checkout({ route, navigation }) {
   const [selected, setSelected] = useState(null);
   const [pagSelect, setPagSelect] = useState(null);
   const [data3, setDat3] = useState([]);
-  const [buyok, setBuyOk] = useState(false);
   const [pagamentos, setPagamentos] = useState([]);
   const [valorFinal, setValorTotal] = useState(0);
   const [reload, setReload] = useState(false);
-  const { multcar } = useContext(AuthContext);
   function Pagamento() {
     fetch(`${URL_PROD}pagamentoDisponiveisCliente`, {
       method: "POST",
@@ -38,7 +46,10 @@ export default function Checkout({ route, navigation }) {
       },
       body: JSON.stringify({
         carrinho: {
-          produtos: multcar,
+          produtos:
+            JSON.stringify(Comprar).length > 2
+              ? JSON.stringify(Comprar)
+              : multcar,
           idCliente: user1.idCliente,
           valorTotalcomFrete: value,
         },
@@ -66,7 +77,10 @@ export default function Checkout({ route, navigation }) {
       },
       body: JSON.stringify({
         carrinho: {
-          produtos: multcar,
+          produtos:
+            JSON.stringify(Comprar).length > 2
+              ? JSON.stringify(Comprar)
+              : multcar,
           cupom: cupom,
         },
         version: 17,
@@ -87,47 +101,15 @@ export default function Checkout({ route, navigation }) {
         } else {
           var emoje = "😕😕😕";
         }
-        Alert.alert(resData.retorno.message, emoje, [
-          { text: "OK", onPress: () => console.log("OK Pressed") },
-        ]);
+        setPagSelect(null);
+        Alert.alert(resData.retorno.message, emoje, [{ text: "OK" }]);
         setReload(true);
       })
       .catch((error) => {
         console.log(error);
       });
   }
-  function buy(item) {
-    fetch(`${URL_PROD}detalhamentoPagamento`, {
-      method: "POST",
-      headers: {
-        Accept: "aplication/json",
-        "Content-type": "aplication/json",
-      },
-      body: JSON.stringify({
-        carrinho: {
-          produtos: multcar,
-          cep: data.cep,
-          codigoPagamento: item,
-          valorTotalcomFrete: total,
-          valorPagoCartaoUm: "",
-          idCliente: user1.idCliente,
-        },
-        version: 17,
-      })
-        .replace(/[//\\]/g, "")
-        .replace('"[', "[")
-        .replace(']"', "]")
-        .replace(/"}{"/g, '"},{"'),
-    })
-      .then((res) => res.json())
-      .then((resData) => {
-        setBuy(resData);
-        setBuyOk(true);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+
   useEffect(() => {
     if (valorFinal != 0 && desconto != "0,00") {
       var val =
@@ -195,7 +177,10 @@ export default function Checkout({ route, navigation }) {
         selecionadoIcon: null,
         selecionado: false,
         frete: {
-          produtos: multcar,
+          produtos:
+            JSON.stringify(Comprar).length > 2
+              ? JSON.stringify(Comprar)
+              : multcar,
           cep: data.cep,
           total_com_desconto: valorTotal,
         },
@@ -222,49 +207,51 @@ export default function Checkout({ route, navigation }) {
     <View style={{ backgroundColor: "#FFF" }}>
       {pagamento ? (
         <>
-          <View
-            style={{
-              backgroundColor: "#9BCB3D",
-              zIndex: 1,
-              height: 5,
-              width: "60%",
-            }}
-          />
-          <View
-            style={{
-              paddingVertical: 30,
-              paddingHorizontal: "10%",
-              marginLeft: "auto",
-              marginRight: "auto",
-              flexDirection: "row",
-              alignItems: "center",
-              width: "100%",
-              justifyContent: "space-around",
-              backgroundColor: "#FFF",
-            }}
-          >
-            <Image
-              style={{ width: 30, height: 30, marginRight: 10 }}
-              source={require("../Components/assets/grana.png")}
+          <View style={{ height: "15%" }}>
+            <View
+              style={{
+                backgroundColor: "#9BCB3D",
+                zIndex: 1,
+                height: 5,
+                width: "60%",
+              }}
             />
-            <Text style={{ fontSize: 18 }}>
-              {" "}
-              Selecione a forma de pagamento{" "}
-            </Text>
-            <View style={{ width: 30, height: 30 }} />
+            <View
+              style={{
+                paddingVertical: 30,
+                paddingHorizontal: "10%",
+                marginLeft: "auto",
+                marginRight: "auto",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "space-around",
+                backgroundColor: "#FFF",
+              }}
+            >
+              <Image
+                style={{ width: 30, height: 30, marginRight: 10 }}
+                source={require("../Components/assets/grana.png")}
+              />
+              <Text style={{ fontSize: 18 }}>
+                {" "}
+                Selecione a forma de pagamento{" "}
+              </Text>
+              <View style={{ width: 30, height: 30 }} />
+            </View>
+            <View
+              style={{
+                height: 2,
+                backgroundColor: "#CED4DA",
+                width: "100%",
+              }}
+            />
           </View>
-          <View
-            style={{
-              height: 2,
-              backgroundColor: "#CED4DA",
-              width: "100%",
-            }}
-          />
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             directionalLockEnabled={true}
-            style={{ height: "20%" }}
+            style={{ height: "18.33%" }}
             data={pagamentos.formaPagamento}
             keyExtractor={(item, index) => index}
             initialNumToRender={3}
@@ -287,7 +274,15 @@ export default function Checkout({ route, navigation }) {
                   onPress={() => {
                     setPagSelect(item.codigoPagamento),
                       item.codigoPagamento === "pagamento_um_cartao"
-                        ? buy(item.codigoPagamento)
+                        ? navigation.navigate("Meus Cartões", {
+                            rota: "chekout",
+                            tipo: "pagamento_um_cartao",
+                            valor: total,
+                            endereco: endereco,
+                            cart: cart,
+                            valorTotal: valorTotal,
+                            valorGeral: valorGeral,
+                          })
                         : {};
                   }}
                 >
@@ -326,62 +321,179 @@ export default function Checkout({ route, navigation }) {
               </View>
             )}
           />
+          <View style={{ height: "33.33%" }}>
+            <View style={{ flex: 0.9 }}>
+              {pagSelect === "pagamento_um_cartao" &&
+              codParcela !== undefined ? (
+                <View>
+                  <View
+                    style={{
+                      backgroundColor: "#E9ECEF",
+                      borderRadius: 10,
+                      height: 100,
+                      marginVertical: 10,
+                      marginHorizontal: 10,
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                      }}
+                    >
+                      <View>
+                        <Image
+                          style={[
+                            {
+                              marginVertical: 25,
+                              marginRight: 30,
+                            },
+                            JSON.parse(cartao).item.cod === "EL"
+                              ? { width: 77, height: 28 }
+                              : JSON.parse(cartao).item.cod === undefined
+                              ? { width: 70, height: 49 }
+                              : { width: 72, height: 45 },
+                          ]}
+                          source={
+                            JSON.parse(cartao).item.cod === "MC"
+                              ? require("../../Src/Components/assets/master_card.png")
+                              : JSON.parse(cartao).item.cod === "VI"
+                              ? require("../../Src/Components/assets/visa.png")
+                              : JSON.parse(cartao).item.cod === "AE"
+                              ? require("../../Src/Components/assets/american_express.png")
+                              : JSON.parse(cartao).item.cod === "DN" ||
+                                JSON.parse(cartao).item.numero.substring(
+                                  0,
+                                  2
+                                ) === "30" ||
+                                JSON.parse(cartao).item.numero.substring(
+                                  0,
+                                  2
+                                ) === "36" ||
+                                JSON.parse(cartao).item.numero.substring(
+                                  0,
+                                  2
+                                ) === "38"
+                              ? require("../../Src/Components/assets/diners.png")
+                              : JSON.parse(cartao).item.cod === "EL"
+                              ? require("../../Src/Components/assets/elo.png")
+                              : JSON.parse(cartao).item.cod === "HI" ||
+                                JSON.parse(cartao).item.numero.substring(
+                                  0,
+                                  4
+                                ) === "6062"
+                              ? require("../../Src/Components/assets/hipercard.png")
+                              : require("../../Src/Components/assets/card_icon.png")
+                          }
+                        />
+                      </View>
+                      <View style={{ marginTop: "auto", marginBottom: "auto" }}>
+                        <Text
+                          style={{
+                            color: "#343A40",
+                            fontWeight: "bold",
+                            fontSize: 15,
+                          }}
+                        >
+                          {JSON.parse(cartao).item.numero.substring(0, 4) ===
+                          "6062"
+                            ? "Hipercard"
+                            : JSON.parse(cartao).item.numero.substring(0, 2) ===
+                                "30" ||
+                              JSON.parse(cartao).item.numero.substring(0, 2) ===
+                                "36" ||
+                              JSON.parse(cartao).item.numero.substring(0, 2) ===
+                                "38"
+                            ? "Diners"
+                            : JSON.parse(cartao).item.cardnome}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#6A7075",
+                            fontWeight: "bold",
+                            fontSize: 13,
+                            marginTop: 5,
+                          }}
+                        >
+                          {"****"}
+                          {JSON.parse(cartao).item.numero.substring(
+                            JSON.parse(cartao).item.numero.length - 4,
+                            JSON.parse(cartao).item.numero.length
+                          )}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginHorizontal: 20,
+                        }}
+                      >
+                        <View style={{ alignItems: "flex-end", width: "100%" }}>
+                          <Text style={{ fontSize: 15, color: "#6A7075" }}>
+                            Parcelas
+                          </Text>
+                        </View>
 
-          <View style={{ height: "25%" }}>
-            {pagSelect === "pagamento_um_cartao" && buyok ? (
-              Buy.formaPagamento.valorTotal != undefined ? (
-                <View style={{ width: 100, height: 100 }}>
-                  {Buy.formaPagamento.parcelas.map((item, index) => (
-                    <View>
-                      <Text>{item.valorParcela}</Text>
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            color: "#1534C8",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {xparcela}x de {vpacelas.replace(" s/ juros", "")}
+                        </Text>
+                      </View>
                     </View>
-                  ))}
+                  </View>
                 </View>
+              ) : pagSelect === "pagamento_dois_cartao" ? (
+                <></>
+              ) : pagSelect === "boleto_bradesco" ? (
+                <>
+                  <View
+                    style={{
+                      backgroundColor: "#FFF",
+                      alignItems: "center",
+                      marginHorizontal: 20,
+                      marginTop: 20,
+                    }}
+                  >
+                    <Text style={{ fontWeight: "bold", marginBottom: 20 }}>
+                      Atenção
+                    </Text>
+                    <Text>{"Opção válida apenas para pagamento à vista."}</Text>
+                    <Text>
+                      O boleto deve ser impresso após a finalização do pedido.
+                      Este boleto tem validade de 2 dias úteis após a
+                      finalização da compra.
+                    </Text>
+                  </View>
+                </>
               ) : (
                 <></>
-              )
-            ) : pagSelect === "pagamento_dois_cartao" ? (
-              <></>
-            ) : pagSelect === "boleto_bradesco" ? (
-              <>
-                <View
-                  style={{
-                    backgroundColor: "#FFF",
-                    alignItems: "center",
-                    marginHorizontal: 20,
-                    marginTop: 20,
-                  }}
-                >
-                  <Text style={{ fontWeight: "bold", marginBottom: 20 }}>
-                    Atenção
-                  </Text>
-                  <Text>{"Opção válida apenas para pagamento à vista."}</Text>
-                  <Text>
-                    O boleto deve ser impresso após a finalização do pedido.
-                    Este boleto tem validade de 2 dias úteis após a finalização
-                    da compra.
-                  </Text>
-                </View>
-              </>
-            ) : (
-              <></>
-            )}
-          </View>
-          <View>
-            <TouchableOpacity
-              style={{
-                alignItems: "center",
-                backgroundColor: "#A6DBD9",
-                marginHorizontal: 20,
-                paddingVertical: 10,
-                borderRadius: 10,
-              }}
-              onPress={() => setVisibleCupom(true)}
-            >
-              <Text style={{ fontWeight: "bold", color: "#1534C8" }}>
-                {"Adicionar cupom de desconto >"}
-              </Text>
-            </TouchableOpacity>
+              )}
+            </View>
+            <View style={{ flex: 0.2 }}>
+              <TouchableOpacity
+                style={{
+                  alignItems: "center",
+                  backgroundColor: "#BAC8FF",
+                  marginHorizontal: 20,
+                  paddingVertical: 10,
+                  borderRadius: 10,
+                }}
+                onPress={() => setVisibleCupom(true)}
+              >
+                <Text style={{ fontWeight: "bold", color: "#1534C8" }}>
+                  {"Adicionar cupom de desconto >"}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View>
             <DialogInput
@@ -401,33 +513,68 @@ export default function Checkout({ route, navigation }) {
               }}
             />
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 30,
-              marginHorizontal: 20,
-            }}
-          >
-            <View>
-              <Text style={{ marginBottom: 15 }}>Produtos</Text>
-              <Text style={{ marginBottom: 15 }}>Frete</Text>
-              {desconto != 0 && desconto != "0,00" ? (
-                <>
-                  <Text style={{ marginBottom: 15 }}>Desconto </Text>
-                </>
-              ) : (
-                <></>
-              )}
+          <View style={{ height: "33.33%" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 20,
+                marginHorizontal: 20,
+              }}
+            >
+              <View>
+                <Text style={{ marginBottom: 15 }}>Produtos</Text>
+                {desconto != 0 && desconto != "0,00" ? (
+                  <>
+                    <Text style={{ marginBottom: 15 }}>Desconto </Text>
+                  </>
+                ) : (
+                  <></>
+                )}
+                <Text style={{ marginBottom: 15 }}>Frete</Text>
+              </View>
+              <View>
+                <NumberFormat
+                  value={valorTotal + ",00,0"}
+                  displayType="text"
+                  thousandSeparator
+                  prefix="R$ "
+                  renderText={(value) => (
+                    <Text style={{ marginBottom: 15 }}>
+                      {value.length > 11
+                        ? value
+                            .replace(",", ".")
+                            .substring(0, value.length - 1)
+                            .replace("-", "")
+                        : value.substring(0, value.length - 1).replace("-", "")}
+                    </Text>
+                  )}
+                />
+                {desconto != 0 && desconto != "0,00" ? (
+                  <Text style={{ marginBottom: 15 }}>R$ -{desconto}</Text>
+                ) : (
+                  <></>
+                )}
+                <Text style={{ marginBottom: 15 }}>
+                  {valorFrete === "R$ 0,00" ? "Grátis" : valorFrete}
+                </Text>
+              </View>
             </View>
-            <View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginHorizontal: 20,
+              }}
+            >
+              <Text>Total</Text>
               <NumberFormat
-                value={valorTotal + ",00,0"}
+                value={total + ",0"}
                 displayType="text"
                 thousandSeparator
                 prefix="R$ "
                 renderText={(value) => (
-                  <Text style={{ marginBottom: 15 }}>
+                  <Text style={{ fontSize: 20 }}>
                     {value.length > 11
                       ? value
                           .replace(",", ".")
@@ -437,75 +584,60 @@ export default function Checkout({ route, navigation }) {
                   </Text>
                 )}
               />
-              <Text style={{ marginBottom: 15 }}>
-                {valorFrete === "R$ 0,00" ? "Grátis" : valorFrete}
-              </Text>
-              {desconto != 0 && desconto != "0,00" ? (
-                <Text style={{ marginBottom: 15 }}>R$ -{desconto}</Text>
-              ) : (
-                <></>
-              )}
             </View>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginHorizontal: 20,
-            }}
-          >
-            <Text>Total</Text>
-            <NumberFormat
-              value={total + ",0"}
-              displayType="text"
-              thousandSeparator
-              prefix="R$ "
-              renderText={(value) => (
-                <Text style={{ fontSize: 20 }}>
-                  {value.length > 11
-                    ? value
-                        .replace(",", ".")
-                        .substring(0, value.length - 1)
-                        .replace("-", "")
-                    : value.substring(0, value.length - 1).replace("-", "")}
-                </Text>
-              )}
-            />
-          </View>
-          <View>
-            <TouchableOpacity
-              style={{
-                backgroundColor: pagSelect === null ? "#e4e4e4" : "#9BCB3D",
-                borderRadius: 5,
-                padding: 20,
-                paddingHorizontal: 15,
-                alignItems: "center",
-                marginBottom: 10,
-                marginTop: 20,
-                marginHorizontal: 20,
-              }}
-              disabled={pagSelect !== null ? false : true}
-              onPress={() =>
-                navigation.navigate("Resumo", {
-                  endereco: endereco,
-                  cart: cart,
-                  valorTotal: total,
-                  pagSelect: pagSelect,
-                  valorGeral: valorGeral,
-                  frete: value,
-                })
-              }
-            >
-              <Text
+            <View>
+              <TouchableOpacity
                 style={{
-                  color: "#FFF",
-                  fontWeight: "bold",
-                  fontSize: 20,
+                  backgroundColor:
+                    pagSelect === null
+                      ? "#e4e4e4"
+                      : pagSelect === "pagamento_um_cartao" &&
+                        xparcela === undefined
+                      ? "#e4e4e4"
+                      : "#9BCB3D",
+                  borderRadius: 5,
+                  padding: 20,
+                  paddingHorizontal: 15,
+                  alignItems: "center",
+                  marginBottom: 10,
+                  marginTop: 20,
+                  marginHorizontal: 20,
                 }}
+                disabled={
+                  pagSelect !== null
+                    ? pagSelect === "pagamento_um_cartao" &&
+                      xparcela === undefined
+                      ? true
+                      : false
+                    : true
+                }
+                onPress={() =>
+                  navigation.navigate("Revisão", {
+                    endereco: endereco,
+                    cart: cart,
+                    valorTotal: total,
+                    pagSelect: pagSelect,
+                    valorGeral: valorGeral,
+                    frete: value,
+                    cartao: cartao,
+                    endereco: endereco,
+                    codParcela: codParcela,
+                    xparcela: xparcela,
+                    vpacelas: vpacelas,
+                  })
+                }
               >
-                Prosseguir para resumo
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: "#FFF",
+                    fontWeight: "bold",
+                    fontSize: 20,
+                  }}
+                >
+                  Prosseguir para resumo
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </>
       ) : (
@@ -658,25 +790,24 @@ export default function Checkout({ route, navigation }) {
               renderItem={({ item, index }) => (
                 <View>
                   {item.descricao === null ? (
-                    <>
-                      <View
-                        style={{
-                          margin: 20,
-                          padding: 10,
-                          alignItems: "center",
-                          backgroundColor: "#ff5454",
-                          borderRadius: 10,
-                        }}
-                      >
-                        <Text>{"Indisponivel para esse CEP"}</Text>
-                      </View>
-                    </>
+                    <View
+                      style={{
+                        margin: 20,
+                        padding: 10,
+                        alignItems: "center",
+                        backgroundColor: "#ff5454",
+                        borderRadius: 10,
+                      }}
+                    >
+                      <Text>{"Indisponivel para esse CEP"}</Text>
+                    </View>
                   ) : (
                     <>
                       <TouchableOpacity
                         style={{
                           paddingHorizontal: 10,
                           paddingVertical: 10,
+                          marginHorizontal: 10,
                           backgroundColor:
                             selected === index ? "#D3EDEC" : "#F8F9FA",
                           borderRadius: 15,

@@ -31,7 +31,8 @@ import Cadastrofim from "./Src/Components/Cadastrofim";
 import MeusCartoes from "./Src/Components/Screens/MeusCartoes";
 import { LogBox } from "react-native";
 import Checkout from "./Src/Components/Chekout";
-import ResumoChechout from "./Src/Components/ResumoCheckout";
+import RevisaoCheckout from "./Src/Components/RevisaoCheckout";
+import ParcelasCartao from "./Src/Components/ParcelasCartao";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -169,7 +170,10 @@ const Carrinho = () => {
         component={Checkout}
         Options={{ headerShown: false, headerTitleAlign: "center" }}
       />
-      <Stack.Screen name="Resumo" component={ResumoChechout} />
+      <Stack.Screen name="Meus Cartões" component={MeusCartoes} />
+      <Stack.Screen name="add_config_cartao" component={add_config_cartao} />
+      <Stack.Screen name="Parcelas" component={ParcelasCartao} />
+      <Stack.Screen name="Revisão" component={RevisaoCheckout} />
     </Stack.Navigator>
   );
 };

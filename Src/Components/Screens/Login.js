@@ -22,7 +22,6 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Login({ route }) {
   const rota = route.params.rota;
-  console.log("🚀 ~ file: Login.js ~ line 24 ~ Login ~ rota", rota);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn } = useContext(AuthContext);

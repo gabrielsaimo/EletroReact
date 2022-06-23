@@ -8,10 +8,6 @@ const { URL_PROD } = process.env;
 export default function CalculaFrete({ cep, sku }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
-  console.log(
-    "🚀 ~ file: CalculaFrete.js ~ line 11 ~ CalculaFrete ~ data",
-    data
-  );
   useEffect(() => {
     fetch(`${URL_PROD}consultaFrete?sku=${sku}&cep=${cep}&version=18`)
       .then((response) => response.json())
@@ -23,7 +19,7 @@ export default function CalculaFrete({ cep, sku }) {
   }, []);
 
   return (
-    <View style={{ flex: 0 }}>
+    <View>
       {isLoading ? (
         <View
           style={{
@@ -43,6 +39,20 @@ export default function CalculaFrete({ cep, sku }) {
             <View>
               {!item ? (
                 <Text>Cep Invalido</Text>
+              ) : item.descricao === undefined ? (
+                <View
+                  style={{
+                    margin: 20,
+                    padding: 10,
+                    width: width,
+                    height: 50,
+                    alignItems: "center",
+                    backgroundColor: "#ff5454",
+                    borderRadius: 10,
+                  }}
+                >
+                  <Text>{"Indisponivel para esse CEP"}</Text>
+                </View>
               ) : (
                 <View>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -70,15 +80,6 @@ export default function CalculaFrete({ cep, sku }) {
                   </View>
                 </View>
               )}
-              <View
-                style={{
-                  height: 1.5,
-                  backgroundColor: "#CED4DA",
-                  width: "99%",
-                  borderRadius: 20,
-                  marginVertical: 10,
-                }}
-              ></View>
             </View>
           )}
         />

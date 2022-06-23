@@ -13,11 +13,15 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import { AuthContext } from "../../Contexts/Auth";
 import { Appbar } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function MeusCartoes({ route, navigation }) {
+  const { endereco, cart, valorTotal, valorGeral, valor, rota, total } =
+    route.params;
+
   const { Cartao, user1, arraycard } = useContext(AuthContext);
   const [data1, setData1] = useState([]);
   const [index, setIndex] = useState(0);
@@ -49,7 +53,22 @@ export default function MeusCartoes({ route, navigation }) {
     [setData1(newdata), Cartao("1", "2", "3", "4", "5", data1)];
   };
   const renderItem = (item) => (
-    <>
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={() =>
+        rota === "chekout"
+          ? navigation.navigate("Parcelas", {
+              cartao: JSON.stringify(item),
+              valor: total,
+              endereco: endereco,
+              cart: cart,
+              valorTotal: valorTotal,
+              valorGeral: valorGeral,
+              
+            })
+          : {}
+      }
+    >
       {load ? (
         <View style={{ height: 101, marginVertical: 10 }} />
       ) : item.item.idcliente === user1.idCliente ? (
@@ -140,7 +159,7 @@ export default function MeusCartoes({ route, navigation }) {
       ) : (
         <></>
       )}
-    </>
+    </TouchableOpacity>
   );
 
   const renderHiddenItem = (item, rowMap) => (
@@ -200,7 +219,7 @@ export default function MeusCartoes({ route, navigation }) {
 
   return (
     <View style={{ marginBottom: 70 }}>
-      <SearchBar />
+      {rota === "chekout" ? <></> : <SearchBar />}
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }}></View>
 
       <ScrollView
