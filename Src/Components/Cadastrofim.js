@@ -4,7 +4,6 @@ import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IconButton } from "react-native-paper";
 
 export default function Cadastrofim() {
-  console.log("tela fim");
   const navigation = useNavigation();
   const [visible, setVisible] = useState(true);
   function click() {
