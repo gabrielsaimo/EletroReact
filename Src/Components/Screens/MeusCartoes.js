@@ -13,15 +13,28 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import { AuthContext } from "../../Contexts/Auth";
 import { Appbar } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
-import { TouchableHighlight } from "react-native-gesture-handler";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export default function MeusCartoes({ route, navigation }) {
-  const { endereco, cart, valorTotal, valorGeral, valor, rota, total } =
-    route.params;
-
+  const {
+    endereco,
+    cart,
+    valorTotal,
+    valorGeral,
+    valor,
+    rota,
+    total,
+    tipo,
+    codParcela,
+    xparcela,
+    vpacelas,
+    cartao,
+    CVV,
+    valorc1,
+    resto,
+  } = route.params;
   const { Cartao, user1, arraycard } = useContext(AuthContext);
   const [data1, setData1] = useState([]);
   const [index, setIndex] = useState(0);
@@ -32,7 +45,6 @@ export default function MeusCartoes({ route, navigation }) {
       setIndex(ii.toString());
     }
   });
-
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
   const closeRow = (rowMap, rowKey) => {
@@ -45,7 +57,7 @@ export default function MeusCartoes({ route, navigation }) {
     wait(2000).then(() => {
       setRefreshing(false);
     });
-  }, []);
+  }, [resto]);
 
   const deleteRow = (rowMap, rowKey) => {
     closeRow(rowMap, rowKey);
@@ -59,14 +71,32 @@ export default function MeusCartoes({ route, navigation }) {
         rota === "chekout"
           ? navigation.navigate("Parcelas", {
               cartao: JSON.stringify(item),
-              valor: total,
+              tipo: tipo,
+              valor: valor,
+              total: total,
               endereco: endereco,
               cart: cart,
               valorTotal: valorTotal,
               valorGeral: valorGeral,
-              
             })
-          : {}
+          : navigation.navigate("Parcelas", {
+              cartao: cartao,
+              tipo: tipo,
+              valor: valor,
+              total: total,
+              endereco: endereco,
+              cart: cart,
+              valorTotal: valorTotal,
+              valorGeral: valorGeral,
+              cvv1: CVV,
+              valorc01: valorc1,
+              cartao1: rota === "parcela" ? "1" : "0",
+              resto: resto.toString(),
+              codParcela: codParcela,
+              xparcela: xparcela,
+              vpacelas: vpacelas,
+              cartao2: JSON.stringify(item),
+            })
       }
     >
       {load ? (
@@ -219,7 +249,7 @@ export default function MeusCartoes({ route, navigation }) {
 
   return (
     <View style={{ marginBottom: 70 }}>
-      {rota === "chekout" ? <></> : <SearchBar />}
+      {rota === "chekout" || rota === "parcela" ? <></> : <SearchBar />}
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }}></View>
 
       <ScrollView
@@ -241,9 +271,15 @@ export default function MeusCartoes({ route, navigation }) {
         />
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("add_config_cartao", {
-              idCliente: user1.idCliente,
-            })
+            rota === "chekout" || rota === "parcela"
+              ? navigation.navigate("Adicionar Cartão", {
+                  idCliente: user1.idCliente,
+                  rota: "Checkout",
+                })
+              : navigation.navigate("add_config_cartao", {
+                  idCliente: user1.idCliente,
+                  rota: rota,
+                })
           }
           style={{
             alignItems: "center",

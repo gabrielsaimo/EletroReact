@@ -83,7 +83,13 @@ export default function add_config_cartao({ route }) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#fff", height: "100%" }}>
-      <View style={{ marginTop: 80 }}>
+      <View
+        style={
+          route.params.rota === "Checkout"
+            ? { marginTop: 20 }
+            : { marginTop: 80 }
+        }
+      >
         <View style={{ alignSelf: "flex-start", marginLeft: "85%" }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <FontAwesomeIcon

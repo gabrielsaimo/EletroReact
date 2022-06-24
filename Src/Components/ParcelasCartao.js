@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   SafeAreaView,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { TextInputMask } from "react-native-masked-text";
 import { AuthContext } from "../Contexts/Auth";
 
 export default function ParcelasCartao({ route, navigation }) {
@@ -14,9 +16,65 @@ export default function ParcelasCartao({ route, navigation }) {
   const { user1, multcar, Comprar } = useContext(AuthContext);
   const [Buy, setBuy] = useState([]);
   const [buyok, setBuyOk] = useState(false);
-  const { endereco, cart, valorTotal, valorGeral, valor } = route.params;
-  const item = JSON.parse(route.params.cartao);
+  const [CVV, setCvv1] = useState(0);
+  const [CVV2, setCvv2] = useState(0);
+  const [valor1c, setvalor1c] = useState(0);
+  const [ok1, setOk1] = useState(false);
+  const {
+    endereco,
+    cart,
+    valorTotal,
+    valorGeral,
+    valor,
+    total,
+    tipo,
+    codParcela,
+    xparcela,
+    vpacelas,
+    cartao,
+    cvv1,
+    valorc01,
+    cartao1,
+    cartao2,
+    resto,
+  } = route.params;
+  const [restov, setRestoV] = useState("");
+  const item =
+    cartao2 != undefined
+      ? JSON.parse(route.params.cartao2)
+      : JSON.parse(route.params.cartao);
   useEffect(() => {
+    if (valor1c !== undefined && valor1c !== 0) {
+      var calc =
+        Number(
+          valor1c
+            .replace("R$", "")
+            .replace(".", "")
+            .replace(/[0-9][0-9][0-9][0-9][0-9],/g, "")
+            .replace(/[0-9][0-9][0-9][0-9],/g, "")
+            .replace(/[0-9][0-9][0-9],/g, "")
+            .replace(/[0-9][0-9],/g, "")
+            .replace(/[0-9],/g, "")
+        ) -
+        Number(
+          valor
+            .replace(".", "")
+            .replace(/[0-9][0-9][0-9][0-9][0-9],/g, "")
+            .replace(/[0-9][0-9][0-9][0-9],/g, "")
+            .replace(/[0-9][0-9][0-9],/g, "")
+            .replace(/[0-9][0-9],/g, "")
+            .replace(/[0-9],/g, "")
+        );
+      var desc =
+        Number(
+          valor1c
+            .replace("R$", "")
+            .replace(".", "")
+            .replace(/,[0-9][0-9]/g, "")
+        ) - Number(valor.replace(".", "").replace(/,[0-9][0-9]/g, ""));
+      console.log(desc);
+      setRestoV(desc + "," + calc);
+    }
     fetch(`${URL_PROD}detalhamentoPagamento`, {
       method: "POST",
       headers: {
@@ -31,7 +89,12 @@ export default function ParcelasCartao({ route, navigation }) {
               : multcar,
           cep: "38408250",
           codigoPagamento: "pagamento_um_cartao",
-          valorTotalcomFrete: valor,
+          valorTotalcomFrete:
+            ok1 == true
+              ? valor1c.toString().replace("R$", "")
+              : resto != undefined
+              ? resto
+              : valor,
           valorPagoCartaoUm: "",
           idCliente: user1.idCliente,
         },
@@ -50,7 +113,7 @@ export default function ParcelasCartao({ route, navigation }) {
       .catch((error) => {
         console.log(error);
       });
-  }, [buyok]);
+  }, [buyok, ok1, resto]);
   return (
     <SafeAreaView style={{ backgroundColor: "#FFF", flex: 1 }}>
       <View
@@ -65,18 +128,16 @@ export default function ParcelasCartao({ route, navigation }) {
         <View
           style={{
             flexDirection: "row",
-            marginTop: "auto",
-            marginBottom: "auto",
-            marginLeft: "auto",
-            marginRight: "auto",
+            justifyContent: "space-around",
+            alignItems: "center",
           }}
         >
-          <View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               style={[
                 {
                   marginVertical: 25,
-                  marginRight: 30,
+                  marginRight: 10,
                 },
                 item.item.cod === "EL"
                   ? { width: 77, height: 28 }
@@ -104,77 +165,233 @@ export default function ParcelasCartao({ route, navigation }) {
                   : require("../../Src/Components/assets/card_icon.png")
               }
             />
+            <View>
+              <Text
+                style={{
+                  color: "#343A40",
+                  fontWeight: "bold",
+                  fontSize: 15,
+                }}
+              >
+                {item.item.numero.substring(0, 4) === "6062"
+                  ? "Hipercard"
+                  : item.item.numero.substring(0, 2) === "30" ||
+                    item.item.numero.substring(0, 2) === "36" ||
+                    item.item.numero.substring(0, 2) === "38"
+                  ? "Diners"
+                  : item.item.cardnome}
+              </Text>
+              <Text
+                style={{
+                  color: "#6A7075",
+                  fontWeight: "bold",
+                  fontSize: 15,
+                  marginTop: 5,
+                }}
+              >
+                {"**** "}
+                {item.item.numero.substring(
+                  item.item.numero.length - 4,
+                  item.item.numero.length
+                )}
+              </Text>
+            </View>
           </View>
-          <View style={{ marginTop: "auto", marginBottom: "auto" }}>
-            <Text
+
+          <View
+            style={{
+              marginTop: "auto",
+              marginBottom: "auto",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <View
               style={{
-                color: "#343A40",
-                fontWeight: "bold",
-                fontSize: 20,
+                flexDirection: "row",
+                height: 30,
+                width: 50,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              {item.item.numero.substring(0, 4) === "6062"
-                ? "Hipercard"
-                : item.item.numero.substring(0, 2) === "30" ||
-                  item.item.numero.substring(0, 2) === "36" ||
-                  item.item.numero.substring(0, 2) === "38"
-                ? "Diners"
-                : item.item.cardnome}
-            </Text>
-            <Text
-              style={{
-                color: "#6A7075",
-                fontWeight: "bold",
-                fontSize: 15,
-                marginTop: 5,
-              }}
-            >
-              {"**** **** **** "}
-              {item.item.numero.substring(
-                item.item.numero.length - 4,
-                item.item.numero.length
-              )}
-            </Text>
+              <Text>CVV </Text>
+              <TextInputMask
+                style={{
+                  height: 30,
+                  width: "100%",
+                  fontSize: 16,
+                  borderColor: "#A0A5AA",
+                  backgroundColor: "#fff",
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  paddingHorizontal: 5,
+                }}
+                underlineColorAndroid="transparent"
+                type={"only-numbers"}
+                maxLength={4}
+                borderWidth={1}
+                borderColor={"#A0A5AA"}
+                backgroundColor={"#fff"}
+                paddingHorizontal={10}
+                borderRadius={5}
+                onChangeText={(cvv) => setCvv1(cvv)}
+                placeholder="000"
+              />
+            </View>
           </View>
         </View>
       </View>
-      <FlatList
-        data={Buy}
-        howsHorizontalScrollIndicator={false}
-        initialNumToRender={10}
-        keyExtractor={(item, index) => index}
-        renderItem={(item, index) => (
+      {tipo === "pagamento_dois_cartoes" && ok1 === false ? (
+        <>
           <View
             style={{
-              backgroundColor: "#FFF",
-              height: 100,
               marginHorizontal: 10,
+              alignItems: "center",
+              backgroundColor: "#E9ECEF",
+              paddingVertical: 10,
+              borderRadius: 10,
             }}
           >
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Checkout", {
-                  rota: "parcela",
-                  codParcela: item.item.codParcelas,
-                  xparcela: item.item.qdeParcelas,
-                  vpacelas: item.item.valorParcela,
-                  cartao: route.params.cartao,
-                  endereco: endereco,
-                  cart: cart,
-                  valorTotal: valorTotal,
-                  valorGeral: valorGeral,
-                  valor: valor,
-                })
-              }
-            >
-              <Text>
-                X {item.item.qdeParcelas} {item.item.valorParcela}
-              </Text>
-              <Text>{item.item.codParcelas}</Text>
-            </TouchableOpacity>
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 5,
+                }}
+              >
+                <TextInputMask
+                  style={{
+                    height: 30,
+                    fontSize: 16,
+                    borderColor: "#A0A5AA",
+                    backgroundColor: "#fff",
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    paddingHorizontal: 10,
+                    textAlign: "right",
+                    marginRight: 5,
+                  }}
+                  onChangeText={(text) => setvalor1c(text)}
+                  placeholder={"R$0,00"}
+                  type="money"
+                  maxLength={valor.toString().length + 3}
+                />
+                <Text>de R$ {valor}</Text>
+              </View>
+            </View>
+            <Text> Quanto vc deseja pagar com esse cartão?</Text>
           </View>
-        )}
-      />
+          {valor1c.toString().replace("R$", "") !== "0,00" &&
+          valor1c.toString().replace("R$", "") !== "0" ? (
+            <TouchableOpacity
+              style={{
+                marginTop: 20,
+                alignItems: "center",
+                backgroundColor: "#9BCB3D",
+                marginHorizontal: 10,
+                paddingVertical: 15,
+                borderRadius: 10,
+              }}
+              onPress={() => setOk1(true)}
+            >
+              <View>
+                <Text
+                  style={{ fontSize: 18, color: "#FFF", fontWeight: "bold" }}
+                >
+                  Continuar
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <View></View>
+          )}
+        </>
+      ) : (
+        <FlatList
+          data={Buy}
+          howsHorizontalScrollIndicator={false}
+          initialNumToRender={10}
+          keyExtractor={(item, index) => index}
+          renderItem={(item, index) => (
+            <View>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#FFF",
+                  height: 80,
+                  marginHorizontal: 10,
+                  justifyContent: "center",
+                }}
+                onPress={() =>
+                  CVV.length > 2 || CVV2.length > 2
+                    ? valor1c.toString().replace("R$", "") !== "0,00" &&
+                      valor1c.toString().replace("R$", "") !== "0"
+                      ? navigation.navigate("Meus Cartões", {
+                          rota: "parcela",
+                          codParcela: item.item.codParcelas,
+                          xparcela: item.item.qdeParcelas,
+                          vpacelas: item.item.valorParcela,
+                          cartao: route.params.cartao,
+                          endereco: endereco,
+                          cart: cart,
+                          valorTotal: valorTotal,
+                          valorGeral: valorGeral,
+                          valor: valor,
+                          total: total,
+                          CVV: CVV,
+                          valorc1: valor1c.toString().replace("R$", ""),
+                          resto: restov.replace(/-/g, ""),
+                        })
+                      : navigation.navigate("Checkout", {
+                          rota: "parcela",
+                          codParcela: codParcela,
+                          xparcela: xparcela,
+                          vpacelas: vpacelas,
+                          cartao: cartao,
+                          endereco: endereco,
+                          cart: cart,
+                          valorTotal: valorTotal,
+                          valorGeral: valorGeral,
+                          valor: valor,
+                          total: total,
+                          CVV: cvv1,
+                          CVV2: CVV,
+                          valorc1: valor1c.toString().replace("R$", ""),
+                          codParcela2: item.item.codParcelas,
+                          xparcela2: item.item.qdeParcelas,
+                          vpacelas2: item.item.valorParcela,
+                          cartao2: cartao2,
+                        })
+                    : Alert.alert("Ops!", "Preencha o CVV corretamente", [
+                        { text: "OK" },
+                      ])
+                }
+              >
+                <View>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                      {item.item.qdeParcelas}x{" "}
+                    </Text>
+                    <Text style={{ fontSize: 18 }}>
+                      {item.item.valorParcela}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: "#CED4DA",
+                  width: "95%",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              />
+            </View>
+          )}
+        />
+      )}
     </SafeAreaView>
   );
 }

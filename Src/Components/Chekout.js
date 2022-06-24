@@ -17,6 +17,8 @@ export default function Checkout({ route, navigation }) {
     cartao,
     xparcela,
     vpacelas,
+    CVV,
+    CVV2,
   } = route.params;
   const [frete, setFreteN] = useState(0);
   const [fretecets, setCetsFrete] = useState(0);
@@ -276,7 +278,17 @@ export default function Checkout({ route, navigation }) {
                       item.codigoPagamento === "pagamento_um_cartao"
                         ? navigation.navigate("Meus Cartões", {
                             rota: "chekout",
-                            tipo: "pagamento_um_cartao",
+                            tipo: item.codigoPagamento,
+                            valor: total,
+                            endereco: endereco,
+                            cart: cart,
+                            valorTotal: valorTotal,
+                            valorGeral: valorGeral,
+                          })
+                        : item.codigoPagamento === "pagamento_dois_cartoes"
+                        ? navigation.navigate("Meus Cartões", {
+                            rota: "chekout",
+                            tipo: item.codigoPagamento,
                             valor: total,
                             endereco: endereco,
                             cart: cart,

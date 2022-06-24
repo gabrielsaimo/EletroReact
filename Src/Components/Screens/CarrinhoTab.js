@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import { AuthContext } from "../../Contexts/Auth";
 import { IconButton } from "react-native-paper";
@@ -85,7 +86,14 @@ export default function MeusCartoes({ route }) {
   }
   function Clickcep() {
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
-    onRefresh();
+    if (TextInput_cep.length > 8) {
+      onRefresh();
+    } else {
+      Alert.alert("Ops!", "Campo de CEP não preencido corretamente", [
+        { text: "OK" },
+      ]);
+      setVisiblecep(false);
+    }
   }
   function additem(sku) {
     setIntervalo(true);

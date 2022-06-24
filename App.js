@@ -171,7 +171,7 @@ const Carrinho = () => {
         Options={{ headerShown: false, headerTitleAlign: "center" }}
       />
       <Stack.Screen name="Meus Cartões" component={MeusCartoes} />
-      <Stack.Screen name="add_config_cartao" component={add_config_cartao} />
+      <Stack.Screen name="Adicionar Cartão" component={add_config_cartao} />
       <Stack.Screen name="Parcelas" component={ParcelasCartao} />
       <Stack.Screen name="Revisão" component={RevisaoCheckout} />
     </Stack.Navigator>
