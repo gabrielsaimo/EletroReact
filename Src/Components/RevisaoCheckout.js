@@ -451,8 +451,8 @@ export default function RevisaoCheckout({ route, navigation }) {
                         <Image
                           style={[
                             {
-                              marginVertical: 25,
-                              marginRight: 30,
+                              width: 100,
+                              margin: 10,
                             },
                             JSON.parse(cartao).item.cod === "EL"
                               ? { width: 77, height: 28 }
@@ -498,10 +498,7 @@ export default function RevisaoCheckout({ route, navigation }) {
                           style={{
                             color: "#343A40",
                             fontWeight: "bold",
-                            width:
-                              JSON.parse(cartao).item.cardnome === "Visa"
-                                ? 90
-                                : 100,
+                            width: 100,
                             fontSize: 15,
                           }}
                         >
@@ -578,8 +575,7 @@ export default function RevisaoCheckout({ route, navigation }) {
                           style={[
                             {
                               width: 100,
-                              marginVertical: 25,
-                              marginRight: 30,
+                              margin: 10,
                             },
                             JSON.parse(cartao2).item.cod === "EL"
                               ? { width: 77, height: 28 }
@@ -624,10 +620,7 @@ export default function RevisaoCheckout({ route, navigation }) {
                         <Text
                           style={{
                             color: "#343A40",
-                            width:
-                              JSON.parse(cartao2).item.cardnome === "Visa"
-                                ? 90
-                                : 100,
+                            width: 100,
                             fontWeight: "bold",
                             fontSize: 15,
                           }}
@@ -731,6 +724,15 @@ export default function RevisaoCheckout({ route, navigation }) {
                   <View style={{ marginTop: 10 }}>
                     {pagSelect === "pagamento_um_cartao" ? (
                       <Text>Parcelas</Text>
+                    ) : pagSelect === "pagamento_dois_cartoes" ? (
+                      <>
+                        <Text style={{ fontSize: 11 }}>
+                          Parcelas (cartão 1)
+                        </Text>
+                        <Text style={{ fontSize: 11 }}>
+                          Parcelas (cartão 2)
+                        </Text>
+                      </>
                     ) : (
                       <></>
                     )}
@@ -766,6 +768,15 @@ export default function RevisaoCheckout({ route, navigation }) {
                       <Text>
                         {xparcela}x de {vpacelas.replace(" s/ juros", "")}
                       </Text>
+                    ) : pagSelect === "pagamento_dois_cartoes" ? (
+                      <>
+                        <Text style={{ fontSize: 11 }}>
+                          {xparcela}x de {vpacelas.replace(" s/ juros", "")}
+                        </Text>
+                        <Text style={{ fontSize: 11 }}>
+                          {xparcela2}x de {vpacelas2.replace(" s/ juros", "")}
+                        </Text>
+                      </>
                     ) : (
                       <></>
                     )}
