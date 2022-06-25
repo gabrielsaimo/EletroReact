@@ -10,10 +10,14 @@ export default function RevisaoCheckout({ route, navigation }) {
     frete,
     pagSelect,
     codParcela,
+    codParcela2,
     rota,
     cartao,
+    cartao2,
     xparcela,
+    xparcela2,
     vpacelas,
+    vpacelas2,
   } = route.params;
 
   const [data2, setData2] = useState(JSON.parse(cart));
@@ -426,7 +430,266 @@ export default function RevisaoCheckout({ route, navigation }) {
                 </View>
               ) : (
                 <View>
-                  <Text>dois?</Text>
+                  <View
+                    style={{
+                      backgroundColor: "#E9ECEF",
+                      borderRadius: 10,
+                      height: 90,
+                      marginVertical: 5,
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                      }}
+                    >
+                      <View>
+                        <Image
+                          style={[
+                            {
+                              marginVertical: 25,
+                              marginRight: 30,
+                            },
+                            JSON.parse(cartao).item.cod === "EL"
+                              ? { width: 77, height: 28 }
+                              : JSON.parse(cartao).item.cod === undefined
+                              ? { width: 70, height: 49 }
+                              : { width: 72, height: 45 },
+                          ]}
+                          source={
+                            JSON.parse(cartao).item.cod === "MC"
+                              ? require("../../Src/Components/assets/master_card.png")
+                              : JSON.parse(cartao).item.cod === "VI"
+                              ? require("../../Src/Components/assets/visa.png")
+                              : JSON.parse(cartao).item.cod === "AE"
+                              ? require("../../Src/Components/assets/american_express.png")
+                              : JSON.parse(cartao).item.cod === "DN" ||
+                                JSON.parse(cartao).item.numero.substring(
+                                  0,
+                                  2
+                                ) === "30" ||
+                                JSON.parse(cartao).item.numero.substring(
+                                  0,
+                                  2
+                                ) === "36" ||
+                                JSON.parse(cartao).item.numero.substring(
+                                  0,
+                                  2
+                                ) === "38"
+                              ? require("../../Src/Components/assets/diners.png")
+                              : JSON.parse(cartao).item.cod === "EL"
+                              ? require("../../Src/Components/assets/elo.png")
+                              : JSON.parse(cartao).item.cod === "HI" ||
+                                JSON.parse(cartao).item.numero.substring(
+                                  0,
+                                  4
+                                ) === "6062"
+                              ? require("../../Src/Components/assets/hipercard.png")
+                              : require("../../Src/Components/assets/card_icon.png")
+                          }
+                        />
+                      </View>
+                      <View style={{ marginTop: "auto", marginBottom: "auto" }}>
+                        <Text
+                          style={{
+                            color: "#343A40",
+                            fontWeight: "bold",
+                            width:
+                              JSON.parse(cartao).item.cardnome === "Visa"
+                                ? 90
+                                : 100,
+                            fontSize: 15,
+                          }}
+                        >
+                          {JSON.parse(cartao).item.numero.substring(0, 4) ===
+                          "6062"
+                            ? "Hipercard"
+                            : JSON.parse(cartao).item.numero.substring(0, 2) ===
+                                "30" ||
+                              JSON.parse(cartao).item.numero.substring(0, 2) ===
+                                "36" ||
+                              JSON.parse(cartao).item.numero.substring(0, 2) ===
+                                "38"
+                            ? "Diners"
+                            : JSON.parse(cartao).item.cardnome}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#6A7075",
+                            fontWeight: "bold",
+                            fontSize: 13,
+                            marginTop: 5,
+                          }}
+                        >
+                          {"****"}
+                          {JSON.parse(cartao).item.numero.substring(
+                            JSON.parse(cartao).item.numero.length - 4,
+                            JSON.parse(cartao).item.numero.length
+                          )}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginHorizontal: 20,
+                        }}
+                      >
+                        <View style={{ alignItems: "flex-end", width: "100%" }}>
+                          <Text style={{ fontSize: 15, color: "#6A7075" }}>
+                            Parcelas
+                          </Text>
+                        </View>
+
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            color: "#1534C8",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {xparcela}x de {vpacelas.replace(" s/ juros", "")}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: "#E9ECEF",
+                      borderRadius: 10,
+                      height: 90,
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                      }}
+                    >
+                      <View>
+                        <Image
+                          style={[
+                            {
+                              width: 100,
+                              marginVertical: 25,
+                              marginRight: 30,
+                            },
+                            JSON.parse(cartao2).item.cod === "EL"
+                              ? { width: 77, height: 28 }
+                              : JSON.parse(cartao2).item.cod === undefined
+                              ? { width: 70, height: 49 }
+                              : { width: 72, height: 45 },
+                          ]}
+                          source={
+                            JSON.parse(cartao2).item.cod === "MC"
+                              ? require("../../Src/Components/assets/master_card.png")
+                              : JSON.parse(cartao2).item.cod === "VI"
+                              ? require("../../Src/Components/assets/visa.png")
+                              : JSON.parse(cartao2).item.cod === "AE"
+                              ? require("../../Src/Components/assets/american_express.png")
+                              : JSON.parse(cartao2).item.cod === "DN" ||
+                                JSON.parse(cartao2).item.numero.substring(
+                                  0,
+                                  2
+                                ) === "30" ||
+                                JSON.parse(cartao2).item.numero.substring(
+                                  0,
+                                  2
+                                ) === "36" ||
+                                JSON.parse(cartao2).item.numero.substring(
+                                  0,
+                                  2
+                                ) === "38"
+                              ? require("../../Src/Components/assets/diners.png")
+                              : JSON.parse(cartao2).item.cod === "EL"
+                              ? require("../../Src/Components/assets/elo.png")
+                              : JSON.parse(cartao2).item.cod === "HI" ||
+                                JSON.parse(cartao2).item.numero.substring(
+                                  0,
+                                  4
+                                ) === "6062"
+                              ? require("../../Src/Components/assets/hipercard.png")
+                              : require("../../Src/Components/assets/card_icon.png")
+                          }
+                        />
+                      </View>
+                      <View style={{ marginTop: "auto", marginBottom: "auto" }}>
+                        <Text
+                          style={{
+                            color: "#343A40",
+                            width:
+                              JSON.parse(cartao2).item.cardnome === "Visa"
+                                ? 90
+                                : 100,
+                            fontWeight: "bold",
+                            fontSize: 15,
+                          }}
+                        >
+                          {JSON.parse(cartao2).item.numero.substring(0, 4) ===
+                          "6062"
+                            ? "Hipercard"
+                            : JSON.parse(cartao2).item.numero.substring(
+                                0,
+                                2
+                              ) === "30" ||
+                              JSON.parse(cartao2).item.numero.substring(
+                                0,
+                                2
+                              ) === "36" ||
+                              JSON.parse(cartao2).item.numero.substring(
+                                0,
+                                2
+                              ) === "38"
+                            ? "Diners"
+                            : JSON.parse(cartao2).item.cardnome}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#6A7075",
+                            fontWeight: "bold",
+                            fontSize: 13,
+                            marginTop: 5,
+                          }}
+                        >
+                          {"****"}
+                          {JSON.parse(cartao2).item.numero.substring(
+                            JSON.parse(cartao2).item.numero.length - 4,
+                            JSON.parse(cartao2).item.numero.length
+                          )}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginHorizontal: 20,
+                        }}
+                      >
+                        <View style={{ alignItems: "flex-end", width: "100%" }}>
+                          <Text style={{ fontSize: 15, color: "#6A7075" }}>
+                            Parcelas
+                          </Text>
+                        </View>
+
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            color: "#1534C8",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {xparcela2}x de {vpacelas2.replace(" s/ juros", "")}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
                 </View>
               )}
               <View

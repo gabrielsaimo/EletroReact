@@ -444,7 +444,7 @@ export default function CategoriasProduto({ route, navigation }) {
                       style={{
                         color: "blue",
                         fontSize: 10,
-                        width: "200%",
+                        width: 200,
                         marginLeft: 15,
                       }}
                     >
