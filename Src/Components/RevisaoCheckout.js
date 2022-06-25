@@ -422,7 +422,7 @@ export default function RevisaoCheckout({ route, navigation }) {
                             fontWeight: "bold",
                           }}
                         >
-                          {xparcela}x de {vpacelas.replace(" s/ juros", "")}
+                          {xparcela2}x de {vpacelas2.replace(" s/ juros", "")}
                         </Text>
                       </View>
                     </View>
@@ -766,7 +766,7 @@ export default function RevisaoCheckout({ route, navigation }) {
                   <View style={{ marginTop: 10 }}>
                     {pagSelect === "pagamento_um_cartao" ? (
                       <Text>
-                        {xparcela}x de {vpacelas.replace(" s/ juros", "")}
+                        {xparcela2}x de {vpacelas2.replace(" s/ juros", "")}
                       </Text>
                     ) : pagSelect === "pagamento_dois_cartoes" ? (
                       <>
