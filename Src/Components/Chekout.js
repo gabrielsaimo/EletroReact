@@ -25,6 +25,10 @@ export default function Checkout({ route, navigation }) {
     CVV2,
     pagSelectR,
   } = route.params;
+  console.log(
+    "🚀 ~ file: Chekout.js ~ line 28 ~ Checkout ~ route.params",
+    route.params
+  );
   const [frete, setFreteN] = useState(0);
   const [fretecets, setCetsFrete] = useState(0);
   const [valorFrete, setvalorFrete] = useState(0);
@@ -869,16 +873,23 @@ export default function Checkout({ route, navigation }) {
               />
             </View>
             <View>
+              {console.log(pagSelect, xparcela2, xparcela)}
               <TouchableOpacity
                 style={{
                   backgroundColor:
                     pagSelect === null
                       ? "#e4e4e4"
                       : pagSelect === "pagamento_um_cartao" &&
+                        cartao !== undefined &&
+                        cartao2 === undefined
+                      ? "#9BCB3D"
+                      : pagSelect === "pagamento_dois_cartoes" &&
                         xparcela2 !== undefined &&
                         xparcela !== undefined
-                      ? "#e4e4e4"
-                      : "#9BCB3D",
+                      ? "#9BCB3D"
+                      : pagSelect === "boleto_bradesco"
+                      ? "#9BCB3D"
+                      : "#e4e4e4",
                   borderRadius: 5,
                   padding: 20,
                   paddingHorizontal: 15,
@@ -888,12 +899,18 @@ export default function Checkout({ route, navigation }) {
                   marginHorizontal: 20,
                 }}
                 disabled={
-                  pagSelect !== null
-                    ? pagSelect === "pagamento_um_cartao" &&
+                  pagSelect === null
+                    ? true
+                    : pagSelect === "pagamento_um_cartao" &&
+                      cartao !== undefined &&
+                      cartao2 === undefined
+                    ? false
+                    : pagSelect === "pagamento_dois_cartoes" &&
                       xparcela2 !== undefined &&
                       xparcela !== undefined
-                      ? true
-                      : false
+                    ? false
+                    : pagSelect === "boleto_bradesco"
+                    ? false
                     : true
                 }
                 onPress={() =>
