@@ -25,6 +25,7 @@ export default function MeusCartoes({ route }) {
     useContext(AuthContext);
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
+  console.log("🚀 ~ file: CarrinhoTab.js ~ line 28 ~ MeusCartoes ~ load", load);
   const [intervalo, setIntervalo] = useState(false);
   const isFocused = useIsFocused();
   const [visible, setVisible] = React.useState(false);
@@ -34,61 +35,54 @@ export default function MeusCartoes({ route }) {
   const onDismissSnackBar = () => setVisible(false);
   useEffect(() => {
     let isMounted = true;
-    if (load === true && multcar.length > 10) {
-      Meucarrinho();
-    }
-    if (isFocused === false) {
-      setLoad(true);
-    } else {
-      setTimeout(() => {
-        if (load !== false) {
-          setLoad(false);
-        }
-      }, 8000);
-    }
+    Meucarrinho();
     return () => {
       isMounted = false;
     };
-  }, [isFocused, Comprar, load, data]);
+  }, [Comprar, load, isFocused]);
 
-  function Meucarrinho() {
-    fetch(`${URL_PROD}carrinho`, {
-      method: "POST",
-      headers: {
-        Accept: "aplication/json",
-        "Content-type": "aplication/json",
-      },
-      body: JSON.stringify({
-        checkout: {
-          produtos:
-            JSON.stringify(Comprar).length > 2
-              ? JSON.stringify(Comprar)
-              : multcar,
-          cep: TextInput_cep,
-        },
-        version: 15,
-      })
-        .replace(/[//\\]/g, "")
-        .replace('"[', "[")
-        .replace(']"', "]")
-        .replace(/"}{"/g, '"},{"'),
-    })
-      .then((res) => res.json())
-      .then((resData) => {
-        setData(resData);
-        setIntervalo(false);
-        setLoad(false);
-        if (resData.retorno.frete[0].cep === "") {
-          setVisiblecep(false);
-        } else {
-          setVisiblecep(true);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoad(false);
-      });
-  }
+  const Meucarrinho = () =>
+    load === true || TextInput_cep.length > 8 || isFocused == true
+      ? fetch(`${URL_PROD}carrinho`, {
+          method: "POST",
+          headers: {
+            Accept: "aplication/json",
+            "Content-type": "aplication/json",
+          },
+          body: JSON.stringify({
+            checkout: {
+              produtos:
+                JSON.stringify(Comprar).length > 2
+                  ? JSON.stringify(Comprar)
+                  : multcar,
+              cep: TextInput_cep,
+            },
+            version: 15,
+          })
+            .replace(/[//\\]/g, "")
+            .replace('"[', "[")
+            .replace(']"', "]")
+            .replace(/"}{"/g, '"},{"'),
+        })
+          .then((res) => res.json())
+          .then((resData) => {
+            setData(resData);
+            setLoad(false);
+            if (intervalo === true) {
+              setIntervalo(false);
+            }
+            if (resData.retorno.frete[0].cep === "") {
+              setVisiblecep(false);
+            } else {
+              setVisiblecep(true);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            setLoad(false);
+          })
+      : {};
+
   function Clickcep() {
     cepvisible ? setVisiblecep(true) : setVisiblecep(false);
     if (TextInput_cep.length > 8) {
@@ -101,8 +95,10 @@ export default function MeusCartoes({ route }) {
     }
   }
   function additem(sku) {
-    setIntervalo(true);
     setLoad(true);
+    if (intervalo === false) {
+      setIntervalo(true);
+    }
     let array = JSON.parse(
       JSON.stringify(Comprar).length > 2
         ? JSON.stringify(Comprar)
@@ -139,14 +135,13 @@ export default function MeusCartoes({ route }) {
             .replace(/true/g, "")
             .replace(/"}{"/g, '"},{"')
         );
-    setTimeout(() => {
-      setLoad(false);
-      setIntervalo(false);
-    }, 3000);
   }
   function tiraitem(sku, qtd) {
-    setIntervalo(true);
     setLoad(true);
+    if (intervalo === false) {
+      setIntervalo(true);
+    }
+
     let array = JSON.parse(
       JSON.stringify(Comprar).length > 2
         ? JSON.stringify(Comprar)
@@ -184,15 +179,13 @@ export default function MeusCartoes({ route }) {
             .replace(/true/g, "")
             .replace(/"}{"/g, '"},{"')
         );
-    setTimeout(() => {
-      setIntervalo(false);
-      setLoad(false);
-    }, 3000);
   }
   //! Excli qdt
   function removeitem(sku, qtd) {
-    setIntervalo(true);
     setLoad(true);
+    if (intervalo === false) {
+      setIntervalo(true);
+    }
     let array = JSON.parse(
       JSON.stringify(Comprar).length > 2
         ? JSON.stringify(Comprar)
@@ -217,17 +210,15 @@ export default function MeusCartoes({ route }) {
             .replace(/true/g, "")
             .replace(/"}{"/g, '"},{"')
         );
-    setTimeout(() => {
-      setIntervalo(false);
-      setLoad(false);
-    }, 3000);
   }
   return (
     <SafeAreaView style={{ backgroundColor: "#FFF", height: "100%" }}>
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }} />
       {load == false ? (
         <>
-          {multcar !== "{}" && multcar.length > 10 ? (
+          {multcar !== "{}" &&
+          multcar.length > 10 &&
+          data.toString().length > 5 ? (
             <>
               <FlatList
                 data={data.retorno.produtos}
@@ -331,8 +322,8 @@ export default function MeusCartoes({ route }) {
                                     }}
                                     onPress={() =>
                                       !cepvisible
-                                        ? setVisiblecep(true)
-                                        : setVisiblecep(false)
+                                        ? [setVisiblecep(true), setTextCep("")]
+                                        : [setVisiblecep(false), setTextCep("")]
                                     }
                                   >
                                     Alterar{">"}
@@ -373,8 +364,14 @@ export default function MeusCartoes({ route }) {
                                       }}
                                       onPress={() =>
                                         !cepvisible
-                                          ? setVisiblecep(true)
-                                          : setVisiblecep(false)
+                                          ? [
+                                              setVisiblecep(true),
+                                              setTextCep(""),
+                                            ]
+                                          : [
+                                              setVisiblecep(false),
+                                              setTextCep(""),
+                                            ]
                                       }
                                     >
                                       Alterar{">"}
@@ -454,7 +451,6 @@ export default function MeusCartoes({ route }) {
                       }}
                     >
                       <Text style={{ color: "#6A7075" }}>Total</Text>
-
                       <NumberFormat
                         value={
                           parseFloat(

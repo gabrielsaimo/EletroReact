@@ -37,6 +37,7 @@ export default function MeusCartoes({ route, navigation }) {
     resto,
   } = route.params;
   const { Cartao, user1, arraycard } = useContext(AuthContext);
+  const [alterar, setAlteradata] = useState(false);
   const [data1, setData1] = useState([]);
   const [index, setIndex] = useState(0);
   const [load, setLoad] = useState(false);
@@ -244,11 +245,20 @@ export default function MeusCartoes({ route, navigation }) {
   };
   useEffect(() => {
     onRefresh;
-    setData1(arraycard);
+    console.log(cartao);
+    if (cartao != undefined) {
+      var data_filter = arraycard.filter(function (i, n) {
+        return i.numero !== JSON.parse(cartao).item.numero;
+      });
+      console.log(data_filter);
+      setData1(data_filter);
+    } else {
+      setData1(arraycard);
+    }
     setTimeout(() => {
       setLoad(false);
     }, 500);
-  }, [refreshing, isFocused, data1]);
+  }, [refreshing, isFocused]);
 
   return (
     <View style={{ marginBottom: 70 }}>
@@ -268,7 +278,7 @@ export default function MeusCartoes({ route, navigation }) {
           disableRightSwipe={true}
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
-          previewRowKey={index}
+          previewRowKey={index.toString()}
           previewOpenValue={-75}
           rightOpenValue={-75}
         />

@@ -53,6 +53,7 @@ export default function MeusEnderecos({ route, navigation }) {
       setRefreshing(true);
       if (e && id == null) {
         setError(e);
+        enderecos();
         console.log(error);
       }
     }
