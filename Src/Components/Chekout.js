@@ -8,27 +8,23 @@ export default function Checkout({ route, navigation }) {
   const { URL_PROD } = process.env;
   const { user1, multcar, Comprar } = useContext(AuthContext);
   const {
-    endereco,
+    rota,
     cart,
+    endereco,
     valorTotal,
     valorGeral,
-    rota,
     cartao,
     cartao2,
     codParcela,
     codParcela2,
-    xparcela,
     vpacelas,
     vpacelas2,
+    xparcela,
     xparcela2,
     CVV,
     CVV2,
     pagSelectR,
   } = route.params;
-  console.log(
-    "🚀 ~ file: Chekout.js ~ line 28 ~ Checkout ~ route.params",
-    route.params
-  );
   const [frete, setFreteN] = useState(0);
   const [fretecets, setCetsFrete] = useState(0);
   const [valorFrete, setvalorFrete] = useState(0);
@@ -103,17 +99,18 @@ export default function Checkout({ route, navigation }) {
     })
       .then((res) => res.json())
       .then((resData) => {
-        setDataCupom(resData);
-        setValorTotal(resData.retorno.valorTotal);
-        setDesconto(resData.retorno.descontoCupom);
-        let desc = resData.retorno.descontoCupom;
-        if (desc !== "0,00") {
+        if (resData.retorno.descontoCupom !== "0,00") {
           var emoje = "🤩🤩🤩";
+          setDesconto(resData.retorno.descontoCupom);
+          setDataCupom(resData);
+          setValorTotal(resData.retorno.valorTotal);
+          Alert.alert(resData.retorno.message, emoje, [{ text: "OK" }]);
         } else {
           var emoje = "😕😕😕";
+          Alert.alert(resData.retorno.message, emoje, [{ text: "OK" }]);
         }
         setPagSelect(null);
-        Alert.alert(resData.retorno.message, emoje, [{ text: "OK" }]);
+
         setReload(true);
       })
       .catch((error) => {
@@ -777,7 +774,10 @@ export default function Checkout({ route, navigation }) {
                 onPress={() => setVisibleCupom(true)}
               >
                 <Text style={{ fontWeight: "bold", color: "#1534C8" }}>
-                  {"Adicionar cupom de desconto >"}
+                  {desconto !== 0 && desconto != "0,00"
+                    ? "Alterar"
+                    : "Adicionar"}
+                  {" cupom de desconto >"}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -925,6 +925,7 @@ export default function Checkout({ route, navigation }) {
                     cartao2: cartao2,
                     endereco: endereco,
                     codParcela: codParcela,
+                    codParcela2: codParcela2,
                     xparcela: xparcela,
                     xparcela2: xparcela2,
                     CVV: CVV,

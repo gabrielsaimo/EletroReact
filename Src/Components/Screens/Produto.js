@@ -51,8 +51,9 @@ export default function Produto({ route, navigation }) {
   const [isVisibleDescr, setDescri] = useState(false);
   const [isVisibleEspec, setEspec] = useState(false);
   const [isVisiblefpagamento, setFpagamento] = useState(false);
-  const { consultaCep, user, user1, Compra, Carrinho, Compras } =
+  const { consultaCep, user, user1, Compra, Carrinho, Compras, multcar } =
     useContext(AuthContext);
+  const [disabled, setDisable] = useState(false);
   const [configuravel, setConfiguravel] = useState(false);
   const [usercep, setUsercep] = useState(user.cep);
   const { width, height } = Dimensions.get("window");
@@ -87,7 +88,7 @@ export default function Produto({ route, navigation }) {
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
   }
   function clickComprar() {
-    setLoad(true);
+    setDisable(true);
     if (!volt && filhos === undefined) {
       fadeIn();
       setAlert(true);
@@ -105,7 +106,7 @@ export default function Produto({ route, navigation }) {
     }
   }
   function clickCarrinho() {
-    setLoad(true);
+    setDisable(true);
     if (!volt && filhos !== undefined) {
       fadeIn();
       setCarrinho(true);
@@ -121,7 +122,7 @@ export default function Produto({ route, navigation }) {
       setLoad(false);
     }
     if (!volt && filhos === undefined) {
-      setLoad(true);
+      setDisable(true);
       fadeIn();
       setAlert(true);
       setTimeout(() => {
@@ -237,6 +238,12 @@ export default function Produto({ route, navigation }) {
     }
   }
   useEffect(() => {
+    if (multcar.length > 10) {
+      JSON.parse(multcar).map((i, k) =>
+        sku === i.sku || skuvolt === i.sku ? setDisable(true) : {}
+      );
+    }
+
     let isMounted = true;
     setModal(false);
     loadApi();
@@ -800,9 +807,24 @@ export default function Produto({ route, navigation }) {
               </TouchableOpacity>
 
               <TouchableOpacity
-                disabled={load}
                 style={{ width: "100%", marginTop: 15 }}
-                onPress={() => clickCarrinho()}
+                onPress={() =>
+                  disabled === true
+                    ? Alert.alert("ja se encontra no seu carrinho", " ", [
+                        {
+                          text: "Fechar",
+                          onPress: () => console.log("Cancel Pressed"),
+                        },
+                        {
+                          text: "Ver",
+                          onPress: () =>
+                            navigation.navigate("Carrinho", {
+                              rota: "Produto",
+                            }),
+                        },
+                      ])
+                    : clickCarrinho()
+                }
               >
                 <View
                   style={{

@@ -14,7 +14,7 @@ import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 const { URL_PROD } = process.env;
-export default function add_config_endereco({ route }) {
+export default function Add_config_endereco({ route }) {
   const [data, setData] = useState("");
   const [cep, setCep] = useState("");
   const [bairro, setBairro] = useState("");

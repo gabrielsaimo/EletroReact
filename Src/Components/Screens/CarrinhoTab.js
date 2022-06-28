@@ -18,9 +18,6 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { TextInputMask } from "react-native-masked-text";
 import { Snackbar } from "react-native-paper";
 import NumberFormat from "react-number-format";
-const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout));
-};
 export default function MeusCartoes({ route }) {
   const { URL_PROD } = process.env;
   const navigation = useNavigation();
@@ -30,28 +27,30 @@ export default function MeusCartoes({ route }) {
   const [load, setLoad] = useState(true);
   const [intervalo, setIntervalo] = useState(false);
   const isFocused = useIsFocused();
-  const [refreshing, setRefreshing] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const [cepvisible, setVisiblecep] = useState(false);
   const [TextInput_cep, setTextCep] = useState("");
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(1000).then(() => {
-      setTimeout(() => {
-        setRefreshing(false);
-      }, 3000);
-    });
-  }, [isFocused, load]);
   useEffect(() => {
     let isMounted = true;
-    onRefresh;
-    Meucarrinho();
+    if (load === true && multcar.length > 10) {
+      Meucarrinho();
+    }
+    if (isFocused === false) {
+      setLoad(true);
+    } else {
+      setTimeout(() => {
+        if (load !== false) {
+          setLoad(false);
+        }
+      }, 8000);
+    }
     return () => {
       isMounted = false;
     };
-  }, [refreshing, isFocused, arrayCompra, load, Comprar]);
+  }, [isFocused, Comprar, load, data]);
+
   function Meucarrinho() {
     fetch(`${URL_PROD}carrinho`, {
       method: "POST",
@@ -77,17 +76,23 @@ export default function MeusCartoes({ route }) {
       .then((res) => res.json())
       .then((resData) => {
         setData(resData);
+        setIntervalo(false);
         setLoad(false);
+        if (resData.retorno.frete[0].cep === "") {
+          setVisiblecep(false);
+        } else {
+          setVisiblecep(true);
+        }
       })
       .catch((error) => {
         console.log(error);
-        Meucarrinho();
+        setLoad(false);
       });
   }
   function Clickcep() {
-    !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
+    cepvisible ? setVisiblecep(true) : setVisiblecep(false);
     if (TextInput_cep.length > 8) {
-      onRefresh();
+      Meucarrinho();
     } else {
       Alert.alert("Ops!", "Campo de CEP não preencido corretamente", [
         { text: "OK" },
@@ -97,7 +102,7 @@ export default function MeusCartoes({ route }) {
   }
   function additem(sku) {
     setIntervalo(true);
-
+    setLoad(true);
     let array = JSON.parse(
       JSON.stringify(Comprar).length > 2
         ? JSON.stringify(Comprar)
@@ -134,13 +139,14 @@ export default function MeusCartoes({ route }) {
             .replace(/true/g, "")
             .replace(/"}{"/g, '"},{"')
         );
-    onRefresh();
     setTimeout(() => {
+      setLoad(false);
       setIntervalo(false);
-    }, 4000);
+    }, 3000);
   }
   function tiraitem(sku, qtd) {
     setIntervalo(true);
+    setLoad(true);
     let array = JSON.parse(
       JSON.stringify(Comprar).length > 2
         ? JSON.stringify(Comprar)
@@ -178,14 +184,15 @@ export default function MeusCartoes({ route }) {
             .replace(/true/g, "")
             .replace(/"}{"/g, '"},{"')
         );
-    onRefresh();
     setTimeout(() => {
       setIntervalo(false);
-    }, 4000);
+      setLoad(false);
+    }, 3000);
   }
   //! Excli qdt
   function removeitem(sku, qtd) {
     setIntervalo(true);
+    setLoad(true);
     let array = JSON.parse(
       JSON.stringify(Comprar).length > 2
         ? JSON.stringify(Comprar)
@@ -210,20 +217,17 @@ export default function MeusCartoes({ route }) {
             .replace(/true/g, "")
             .replace(/"}{"/g, '"},{"')
         );
-    onRefresh();
     setTimeout(() => {
       setIntervalo(false);
-    }, 3500);
+      setLoad(false);
+    }, 3000);
   }
   return (
     <SafeAreaView style={{ backgroundColor: "#FFF", height: "100%" }}>
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }} />
       {load == false ? (
         <>
-          {multcar !== "{}" &&
-          data.codigoMensagem != 325 &&
-          data.retorno.totalGeral != 0 &&
-          !load ? (
+          {multcar !== "{}" && multcar.length > 10 ? (
             <>
               <FlatList
                 data={data.retorno.produtos}

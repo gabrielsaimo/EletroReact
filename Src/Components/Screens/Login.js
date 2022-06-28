@@ -255,7 +255,7 @@ export default function Login({ route }) {
               fontWeight: "bold",
             }}
             onPress={() =>
-              navigation.navigate("passwordReset", { emaill: email })
+              navigation.navigate("PasswordReset", { emaill: email })
             }
           >
             Esqueci a senha

@@ -7,6 +7,7 @@ function AuthProvider({ children }) {
   const [user1, setUser1] = useState({});
   const [arrayCompra, setArrayCompra] = useState([]);
   const [multcar, setMultcar] = useState([]);
+  console.log("🚀 ~ file: Auth.js ~ line 10 ~ AuthProvider ~ multcar", multcar);
   const [uncar, setUncar] = useState([]);
   const [carrinho, setCarrinho] = useState([]);
   const [Comprar, setCompra] = useState([]);
@@ -18,7 +19,12 @@ function AuthProvider({ children }) {
       setUser1({ idCliente: idCliente });
     });
     AsyncStorage.getItem("arraycard").then((arry) => {
-      if (arraycard.length === 0 && arry.length > 0 && !exclui) {
+      if (
+        arraycard.length === 0 &&
+        /*arry.length > 0 &&*/
+        arry !== null &&
+        !exclui
+      ) {
         setArrayCard(JSON.parse(arry));
       }
     });
@@ -39,7 +45,7 @@ function AuthProvider({ children }) {
       gg.replace(/[.!'@,><|://\\;&*()_+=]/g, "");
       const gs = gg
         .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-        .replace("}{", "},{")
+        .replace(/}{/g, "},{")
         .replace(/""/g, '":"')
         .replace(/":"q/g, '","q')
         .replace(/":"k/g, '","k')
@@ -55,7 +61,7 @@ function AuthProvider({ children }) {
       gg.replace(/[.!'@,><|://\\;&*()_+=]/g, "");
       const gs = gg
         .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-        .replace("}{", "},{")
+        .replace(/}{/g, "},{")
         .replace(/""/g, '":"')
         .replace(/":"q/g, '","q')
         .replace(/":"k/g, '","k')
@@ -86,7 +92,7 @@ function AuthProvider({ children }) {
       setMultcar(
         excluir
           .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-          .replace("}{", "},{")
+          .replace(/}{/g, "},{")
           .replace(/""/g, '":"')
           .replace(/":"q/g, '","q')
           .replace(/":"k/g, '","k')
@@ -97,7 +103,7 @@ function AuthProvider({ children }) {
         JSON.parse(
           excluir
             .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-            .replace("}{", "},{")
+            .replace(/}{/g, "},{")
             .replace(/""/g, '":"')
             .replace(/":"q/g, '","q')
             .replace(/":"k/g, '","k')
@@ -110,7 +116,7 @@ function AuthProvider({ children }) {
       setMultcar(
         editar
           .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-          .replace("}{", "},{")
+          .replace(/}{/g, "},{")
           .replace(/""/g, '":"')
           .replace(/":"q/g, '","q')
           .replace(/":"k/g, '","k')
@@ -121,7 +127,7 @@ function AuthProvider({ children }) {
         JSON.parse(
           editar
             .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-            .replace("}{", "},{")
+            .replace(/}{/g, "},{")
             .replace(/""/g, '":"')
             .replace(/":"q/g, '","q')
             .replace(/":"k/g, '","k')
@@ -133,7 +139,7 @@ function AuthProvider({ children }) {
         "multcar",
         editar
           .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-          .replace("}{", "},{")
+          .replace(/}{/g, "},{")
           .replace(/""/g, '":"')
           .replace(/":"q/g, '","q')
           .replace(/":"k/g, '","k')
@@ -152,7 +158,7 @@ function AuthProvider({ children }) {
       setUncar(
         excluir
           .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-          .replace("}{", "},{")
+          .replace(/}{/g, "},{")
           .replace(/""/g, '":"')
           .replace(/":"q/g, '","q')
           .replace(/":"k/g, '","k')
@@ -163,7 +169,7 @@ function AuthProvider({ children }) {
         JSON.parse(
           excluir
             .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-            .replace("}{", "},{")
+            .replace(/}{/g, "},{")
             .replace(/""/g, '":"')
             .replace(/":"q/g, '","q')
             .replace(/":"k/g, '","k')
@@ -176,7 +182,7 @@ function AuthProvider({ children }) {
       setUncar(
         editar
           .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-          .replace("}{", "},{")
+          .replace(/}{/g, "},{")
           .replace(/""/g, '":"')
           .replace(/":"q/g, '","q')
           .replace(/":"k/g, '","k')
@@ -187,7 +193,7 @@ function AuthProvider({ children }) {
         JSON.parse(
           editar
             .replace(/[!'@,><|://\\;&*()_+=]/g, "")
-            .replace("}{", "},{")
+            .replace(/}{/g, "},{")
             .replace(/""/g, '":"')
             .replace(/":"q/g, '","q')
             .replace(/":"k/g, '","k')

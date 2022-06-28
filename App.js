@@ -24,9 +24,9 @@ import Cadastrop3 from "./Src/Components/Screens/Cadastrop3";
 import MeusEnderecos from "./Src/Components/Screens/MeusEnderecos";
 import ExcluirFavorito from "./Src/Components/ExcluirFavorito";
 import Buscar from "./Src/Components/Buscar";
-import add_config_endereco from "./Src/Components/Screens/add_config_endereco";
-import add_config_cartao from "./Src/Components/Screens/add_config_cartao";
-import passwordReset from "./Src/Components/Screens/passwordReset";
+import Add_config_endereco from "./Src/Components/Screens/Add_config_endereco";
+import Add_config_cartao from "./Src/Components/Screens/Add_config_cartao";
+import PasswordReset from "./Src/Components/Screens/PasswordReset";
 import Cadastrofim from "./Src/Components/Cadastrofim";
 import MeusCartoes from "./Src/Components/Screens/MeusCartoes";
 import { LogBox } from "react-native";
@@ -89,12 +89,12 @@ const Perfies = () => {
       <Stack.Screen name="Pedidos" component={Pedidos} />
       <Stack.Screen name="MeusEnderecos" component={MeusEnderecos} />
       <Stack.Screen name="MeusCartoes" component={MeusCartoes} />
-      <Stack.Screen name="passwordReset" component={passwordReset} />
+      <Stack.Screen name="PasswordReset" component={PasswordReset} />
       <Stack.Screen
-        name="add_config_endereco"
-        component={add_config_endereco}
+        name="Add_config_endereco"
+        component={Add_config_endereco}
       />
-      <Stack.Screen name="add_config_cartao" component={add_config_cartao} />
+      <Stack.Screen name="Add_config_cartao" component={Add_config_cartao} />
       <Stack.Screen name="Cadastro" component={Cadastro} />
       <Stack.Screen name="Cadastrop2" component={Cadastrop2} />
       <Stack.Screen name="Cadastrop3" component={Cadastrop3} />
@@ -164,14 +164,14 @@ const Carrinho = () => {
       <Stack.Screen name="Carrinho" component={CarrinhoTab} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Endereços" component={MeusEnderecos} />
-      <Stack.Screen name="Adicionar Endereço" component={add_config_endereco} />
+      <Stack.Screen name="Adicionar Endereço" component={Add_config_endereco} />
       <Stack.Screen
         name="Checkout"
         component={Checkout}
         Options={{ headerShown: false, headerTitleAlign: "center" }}
       />
       <Stack.Screen name="Meus Cartões" component={MeusCartoes} />
-      <Stack.Screen name="Adicionar Cartão" component={add_config_cartao} />
+      <Stack.Screen name="Adicionar Cartão" component={Add_config_cartao} />
       <Stack.Screen name="Parcelas" component={ParcelasCartao} />
       <Stack.Screen name="Revisão" component={RevisaoCheckout} />
     </Stack.Navigator>

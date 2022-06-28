@@ -279,7 +279,7 @@ export default function MeusCartoes({ route, navigation }) {
                   idCliente: user1.idCliente,
                   rota: "Checkout",
                 })
-              : navigation.navigate("add_config_cartao", {
+              : navigation.navigate("Add_config_cartao", {
                   idCliente: user1.idCliente,
                   rota: rota,
                 })

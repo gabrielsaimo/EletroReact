@@ -7,7 +7,7 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 const { URL_PROD } = process.env;
-export default function passwordReset({ route }) {
+export default function PasswordReset({ route }) {
   const sendemail = route.params.emaill;
 
   const [email, setEmail] = useState(sendemail ? sendemail : "");

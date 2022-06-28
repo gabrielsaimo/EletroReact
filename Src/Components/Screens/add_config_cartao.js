@@ -17,7 +17,7 @@ import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 
-export default function add_config_cartao({ route }) {
+export default function Add_config_cartao({ route }) {
   const { Cartao, arraycard } = useContext(AuthContext);
   const [data, setData] = useState("");
   const [numero, setNumero] = useState("");
@@ -62,7 +62,7 @@ export default function add_config_cartao({ route }) {
               navigation.goBack();
             })
             .catch((error) => {
-              console.error(error + " add_config_cartao.js");
+              console.error(error + " Add_config_cartao.js");
               alert("Cartão não aceito");
               setLoading(false);
             });

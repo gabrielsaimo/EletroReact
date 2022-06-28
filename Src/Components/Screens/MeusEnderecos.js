@@ -196,7 +196,7 @@ export default function MeusEnderecos({ route, navigation }) {
                             navigation.navigate(
                               rota == "carrinho"
                                 ? "Adicionar Endereço"
-                                : "add_config_endereco",
+                                : "Add_config_endereco",
                               {
                                 idCliente: id,
                                 idEndereco: item.idEndereco,
@@ -317,7 +317,7 @@ export default function MeusEnderecos({ route, navigation }) {
                             navigation.navigate(
                               rota == "carrinho"
                                 ? "Adicionar Endereço"
-                                : "add_config_endereco",
+                                : "Add_config_endereco",
                               {
                                 idCliente: id,
                                 idEndereco: item.idEndereco,
@@ -398,7 +398,7 @@ export default function MeusEnderecos({ route, navigation }) {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate(
-              rota == "carrinho" ? "Adicionar Endereço" : "add_config_endereco",
+              rota == "carrinho" ? "Adicionar Endereço" : "Add_config_endereco",
               { idCliente: id }
             )
           }

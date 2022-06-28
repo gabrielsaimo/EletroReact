@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import NumberFormat from "react-number-format";
+import { AuthContext } from "../Contexts/Auth";
 export default function RevisaoCheckout({ route, navigation }) {
+  const { user1, multcar, Comprar } = useContext(AuthContext);
+  const { URL_PROD } = process.env;
   const {
-    endereco,
+    rota,
     cart,
-    valorTotal,
-    valorGeral,
+    endereco,
     frete,
     pagSelect,
-    codParcela,
-    codParcela2,
-    rota,
+    valorTotal,
+    valorGeral,
     cartao,
     cartao2,
+    CVV,
+    CVV2,
+    codParcela,
+    codParcela2,
     xparcela,
     xparcela2,
     vpacelas,
@@ -24,6 +29,122 @@ export default function RevisaoCheckout({ route, navigation }) {
   const [data, setData] = useState(JSON.parse(endereco));
   const [dataFrete, setDatafrete] = useState(JSON.parse(frete));
   const CHAVE_API = "m7RNi13C1RbmbZs9T1GlXuKMc5AxUIqU";
+
+  const Frete =
+    '[{"estado":"' +
+    JSON.parse(frete).estado +
+    '","descricao":"' +
+    JSON.parse(frete).descricao +
+    '","valor":"' +
+    JSON.parse(frete).valor +
+    '","prazo":"' +
+    JSON.parse(frete).prazo +
+    '","codigo":"' +
+    JSON.parse(frete).codigoFrete +
+    '"}]';
+
+  async function FinalizarCompra() {
+    if (pagSelect === "boleto_bradesco") {
+      var FormaPagamento =
+        '[{"tipoPagamento":"boleto_bradesco","parcelasCartao":null,"parcelasCartao1":"","codParcelas":null,"codParcelas1":null,"valorTotal":"' +
+        valorTotal +
+        '","valorTotal1":"","bandeira":"","bandeira1":"","numeroCartao":"","numeroCartao1":"","nomePortador":"","nomePortador1":"","dataValidadeCartao":"","dataValidadeCartao1":"","numeroVerificacao":"","numeroVerificacao1":"","nomeMae":"","nomePai":"","expedicaoRg":"","rendaMensal":""}]';
+    } else if (pagSelect === "pagamento_um_cartao") {
+      var FormaPagamento =
+        '[{"tipoPagamento":"pagamento_um_cartao","parcelasCartao":"' +
+        xparcela2 +
+        '","parcelasCartao1":"","codParcelas":"' +
+        codParcela2 +
+        '","codParcelas1":null,"valorTotal":"' +
+        valorTotal +
+        '","valorTotal1":"","bandeira":"' +
+        JSON.parse(cartao).cardnome +
+        '","bandeira1":"","numeroCartao":"' +
+        JSON.parse(cartao).numero +
+        '","numeroCartao1":"","nomePortador":"' +
+        JSON.parse(cartao).titular +
+        '","nomePortador1":"","dataValidadeCartao":"' +
+        JSON.parse(cartao).validade +
+        '","dataValidadeCartao1":"","numeroVerificacao":"' +
+        CVV2 +
+        '","numeroVerificacao1":"","nomeMae":"","nomePai":"","expedicaoRg":"","rendaMensal":""}]';
+    } else {
+      //! passar o valor de casa cartão
+
+      var FormaPagamento =
+        '[{"tipoPagamento":"pagamento_dois_cartoes","parcelasCartao":"' +
+        xparcela +
+        '","parcelasCartao1":"' +
+        xparcela2 +
+        '","codParcelas":"' +
+        codParcela +
+        '","codParcelas1":"' +
+        codParcela2 +
+        '","valorTotal":"' +
+        valorTotal +
+        '","valorTotal1":"","bandeira":"' +
+        JSON.parse(cartao).cardnome +
+        '","bandeira1":"' +
+        JSON.parse(cartao2).cardnome +
+        '","numeroCartao":"' +
+        JSON.parse(cartao).numero +
+        '","numeroCartao1":"' +
+        JSON.parse(cartao2).numero +
+        '","nomePortador":"' +
+        JSON.parse(cartao).titular +
+        '","nomePortador1":"' +
+        JSON.parse(cartao2).titular +
+        '","dataValidadeCartao":"' +
+        JSON.parse(cartao).validade +
+        '","dataValidadeCartao1":"' +
+        JSON.parse(cartao2).validade +
+        '","numeroVerificacao":"' +
+        CVV +
+        '","numeroVerificacao1":"' +
+        CVV2 +
+        '","nomeMae":"","nomePai":"","expedicaoRg":"","rendaMensal":""}]';
+    }
+
+    fetch(`${URL_PROD}checkout`, {
+      method: "POST",
+      headers: {
+        Accept: "aplication/json",
+        "Content-type": "aplication/json",
+      },
+      body: JSON.stringify({
+        carrinho: {
+          usuario: "aplicativo",
+          chaveApi: CHAVE_API,
+          produtos:
+            JSON.stringify(Comprar).length > 2
+              ? JSON.stringify(Comprar)
+              : multcar,
+          idCliente: user1.idCliente,
+          idEndereco: JSON.parse(endereco).idEndereco,
+          cupomDesconto: "",
+          formaPagamento: FormaPagamento,
+          frete: Frete,
+        },
+        version: "16",
+      })
+        .replace(/[//\\]/g, "")
+        .replace('"[', "[")
+        .replace(']"', "]")
+        .replace(/"}{"/g, '"},{"')
+        .replace(':"[', ":[")
+        .replace(':"[', ":[")
+        .replace(']"', "]")
+        .replace(']"', "]"),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        console.log(resData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   return (
     <View>
       <FlatList
@@ -793,7 +914,7 @@ export default function RevisaoCheckout({ route, navigation }) {
                   marginBottom: 10,
                   marginTop: 20,
                 }}
-                onPress={() => {}}
+                onPress={() => FinalizarCompra()}
               >
                 <Text
                   style={{
