@@ -141,7 +141,7 @@ export default function ParcelasCartao({ route, navigation }) {
                   marginRight: 10,
                 },
                 item.item.cod === "EL"
-                  ? { width: 77, height: 28 }
+                  ? { width: 77, height: 28, marginTop: 35 }
                   : item.item.cod === undefined
                   ? { width: 70, height: 49 }
                   : { width: 72, height: 45 },
@@ -371,13 +371,33 @@ export default function ParcelasCartao({ route, navigation }) {
                       ])
                 }
               >
-                <View>
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                      {item.item.qdeParcelas}x{" "}
-                    </Text>
-                    <Text style={{ fontSize: 18 }}>
-                      {item.item.valorParcela}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginRight: 30,
+                  }}
+                >
+                  <View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                        {item.item.qdeParcelas}x{" "}
+                      </Text>
+                      <Text style={{ fontSize: 18 }}>
+                        {item.item.valorParcela}
+                      </Text>
+                    </View>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 20,
+                        color: "#1534C8",
+                      }}
+                    >
+                      {">"}
                     </Text>
                   </View>
                 </View>

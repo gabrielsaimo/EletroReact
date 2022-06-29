@@ -105,6 +105,33 @@ export default function RevisaoCheckout({ route, navigation }) {
         '","nomeMae":"","nomePai":"","expedicaoRg":"","rendaMensal":""}]';
     }
 
+    console.log(
+      JSON.stringify({
+        carrinho: {
+          usuario: "aplicativo",
+          chaveApi: CHAVE_API,
+          produtos:
+            JSON.stringify(Comprar).length > 2
+              ? JSON.stringify(Comprar)
+              : multcar,
+          idCliente: user1.idCliente,
+          idEndereco: JSON.parse(endereco).idEndereco,
+          cupomDesconto: "",
+          formaPagamento: FormaPagamento,
+          frete: Frete,
+        },
+        version: "16",
+      })
+        .replace(/[//\\]/g, "")
+        .replace('"[', "[")
+        .replace(']"', "]")
+        .replace(/"}{"/g, '"},{"')
+        .replace(':"[', ":[")
+        .replace(':"[', ":[")
+        .replace(']"', "]")
+        .replace(']"', "]")
+    );
+
     fetch(`${URL_PROD}checkout`, {
       method: "POST",
       headers: {
@@ -275,6 +302,7 @@ export default function RevisaoCheckout({ route, navigation }) {
                       rota: "carrinho",
                       cart: cart,
                       valorTotal: valorGeral,
+                      valorGeral: valorGeral,
                     })
                   }
                 >

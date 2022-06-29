@@ -255,7 +255,7 @@ export default function PerfilTab() {
             <TouchableOpacity
               onPress={
                 id != null
-                  ? () => navigation.navigate("Pedidos", { idCliente: id })
+                  ? () => navigation.navigate("Lista de Pedidos", { idCliente: id })
                   : onToggleSnackBar
               }
             >

@@ -36,6 +36,7 @@ export default function MeusCartoes({ route, navigation }) {
     valorc1,
     resto,
   } = route.params;
+  console.log("🚀 ~ file: MeusCartoes.js ~ line 39 ~ MeusCartoes ~ route.params", route.params)
   const { Cartao, user1, arraycard } = useContext(AuthContext);
   const [alterar, setAlteradata] = useState(false);
   const [data1, setData1] = useState([]);

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { TouchableOpacity, FlatList, Text, View } from "react-native";
 import axios from "axios";
 import { Appbar } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 const { URL_PROD } = process.env;
-export default function Pedidos({ route, navigation }) {
+export default function Pedidos({ route }) {
   const id = route.params.idCliente;
-
+  const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +29,10 @@ export default function Pedidos({ route, navigation }) {
         style={{ backgroundColor: "#1534C8", alignItems: "center", zIndex: 99 }}
       >
         <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content title={"Pedidos"} style={{ alignItems: "center" }} />
+        <Appbar.Content
+          title={"Lista de Pedidos"}
+          style={{ alignItems: "center" }}
+        />
         <Appbar.Action />
       </Appbar.Header>
     );
@@ -44,38 +48,47 @@ export default function Pedidos({ route, navigation }) {
           keyExtractor={(item) => item.incrementId}
           renderItem={({ item }) => (
             <>
-              <TouchableOpacity style={{ margin: 10 }}>
+              <TouchableOpacity
+                style={{ margin: 10 }}
+                onPress={() =>
+                  navigation.navigate("Pedido", { id: item.incrementId })
+                }
+              >
                 <View>
-                  <View style={{ position: "absolute", marginLeft: "75%" }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginBottom: 5,
+                    }}
+                  >
+                    <Text>Pedido: {item.incrementId}</Text>
                     <Text>{item.dataPedido}</Text>
                   </View>
-                  <Text>Pedido: {item.incrementId}</Text>
                 </View>
                 <View>
-                  <Text>{item.statusPagamento}</Text>
-                  <Text style={{ marginBottom: 20 }}>
-                    {item.formaPagamento}
+                  <Text style={{ marginBottom: 5 }}>
+                    Status: {item.statusPagamento}
+                  </Text>
+                  <Text style={{ marginBottom: 5 }}>
+                    Via: {item.formaPagamento}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    position: "absolute",
-                    marginLeft: "65%",
-                    marginTop: 60,
-                  }}
-                >
-                  <View>
+                <View>
+                  <View
+                    style={{ flexDirection: "row", justifyContent: "flex-end" }}
+                  >
                     <Text style={{ fontSize: 20 }}>{item.totalPedido}</Text>
                   </View>
                 </View>
               </TouchableOpacity>
               <View
                 style={{
-                  height: 3,
+                  height: 1,
                   backgroundColor: "#CED4DA",
                   width: "100%",
                 }}
-              ></View>
+              />
             </>
           )}
         />

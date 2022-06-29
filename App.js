@@ -17,7 +17,7 @@ import ProdutoFilhos from "./Src/Components/ProdutoFilhos";
 import CategoriasTab from "./Src/Components/Screens/CategoriasTab";
 import CategoriasProduto from "./Src/Components/Screens/CategoriaProdutos";
 import SubCategoriasProdutos from "./Src/Components/Screens/SubCategoriasProdutos";
-import Pedidos from "./Src/Components/Screens/Pedidos";
+import ListaPedidos from "./Src/Components/Screens/ListaPedidos";
 import Cadastro from "./Src/Components/Screens/Cadastro";
 import Cadastrop2 from "./Src/Components/Screens/Cadastrop2";
 import Cadastrop3 from "./Src/Components/Screens/Cadastrop3";
@@ -33,6 +33,7 @@ import { LogBox } from "react-native";
 import Checkout from "./Src/Components/Chekout";
 import RevisaoCheckout from "./Src/Components/RevisaoCheckout";
 import ParcelasCartao from "./Src/Components/ParcelasCartao";
+import Pedido from "./Src/Components/Screens/Pedido";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -86,7 +87,8 @@ const Perfies = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Perfil" component={PerfilTab} />
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Pedidos" component={Pedidos} />
+      <Stack.Screen name="Lista de Pedidos" component={ListaPedidos} />
+      <Stack.Screen name="Pedido" component={Pedido} />
       <Stack.Screen name="MeusEnderecos" component={MeusEnderecos} />
       <Stack.Screen name="MeusCartoes" component={MeusCartoes} />
       <Stack.Screen name="PasswordReset" component={PasswordReset} />

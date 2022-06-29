@@ -42,7 +42,10 @@ export default function MeusCartoes({ route }) {
   }, [Comprar, load, isFocused]);
 
   const Meucarrinho = () =>
-    load === true || TextInput_cep.length > 8 || isFocused == true
+    load === true ||
+    TextInput_cep.length > 8 ||
+    isFocused == true ||
+    JSON.stringify(Comprar).length > 3
       ? fetch(`${URL_PROD}carrinho`, {
           method: "POST",
           headers: {
