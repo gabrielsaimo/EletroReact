@@ -1,14 +1,12 @@
-import { AuthContext } from "../../Src/Contexts/Auth";
 import React, { useContext, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../Contexts/Auth";
 const { URL_PROD } = process.env;
-export default function ExcluirFavorito({ route }) {
+export default function AddFavorito({ route }) {
   const { user1 } = useContext(AuthContext);
-  const navigation = useNavigation();
   const sku = route.params.sku;
   const page = route.params.page;
-  const Excluir = async () => {
-    await fetch(`${URL_PROD}excluirFavoritos`, {
+  const Add = async () => {
+    await fetch(`${URL_PROD}addFavoritos`, {
       method: "POST",
       headers: {
         Accept: "aplication/json",
@@ -21,15 +19,9 @@ export default function ExcluirFavorito({ route }) {
       }),
     })
       .then((res) => res.json())
-      .then((resData) => {
-        console.log(resData);
-        navigation.reset({
-          routes: [{ name: page }],
-        });
-        navigation.goBack();
-      });
+      .then((resData) => {});
   };
 
-  Excluir();
+  Add();
   return <></>;
 }

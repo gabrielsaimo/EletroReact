@@ -11,12 +11,12 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import styles from "../Components/Styles/Style.js";
+import styles from "./Styles/Style.js";
 import { Searchbar, Appbar, IconButton } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Local from "./Local";
 import SkeletonLoading from "./SkeletonLoading";
-import { AuthContext } from "../../Src/Contexts/Auth";
+import { AuthContext } from "../Contexts/Auth";
 import { useNavigation } from "@react-navigation/native";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));

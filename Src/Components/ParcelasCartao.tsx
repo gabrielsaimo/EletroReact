@@ -315,7 +315,7 @@ export default function ParcelasCartao({ route, navigation }) {
           howsHorizontalScrollIndicator={false}
           initialNumToRender={10}
           keyExtractor={(item, index) => index}
-          renderItem={(item, index) => (
+          renderItem={(item: { item: { codParcelas: any; qdeParcelas: string | number | boolean | {} | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactNodeArray | React.ReactPortal | null | undefined; valorParcela: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }; }, _index: any) => (
             <View>
               <TouchableOpacity
                 style={{
