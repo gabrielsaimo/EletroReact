@@ -24,6 +24,10 @@ export default function MeusCartoes({ route }) {
   const { user1, Compra, multcar, arrayCompra, Comprar, confiCompra } =
     useContext(AuthContext);
   const [data, setData] = useState([]);
+  console.log(
+    "🚀 ~ file: CarrinhoTab.tsx ~ line 27 ~ MeusCartoes ~ data",
+    data
+  );
   const [load, setLoad] = useState(true);
   console.log("🚀 ~ file: CarrinhoTab.js ~ line 28 ~ MeusCartoes ~ load", load);
   const [intervalo, setIntervalo] = useState(false);
@@ -219,9 +223,13 @@ export default function MeusCartoes({ route }) {
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }} />
       {load == false ? (
         <>
-          {multcar !== "{}" &&
-          multcar.length > 10 &&
-          data.toString().length > 5 ? (
+          {(multcar !== "{}" &&
+            multcar.length > 10 &&
+            data.retorno !== undefined) ||
+          (JSON.stringify(Comprar).length > 3 &&
+            data.toString().length > 10 &&
+            data.retorno !== undefined &&
+            data.codigoMensagem !== 325) ? (
             <>
               <FlatList
                 data={data.retorno.produtos}

@@ -4,6 +4,7 @@ import { AuthContext } from "../Contexts/Auth";
 import NumberFormat from "react-number-format";
 import DialogInput from "react-native-dialog-input";
 import { Alert } from "react-native";
+type Props = {};
 export default function Checkout({ route, navigation }) {
   const { URL_PROD } = process.env;
   const { user1, multcar, Comprar } = useContext(AuthContext);
@@ -28,6 +29,10 @@ export default function Checkout({ route, navigation }) {
   const [frete, setFreteN] = useState(0);
   const [fretecets, setCetsFrete] = useState(0);
   const [valorFrete, setvalorFrete] = useState(0);
+  console.log(
+    "🚀 ~ file: Chekout.tsx ~ line 31 ~ Checkout ~ valorFrete",
+    valorFrete
+  );
   const [total, setTotal] = useState(0);
   const [data, setData] = useState(JSON.parse(endereco));
   const [data2, setData2] = useState(JSON.parse(cart));
@@ -1120,6 +1125,7 @@ export default function Checkout({ route, navigation }) {
                             selected === index ? "#D3EDEC" : "#F8F9FA",
                           borderRadius: 15,
                           flexDirection: "row",
+                          marginBottom: 15,
                         }}
                         onPress={() => {
                           setValue(JSON.stringify(item));
@@ -1142,9 +1148,8 @@ export default function Checkout({ route, navigation }) {
                           )}
                         </View>
 
-                        <View>
+                        <View style={{ width: "95%" }}>
                           <Text>Via {item.descricao}</Text>
-                          <Text>{item.prazo}</Text>
                           <Text style={{ fontWeight: "bold" }}>
                             {item.valor == "R$ 0,00"
                               ? "Frete Grátis"
@@ -1164,7 +1169,11 @@ export default function Checkout({ route, navigation }) {
                                   .replace(/[0-9][0-9],/g, "")
                                   .replace(/[0-9],/g, "")
                               ),
-                              setvalorFrete(item.valor))
+                              selected === index ? (
+                                setvalorFrete(item.valor)
+                              ) : (
+                                <></>
+                              ))
                             }
                           </Text>
                         </View>

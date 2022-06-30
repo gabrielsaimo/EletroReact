@@ -43,7 +43,7 @@ export default function Add_config_endereco({ route }) {
     setEdite(false);
   }
   if (route.params.cep === undefined) {
-    if (bairro == "" && cidade !== "" && edit == false) {
+    if (endereco == "" && cidade !== "" && edit == false) {
       setEdit(true);
       setEdite(false);
     }
@@ -204,7 +204,7 @@ export default function Add_config_endereco({ route }) {
                   editable={edit}
                   value={endereco}
                   placeholder="Endereco"
-                ></TextInput>
+                />
               </View>
 
               <View style={{ width: "20%" }}>

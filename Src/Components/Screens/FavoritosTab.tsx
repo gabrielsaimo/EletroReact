@@ -26,7 +26,11 @@ export default function FavoritosTab() {
   const { user1 } = useContext(AuthContext);
   const [refreshing, setRefreshing] = useState(true);
   const [id, setId] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(undefined);
+  console.log(
+    "🚀 ~ file: FavoritosTab.tsx ~ line 30 ~ FavoritosTab ~ data",
+    data
+  );
   const navigation = useNavigation();
   const [columns, setColumns] = useState(1);
   const [error, setError] = useState(null);
@@ -438,9 +442,11 @@ export default function FavoritosTab() {
       >
         <View style={{ width: "48%", alignItems: "center" }}>
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-            {Object.keys(data).length === 0
-              ? ["Calculando...", <ActivityIndicator />]
-              : Object.keys(data).length - 1 + " Produtos"}
+            {data !== undefined && data !== null
+              ? Object.keys(data).length === 0
+                ? ["Calculando...", <ActivityIndicator />]
+                : Object.keys(data).length - 1 + " Produtos"
+              : "0"}
           </Text>
         </View>
         <View flexDirection={"row"}>
