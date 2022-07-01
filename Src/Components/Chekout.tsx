@@ -27,12 +27,9 @@ export default function Checkout({ route, navigation }) {
     pagSelectR,
   } = route.params;
   const [frete, setFreteN] = useState(0);
+  console.log("🚀 ~ file: Chekout.tsx ~ line 34 ~ Checkout ~ frete", frete);
   const [fretecets, setCetsFrete] = useState(0);
   const [valorFrete, setvalorFrete] = useState(0);
-  console.log(
-    "🚀 ~ file: Chekout.tsx ~ line 31 ~ Checkout ~ valorFrete",
-    valorFrete
-  );
   const [total, setTotal] = useState(0);
   const [data, setData] = useState(JSON.parse(endereco));
   const [data2, setData2] = useState(JSON.parse(cart));
@@ -1102,7 +1099,7 @@ export default function Checkout({ route, navigation }) {
               initialNumToRender={3}
               renderItem={({ item, index }) => (
                 <View>
-                  {item.descricao === null ? (
+                  {item.descricao === null || item.descricao === undefined ? (
                     <View
                       style={{
                         margin: 20,
@@ -1154,21 +1151,26 @@ export default function Checkout({ route, navigation }) {
                             {item.valor == "R$ 0,00"
                               ? "Frete Grátis"
                               : item.valor}
+                            {console.log(item.valor)}
                             {
-                              (setFreteN(
-                                item.valor
-                                  .replace("R$ ", "")
-                                  .replace(".", "")
-                                  .replace(/,[0-9][0-9]/g, "")
-                              ),
-                              setCetsFrete(
-                                item.valor
-                                  .replace("R$ ", "")
-                                  .replace(/[0-9].[0-9][0-9][0-9],/g, "")
-                                  .replace(/[0-9][0-9][0-9],/g, "")
-                                  .replace(/[0-9][0-9],/g, "")
-                                  .replace(/[0-9],/g, "")
-                              ),
+                              (selected === index
+                                ? setFreteN(
+                                    item.valor
+                                      .replace("R$ ", "")
+                                      .replace(".", "")
+                                      .replace(/,[0-9][0-9]/g, "")
+                                  )
+                                : {},
+                              selected === index
+                                ? setCetsFrete(
+                                    item.valor
+                                      .replace("R$ ", "")
+                                      .replace(/[0-9].[0-9][0-9][0-9],/g, "")
+                                      .replace(/[0-9][0-9][0-9],/g, "")
+                                      .replace(/[0-9][0-9],/g, "")
+                                      .replace(/[0-9],/g, "")
+                                  )
+                                : {},
                               selected === index ? (
                                 setvalorFrete(item.valor)
                               ) : (

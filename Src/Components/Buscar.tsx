@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import styles from "./Styles/Style.js";
 import { Searchbar, Appbar, IconButton } from "react-native-paper";
+import SearchBarHome from "../Components/SearchBarHome";
 import StarRating from "react-native-star-rating";
 import Local from "./Local";
 import SkeletonLoading from "./SkeletonLoading";
@@ -24,7 +25,7 @@ const wait = (timeout) => {
 export default function Buscar({ route }) {
   const { URL_PROD } = process.env;
   const { user1 } = useContext(AuthContext);
-  const baseURL = `${URL_PROD}busca2?q=${route.params.q}
+  const baseURL = `${URL_PROD}busca?descricaoItem=${route.params.q}
     &dir=asc&version=15`;
   const perPage = "?q=react&per_page=${perPage}&page=${page}";
   const [data, setData] = useState([]);
@@ -38,6 +39,10 @@ export default function Buscar({ route }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = React.useState("");
+  console.log(
+    "🚀 ~ file: Buscar.tsx ~ line 41 ~ Buscar ~ searchQuery",
+    searchQuery
+  );
   const onChangeSearch = (query) => setSearchQuery(query);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -504,7 +509,7 @@ export default function Buscar({ route }) {
   return (
     <SafeAreaView>
       <View style={{ width: "100%", height: "100%" }}>
-        {search === true ? <BuscarNovo /> : <SearchBar />}
+        {search === true ? <SearchBarHome /> : <SearchBar />}
         <Local style={{ zIndex: 100 }} />
         <View
           style={{

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -8,13 +8,16 @@ import {
   Text,
   View,
   Linking,
+  Clipboard,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Appbar } from "react-native-paper";
+//import { AuthContext } from "../../Contexts/Auth";
 const { URL_PROD } = process.env;
 type route = {};
 export default function Pedido({ route }) {
   const navigation = useNavigation();
+  // const { user1 } = useContext(AuthContext);
   const baseURL = `${URL_PROD}listaMeusPedidos?incrementId=${route.params.id}&vesrsion=20`;
   const [data, setData] = useState([]);
   const [Pagamento, setPagamento] = useState("0");
@@ -32,6 +35,14 @@ export default function Pedido({ route }) {
       setData([...data, ...response.data]);
     }
   }
+  const [copiedText, setCopiedText] = useState("");
+  const copyToClipboard = () => {
+    Clipboard.setString(data[0].boleto_linha_digitavel);
+  };
+  const fetchCopiedText = async () => {
+    const text = await Clipboard.getString();
+    setCopiedText(text);
+  };
   function SearchBar() {
     return (
       <Appbar.Header
@@ -46,6 +57,7 @@ export default function Pedido({ route }) {
       </Appbar.Header>
     );
   }
+
   useEffect(() => {
     Rest();
   }, []);
@@ -549,17 +561,69 @@ export default function Pedido({ route }) {
                     </View>
 
                     <View style={{ alignItems: "center", width: "100%" }}>
-                      <Text selectable={true} style={{ fontSize: 10 }}>
-                        {data[0].boleto_linha_digitavel}
-                      </Text>
-                      {data[0].linkBoleto !== '""' &&
-                      data[0].formaPagamento !== "Boleto Bancário" &&
-                      data[0].linkBoleto !== "" ? (
+                      {data[0].boleto_linha_digitavel.length < 10 ? (
+                        <></>
+                      ) : (
+                        <View
+                          style={{
+                            alignItems: "center",
+                            flexDirection: "row",
+                            backgroundColor: "#E4E4E4E4",
+                            height: 50,
+                            borderRadius: 10,
+                          }}
+                        >
+                          <View>
+                            <Text
+                              selectable={true}
+                              style={{
+                                fontSize: 9,
+                                color: "#000",
+                                zIndex: 99,
+                                paddingHorizontal: 5,
+                              }}
+                            >
+                              {data[0].boleto_linha_digitavel}
+                            </Text>
+                          </View>
+
+                          <View>
+                            <TouchableOpacity
+                              style={{
+                                justifyContent: "center",
+                                backgroundColor: "#1534C8",
+                                borderRadius: 10,
+                                paddingHorizontal: 5,
+                                height: 40,
+                                marginRight: 5,
+                                alignItems: "center",
+                                borderWidth: 2,
+                                borderColor: "#FFDB00",
+                              }}
+                              onPress={() => copyToClipboard()}
+                            >
+                              <Text
+                                style={{
+                                  color: "#FFF",
+                                  fontWeight: "bold",
+                                  height: 30,
+                                  fontSize: 18,
+                                  paddingHorizontal: 5,
+                                }}
+                              >
+                                Copiar
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      )}
+
+                      {data[0].boleto_linha_digitavel.length < 10 ? (
                         <></>
                       ) : (
                         <TouchableOpacity
                           style={{
-                            backgroundColor: "green",
+                            backgroundColor: "#9BCB3D",
                             alignItems: "center",
                             paddingHorizontal: "30%",
                             paddingVertical: 15,

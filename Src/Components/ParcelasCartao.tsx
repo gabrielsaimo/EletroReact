@@ -19,7 +19,25 @@ export default function ParcelasCartao({ route, navigation }) {
   const [CVV, setCvv1] = useState(0);
   const [CVV2, setCvv2] = useState(0);
   const [valor1c, setvalor1c] = useState(0);
+  const [valOk, setValOk] = useState(0);
+  console.log(
+    "🚀 ~ file: ParcelasCartao.tsx ~ line 23 ~ ParcelasCartao ~ valOk",
+    valOk
+  );
   const [ok1, setOk1] = useState(false);
+  function Continua() {
+    Number(
+      valor1c
+        .replace("R$", "")
+        .replace(/,[0-9][0-9]/, "")
+        .replace(".", "") - 2
+    ) > Number(valor.replace(/,[0-9][0-9]/, ""))
+      ? Alert.alert("Valor invalido!", `escolha outro valor para pagar`, [
+          { text: "OK" },
+        ])
+      : setOk1(true);
+  }
+
   const {
     endereco,
     cart,
@@ -39,6 +57,7 @@ export default function ParcelasCartao({ route, navigation }) {
     cartao2,
     resto,
   } = route.params;
+
   const [restov, setRestoV] = useState("");
   const item =
     cartao2 != undefined
@@ -76,6 +95,7 @@ export default function ParcelasCartao({ route, navigation }) {
       console.log(desc);
       setRestoV(desc + "," + calc);
     }
+
     fetch(`${URL_PROD}detalhamentoPagamento`, {
       method: "POST",
       headers: {
@@ -295,7 +315,7 @@ export default function ParcelasCartao({ route, navigation }) {
                 paddingVertical: 15,
                 borderRadius: 10,
               }}
-              onPress={() => setOk1(true)}
+              onPress={() => [Continua()]}
             >
               <View>
                 <Text
@@ -315,7 +335,34 @@ export default function ParcelasCartao({ route, navigation }) {
           howsHorizontalScrollIndicator={false}
           initialNumToRender={10}
           keyExtractor={(item, index) => index}
-          renderItem={(item: { item: { codParcelas: any; qdeParcelas: string | number | boolean | {} | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactNodeArray | React.ReactPortal | null | undefined; valorParcela: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }; }, _index: any) => (
+          renderItem={(
+            item: {
+              item: {
+                codParcelas: any;
+                qdeParcelas:
+                  | string
+                  | number
+                  | boolean
+                  | {}
+                  | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                  | React.ReactNodeArray
+                  | React.ReactPortal
+                  | null
+                  | undefined;
+                valorParcela:
+                  | boolean
+                  | React.ReactChild
+                  | React.ReactFragment
+                  | React.ReactPortal
+                  | null
+                  | undefined;
+              };
+            },
+            _index: any
+          ) => (
             <View>
               <TouchableOpacity
                 style={{

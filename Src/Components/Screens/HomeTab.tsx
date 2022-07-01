@@ -108,7 +108,7 @@ export default function HomeTab() {
     <SafeAreaView>
       <View style={{ height: "100%", width }}>
         <SearchBarHome />
-        <Local style={{ width: 10, high: 20 }} />
+        {/** <Local style={{ width: 10, high: 20 }} />*/}
         <ScrollView
           nestedScrollEnabled
           showsVerticalScrollIndicator={false}

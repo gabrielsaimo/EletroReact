@@ -1091,6 +1091,7 @@ export default function Produto({ route, navigation }) {
                                     flexDirection: "column",
                                     marginVertical: 10,
                                     paddingVertical: 20,
+                                    justifyContent: "flex-start",
                                     borderRadius: 5,
                                     paddingHorizontal: 10,
                                     backgroundColor: "#EDF2FF",
@@ -1133,22 +1134,14 @@ export default function Produto({ route, navigation }) {
                                           paddingVertical: 15,
                                           borderRadius: 5,
                                           marginVertical: 2,
+                                          paddingHorizontal: 10,
+                                          justifyContent: "space-between",
                                           backgroundColor:
                                             k % 2 == 0 ? "#EDF2FF" : "#FFFFFF",
                                         }}
                                       >
-                                        <Text
-                                          style={{
-                                            position: "absolute",
-                                            marginLeft: 10,
-                                            marginTop: 15,
-                                          }}
-                                        >
-                                          {i.campo.substring(0, 30)}
-                                        </Text>
-                                        <Text style={{ marginLeft: 250 }}>
-                                          {i.descricao}
-                                        </Text>
+                                        <Text>{i.campo.substring(0, 10)}</Text>
+                                        <Text>{i.descricao}</Text>
                                       </View>
                                     ) : (
                                       <View>
