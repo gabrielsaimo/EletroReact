@@ -34,10 +34,47 @@ import Checkout from "./Src/Components/Chekout";
 import RevisaoCheckout from "./Src/Components/RevisaoCheckout";
 import ParcelasCartao from "./Src/Components/ParcelasCartao";
 import Pedido from "./Src/Components/Screens/Pedido";
+export type TabParams = {
+  Categorias: string;
+  CategoriasProduto: string;
+  headerTitleAlign: string;
+  SubCategoriasProdutos: string;
+  Produto: string;
+  CarrinhoTab: string;
+  ModalFilhos: string;
+  ProdutoFilhos: string;
+  Perfil: string;
+  Login: string;
+  "Lista de Pedidos": string;
+  Pedido: string;
+  MeusEnderecos: string;
+  MeusCartoes: string;
+  PasswordReset: string;
+  Add_config_endereco: string;
+  Add_config_cartao: string;
+  Cadastro: string;
+  Cadastrop2: string;
+  Cadastrop3: string;
+  Cadastrofim: string;
+  HomeTab: string;
+  Banner: string;
+  Favoritos: string;
+  Buscar: string;
+  ExcluirFavorito: string;
+  Carrinho: string;
+  Endereços: string;
+  "Adicionar Endereço": string;
+  Checkout: string;
+  "Meus Cartões": string;
+  "Adicionar Cartão": string;
+  Parcelas: string;
+  Revisão: string;
+};
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
+
 const Categoria = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -112,12 +149,6 @@ const Produtos = () => {
         component={HomeTab}
         options={{
           headerTitleAlign: "center",
-          headerRight: () => (
-            <IconButton
-              icon="alert-outline"
-              onPress={() => alert("You're awesome!")}
-            />
-          ),
         }}
       />
       <Stack.Screen name="CarrinhoTab" component={Carrinho} />
