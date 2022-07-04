@@ -1359,7 +1359,7 @@ export default function Produto({ route, navigation }) {
           show={modal}
           sku={sku}
           volt={filhos}
-          navigate={navigate}
+          navigate={navigator}
           navigation={navigation}
           close={() => setModal(true)}
         />
