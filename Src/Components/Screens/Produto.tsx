@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  useRef,
+  ContextType,
+} from "react";
 import {
   TouchableOpacity,
   FlatList,
@@ -28,7 +34,6 @@ import { WebView } from "react-native-webview";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import ShareButton from "../ShereButtom";
 import { useIsFocused } from "@react-navigation/native";
-
 export default function Produto({ route, navigation }) {
   const { URL_PROD } = process.env;
   const sku = route.params.sku;
@@ -54,6 +59,7 @@ export default function Produto({ route, navigation }) {
   const { consultaCep, user, user1, Compra, Carrinho, Compras, multcar } =
     useContext(AuthContext);
   const [disabled, setDisable] = useState(false);
+  const [naLista, setNaLista] = useState(false);
   const [configuravel, setConfiguravel] = useState(false);
   const [usercep, setUsercep] = useState(user.cep);
   const { width, height } = Dimensions.get("window");
@@ -88,7 +94,6 @@ export default function Produto({ route, navigation }) {
     !cepvisible ? setVisiblecep(true) : setVisiblecep(false);
   }
   function clickComprar() {
-    setDisable(true);
     if (!volt && filhos === undefined) {
       fadeIn();
       setAlert(true);
@@ -102,11 +107,11 @@ export default function Produto({ route, navigation }) {
     } else {
       setAlert(false);
       setLoad(false);
+      setDisable(true);
       Comprar();
     }
   }
   function clickCarrinho() {
-    setDisable(true);
     if (!volt && filhos !== undefined) {
       fadeIn();
       setCarrinho(true);
@@ -120,6 +125,7 @@ export default function Produto({ route, navigation }) {
     } else {
       setCarrinho(false);
       setLoad(false);
+      setDisable(true);
     }
     if (!volt && filhos === undefined) {
       setDisable(true);
@@ -134,6 +140,7 @@ export default function Produto({ route, navigation }) {
       setLoad(false);
     } else if (configuravel == false) {
       Carrinhos();
+      setDisable(true);
     }
   }
   async function Comprar() {
@@ -226,7 +233,7 @@ export default function Produto({ route, navigation }) {
     if (loading) return;
     setLoading(true);
     if (user1.idCliente) {
-      const response = await axios.get(
+      const response: { data: string } = await axios.get(
         `${URL_PROD}detalhaProdutos?sku=${route.params.sku}&version=15&idCliente=${user1.idCliente}`
       );
       setData([response.data]);
@@ -239,8 +246,12 @@ export default function Produto({ route, navigation }) {
   }
   useEffect(() => {
     if (multcar.length > 10) {
-      JSON.parse(multcar).map((i, k) =>
-        sku === i.sku || skuvolt === i.sku ? setDisable(true) : {}
+      console.log(
+        "🚀 ~ file: Produto.tsx ~ line 249 ~ useEffect ~ multcar",
+        multcar
+      );
+      JSON.parse(multcar).map((i: { sku: any }, k: any) =>
+        sku === i.sku || skuvolt === i.sku ? setNaLista(true) : {}
       );
     }
 
@@ -253,7 +264,7 @@ export default function Produto({ route, navigation }) {
     return () => {
       isMounted = false;
     };
-  }, [isFocused, route.params]);
+  }, [isFocused, route.params, multcar]);
 
   const SearchBar = () => {
     return (
@@ -506,14 +517,18 @@ export default function Produto({ route, navigation }) {
                   }}
                 >
                   {item.imagem.map ? (
-                    item.imagem.map((i, k) => (
-                      <Text
-                        key={[k, setImgtotal(k)]}
-                        style={
-                          k == active ? [styles.setbol, setImg(k)] : styles.bol
-                        }
-                      ></Text>
-                    ))
+                    item.imagem.map(
+                      (i: any, k: number | React.SetStateAction<string>) => (
+                        <Text
+                          key={[k, setImgtotal(k)]}
+                          style={
+                            k == active
+                              ? [styles.setbol, setImg(k)]
+                              : styles.bol
+                          }
+                        ></Text>
+                      )
+                    )
                   ) : (
                     <></>
                   )}
@@ -809,7 +824,7 @@ export default function Produto({ route, navigation }) {
               <TouchableOpacity
                 style={{ width: "100%", marginTop: 15 }}
                 onPress={() =>
-                  disabled === true
+                  naLista === true
                     ? Alert.alert("ja se encontra no seu carrinho", " ", [
                         {
                           text: "Fechar",
@@ -1082,84 +1097,90 @@ export default function Produto({ route, navigation }) {
                           showsVerticalScrollIndicator={false}
                           style={{ height: "91%", width: "97%", margin: 5 }}
                         >
-                          {item.especificacoes.map((i, k) => (
-                            <>
-                              {i.descricao.length > 60 ? (
-                                <View
-                                  key={i}
-                                  style={{
-                                    flexDirection: "column",
-                                    marginVertical: 10,
-                                    paddingVertical: 20,
-                                    justifyContent: "flex-start",
-                                    borderRadius: 5,
-                                    paddingHorizontal: 10,
-                                    backgroundColor: "#EDF2FF",
-                                  }}
-                                >
-                                  <>
-                                    {i.descricao !== "" ? (
-                                      <View>
-                                        {i.campo !== "" ? (
-                                          <>
-                                            <Text>{i.campo}</Text>
-                                          </>
-                                        ) : (
-                                          <></>
-                                        )}
+                          {item.especificacoes.map(
+                            (i: React.Key | null | undefined, k: number) => (
+                              <>
+                                {i.descricao.length > 60 ? (
+                                  <View
+                                    key={i}
+                                    style={{
+                                      flexDirection: "column",
+                                      marginVertical: 10,
+                                      paddingVertical: 20,
+                                      justifyContent: "flex-start",
+                                      borderRadius: 5,
+                                      paddingHorizontal: 10,
+                                      backgroundColor: "#EDF2FF",
+                                    }}
+                                  >
+                                    <>
+                                      {i.descricao !== "" ? (
+                                        <View>
+                                          {i.campo !== "" ? (
+                                            <>
+                                              <Text>{i.campo}</Text>
+                                            </>
+                                          ) : (
+                                            <></>
+                                          )}
 
-                                        <Text>{i.descricao}</Text>
-                                      </View>
-                                    ) : (
-                                      <View>
-                                        <Text
+                                          <Text>{i.descricao}</Text>
+                                        </View>
+                                      ) : (
+                                        <View>
+                                          <Text
+                                            style={{
+                                              fontWeight: "bold",
+                                              marginVertical: 5,
+                                            }}
+                                          >
+                                            {i.campo}
+                                          </Text>
+                                        </View>
+                                      )}
+                                    </>
+                                  </View>
+                                ) : (
+                                  <View>
+                                    <>
+                                      {i.descricao ? (
+                                        <View
                                           style={{
-                                            fontWeight: "bold",
-                                            marginVertical: 5,
+                                            flexDirection: "row",
+                                            paddingVertical: 15,
+                                            borderRadius: 5,
+                                            marginVertical: 2,
+                                            paddingHorizontal: 10,
+                                            justifyContent: "space-between",
+                                            backgroundColor:
+                                              k % 2 == 0
+                                                ? "#EDF2FF"
+                                                : "#FFFFFF",
                                           }}
                                         >
-                                          {i.campo}
-                                        </Text>
-                                      </View>
-                                    )}
-                                  </>
-                                </View>
-                              ) : (
-                                <View>
-                                  <>
-                                    {i.descricao ? (
-                                      <View
-                                        style={{
-                                          flexDirection: "row",
-                                          paddingVertical: 15,
-                                          borderRadius: 5,
-                                          marginVertical: 2,
-                                          paddingHorizontal: 10,
-                                          justifyContent: "space-between",
-                                          backgroundColor:
-                                            k % 2 == 0 ? "#EDF2FF" : "#FFFFFF",
-                                        }}
-                                      >
-                                        <Text>{i.campo.substring(0, 10)}</Text>
-                                        <Text>{i.descricao}</Text>
-                                      </View>
-                                    ) : (
-                                      <View>
-                                        <Text
-                                          style={{
-                                            fontWeight: "bold",
-                                            marginVertical: 20,
-                                          }}
-                                        >
-                                          {i.campo}
-                                        </Text>
-                                      </View>
-                                    )}
-                                  </>
-                                </View>
-                              )}
-                            </>
-                          ))}
+                                          <Text>
+                                            {i.campo.substring(0, 10)}
+                                          </Text>
+                                          <Text>{i.descricao}</Text>
+                                        </View>
+                                      ) : (
+                                        <View>
+                                          <Text
+                                            style={{
+                                              fontWeight: "bold",
+                                              marginVertical: 20,
+                                            }}
+                                          >
+                                            {i.campo}
+                                          </Text>
+                                        </View>
+                                      )}
+                                    </>
+                                  </View>
+                                )}
+                              </>
+                            )
+                          )}
                         </ScrollView>
                       </View>
                     </View>
@@ -1296,34 +1317,36 @@ export default function Produto({ route, navigation }) {
                 ></View>
                 {item.resenhas.map ? (
                   <View>
-                    {item.resenhas.map((i, k) => (
-                      <View key={i} style={{ marginVertical: 20 }}>
-                        <View style={{ width: 80 }}>
-                          <StarRating
-                            disabled={true}
-                            maxStars={5}
-                            rating={i.vote}
-                            starSize={10}
-                            fullStarColor={"#FEA535"}
-                            emptyStarColor={"#6A7075"}
-                          />
-                        </View>
+                    {item.resenhas.map(
+                      (i: React.Key | null | undefined, k: any) => (
+                        <View key={i} style={{ marginVertical: 20 }}>
+                          <View style={{ width: 80 }}>
+                            <StarRating
+                              disabled={true}
+                              maxStars={5}
+                              rating={i.vote}
+                              starSize={10}
+                              fullStarColor={"#FEA535"}
+                              emptyStarColor={"#6A7075"}
+                            />
+                          </View>
 
-                        <Text>{i.nickname}</Text>
-                        <Text>{i.titulo}</Text>
-                        <Text>{i.descricao}</Text>
-                        <View
-                          style={{
-                            height: 1.5,
-                            backgroundColor: "#CED4DA",
-                            width,
-                            marginLeft: -10,
-                            borderRadius: 20,
-                            marginTop: 20,
-                          }}
-                        ></View>
-                      </View>
-                    ))}
+                          <Text>{i.nickname}</Text>
+                          <Text>{i.titulo}</Text>
+                          <Text>{i.descricao}</Text>
+                          <View
+                            style={{
+                              height: 1.5,
+                              backgroundColor: "#CED4DA",
+                              width,
+                              marginLeft: -10,
+                              borderRadius: 20,
+                              marginTop: 20,
+                            }}
+                          ></View>
+                        </View>
+                      )
+                    )}
                   </View>
                 ) : (
                   <></>
@@ -1336,7 +1359,7 @@ export default function Produto({ route, navigation }) {
           show={modal}
           sku={sku}
           volt={filhos}
-          navigate={navigator}
+          navigate={navigate}
           navigation={navigation}
           close={() => setModal(true)}
         />
