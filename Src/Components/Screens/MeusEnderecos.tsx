@@ -400,7 +400,7 @@ export default function MeusEnderecos({ route, navigation }) {
           onPress={() =>
             navigation.navigate(
               rota == "carrinho" ? "Adicionar Endereço" : "Add_config_endereco",
-              { idCliente: id }
+              { idCliente: id, rota: rota }
             )
           }
           style={{

@@ -15,6 +15,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 const { URL_PROD } = process.env;
 export default function Add_config_endereco({ route }) {
+  console.log(
+    "🚀 ~ file: Add_config_endereco.tsx ~ line 18 ~ Add_config_endereco ~ route",
+    route
+  );
   const [data, setData] = useState("");
   const [cep, setCep] = useState("");
   const [bairro, setBairro] = useState("");
@@ -128,7 +132,13 @@ export default function Add_config_endereco({ route }) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
-      <View style={{ marginTop: 80 }}>
+      <View
+        style={
+          route.params.rota === "carrinho"
+            ? { marginTop: 20 }
+            : { marginTop: 80 }
+        }
+      >
         <View style={{ alignSelf: "flex-start", marginLeft: "85%" }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <FontAwesomeIcon
