@@ -43,7 +43,7 @@ export default function RevisaoCheckout({ route, navigation }) {
   );
   const [bandeira, setBandeira] = useState("");
   const [bandeira1, setBandeira1] = useState("");
-  if (bandeira == "") {
+  if (bandeira == "" && cartao != undefined) {
     JSON.parse(cartao).item.cardnome === "Mastercard"
       ? setBandeira("MC")
       : JSON.parse(cartao).item.cardnome === "Visa"
