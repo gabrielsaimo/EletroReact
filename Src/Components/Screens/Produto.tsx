@@ -33,7 +33,7 @@ import CalculaFrete from "../CalculaFrete";
 import { WebView } from "react-native-webview";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import ShareButton from "../ShereButtom";
-import { useIsFocused } from "@react-navigation/native";
+import { CommonActions, useIsFocused } from "@react-navigation/native";
 export default function Produto({ route, navigation }) {
   const { URL_PROD } = process.env;
   const sku = route.params.sku;

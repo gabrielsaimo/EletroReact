@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { CommonActions } from "@react-navigation/native";
 import NumberFormat from "react-number-format";
 import { AuthContext } from "../Contexts/Auth";
 import base64 from "react-native-base64";
@@ -40,6 +41,35 @@ export default function RevisaoCheckout({ route, navigation }) {
     "🚀 ~ file: RevisaoCheckout.tsx ~ line 35 ~ RevisaoCheckout ~ Concluid",
     Concluid
   );
+  const [bandeira, setBandeira] = useState("");
+  const [bandeira1, setBandeira1] = useState("");
+  if (bandeira == "") {
+    JSON.parse(cartao).item.cardnome === "Mastercard"
+      ? setBandeira("MC")
+      : JSON.parse(cartao).item.cardnome === "Visa"
+      ? setBandeira("VI")
+      : JSON.parse(cartao).item.cardnome === "Amex"
+      ? setBandeira("AE")
+      : JSON.parse(cartao).item.cardnome === "Diners"
+      ? setBandeira("DI")
+      : JSON.parse(cartao).item.cardnome === "Elo"
+      ? setBandeira("EL")
+      : setBandeira("HI");
+  }
+  if (bandeira1 == "" && cartao2 != undefined) {
+    JSON.parse(cartao2).item.cardnome === "Mastercard"
+      ? setBandeira1("MC")
+      : JSON.parse(cartao2).item.cardnome === "Visa"
+      ? setBandeira1("VI")
+      : JSON.parse(cartao2).item.cardnome === "Amex"
+      ? setBandeira1("AE")
+      : JSON.parse(cartao2).item.cardnome === "Diners"
+      ? setBandeira1("DI")
+      : JSON.parse(cartao2).item.cardnome === "Elo"
+      ? setBandeira1("EL")
+      : setBandeira1("HI");
+  }
+
   const [data2, setData2] = useState(JSON.parse(cart));
   const [data, setData] = useState(JSON.parse(endereco));
   const [dataFrete, setDatafrete] = useState(JSON.parse(frete));
@@ -68,15 +98,13 @@ export default function RevisaoCheckout({ route, navigation }) {
     } else if (pagSelect === "pagamento_um_cartao") {
       var FormaPagamento =
         '[{"tipoPagamento":"pagamento_um_cartao","parcelasCartao":"' +
-        xparcela2 +
-        '","parcelasCartao1":"","codParcelas":"' +
         codParcela2 +
-        '","codParcelas1":null,"valorTotal":"' +
+        '","parcelasCartao1":"","codParcelas":null,"codParcelas1":null,"valorTotal":"' +
         valorTotal +
         '","valorTotal1":"","bandeira":"' +
-        JSON.parse(cartao).item.cardnome +
+        bandeira +
         '","bandeira1":"","numeroCartao":"' +
-        base64.encode(JSON.parse(cartao).item.numero) +
+        base64.encode(JSON.parse(cartao).item.numero.replace(/ /g, "")) +
         '","numeroCartao1":"","nomePortador":"' +
         JSON.parse(cartao).item.titular +
         '","nomePortador1":"","dataValidadeCartao":"' +
@@ -86,26 +114,21 @@ export default function RevisaoCheckout({ route, navigation }) {
         '","numeroVerificacao1":"","nomeMae":"","nomePai":"","expedicaoRg":"","rendaMensal":""}]';
     } else {
       //! passar o valor de casa cartão
-
       var FormaPagamento =
         '[{"tipoPagamento":"pagamento_dois_cartoes","parcelasCartao":"' +
-        xparcela +
-        '","parcelasCartao1":"' +
-        xparcela2 +
-        '","codParcelas":"' +
         codParcela +
-        '","codParcelas1":"' +
+        '","parcelasCartao1":"' +
         codParcela2 +
-        '","valorTotal":"' +
+        '","codParcelas": null ,"codParcelas1": null,"valorTotal":"' +
         valorTotal +
         '","valorTotal1":"","bandeira":"' +
-        JSON.parse(cartao).item.cardnome +
+        bandeira +
         '","bandeira1":"' +
-        JSON.parse(cartao2).item.cardnome +
+        bandeira1 +
         '","numeroCartao":"' +
-        base64.encode(JSON.parse(cartao).item.numero) +
+        base64.encode(JSON.parse(cartao).item.numero.replace(/ /g, "")) +
         '","numeroCartao1":"' +
-        base64.encode(JSON.parse(cartao2).item.numero) +
+        base64.encode(JSON.parse(cartao2).item.numero.replace(/ /g, "")) +
         '","nomePortador":"' +
         JSON.parse(cartao).item.titular +
         '","nomePortador1":"' +
@@ -182,15 +205,20 @@ export default function RevisaoCheckout({ route, navigation }) {
         setConcluido(resData);
 
         JSON.stringify(Comprar).length > 2
-          ? confiCompra(undefined, undefined, undefined, [])
-          : Compra(undefined, undefined, undefined, []);
+          ? confiCompra(undefined, undefined, undefined, "[]")
+          : Compra(undefined, undefined, undefined, "[]");
       })
       .catch((error) => {
         setC(false);
         console.log(error);
       });
   }
-
+  function voltarhome() {
+    navigation.goBack(null);
+    navigation.goBack(null);
+    navigation.goBack(null);
+    navigation.navigate("HomeTab");
+  }
   return (
     <View>
       {Concluid.toString().length > 3 ? (
@@ -863,7 +891,7 @@ export default function RevisaoCheckout({ route, navigation }) {
                   marginLeft: "5%",
                   borderRadius: 10,
                 }}
-                onPress={() => navigation.navigate("HomeTab")}
+                onPress={() => voltarhome()}
               >
                 <Text
                   style={{ fontWeight: "bold", fontSize: 18, color: "#FFF" }}

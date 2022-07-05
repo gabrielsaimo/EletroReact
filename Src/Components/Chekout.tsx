@@ -4,6 +4,7 @@ import { AuthContext } from "../Contexts/Auth";
 import NumberFormat from "react-number-format";
 import DialogInput from "react-native-dialog-input";
 import { Alert } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 type Props = {};
 export default function Checkout({ route, navigation }) {
   const { URL_PROD } = process.env;
@@ -214,7 +215,7 @@ export default function Checkout({ route, navigation }) {
   }, [pagamento, reload]);
 
   return (
-    <View style={{ backgroundColor: "#FFF" }}>
+    <View style={{ backgroundColor: "#FFF", flex: 1 }}>
       {pagamento ? (
         <>
           <View style={{ height: "15%" }}>
@@ -1093,129 +1094,142 @@ export default function Checkout({ route, navigation }) {
             </>
           )}
           ListFooterComponent={() => (
-            <FlatList
-              data={data3}
-              keyExtractor={(item, index) => index}
-              initialNumToRender={3}
-              renderItem={({ item, index }) => (
-                <View>
-                  {item.descricao === null || item.descricao === undefined ? (
-                    <View
-                      style={{
-                        margin: 20,
-                        padding: 10,
-                        alignItems: "center",
-                        backgroundColor: "#ff5454",
-                        borderRadius: 10,
-                      }}
-                    >
-                      <Text>{"Indisponivel para esse CEP"}</Text>
+            <>
+              {data3.length > 0 ? (
+                <FlatList
+                  data={data3}
+                  keyExtractor={(item, index) => index}
+                  initialNumToRender={3}
+                  renderItem={({ item, index }) => (
+                    <View>
+                      {item.descricao === null ||
+                      item.descricao === undefined ? (
+                        <View
+                          style={{
+                            margin: 20,
+                            padding: 10,
+                            alignItems: "center",
+                            backgroundColor: "#ff5454",
+                            borderRadius: 10,
+                          }}
+                        >
+                          <Text>{"Indisponivel para esse CEP"}</Text>
+                        </View>
+                      ) : (
+                        <>
+                          <TouchableOpacity
+                            style={{
+                              paddingHorizontal: 10,
+                              paddingVertical: 10,
+                              marginHorizontal: 10,
+                              backgroundColor:
+                                selected === index ? "#D3EDEC" : "#F8F9FA",
+                              borderRadius: 15,
+                              flexDirection: "row",
+                              marginBottom: 15,
+                            }}
+                            onPress={() => {
+                              setValue(JSON.stringify(item));
+                              setSelected(index);
+                            }}
+                          >
+                            <View
+                              style={{
+                                justifyContent: "center",
+                                marginRight: 10,
+                              }}
+                            >
+                              {selected === index ? (
+                                <Image
+                                  style={{ width: 20, height: 20 }}
+                                  source={require("../Components/assets/selected.png")}
+                                />
+                              ) : (
+                                <Image
+                                  style={{ width: 20, height: 20 }}
+                                  source={require("../Components/assets/selecte.png")}
+                                />
+                              )}
+                            </View>
+
+                            <View style={{ width: "95%" }}>
+                              <Text>Via {item.descricao}</Text>
+                              <Text style={{ fontWeight: "bold" }}>
+                                {item.valor == "R$ 0,00"
+                                  ? "Frete Grátis"
+                                  : item.valor}
+                                {console.log(item.valor)}
+                                {
+                                  (selected === index
+                                    ? setFreteN(
+                                        item.valor
+                                          .replace("R$ ", "")
+                                          .replace(".", "")
+                                          .replace(/,[0-9][0-9]/g, "")
+                                      )
+                                    : {},
+                                  selected === index
+                                    ? setCetsFrete(
+                                        item.valor
+                                          .replace("R$ ", "")
+                                          .replace(
+                                            /[0-9].[0-9][0-9][0-9],/g,
+                                            ""
+                                          )
+                                          .replace(/[0-9][0-9][0-9],/g, "")
+                                          .replace(/[0-9][0-9],/g, "")
+                                          .replace(/[0-9],/g, "")
+                                      )
+                                    : {},
+                                  selected === index ? (
+                                    setvalorFrete(item.valor)
+                                  ) : (
+                                    <></>
+                                  ))
+                                }
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+                        </>
+                      )}
                     </View>
-                  ) : (
+                  )}
+                  ListFooterComponent={() => (
                     <>
                       <TouchableOpacity
                         style={{
-                          paddingHorizontal: 10,
-                          paddingVertical: 10,
-                          marginHorizontal: 10,
                           backgroundColor:
-                            selected === index ? "#D3EDEC" : "#F8F9FA",
-                          borderRadius: 15,
-                          flexDirection: "row",
-                          marginBottom: 15,
+                            selected === null ? "#E4E4E4" : "#9BCB3D",
+                          borderRadius: 5,
+                          padding: 20,
+                          paddingHorizontal: 15,
+                          alignItems: "center",
+                          marginBottom: 10,
+                          marginTop: 20,
+                          marginHorizontal: 20,
                         }}
+                        disabled={selected === null ? true : false}
                         onPress={() => {
-                          setValue(JSON.stringify(item));
-                          setSelected(index);
+                          setPagamento(true), Pagamento();
                         }}
                       >
-                        <View
-                          style={{ justifyContent: "center", marginRight: 10 }}
+                        <Text
+                          style={{
+                            color: "#FFF",
+                            fontWeight: "bold",
+                            fontSize: 20,
+                          }}
                         >
-                          {selected === index ? (
-                            <Image
-                              style={{ width: 20, height: 20 }}
-                              source={require("../Components/assets/selected.png")}
-                            />
-                          ) : (
-                            <Image
-                              style={{ width: 20, height: 20 }}
-                              source={require("../Components/assets/selecte.png")}
-                            />
-                          )}
-                        </View>
-
-                        <View style={{ width: "95%" }}>
-                          <Text>Via {item.descricao}</Text>
-                          <Text style={{ fontWeight: "bold" }}>
-                            {item.valor == "R$ 0,00"
-                              ? "Frete Grátis"
-                              : item.valor}
-                            {console.log(item.valor)}
-                            {
-                              (selected === index
-                                ? setFreteN(
-                                    item.valor
-                                      .replace("R$ ", "")
-                                      .replace(".", "")
-                                      .replace(/,[0-9][0-9]/g, "")
-                                  )
-                                : {},
-                              selected === index
-                                ? setCetsFrete(
-                                    item.valor
-                                      .replace("R$ ", "")
-                                      .replace(/[0-9].[0-9][0-9][0-9],/g, "")
-                                      .replace(/[0-9][0-9][0-9],/g, "")
-                                      .replace(/[0-9][0-9],/g, "")
-                                      .replace(/[0-9],/g, "")
-                                  )
-                                : {},
-                              selected === index ? (
-                                setvalorFrete(item.valor)
-                              ) : (
-                                <></>
-                              ))
-                            }
-                          </Text>
-                        </View>
+                          Prossegir para pagamento
+                        </Text>
                       </TouchableOpacity>
                     </>
                   )}
-                </View>
+                />
+              ) : (
+                <ActivityIndicator color="#1534C8" size="large" />
               )}
-              ListFooterComponent={() => (
-                <>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor:
-                        selected === null ? "#E4E4E4" : "#9BCB3D",
-                      borderRadius: 5,
-                      padding: 20,
-                      paddingHorizontal: 15,
-                      alignItems: "center",
-                      marginBottom: 10,
-                      marginTop: 20,
-                      marginHorizontal: 20,
-                    }}
-                    disabled={selected === null ? true : false}
-                    onPress={() => {
-                      setPagamento(true), Pagamento();
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#FFF",
-                        fontWeight: "bold",
-                        fontSize: 20,
-                      }}
-                    >
-                      Prossegir para pagamento
-                    </Text>
-                  </TouchableOpacity>
-                </>
-              )}
-            />
+            </>
           )}
           ListFooterComponentStyle={{ marginVertical: 30 }}
         />

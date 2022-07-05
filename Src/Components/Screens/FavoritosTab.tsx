@@ -446,7 +446,7 @@ export default function FavoritosTab() {
               ? Object.keys(data).length === 0
                 ? ["Calculando...", <ActivityIndicator />]
                 : Object.keys(data).length - 1 + " Produtos"
-              : "0"}
+              : "Calculando..."}
           </Text>
         </View>
         <View flexDirection={"row"}>

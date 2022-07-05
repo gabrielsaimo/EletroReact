@@ -24,12 +24,7 @@ export default function MeusCartoes({ route }) {
   const { user1, Compra, multcar, arrayCompra, Comprar, confiCompra } =
     useContext(AuthContext);
   const [data, setData] = useState([]);
-  console.log(
-    "🚀 ~ file: CarrinhoTab.tsx ~ line 27 ~ MeusCartoes ~ data",
-    data
-  );
   const [load, setLoad] = useState(true);
-  console.log("🚀 ~ file: CarrinhoTab.js ~ line 28 ~ MeusCartoes ~ load", load);
   const [intervalo, setIntervalo] = useState(false);
   const isFocused = useIsFocused();
   const [visible, setVisible] = React.useState(false);
@@ -154,9 +149,9 @@ export default function MeusCartoes({ route }) {
         ? JSON.stringify(Comprar)
         : multcar.replace(/"}{"/g, '"},{"')
     );
+
     const objIndex = array.findIndex((obj) => obj.sku == sku);
     array[objIndex].qtde = Number(array[objIndex].qtde) - 1;
-
     JSON.stringify(Comprar).length > 2
       ? confiCompra(
           undefined,
@@ -218,8 +213,21 @@ export default function MeusCartoes({ route }) {
             .replace(/"}{"/g, '"},{"')
         );
   }
+  //! Deletar tudo
+  /*  function deletAll() {
+    setLoad(true);
+    JSON.stringify(Comprar).length > 2
+      ? confiCompra(undefined, undefined, undefined, "[]")
+      : Compra(undefined, undefined, undefined, "[]");
+  }*/
   return (
-    <SafeAreaView style={{ backgroundColor: "#FFF", height: "100%" }}>
+    <SafeAreaView
+      style={{
+        backgroundColor: "#FFF",
+        height: "100%",
+        flex: 1,
+      }}
+    >
       <View style={{ backgroundColor: "#FFDB00", zIndex: 1, height: 5 }} />
       {load == false ? (
         <>
@@ -541,7 +549,7 @@ export default function MeusCartoes({ route }) {
                         </Text>
                       </TouchableOpacity>
                     </View>
-                    <View style={{ marginTop: 50 }}>
+                    <View>
                       <Snackbar
                         visible={visible}
                         onDismiss={onDismissSnackBar}
@@ -762,7 +770,11 @@ export default function MeusCartoes({ route }) {
           )}
         </>
       ) : (
-        <ActivityIndicator />
+        <View
+          style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
+        >
+          <ActivityIndicator />
+        </View>
       )}
     </SafeAreaView>
   );
